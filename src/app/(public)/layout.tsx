@@ -1,4 +1,5 @@
-import UserHeader from "@/components/header/UserHeader";
+import GuestHeader from "@/components/header/GuestHeader";
+
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -13,7 +14,7 @@ export default function RootLayout({
 }>) {
     return (
         <>
-            <UserHeader />
+            <GuestHeader />
             {children}
         </>
 
