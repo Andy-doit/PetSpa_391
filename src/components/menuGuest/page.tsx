@@ -4,10 +4,9 @@ import Image from 'next/image'
 
 export default function MenuGuest() {
     return (
-        <div style={{
-            backgroundColor: "#fbfafa"
-        }}>
-            <div className="container px-28 flex ">
+        <>
+            <div className="container px-28 flex  "
+            >
                 <div className="w-1/3 flex justify-end items-center pt-6 ">
                     <div>
                         <p className="font-mono font-bold text-6xl">Pet Care</p>
@@ -43,7 +42,7 @@ export default function MenuGuest() {
                     </ul>
                 </div>
             </div>
-            <div className="container py-10 px-28 flex justify-between ">
+            <div className="container  py-10 px-28 flex justify-between ">
                 <Card className="max-w-[200px]">
                     <CardHeader className="flex justify-center gap-3">
 
@@ -105,6 +104,6 @@ export default function MenuGuest() {
 
                 </Card>
             </div>
-        </div>
+        </>
     )
 }
