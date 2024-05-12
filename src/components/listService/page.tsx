@@ -42,7 +42,7 @@ export default function ListService() {
         <div className="py-10">
             <div className="grid grid-rows-2 grid-flow-col gap-4">
                 {serviceItem.map((item, index) => (
-                    <Card className="max-w-[350px] mx-4 mb-4">
+                    <Card key={index} className="max-w-[350px] mx-4 mb-4">
                         <CardHeader className="flex gap-3">
                             <Image
                                 alt="nextui logo"
