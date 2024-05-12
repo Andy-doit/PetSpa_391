@@ -1,3 +1,4 @@
+import Footer from "@/components/footer/page";
 import GuestHeader from "@/components/header/GuestHeader";
 
 import type { Metadata } from "next";
@@ -16,6 +17,7 @@ export default function RootLayout({
         <>
             <GuestHeader />
             {children}
+            <Footer />
         </>
 
 
