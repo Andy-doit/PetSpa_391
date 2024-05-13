@@ -4,7 +4,7 @@ import { Navbar, NavbarBrand, NavbarContent, NavbarItem, Link, Button, Badge, Ca
 export default function GuestHeader() {
     return (
 
-        <Navbar className="bg-transparent absolute fixed top-0 z-50 ">
+        <Navbar className="bg-transparent fixed top-0 z-50 ">
             <NavbarContent className="hidden sm:flex gap-4 " justify="start">
                 <NavbarItem>
                     <Link className="font-mono hover:text-orange-600" color="foreground" href="#">
