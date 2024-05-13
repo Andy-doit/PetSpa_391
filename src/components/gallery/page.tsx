@@ -1,8 +1,8 @@
 import { Card, CardHeader, CardBody, CardFooter, Image, Button } from "@nextui-org/react";
 export default function Gallery() {
     return (
-        <div className="max-w-[1200px] gap-2 grid grid-cols-12 grid-rows-2 px-8 py-10">
-            <Card className="col-span-12 sm:col-span-4 h-[300px]">
+        <div className="max-w-[1200px] gap-2 grid grid-cols-12 grid-rows-2  py-10">
+            <Card className="col-span-12 sm:col-span-4 h-[350px]">
                 <CardHeader className="absolute z-10 top-1 flex-col !items-start">
                     <p className="text-tiny text-white/60 uppercase font-bold">Pet Place</p>
                     <h4 className="text-white font-medium text-large">Gromming</h4>
@@ -14,7 +14,7 @@ export default function Gallery() {
                     src="https://i.pinimg.com/564x/44/95/8d/44958db0f1da7230964ab619f06c1115.jpg"
                 />
             </Card>
-            <Card className="col-span-12 sm:col-span-4 h-[300px]">
+            <Card className="col-span-12 sm:col-span-4 h-[350px]">
                 <CardHeader className="absolute z-10 top-1 flex-col !items-start">
                     <p className="text-tiny text-white/60 uppercase font-bold">Pet Place</p>
                     <h4 className="text-white font-medium text-large">Nail</h4>
@@ -26,7 +26,7 @@ export default function Gallery() {
                     src="https://i.pinimg.com/564x/22/f4/6d/22f46da0fda3a614c24e1181dc27a62b.jpg"
                 />
             </Card>
-            <Card className="col-span-12 sm:col-span-4 h-[300px]">
+            <Card className="col-span-12 sm:col-span-4 h-[350px]">
                 <CardHeader className="absolute  z-10 top-1 flex-col !items-start">
                     <p className="text-tiny text-white/60 uppercase font-bold">Pet Place</p>
                     <h4 className="text-white font-medium text-large">Special Spa</h4>

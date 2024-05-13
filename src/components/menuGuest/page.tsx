@@ -5,9 +5,8 @@ import Image from 'next/image'
 export default function MenuGuest() {
     return (
         <>
-            <div className="container px-28 flex  "
-            >
-                <div className="w-1/3 flex justify-end items-center pt-6 ">
+            <div className="flex container pt-5">
+                <div className="flex-1 flex  items-center">
                     <div>
                         <p className="font-mono font-bold text-6xl">Pet Care</p>
                         <p className="font-mono font-bold text-6xl">For Today</p>
@@ -22,8 +21,8 @@ export default function MenuGuest() {
                         </div>
                     </div>
                 </div>
-                <div className="w-1/3 border-1 rounded-b-full" style={{ backgroundColor: "#f9d783" }}>
-                    <div className="pt-14">
+                <div className="flex-1 border-1 rounded-b-full" style={{ backgroundColor: "#f9d783" }}>
+                    <div className="flex items-center">
                         <Image
                             alt="Picture of the author"
                             width={500}
@@ -32,23 +31,21 @@ export default function MenuGuest() {
                         />
                     </div>
                 </div>
-                <div className="w-1/3 flex justify-end items-end pt-10">
-                    <ul className="text-8xl">
-                        <li><Link href="#" className="font-mono text-xl hover:text-orange-600" color="foreground">Grooming</Link></li>
-                        <li><Link href="#" className=" font-mono text-xl hover:text-orange-600" color="foreground">Hair and Nail</Link></li>
-                        <li><Link href="#" className="font-mono text-xl hover:text-orange-600" color="foreground">Massage and Relaxation</Link></li>
-                        <li><Link href="#" className="font-mono text-xl hover:text-orange-600" color="foreground">Special Spa</Link></li>
-                        <li><Link href="#" className=" font-mono text-xl hover:text-orange-600" color="foreground">Hotel Pet</Link></li>
+                <div className="flex-1 flex justify-end items-center ">
+                    <ul>
+                        <li><Link href="#" className="font-mono py-5 text-xl hover:text-orange-600" color="foreground">Grooming</Link></li>
+                        <li><Link href="#" className=" font-mono py-5 text-xl hover:text-orange-600" color="foreground">Hair and Nail</Link></li>
+                        <li><Link href="#" className="font-mono py-5 text-xl hover:text-orange-600" color="foreground">Massage </Link></li>
+                        <li><Link href="#" className="font-mono py-5 text-xl hover:text-orange-600" color="foreground">Special Spa</Link></li>
+                        <li><Link href="#" className=" font-mono py-5 text-xl hover:text-orange-600" color="foreground">Hotel Pet</Link></li>
                     </ul>
                 </div>
             </div>
-            <div className="container  py-10 px-28 flex justify-between ">
-                <Card className="max-w-[200px]">
+            <div className=" container pt-5 pb-10  flex flex-wrap justify-around ">
+                <Card className="max-w-[200px] mt-5">
                     <CardHeader className="flex justify-center gap-3">
-
                         <div className="flex flex-col">
                             <p className="text-3xl font-mono">More 20</p>
-
                         </div>
                     </CardHeader>
                     <Divider />
@@ -58,7 +55,7 @@ export default function MenuGuest() {
                     <Divider />
 
                 </Card>
-                <Card className="max-w-[200px]">
+                <Card className="max-w-[200px] mt-5">
                     <CardHeader className="flex justify-center gap-3">
 
                         <div className="flex flex-col">
@@ -73,7 +70,7 @@ export default function MenuGuest() {
                     <Divider />
 
                 </Card>
-                <Card className="max-w-[200px]">
+                <Card className="max-w-[200px] mt-5">
                     <CardHeader className="flex justify-center gap-3">
 
                         <div className="flex flex-col">
@@ -88,7 +85,7 @@ export default function MenuGuest() {
                     <Divider />
 
                 </Card>
-                <Card className="max-w-[200px]">
+                <Card className="max-w-[200px] mt-5">
                     <CardHeader className="flex justify-center gap-3">
 
                         <div className="flex flex-col">
