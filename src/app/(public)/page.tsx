@@ -6,18 +6,20 @@ import { Link, Spacer } from "@nextui-org/react";
 
 export default function Home() {
     return (
-        <div >
-            <div className="flex justify-center">
-                <div style={{
-                    backgroundColor: "#fbfafa"
-                }}>
+        <div className="" >
+            <div className="flex justify-center" style={{
+                backgroundColor: "#fbfafa"
+            }}>
+                <div>
                     <MenuGuest />
                 </div>
             </div>
             <div className="text-center pt-10">
-                <p className="text-5xl font-medium">Gallery</p>
+                <div>
+                    <p className="text-5xl font-medium">Gallery</p>
+                </div>
             </div>
-            <div className=" px-10 flex justify-center">
+            <div className=" flex justify-center">
                 <div>
                     <Gallery />
                 </div>
@@ -25,13 +27,13 @@ export default function Home() {
             <div className="text-center">
                 <p className="text-5xl font-medium">Some Service</p>
             </div>
-            <div className=" px-10 flex justify-center">
+            <div className=" flex justify-center">
                 <ListService />
             </div>
             <div className="text-center">
                 <p className="text-5xl font-medium">Customer Review</p>
             </div>
-            <div className=" px-10 flex justify-center">
+            <div className="flex justify-center">
                 <CustomerFeedback />
             </div>
         </div>
