@@ -1,3 +1,4 @@
+import CardService from "@/components/cardService/page";
 import CustomerFeedback from "@/components/customerFeedback/page";
 import Gallery from "@/components/gallery/page";
 import ListService from "@/components/listService/page";
@@ -28,7 +29,7 @@ export default function Home() {
                 <p className="text-5xl font-medium">Some Service</p>
             </div>
             <div className=" flex justify-center">
-                <ListService />
+                <CardService />
             </div>
             <div className="text-center">
                 <p className="text-5xl font-medium">Customer Review</p>
