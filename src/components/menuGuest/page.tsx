@@ -16,7 +16,7 @@ export default function MenuGuest() {
                         </div>
                         <div>
                             <Button className="bg-gradient-to-tr from-pink-500 to-yellow-500 text-white shadow-lg">
-                                Explore now
+                                <Link href="listService"> Explore now</Link>
                             </Button>
                         </div>
                     </div>

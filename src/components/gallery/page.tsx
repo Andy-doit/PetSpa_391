@@ -1,7 +1,7 @@
 import { Card, CardHeader, CardBody, CardFooter, Image, Button } from "@nextui-org/react";
 export default function Gallery() {
     return (
-        <div className="max-w-[1200px] gap-2 grid grid-cols-12 grid-rows-2  py-10">
+        <div className="max-w-[1200px] gap-2 grid grid-cols-12 grid-rows-2  pt-10">
             <Card className="col-span-12 sm:col-span-4 h-[350px]">
                 <CardHeader className="absolute z-10 top-1 flex-col !items-start">
                     <p className="text-tiny text-white/60 uppercase font-bold">Pet Place</p>
