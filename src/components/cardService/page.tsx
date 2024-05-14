@@ -46,6 +46,7 @@ export default function CardService() {
             <div className="grid  grid-flow-col gap-4">
                 {serviceItem.map((item, index) => (
                     <Card
+                        key={index}
                         isFooterBlurred
                         radius="lg"
                         className="border-none"
@@ -64,7 +65,6 @@ export default function CardService() {
                                 <p className="text-xl font-mono font-bold text-white/80">{item.name}</p>
                                 <p className=" font-mono font-bold text-white/80">by :{item.company}</p>
                             </div>
-
                             <div>
                                 <ServiceDetail />
                             </div>
