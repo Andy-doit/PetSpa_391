@@ -1,6 +1,6 @@
 import Footer from "@/components/footer/page";
 import GuestHeader from "@/components/guestHeader/page";
-import UserHeader from "@/components/userHeader/page";
+
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -17,7 +17,7 @@ export default function RootLayout({
         <>
 
             <GuestHeader />
-            <UserHeader />
+
             {children}
             <Footer />
 
