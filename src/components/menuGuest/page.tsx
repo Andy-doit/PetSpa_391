@@ -41,66 +41,7 @@ export default function MenuGuest() {
                     </ul>
                 </div>
             </div>
-            <div className=" container pt-5 pb-10  flex flex-wrap justify-around ">
-                <Card className="max-w-[200px] mt-5">
-                    <CardHeader className="flex justify-center gap-3">
-                        <div className="flex flex-col">
-                            <p className="text-3xl font-mono">More 20</p>
-                        </div>
-                    </CardHeader>
-                    <Divider />
-                    <CardBody className="flex justify-center  text-center">
-                        <p className="font-mono">Services from many different suppliers</p>
-                    </CardBody>
-                    <Divider />
-
-                </Card>
-                <Card className="max-w-[200px] mt-5">
-                    <CardHeader className="flex justify-center gap-3">
-
-                        <div className="flex flex-col">
-                            <p className="text-3xl font-mono">More 25</p>
-
-                        </div>
-                    </CardHeader>
-                    <Divider />
-                    <CardBody className="flex justify-center  text-center">
-                        <p className="font-mono">Reviewed by many customer</p>
-                    </CardBody>
-                    <Divider />
-
-                </Card>
-                <Card className="max-w-[200px] mt-5">
-                    <CardHeader className="flex justify-center gap-3">
-
-                        <div className="flex flex-col">
-                            <p className="text-3xl font-mono">More 250</p>
-
-                        </div>
-                    </CardHeader>
-                    <Divider />
-                    <CardBody className="flex justify-center  text-center">
-                        <p className="font-mono">Order by many customer</p>
-                    </CardBody>
-                    <Divider />
-
-                </Card>
-                <Card className="max-w-[200px] mt-5">
-                    <CardHeader className="flex justify-center gap-3">
-
-                        <div className="flex flex-col">
-                            <p className="text-3xl font-mono">More 20</p>
-
-                        </div>
-                    </CardHeader>
-                    <Divider />
-                    <CardBody className="flex justify-center  text-center">
-                        <p className="font-mono">From many different suppliers</p>
-                    </CardBody>
-                    <Divider />
-
-                </Card>
-            </div>
+          
         </>
     )
 }

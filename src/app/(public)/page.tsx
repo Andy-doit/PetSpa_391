@@ -15,16 +15,8 @@ export default function Home() {
                     <MenuGuest />
                 </div>
             </div>
-            <div className="text-center pt-10">
-                <div>
-                    <p className="text-5xl font-medium">Gallery</p>
-                </div>
-            </div>
-            <div className=" flex justify-center">
-                <div>
-                    <Gallery />
-                </div>
-            </div>
+           
+            
             <div className="text-center">
                 <p className="text-5xl font-medium">Some Service</p>
             </div>
