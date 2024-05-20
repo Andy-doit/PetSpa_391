@@ -21,53 +21,67 @@ const serviceItem = [
         price: "15",
 
     },
-    // {
-    //     name: "Pet Nail",
-    //     company: "Minh Spa",
-    //     price: "15",
+    {
+        name: "Pet Nail",
+        company: "Minh Spa",
+        price: "15",
 
-    // },
-    // {
-    //     name: "Pet Hotel",
-    //     company: "Truc Spa",
-    //     price: "15",
+    },
+    {
+        name: "Pet Hotel",
+        company: "Truc Spa",
+        price: "15",
 
-    // },
-    // {
-    //     name: "Pet Spa",
-    //     company: "Hung Spa",
-    //     price: "15",
+    },
+    {
+        name: "Pet Hotel",
+        company: "Truc Spa",
+        price: "15",
 
-    // }
+    },
+    {
+        name: "Pet Hotel",
+        company: "Truc Spa",
+        price: "15",
+
+    },
+    {
+        name: "Pet Spa",
+        company: "Hung Spa",
+        price: "15",
+
+    }
+
 ]
 export default function CardService() {
     return (
-        <div className="py-10">
-            <div className="grid  grid-flow-col gap-4">
+        <div className="mt-2 ">
+            <div className="grid grid-cols-3 gap-4 container">
                 {serviceItem.map((item, index) => (
-                    <Card
-                        key={index}
-                        isFooterBlurred
-                        radius="lg"
-                        className="border-none"
-                    >
-                        <Image
-                            className="object-cover"
-                            style={{
-                                width: '400px',
-                                height: '200px'
-                            }}
-                            src="https://i.pinimg.com/736x/f6/52/b4/f652b4aa020ed9565dda599b98932271.jpg"
-
-                        />
-                        <CardFooter className="justify-around items-center before:bg-white/10 border-white/20 border-1 overflow-hidden py-1 absolute before:rounded-xl rounded-large bottom-1 w-[calc(100%_-_8px)] shadow-small ml-1 z-10">
-                            <div >
-                                <p className="text-xl font-mono font-bold text-white/80">{item.name}</p>
-                                <p className=" font-mono font-bold text-white/80">by :{item.company}</p>
+                    <Card className="max-w-[400px]">
+                        <CardHeader className="flex gap-3">
+                            <Image
+                                alt="nextui logo"
+                                height={50}
+                                radius="sm"
+                                src="https://avatars.githubusercontent.com/u/86160567?s=200&v=4"
+                                width={50}
+                            />
+                            <div className="flex flex-col">
+                                <p className="text-md">Dịch vụ tắm rửa</p>
+                                <p className="text-small text-orange-600 ">Thien An Spa</p>
+                                <p className="text-small text-default-500">Khu 2 Hoàng Cương, Thanh Ba, Phú Thọ</p>
                             </div>
-                            <div>
-                                <ServiceDetail />
-                            </div>
+                        </CardHeader>
+                        <Divider />
+                        <CardBody>
+                            <p>Giá: 150.000</p>
+                        </CardBody>
+                        <Divider />
+                        <CardFooter>
+                            <Button className="bg-gradient-to-tr from-pink-500 to-yellow-500 text-white shadow-lg">
+                                <Link color="foreground" href="listService"> Booking now </Link>
+                            </Button>
                         </CardFooter>
                     </Card>
                 ))}
