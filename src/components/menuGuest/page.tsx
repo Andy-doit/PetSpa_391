@@ -5,18 +5,18 @@ import Image from 'next/image'
 export default function MenuGuest() {
     return (
         <>
-            <div className="flex container pt-5">
+            <div className="flex container py-10">
                 <div className="flex-1 flex  items-center">
                     <div>
                         <p className="font-mono font-bold text-6xl">Pet Care</p>
                         <p className="font-mono font-bold text-6xl">For Today</p>
                         <p className="font-mono font-bold text-6xl text-orange-600">Pet Parents</p>
                         <div className="w-3/4 py-3">
-                            <p className="font-mono  text-xl">Life is hard already. Let us make it a little easier</p>
+                            <p className="font-mono  text-xl">Cuộc sống quá khó khăn ư. Hãy để chúng tôi khiến nó trở nên dễ hơn</p>
                         </div>
                         <div>
                             <Button className="bg-gradient-to-tr from-pink-500 to-yellow-500 text-white shadow-lg">
-                                <Link href="listService"> Explore now</Link>
+                                <Link color="foreground" href="listService"> Khám phá </Link>
                             </Button>
                         </div>
                     </div>
@@ -41,7 +41,6 @@ export default function MenuGuest() {
                     </ul>
                 </div>
             </div>
-          
         </>
     )
 }
