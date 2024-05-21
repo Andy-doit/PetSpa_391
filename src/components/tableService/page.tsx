@@ -16,16 +16,7 @@ export default function TableSerivce() {
                         <CardService />
                     </ScrollShadow>
                 </Tab>
-                <Tab key="low" title="Giá từ thấp đến cao">
-                    <ScrollShadow size={1} className="w-full flex justify-center h-[500px]">
-                        <CardService />
-                    </ScrollShadow>
-                </Tab>
-                <Tab key="high" title="Giá từ cao đến thấp">
-                    <ScrollShadow size={1} className="w-full flex justify-center h-[500px]">
-                        <CardService />
-                    </ScrollShadow>
-                </Tab>
+
                 <Tab key="old" title="Cũ nhất">
                     <ScrollShadow size={1} className="w-full flex justify-center h-[500px]">
                         <CardService />

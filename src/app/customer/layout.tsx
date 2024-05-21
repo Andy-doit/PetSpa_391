@@ -17,7 +17,7 @@ export default function RootLayout({
         <>
 
             <GuestHeader />
-            <UserHeader />
+
             {children}
             <Footer />
 
