@@ -58,7 +58,7 @@ export default function CardService() {
         <div className="mt-2 ">
             <div className="grid grid-cols-3 gap-4 container">
                 {serviceItem.map((item, index) => (
-                    <Card className="max-w-[400px]">
+                    <Card key={index} className="max-w-[400px]">
                         <CardHeader className="flex gap-3">
                             <Image
                                 alt="nextui logo"
