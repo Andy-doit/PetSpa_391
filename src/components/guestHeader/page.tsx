@@ -21,6 +21,11 @@ export default function GuestHeader() {
                         Liên hệ
                     </Link>
                 </NavbarItem>
+                <NavbarItem>
+                    <Link className="font-mono hover:text-orange-600" color="foreground" href="#">
+                        Dịch vụ
+                    </Link>
+                </NavbarItem>
             </NavbarContent>
             <NavbarBrand className="sm:flex justify-center text-center">
                 <div>
