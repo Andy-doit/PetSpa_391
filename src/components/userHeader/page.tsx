@@ -12,7 +12,7 @@ export default function UserHeader() {
                 <NavbarContent className="hidden sm:flex gap-4 justify-center " justify="center" >
                     <NavbarItem>
                         <Link className="font-mono hover:text-orange-600" color="foreground" href="#">
-                            Service
+                            Dịch vụ
                         </Link>
                     </NavbarItem>
                     <NavbarItem >
