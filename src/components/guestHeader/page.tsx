@@ -12,17 +12,13 @@ export default function GuestHeader() {
             <NavbarContent className="hidden sm:flex gap-4 " justify="start">
                 <NavbarItem>
                     <Link className="font-mono hover:text-orange-600" color="foreground" href="#">
-                        About
+                        Về chúng tôi
                     </Link>
                 </NavbarItem>
-                <NavbarItem >
-                    <Link className="font-mono hover:text-orange-600" href="#" color="foreground">
-                        How it Works
-                    </Link>
-                </NavbarItem>
+
                 <NavbarItem>
                     <Link className="font-mono hover:text-orange-600" color="foreground" href="#">
-                        Contact
+                        Liên hệ
                     </Link>
                 </NavbarItem>
             </NavbarContent>
@@ -50,7 +46,7 @@ export default function GuestHeader() {
 
                                         }
                                     >
-                                        Profile
+                                        Trang cá nhân
                                     </DropdownItem>
                                     <DropdownItem
                                         startContent={
@@ -60,7 +56,7 @@ export default function GuestHeader() {
 
                                         }
                                     >
-                                        Order History
+                                        Lịch sử
                                     </DropdownItem>
                                     <DropdownItem
 
@@ -71,7 +67,7 @@ export default function GuestHeader() {
 
                                         }
                                     >
-                                        Log out
+                                        Đăng xuất
                                     </DropdownItem>
 
                                 </DropdownMenu>
@@ -81,10 +77,10 @@ export default function GuestHeader() {
                 ) : (
                     <>
                         <NavbarItem className="hidden lg:flex">
-                            <Link className="font-mono hover:text-orange-600" href="#" color="foreground">Login</Link>
+                            <Link className="font-mono hover:text-orange-600" href="/logIn" color="foreground">Đăng nhập</Link>
                         </NavbarItem>
                         <NavbarItem>
-                            <Link className="font-mono hover:text-orange-600" href="#" color="foreground">Sign up</Link>
+                            <Link className="font-mono hover:text-orange-600" href="#" color="foreground">Đăng ký</Link>
                         </NavbarItem>
                     </>
                 )}
