@@ -7,7 +7,7 @@ import { Link, Spacer } from "@nextui-org/react";
 
 export default function Home() {
     return (
-        <div className="" >
+        <div >
             <div className="flex justify-center" style={{
                 backgroundColor: "#fbfafa"
             }}>
@@ -15,10 +15,11 @@ export default function Home() {
                     <MenuGuest />
                 </div>
             </div>
-            <div className="text-center mt-2">
+
+            <div className="text-center py-3">
                 <p className="text-5xl font-medium">Dịch vụ</p>
             </div>
-            <div className="">
+            <div >
                 <TableSerivce />
             </div>
 

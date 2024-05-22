@@ -1,3 +1,4 @@
+
 'use client'
 import React from "react";
 import { Navbar, NavbarBrand, NavbarContent, NavbarItem, Link, Button, Badge, Card, CardHeader, Divider, CardBody, CardFooter, Input, Avatar } from "@nextui-org/react";
@@ -45,3 +46,4 @@ export default function UserHeader() {
 
     );
 }
+
