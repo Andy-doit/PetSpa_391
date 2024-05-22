@@ -21,9 +21,12 @@ export default function GuestHeader() {
                         Liên hệ
                     </Link>
                 </NavbarItem>
+
                 <NavbarItem>
                     <Link className="font-mono hover:text-orange-600" color="foreground" href="#">
                         Dịch vụ
+
+
                     </Link>
                 </NavbarItem>
             </NavbarContent>
@@ -85,7 +88,10 @@ export default function GuestHeader() {
                             <Link className="font-mono hover:text-orange-600" href="/logIn" color="foreground">Đăng nhập</Link>
                         </NavbarItem>
                         <NavbarItem>
+
                             <Link className="font-mono hover:text-orange-600" href="/signUp" color="foreground">Đăng ký</Link>
+
+
                         </NavbarItem>
                     </>
                 )}

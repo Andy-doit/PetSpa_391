@@ -15,6 +15,7 @@ export default function Home() {
                     <MenuGuest />
                 </div>
             </div>
+
             <div className="text-center py-3">
                 <p className="text-5xl font-medium">Dịch vụ</p>
             </div>
