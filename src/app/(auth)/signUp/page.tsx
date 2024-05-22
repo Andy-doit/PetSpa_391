@@ -4,7 +4,7 @@ import { Button, Card, CardBody, CardFooter, CardHeader, Input } from "@nextui-o
 import Link from "next/link";
 import { useState } from 'react';
 import { useRouter } from 'next/navigation'
-import { toast } from 'react-hot-toast';
+
 import { VscEye, VscEyeClosed } from "react-icons/vsc";
 
 export default function Login() {
