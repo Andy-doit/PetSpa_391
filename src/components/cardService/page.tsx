@@ -67,7 +67,6 @@ const serviceItem = [
 
     },
     {
-
         name: "Pet Spa",
         company: "Hung Spa",
         price: "15",
@@ -78,10 +77,7 @@ const serviceItem = [
 export default function CardService() {
     return (
         <div className="mt-2 ">
-
             <div className="grid grid-cols-4 gap-4 container">
-
-   
 
                 {serviceItem.map((item, index) => (
                     <Card key={index} className="max-w-[400px]">

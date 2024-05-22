@@ -20,10 +20,6 @@ export default function Home() {
                 <p className="text-5xl font-medium">Dịch vụ</p>
             </div>
             <div >
-
-          
-            <div className=>
-
                 <TableSerivce />
             </div>
 
