@@ -1,7 +1,9 @@
 
 
-import { Card, CardHeader, CardBody, CardFooter, Divider, Link, Image, Button } from "@nextui-org/react";
+
+import { Card, CardHeader, CardBody, CardFooter, Divider, Link, Image } from "@nextui-org/react";
 import ServiceDetail from "../serviceDetail/page";
+import { Button } from "@nextui-org/react";
 const serviceItem = [
     {
         name: "Pet Spa",

@@ -2,6 +2,7 @@
 import React from "react";
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure, RadioGroup, Radio, Avatar, Link } from "@nextui-org/react";
 import PriceTable from "../priceTable/page";
+import CustomerFeedback from "../customerFeedback/page";
 
 export default function ServiceDetail() {
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
@@ -57,6 +58,10 @@ export default function ServiceDetail() {
                                 <div className="py-6">
                                     <PriceTable />
                                 </div>
+                            </div>
+                            <div className="px-6">
+                                <p className="text-2xl">Feedback</p>
+                                <CustomerFeedback />
                             </div>
                         </div>
 
