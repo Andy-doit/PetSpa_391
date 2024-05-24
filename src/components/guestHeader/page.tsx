@@ -23,7 +23,7 @@ export default function GuestHeader() {
                 </NavbarItem>
 
                 <NavbarItem>
-                    <Link className="font-mono hover:text-orange-600" color="foreground" href="#">
+                    <Link className="font-mono hover:text-orange-600" color="foreground" href="/listService">
                         Dịch vụ
 
 
@@ -32,7 +32,7 @@ export default function GuestHeader() {
             </NavbarContent>
             <NavbarBrand className="sm:flex justify-center text-center">
                 <div>
-                    <p className="font-bold text-3xl text-inherit">Pet Place</p>
+                    <Link href="/" className="font-bold text-3xl text-inherit">Pet Place</Link>
                     <p className="font-mono font-light text-gray-400">Best Pet Care Service</p>
                 </div>
             </NavbarBrand>
