@@ -7,14 +7,14 @@ export default function SortService() {
 
     return (
         <>
-            <Navbar className=" top-0 z-50 border-1 rounded-sm ">
+            <Navbar className="  border-1 rounded-sm ">
 
                 <NavbarContent className="hidden sm:flex gap-4 justify-center " justify="center" >
                     <NavbarItem>
                         <Select
                             size="sm"
                             items={animals}
-                            label="Favorite Animal"
+                            label="Dịch vụ"
 
                             className="w-52"
                         >
@@ -25,7 +25,7 @@ export default function SortService() {
                         <Select
                             size="sm"
                             items={animals}
-                            label="Favorite Animal"
+                            label="Giá cả"
 
                             className="w-52"
                         >
@@ -36,13 +36,14 @@ export default function SortService() {
                         <Select
                             size="sm"
                             items={animals}
-                            label="Favorite Animal"
+                            label="Đánh giá"
 
                             className="w-52"
                         >
                             {(animal) => <SelectItem key={animal.value}>{animal.label}</SelectItem>}
                         </Select>
                     </NavbarItem>
+
                 </NavbarContent>
 
                 <NavbarContent justify="end" >
