@@ -102,7 +102,7 @@ export default function CardService() {
                         <Divider />
                         <CardFooter>
                             <Button className="bg-gradient-to-tr from-pink-500 to-yellow-500 text-white shadow-lg">
-                                <Link color="foreground" href="listService"> Booking now </Link>
+                                <Link color="foreground" href="bookingPage"> Booking now </Link>
                             </Button>
                         </CardFooter>
                     </Card>
