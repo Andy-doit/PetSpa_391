@@ -5,30 +5,35 @@ export default function PriceTable() {
     return (
         <Table aria-label="Example static collection table">
             <TableHeader>
-                <TableColumn>NAME</TableColumn>
-                <TableColumn>ROLE</TableColumn>
-                <TableColumn>STATUS</TableColumn>
+                <TableColumn>Chó</TableColumn>
+                <TableColumn>Giá</TableColumn>
+                <TableColumn >Mèo</TableColumn>
+                <TableColumn>Giá</TableColumn>
             </TableHeader>
             <TableBody>
                 <TableRow key="1">
-                    <TableCell>Tony Reichert</TableCell>
-                    <TableCell>CEO</TableCell>
-                    <TableCell>Active</TableCell>
+                    <TableCell>Dưới 2 kg</TableCell>
+                    <TableCell>70.000</TableCell>
+                    <TableCell>Dưới 2 kg</TableCell>
+                    <TableCell>100.000</TableCell>
                 </TableRow>
                 <TableRow key="2">
-                    <TableCell>Zoey Lang</TableCell>
-                    <TableCell>Technical Lead</TableCell>
-                    <TableCell>Paused</TableCell>
+                    <TableCell>2 - 4 kg</TableCell>
+                    <TableCell>100.000</TableCell>
+                    <TableCell>2 - 5 kg</TableCell>
+                    <TableCell>150.000</TableCell>
                 </TableRow>
                 <TableRow key="3">
-                    <TableCell>Jane Fisher</TableCell>
-                    <TableCell>Senior Developer</TableCell>
-                    <TableCell>Active</TableCell>
+                    <TableCell>5 - 9 kg</TableCell>
+                    <TableCell>150.000</TableCell>
+                    <TableCell>....</TableCell>
+                    <TableCell>....</TableCell>
                 </TableRow>
                 <TableRow key="4">
-                    <TableCell>William Howard</TableCell>
-                    <TableCell>Community Manager</TableCell>
-                    <TableCell>Vacation</TableCell>
+                    <TableCell>10 - 14 kg</TableCell>
+                    <TableCell>250.000</TableCell>
+                    <TableCell>....</TableCell>
+                    <TableCell>....</TableCell>
                 </TableRow>
             </TableBody>
         </Table>
