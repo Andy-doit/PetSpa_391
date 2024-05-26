@@ -2,7 +2,7 @@
 import PriceTable from "@/components/priceTable/page";
 import { Breadcrumbs, BreadcrumbItem, Card, CardHeader, Image, CardFooter, Button, Checkbox, Select, SelectItem, DatePicker, Input, Textarea, Link } from "@nextui-org/react";
 import { useState } from "react";
-export const Slot = [
+const Slot = [
     { label: "Slot 1", value: "Slot 1", description: "8: 00 - 9 : 30" },
     { label: "Slot 2", value: "Slot 2", description: "9: 30 - 11 : 00" },
     { label: "Slot 3", value: "Slot 3", description: "11: 00 - 12 : 30" },
