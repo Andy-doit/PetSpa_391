@@ -19,8 +19,9 @@ export default function CardOrder() {
     return (
         <>
             {
-                orderService.map((service) => (
+                orderService.map((service, index) => (
                     <Card
+                        key={index}
                         isBlurred
                         className="border-none bg-background/60 dark:bg-default-100/50 mt-2"
                         shadow="sm"
