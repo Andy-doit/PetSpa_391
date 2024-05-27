@@ -196,7 +196,7 @@ export default function BookingPage() {
                     </div>
                     <div className='mb-2'>
                         <div className=" flex  justify-end">
-                            <Button className="bg-gradient-to-tr from-pink-500 to-yellow-500 text-white shadow-lg">Đặt lịch</Button>
+                            <Button className="bg-gradient-to-tr from-pink-500 to-yellow-500 text-white shadow-lg w-full">Đặt lịch</Button>
                         </div>
                     </div>
                 </div>

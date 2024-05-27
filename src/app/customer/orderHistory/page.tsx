@@ -34,32 +34,7 @@ export default function OrderHistory() {
                 </nav>
             </div>
             <div className=" flex">
-                <div className='p-5 flex h-screen justify-center   border-l border-t border-gray-50 shadow'>
-                    <div className="">
-                        <div>
-                            <Input size="md" type="search" placeholder="Search"
-                                endContent={
-                                    <Button size="sm" isIconOnly color="default" variant="light">
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="w-6 h-6">
-                                            <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
-                                        </svg>
-                                    </Button>
-                                } />
-                        </div>
-                        <div className="flex justify-center mt-5">
-                            <Select
-                                size="sm"
-                                className="w-[180px]"
-                                label="Tìm kiếm theo" >
-                                {Slot.map((animal) => (
-                                    <SelectItem key={animal.value} value={animal.value}>
-                                        {animal.description}
-                                    </SelectItem>
-                                ))}
-                            </Select>
-                        </div>
-                    </div>
-                </div>
+
                 <div className="container ">
                     <CardOrder />
 

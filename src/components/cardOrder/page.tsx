@@ -1,65 +1,63 @@
 'use client'
-import { Button, Card, CardBody, Chip, Image, Slider } from "@nextui-org/react";
-import { IoHeartCircleOutline } from "react-icons/io5";
+import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Pagination, getKeyValue, Dropdown, DropdownTrigger, Button, DropdownMenu, DropdownItem, Chip } from "@nextui-org/react";
+import React from "react";
 import OrderDetail from "../orderDetail/page";
+import { PiDotsSixVerticalDuotone } from "react-icons/pi";
 const orderService = [
-    { name: "Dịch vụ tắm rửa", company: "Khoi Spa", date: "15/05/2024", process: "Đang xử lí" },
-    { name: "Dịch vụ tắm rửa", company: "An Spa", date: "16/05/2024", process: "Thành Công" },
-    { name: "Dịch vụ cắt tỉa lông", company: "Long Spa", date: "20/05/2024", process: "Đã huỷ" },
-    { name: "Dịch vụ khách sạn thú cưng", company: "Nam Spa", date: "21/05/2024", process: "Đang xử lí" },
-    { name: "Dịch vụ mát xa ", company: "Justin Spa", date: "22/05/2024", process: "Thành công" },
-
-
-
+    { name: "Dịch vụ tắm rửa", company: "Khoi Spa", date: "Slot1, 15/05/2024", process: "Đang xử lí" },
+    { name: "Dịch vụ tắm rửa", company: "An Spa", date: "Slot1, 15/05/2024", process: "Thành Công" },
+    { name: "Dịch vụ cắt tỉa lông", company: "Long Spa", date: "Slot1, 15/05/2024", process: "Đã huỷ" },
+    { name: "Dịch vụ khách sạn thú cưng", company: "Nam Spa", date: "Slot1, 15/05/2024", process: "Đang xử lí" },
+    { name: "Dịch vụ mát xa ", company: "Justin Spa", date: "Slot1, 15/05/2024", process: "Thành công" },
+    { name: "Dịch vụ mát xa ", company: "Justin Spa", date: "Slot1, 15/05/2024", process: "Thành công" },
+    { name: "Dịch vụ mát xa ", company: "Justin Spa", date: "Slot1, 15/05/2024", process: "Thành công" },
+    { name: "Dịch vụ mát xa ", company: "Justin Spa", date: "Slot1, 15/05/2024", process: "Thành công" },
+    { name: "Dịch vụ mát xa ", company: "Justin Spa", date: "Slot1, 15/05/2024", process: "Thành công" },
+    { name: "Dịch vụ mát xa ", company: "Justin Spa", date: "Slot1, 15/05/2024", process: "Thành công" },
+    { name: "Dịch vụ mát xa ", company: "Justin Spa", date: "Slot1, 15/05/2024", process: "Thành công" },
 ];
+
 export default function CardOrder() {
-    {
 
+    const getColor = (process: any) => {
+        switch (process) {
+            case "Đang xử lí":
+                return "primary";
+            case "Thành Công":
+            case "Thành công":
+                return "success";
+            case "Đã huỷ":
+                return "warning";
+            default:
+                return "default";
+        }
     }
+
     return (
-        <>
-            {
-                orderService.map((service, index) => (
-                    <Card
-                        key={index}
-                        isBlurred
-                        className="border-none bg-background/60 dark:bg-default-100/50 mt-2"
-                        shadow="sm"
-                    >
-                        <CardBody>
-                            <div className="grid grid-cols-6 md:grid-cols-12 gap-5 md:gap-2 items-center justify-center">
-                                <div className="relative col-span-10 md:col-span-2">
-                                    <Image
-                                        alt="Album cover"
-                                        className="object-cover"
-                                        height={100}
-                                        shadow="md"
-                                        src="https://nextui.org/images/album-cover.png"
-                                    />
-                                </div>
-                                <div className="flex flex-col col-span-5 md:col-span-10">
-                                    <div className="flex justify-between items-start">
-                                        <div className="flex flex-col gap-0">
-                                            <div className="flex justify-between items-center">
-                                                <h3 className="font-semibold text-2xl text-foreground/90">{service.name}</h3>
-                                                <div className="ml-5">
-                                                    <Chip size="sm" color="success">{service.process}</Chip>
-                                                </div>
-                                            </div>
-
-                                            <p className="text-small text-foreground/80">{service.date}</p>
-                                            <div className="flex  w-full justify-between">
-                                                <h1 className="text-large font-medium ">{service.company}</h1>
-                                                <OrderDetail />
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                </div>
-                            </div>
-                        </CardBody>
-                    </Card>
+        <Table aria-label="Example static collection table my-2">
+            <TableHeader>
+                <TableColumn>Tên dịch vụ</TableColumn>
+                <TableColumn>Ngày đặt</TableColumn>
+                <TableColumn>Spa</TableColumn>
+                <TableColumn>Tình trạng</TableColumn>
+                <TableColumn>Action</TableColumn>
+            </TableHeader>
+            <TableBody>
+                {orderService.map((service, index) => (
+                    <TableRow key={index}>
+                        <TableCell>{service.name}</TableCell>
+                        <TableCell>{service.date}</TableCell>
+                        <TableCell>{service.company}</TableCell>
+                        <TableCell>
+                            <Chip color={getColor(service.process)}>{service.process}</Chip>
+                        </TableCell>
+                        <TableCell>
+                            <OrderDetail />
+                        </TableCell>
+                    </TableRow>
                 ))}
-        </>
+            </TableBody>
+        </Table>
+
     )
 }
