@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import { Navbar, NavbarBrand, NavbarContent, NavbarItem, Link, Button, Badge, Card, CardHeader, Divider, CardBody, CardFooter, Avatar } from "@nextui-org/react";
 import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, cn } from "@nextui-org/react";
+import { NotificationsDropdown } from "../notify/page";
 
 export default function GuestHeader() {
     const iconClasses = "text-xl text-default-500 pointer-events-none flex-shrink-0 w-5 h-5";
@@ -39,7 +40,21 @@ export default function GuestHeader() {
             <NavbarContent justify="end" >
                 {isLoggedIn ? (
                     <>
+                        <NavbarItem className="hidden lg:flex">
+                            <Link className="font-mono hover:text-orange-600" href="/logIn" color="foreground">Đăng nhập</Link>
+                        </NavbarItem>
                         <NavbarItem>
+
+                            <Link className="font-mono hover:text-orange-600" href="/signUp" color="foreground">Đăng ký</Link>
+
+
+                        </NavbarItem>
+                    </>
+                ) : (
+                    <>
+                        <NotificationsDropdown />
+                        <NavbarItem>
+
                             <Dropdown>
                                 <DropdownTrigger>
                                     <Avatar src="https://i.pravatar.cc/150?u=a04258114e29026302d" size="md" />
@@ -81,18 +96,7 @@ export default function GuestHeader() {
                                 </DropdownMenu>
                             </Dropdown>
                         </NavbarItem>
-                    </>
-                ) : (
-                    <>
-                        <NavbarItem className="hidden lg:flex">
-                            <Link className="font-mono hover:text-orange-600" href="/logIn" color="foreground">Đăng nhập</Link>
-                        </NavbarItem>
-                        <NavbarItem>
 
-                            <Link className="font-mono hover:text-orange-600" href="/signUp" color="foreground">Đăng ký</Link>
-
-
-                        </NavbarItem>
                     </>
                 )}
 

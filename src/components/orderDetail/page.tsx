@@ -10,8 +10,8 @@ export default function OrderDetail() {
 
     return (
         <div className="flex flex-col gap-2">
-            <Button radius="full" className="bg-gradient-to-tr from-pink-500 to-yellow-500 text-white shadow-lg" size="sm" onPress={onOpen}>
-                View details
+            <Button radius="sm" className="bg-gradient-to-tr from-pink-500 to-yellow-500 text-white shadow-lg" size="sm" onPress={onOpen}>
+                Xem chi tiết
             </Button>
 
             <Modal
