@@ -2,7 +2,7 @@
 
 
 import { Card, CardHeader, CardBody, CardFooter, Divider, Link, Image } from "@nextui-org/react";
-import ServiceDetail from "../serviceDetail/page";
+import ServiceDetail from "../orderDetail/page";
 import { Button } from "@nextui-org/react";
 const serviceItem = [
     {
