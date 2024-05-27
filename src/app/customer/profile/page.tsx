@@ -3,7 +3,7 @@ import { Avatar, Button, Card, CardBody, CardFooter, CardHeader, Divider, Input,
 import React, { useState } from 'react'
 import { BiEdit } from 'react-icons/bi'
 export default function Profile() {
-    const [isDisabled, setIsDisabled] = useState(true);
+    const [isDisabled, setIsDisabled] = useState(false);
 
     const handleEditClick = () => {
         setIsDisabled(false);
