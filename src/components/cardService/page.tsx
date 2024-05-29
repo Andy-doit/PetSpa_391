@@ -74,7 +74,7 @@ const serviceItem = [
     }
 
 ]
-export default function CardService() {
+export default function     CardService() {
     return (
         <div className="mt-2 ">
             <div className="grid grid-cols-4 gap-4 container">
