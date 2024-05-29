@@ -2,7 +2,7 @@
 
 
 import { Card, CardHeader, CardBody, CardFooter, Divider, Link, Image } from "@nextui-org/react";
-import ServiceDetail from "../serviceDetail/page";
+import ServiceDetail from "../orderDetail/page";
 import { Button } from "@nextui-org/react";
 const serviceItem = [
     {
@@ -74,7 +74,7 @@ const serviceItem = [
     }
 
 ]
-export default function CardService() {
+export default function     CardService() {
     return (
         <div className="mt-2 ">
             <div className="grid grid-cols-4 gap-4 container">
@@ -102,7 +102,7 @@ export default function CardService() {
                         <Divider />
                         <CardFooter>
                             <Button className="bg-gradient-to-tr from-pink-500 to-yellow-500 text-white shadow-lg">
-                                <Link color="foreground" href="listService"> Booking now </Link>
+                                <Link color="foreground" href="bookingPage"> Booking now </Link>
                             </Button>
                         </CardFooter>
                     </Card>
