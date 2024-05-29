@@ -2,8 +2,7 @@
 import CardOrder from "@/components/cardOrder/page";
 import { Button, Input, Select, SelectItem } from "@nextui-org/react";
 const Slot = [
-    { label: "Slot 1", value: "Slot 1", description: "Mới nhất" },
-    { label: "Slot 2", value: "Slot 2", description: "Cũ nhất" },
+    
     { label: "Slot 3", value: "Slot 3", description: "Giá từ cao đến thấp" },
     { label: "Slot 4", value: "Slot 4", description: "Giá từ thấp đến cao" },
 

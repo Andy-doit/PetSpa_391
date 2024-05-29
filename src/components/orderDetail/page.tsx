@@ -4,7 +4,7 @@ import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDi
 import PriceTable from "../priceTable/page";
 import CustomerFeedback from "../customerFeedback/page";
 
-export default function OrderDetail() {
+export default function     OrderDetail() {
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
 

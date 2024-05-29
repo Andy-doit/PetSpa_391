@@ -4,10 +4,10 @@ import React from "react";
 import OrderDetail from "../orderDetail/page";
 import { PiDotsSixVerticalDuotone } from "react-icons/pi";
 const orderService = [
-    { name: "Dịch vụ tắm rửa", company: "Khoi Spa", date: "Slot1, 15/05/2024", process: "Đang xử lí" },
+    { name: "Dịch vụ tắm rửa", company: "Khoi Spa", date: "Slot1, 15/05/2024", process: "Đã huỷ" },
     { name: "Dịch vụ tắm rửa", company: "An Spa", date: "Slot1, 15/05/2024", process: "Thành Công" },
     { name: "Dịch vụ cắt tỉa lông", company: "Long Spa", date: "Slot1, 15/05/2024", process: "Đã huỷ" },
-    { name: "Dịch vụ khách sạn thú cưng", company: "Nam Spa", date: "Slot1, 15/05/2024", process: "Đang xử lí" },
+    { name: "Dịch vụ khách sạn thú cưng", company: "Nam Spa", date: "Slot1, 15/05/2024", process: "Đã huỷ" },
     { name: "Dịch vụ mát xa ", company: "Justin Spa", date: "Slot1, 15/05/2024", process: "Thành công" },
     { name: "Dịch vụ mát xa ", company: "Justin Spa", date: "Slot1, 15/05/2024", process: "Thành công" },
     { name: "Dịch vụ mát xa ", company: "Justin Spa", date: "Slot1, 15/05/2024", process: "Thành công" },
@@ -21,8 +21,7 @@ export default function CardOrder() {
 
     const getColor = (process: any) => {
         switch (process) {
-            case "Đang xử lí":
-                return "primary";
+          
             case "Thành Công":
             case "Thành công":
                 return "success";
