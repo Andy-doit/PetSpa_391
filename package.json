@@ -12,6 +12,7 @@
     "@nextui-org/react": "^2.3.6",
     "embla-carousel-react": "^8.0.4",
     "framer-motion": "^11.1.9",
+    "intro.js": "^7.2.0",
     "next": "14.2.3",
     "react": "^18",
     "react-dom": "^18",

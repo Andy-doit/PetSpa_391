@@ -21,7 +21,7 @@ export default function CardOrder() {
 
     const getColor = (process: any) => {
         switch (process) {
-          
+
             case "Thành Công":
             case "Thành công":
                 return "success";
@@ -33,7 +33,7 @@ export default function CardOrder() {
     }
 
     return (
-        <Table aria-label="Example static collection table my-2">
+        <Table aria-label="Example static collection table ">
             <TableHeader>
                 <TableColumn>Tên dịch vụ</TableColumn>
                 <TableColumn>Ngày đặt</TableColumn>
