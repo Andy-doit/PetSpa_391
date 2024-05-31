@@ -3,20 +3,30 @@ import PriceTable from "@/components/priceTable/page";
 import { Breadcrumbs, BreadcrumbItem, Card, CardHeader, Image, CardFooter, Button, Checkbox, Select, SelectItem, DatePicker, Input, Textarea, Link } from "@nextui-org/react";
 import { useState } from "react";
 const Slot = [
-    { label: "Slot 1", value: "Slot 1", description: "8: 00 - 9 : 30" },
-    { label: "Slot 2", value: "Slot 2", description: "9: 30 - 11 : 00" },
-    { label: "Slot 3", value: "Slot 3", description: "11: 00 - 12 : 30" },
-    { label: "Slot 4", value: "Slot 4", description: "13: 30 - 3 : 00" },
+    { label: "Slot 1", value: "Slot 1", description: "08: 00 - 09: 30", process: 'blank' },
+    { label: "Slot 2", value: "Slot 2", description: "09: 30 - 11: 00", process: 'booked' },
+    { label: "Slot 3", value: "Slot 3", description: "11: 00 - 12: 30", process: 'blank' },
+    { label: "Slot 4", value: "Slot 4", description: "13: 30 - 15: 00", process: 'booked' },
+    { label: "Slot 4", value: "Slot 4", description: "15: 00 - 16: 30", process: 'blank' },
 
 ];
 export default function BookingPage() {
     const [isDogChecked, setIsDogChecked] = useState(false);
+    const [selectedSlot, setSelectedSlot] = useState(null);
+
+    const [quantity, setQuantity] = useState(null);
 
     const handleDogCardClick = () => {
         setIsDogChecked(!isDogChecked);
     };
     const [isCatChecked, setIsCatChecked] = useState(false);
-
+    const handleSlotClick = (index: any) => {
+        if (selectedSlot === index) {
+            setSelectedSlot(null);
+        } else {
+            setSelectedSlot(index);
+        }
+    };
     const handleCatCardClick = () => {
         setIsCatChecked(!isCatChecked);
     };
@@ -140,30 +150,40 @@ export default function BookingPage() {
                         </div>
                     </div>
                     <div className='mb-2'>
-                        <div className=" flex  justify-between">
-                            <div>
-                                <p className="text-1xl font-medium mb-2">Chọn khung giờ</p>
-                                <div className="w-full">
-                                    <Select
-                                        className="w-[300px]"
-                                        label="Chọn khung giờ" >
-                                        {Slot.map((animal) => (
-                                            <SelectItem key={animal.value} value={animal.value}>
-                                                {animal.description}
-                                            </SelectItem>
-                                        ))}
-                                    </Select>
-                                </div>
-                            </div>
-                            <div>
-                                <p className="text-1xl font-medium mb-2">Chọn ngày</p>
-                                <div className="w-full">
-                                    <DatePicker label="Chọn ngày" className="w-[300px]" />
-                                </div>
+                        <div className="   ">
+                            <p className="text-1xl font-medium mb-2">Chọn ngày</p>
+                            <div className="w-full">
+                                <DatePicker label="Chọn ngày" className="w-full" />
                             </div>
                         </div>
                     </div>
                     <div className='mb-2'>
+                        <div className="   ">
+                            <p className="text-1xl font-medium mb-2">Khung giờ</p>
+                            <div className="w-full flex justify-around">
+                                {Slot.map((slot, index) => (
+                                    <Button
+                                        key={index}
+                                        onClick={() => handleSlotClick(index)}
+                                        color={selectedSlot === index ? 'success' : slot.process === 'booked' ? 'warning' : 'default'}
+                                        disabled={slot.process === 'booked'}
+                                    >
+                                        {slot.description}
+                                    </Button>
+                                ))}
+                            </div>
+                        </div>
+                    </div>
+                    <div className='mb-2'>
+                        <div className=" ">
+
+                            <p className="text-1xl font-medium mb-2">Số lượng</p>
+                            <div className="w-full">
+                                <Input className="w-full" type="number" label="Số lượng" />
+
+                            </div>
+
+                        </div>
                         <div className=" flex  justify-between">
                             <div>
                                 <p className="text-1xl font-medium mb-2">Tên thú cưng</p>
@@ -179,6 +199,7 @@ export default function BookingPage() {
                                 </div>
                             </div>
                         </div>
+
                     </div>
                     <div className='mb-2'>
                         <div className=" flex  justify-between">
@@ -201,6 +222,6 @@ export default function BookingPage() {
                     </div>
                 </div>
             </div>
-        </div>
+        </div >
     )
 }
