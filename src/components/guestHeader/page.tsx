@@ -69,7 +69,7 @@ export default function GuestHeader() {
 
                                         }
                                     >
-                                        Trang cá nhân
+                                        <Link href="/customer/profile" color="foreground">Trang cá nhân</Link>
                                     </DropdownItem>
                                     <DropdownItem
                                         startContent={
@@ -79,7 +79,7 @@ export default function GuestHeader() {
 
                                         }
                                     >
-                                        Lịch sử
+                                        <Link href="/customer/orderHistory" color="foreground">Lịch sử đặt hàng</Link>
                                     </DropdownItem>
                                     <DropdownItem
 

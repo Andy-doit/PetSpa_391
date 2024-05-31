@@ -1,7 +1,9 @@
 'use client'
 import PriceTable from "@/components/priceTable/page";
+import introJs from 'intro.js';
+import 'intro.js/introjs.css';
 import { Breadcrumbs, BreadcrumbItem, Card, CardHeader, Image, CardFooter, Button, Checkbox, Select, SelectItem, DatePicker, Input, Textarea, Link } from "@nextui-org/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 const Slot = [
     { label: "Slot 1", value: "Slot 1", description: "08: 00 - 09: 30", process: 'blank' },
     { label: "Slot 2", value: "Slot 2", description: "09: 30 - 11: 00", process: 'booked' },
@@ -12,14 +14,24 @@ const Slot = [
 ];
 export default function BookingPage() {
     const [isDogChecked, setIsDogChecked] = useState(false);
-    const [selectedSlot, setSelectedSlot] = useState(null);
-
-    const [quantity, setQuantity] = useState(null);
+    const [isCatChecked, setIsCatChecked] = useState(false);
 
     const handleDogCardClick = () => {
-        setIsDogChecked(!isDogChecked);
+        setIsDogChecked(true);
+        setIsCatChecked(false);
     };
-    const [isCatChecked, setIsCatChecked] = useState(false);
+
+    const handleCatCardClick = () => {
+        setIsCatChecked(true);
+        setIsDogChecked(false);
+    };
+    const [selectedSlot, setSelectedSlot] = useState(null);
+    useEffect(() => {
+        introJs().start();
+    }, []);
+    const [quantity, setQuantity] = useState(null);
+
+
     const handleSlotClick = (index: any) => {
         if (selectedSlot === index) {
             setSelectedSlot(null);
@@ -27,9 +39,7 @@ export default function BookingPage() {
             setSelectedSlot(index);
         }
     };
-    const handleCatCardClick = () => {
-        setIsCatChecked(!isCatChecked);
-    };
+
     return (
 
         <div className="container w-full mb-4 mt-3">
@@ -71,7 +81,7 @@ export default function BookingPage() {
                     <div className='my-2 mx-5'>
                         <h1 className='text-1xl font-normal'>Bạn có một thành viên gia đình có bộ lông lấp lánh cần được chăm sóc? Đừng lo, chúng tôi ở đây để giúp bạn! Tại Khôi Spa, chúng tôi hiểu rằng việc tắm rửa và chăm sóc cho thú cưng của bạn không chỉ là một công việc mà còn là một trải nghiệm đặc biệt đầy yêu thương.</h1>
                     </div>
-                    <Link href='/' className="text-2xl font-medium ">Khoi Spa</Link>
+                    <Link href='/profileShopOwner' className="text-2xl font-medium hover:text-orange-600" color="foreground" data-title="Chào mừng bạn" data-intro="Bấm vào đây nếu bạn muốn xem chi tiết Shop">Khoi Spa</Link>
                     <h2 className="text-1xl font-light ">Khu 2 Hoàng Cương, Thanh Ba, Phú Thọ</h2>
                 </div>
             </div>
@@ -101,11 +111,11 @@ export default function BookingPage() {
                     </div>
                 </div>
 
-                <div className="w-1/2 px-4">
+                <div className="w-1/2 px-4" data-title="Chào mừng bạn" data-intro="Mỗi lượt đặt lịch bạn chỉ có thể đặt cho một thú cưng">
                     <div className='mb-2'>
                         <p className="text-1xl font-medium">Loại thú cưng</p>
                     </div>
-                    <div className="flex mb-2 justify-around w-1/3">
+                    <div className="flex mb-2 justify-around w-1/3" >
 
                         <div onClick={handleDogCardClick}>
                             <Card
@@ -160,7 +170,7 @@ export default function BookingPage() {
                     <div className='mb-2'>
                         <div className="   ">
                             <p className="text-1xl font-medium mb-2">Khung giờ</p>
-                            <div className="w-full flex justify-around">
+                            <div className="w-full flex justify-around" data-title="Chào mừng bạn" data-intro="Ở đây, ô màu vàng có nghĩa là khung giờ đó đã hết chỗ trống, còn ô màu xám có nghĩa là khung giờ vẫn trống, khi bạn chọn một khung giờ thì nó sẽ hiện màu xanh">
                                 {Slot.map((slot, index) => (
                                     <Button
                                         key={index}
@@ -175,15 +185,6 @@ export default function BookingPage() {
                         </div>
                     </div>
                     <div className='mb-2'>
-                        <div className=" ">
-
-                            <p className="text-1xl font-medium mb-2">Số lượng</p>
-                            <div className="w-full">
-                                <Input className="w-full" type="number" label="Số lượng" />
-
-                            </div>
-
-                        </div>
                         <div className=" flex  justify-between">
                             <div>
                                 <p className="text-1xl font-medium mb-2">Tên thú cưng</p>
@@ -215,10 +216,10 @@ export default function BookingPage() {
                             </div>
                         </div>
                     </div>
-                    <div className='mb-2'>
-                        <div className=" flex  justify-end">
-                            <Button className="bg-gradient-to-tr from-pink-500 to-yellow-500 text-white shadow-lg w-full">Đặt lịch</Button>
-                        </div>
+                    <div className='mt-11'>
+
+                        <Link className="w-full" href="/customer/confirmInfor">   <Button className="bg-gradient-to-tr from-pink-500 to-yellow-500 text-white shadow-lg w-full">Đặt lịch</Button></Link>
+
                     </div>
                 </div>
             </div>

@@ -2,7 +2,24 @@
 import React from "react";
 import { Navbar, NavbarBrand, NavbarContent, NavbarItem, Link, Button, Badge, Card, CardHeader, Divider, CardBody, CardFooter, Input, Avatar } from "@nextui-org/react";
 import { Select, SelectItem } from "@nextui-org/select";
-import { animals } from "./data";
+const typeService = [
+    { label: "Dịch vụ tắm rửa", value: "gromming" },
+    { label: "Dịch vụ mát xa", value: "massage" },
+    { label: "Dịch vụ mát xa đặc biệt", value: "special" },
+    { label: "Dịch vụ làm đẹp", value: "beauty" },
+    { label: "Dịch vụ khách sạn thú cưng", value: "hotel" },
+];
+const SortPrice = [
+    { label: "Từ cao đến thấp", value: "high" },
+    { label: "Từ thấp đến cao", value: "low" },
+
+];
+const SortReview = [
+    { label: "Đánh giá cao", value: "good" },
+    { label: "Đánh giá thấp", value: "bad" },
+
+];
+
 export default function SortService() {
 
     return (
@@ -11,39 +28,53 @@ export default function SortService() {
 
                 <NavbarContent className="hidden sm:flex gap-4 justify-center " justify="center" >
                     <NavbarItem>
+
+
                         <Select
                             size="sm"
-                            items={animals}
+
                             label="Dịch vụ"
-
                             className="w-52"
                         >
-                            {(animal) => <SelectItem key={animal.value}>{animal.label}</SelectItem>}
+                            {typeService.map((type, index) => (
+                                <SelectItem key={index}>{type.label}</SelectItem>
+                            ))}
                         </Select>
+
+
                     </NavbarItem>
-                    <NavbarItem >
+                    <NavbarItem>
+
+
                         <Select
                             size="sm"
-                            items={animals}
+
                             label="Giá cả"
-
                             className="w-52"
                         >
-                            {(animal) => <SelectItem key={animal.value}>{animal.label}</SelectItem>}
+                            {SortPrice.map((price, index) => (
+                                <SelectItem key={index}>{price.label}</SelectItem>
+                            ))}
                         </Select>
+
+
                     </NavbarItem>
-                    <NavbarItem >
+                    <NavbarItem>
+
+
                         <Select
                             size="sm"
-                            items={animals}
-                            label="Đánh giá"
 
+                            label="Đánh giá"
                             className="w-52"
                         >
-                            {(animal) => <SelectItem key={animal.value}>{animal.label}</SelectItem>}
+                            {SortReview.map((review, index) => (
+                                <SelectItem key={index}>{review.label}</SelectItem>
+                            ))}
                         </Select>
-                    </NavbarItem>
 
+
+                    </NavbarItem>
                 </NavbarContent>
 
                 <NavbarContent justify="end" >
