@@ -12,13 +12,13 @@ export default function GuestHeader() {
         <Navbar className="bg-transparent  top-0 z-50 ">
             <NavbarContent className="hidden sm:flex gap-4 " justify="start">
                 <NavbarItem>
-                    <Link className="font-mono hover:text-orange-600" color="foreground" href="#">
+                    <Link className="font-mono hover:text-orange-600" color="foreground" href="aboutUs">
                         Về chúng tôi
                     </Link>
                 </NavbarItem>
 
                 <NavbarItem>
-                    <Link className="font-mono hover:text-orange-600" color="foreground" href="#">
+                    <Link className="font-mono hover:text-orange-600" color="foreground" href="contact">
                         Liên hệ
                     </Link>
                 </NavbarItem>
