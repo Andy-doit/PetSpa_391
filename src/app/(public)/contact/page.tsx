@@ -46,7 +46,7 @@ const ContactUs = () => {
                             <FaPhone className='text-5xl text-gray-400 mb-6 mx-auto' />
                             <div className='text-center'>
                                 <h3 className='text-2xl font-semibold'>Gọi chúng tôi</h3>
-                                <p className='text-lg text-gray-600'>Thứ 2 - Thứ 6 từ 8am đến 17pm</p>
+                                <p className='text-lg text-gray-600'>Thứ 2 đến Thứ 6 từ 8am đến 17pm</p>
                                 <p className='text-lg text-blue-600'>0706045758</p>
                             </div>
                         </div>
@@ -85,7 +85,7 @@ const ContactUs = () => {
                         </div>
                         {isOpenArray[2] ? <FaChevronUp className='text-gray-400' /> : <FaChevronDown className='text-gray-400' />}
                     </div>
-                    {isOpenArray[2] && <p className='mt-4 text-gray-600'> Chắc chắn rồi! Chúng tôi hiểu rằng việc chăm sóc thú cưng đôi khi có thể gặp phải những thách thức và câu hỏi. Vì vậy, chúng tôi cung cấp một kênh tư vấn trực tuyến để khách hàng có thể trao đổi với các chuyên gia chăm sóc thú cưng giàu kinh nghiệm. Bạn có thể đặt câu hỏi, yêu cầu lời khuyên hoặc tư vấn về việc chăm sóc, dinh dưỡng, hành vi, và sức khỏe của thú cưng của mình.</p>}
+                    {isOpenArray[2] && <p className='mt-4 text-gray-600'>  Chúng tôi hiểu rằng việc chăm sóc thú cưng đôi khi có thể gặp phải những thách thức và câu hỏi. Vì vậy, chúng tôi cung cấp một kênh tư vấn trực tuyến để khách hàng có thể trao đổi với các chuyên gia chăm sóc thú cưng giàu kinh nghiệm. Bạn có thể đặt câu hỏi, yêu cầu lời khuyên hoặc tư vấn về việc chăm sóc, dinh dưỡng, hành vi, và sức khỏe của thú cưng của mình.</p>}
                 </div>
                 <div className='border rounded-lg p-6 mt-4'>
                     <div className='flex items-center justify-between cursor-pointer' onClick={() => toggleAnswer(3)}>
@@ -107,7 +107,7 @@ const ContactUs = () => {
                                 </div>
                                 {isOpenArray[4] ? <FaChevronUp className='text-gray-400' /> : <FaChevronDown className='text-gray-400' />}
                             </div>
-                            {isOpenArray[4] && <p className='mt-4 text-gray-600'>Bạn có thể đặt lịch dịch vụ chăm sóc thú cưng một cách thuận tiện trực tiếp trên nền tảng của chúng tôi. Sau khi tìm kiếm và lựa chọn dịch vụ phù hợp, bạn chỉ cần nhấn vào nút 'Đặt lịch' và chọn ngày giờ phù hợp với lịch trình của mình. Toàn bộ quy trình đặt lịch và thanh toán có thể được thực hiện trực tuyến, không cần phải đến trực tiếp cửa hàng.</p>}
+                            {isOpenArray[4] && <p className='mt-4 text-gray-600'>Bạn có thể đặt lịch dịch vụ chăm sóc thú cưng một cách thuận tiện trực tiếp trên nền tảng của chúng tôi. Sau khi tìm kiếm và lựa chọn dịch vụ phù hợp, bạn chỉ cần nhấn vào nút Đặt lịch và chọn ngày giờ phù hợp với lịch trình của mình. Toàn bộ quy trình đặt lịch và thanh toán có thể được thực hiện trực tuyến, không cần phải đến trực tiếp cửa hàng.</p>}
                         </div>
 
                         <div className='border rounded-lg p-6 mt-4'>
@@ -130,7 +130,7 @@ const ContactUs = () => {
                                 </div>
                                 {isOpenArray[6] ? <FaChevronUp className='text-gray-400' /> : <FaChevronDown className='text-gray-400' />}
                             </div>
-                            {isOpenArray[6] && <p className='mt-4 text-gray-600'> Chúng tôi hiểu rằng đôi khi có thể có những thay đổi trong lịch trình của bạn. Vì vậy, chúng tôi cung cấp tính năng để bạn có thể hủy hoặc thay đổi lịch dịch vụ chăm sóc thú cưng đã đặt trước đó. Tuy nhiên, việc hủy hoặc thay đổi lịch cần được thực hiện trước một khoảng thời gian nhất định (thường là 24 giờ) để tránh bị tính phí. Bạn có thể dễ dàng quản lý lịch đã đặt trực tiếp trên nền tảng của chúng tôi.</p>}
+                            {isOpenArray[6] && <p className='mt-4 text-gray-600'> Chúng tôi hiểu rằng đôi khi có thể có những thay đổi trong lịch trình của bạn. Vì vậy, chúng tôi cung cấp tính năng để bạn có thể hủy hoặc thay đổi lịch dịch vụ chăm sóc thú cưng đã đặt trước đó. Tuy nhiên, việc hủy hoặc thay đổi lịch cần được thực hiện trước một khoảng thời gian nhất định  để tránh bị tính phí. Bạn có thể dễ dàng quản lý lịch đã đặt trực tiếp trên nền tảng của chúng tôi.</p>}
                         </div>
 
                     </>
