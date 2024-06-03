@@ -1,71 +1,86 @@
 'use client';
-
 import { Button, Card, CardBody, CardFooter, CardHeader, Input } from "@nextui-org/react";
 import Link from "next/link";
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { redirect, useRouter } from 'next/navigation';
 import { VscEye, VscEyeClosed } from "react-icons/vsc";
-import { Navigate } from "react-router-dom";
+import { LoginInput } from "@/models/authentication";
+import { useAuth } from "@/hooks/useAuth";
+import { Field, Form, Formik } from "formik";
+import { MyInput, MyInputPassword } from "@/components/ui/loginInput";
 
 export default function Login() {
-    const router = useRouter();
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [isShowPassword, setIsShowPassword] = useState(false);
-
-    const handleLogin = async () => {
-        router.push('/');
+    const initialValues = {
+        username: "",
+        password: "",
     };
+    const [userData, setUserData] = useState<LoginInput>({
+        username: '',
+        password: '',
+    });
+    const { state, handleLogin } = useAuth();
+    const handleSubmit = async (values: LoginInput) => {
+        handleLogin(values);
+
+    };
+    console.log("username: ", userData.username);
+    console.log("password: ", userData.password);
+
 
     return (
         <section className="h-screen relative">
             <Button
 
-                onClick={() => router.push('/')}
+
                 className="absolute top-4 left-4 z-10"
             >
                 Trở về trang chính
             </Button>
             <div className="flex h-full flex-wrap items-center justify-between lg:justify-between">
                 <div className="mb-12 md:mb-0 md:w-8/12 lg:w-5/12 xl:w-6/12">
-                    <form>
-                        <Card className="mx-auto w-3/5">
-                            <CardHeader className="space-y-1">
-                                <p className="text-4xl font-bold">Đăng nhập</p>
-                            </CardHeader>
-                            <CardBody>
-                                <div className="space-y-4">
-                                    <div className="space-y-2">
-                                        <Input value={email} onChange={(event) => setEmail(event.target.value)} type={"email"} label="Email" />
+                    <Formik
+                        initialValues={initialValues}
+                        onSubmit={handleSubmit}>
+                        <Form>
+                            <Card className="mx-auto w-3/5">
+                                <CardHeader className="space-y-1">
+                                    <p className="text-4xl font-bold">Đăng nhập</p>
+                                </CardHeader>
+                                <CardBody>
+                                    <div className="space-y-4">
+                                        <div className="space-y-2">
+                                            <Field
+                                                name="username"
+                                                component={MyInput}
+
+                                            />
+                                        </div>
+                                        <div style={{ ["display" as any]: "flex" }} className="space-y-2 relative">
+                                            <Field
+                                                name="password"
+                                                fullWidth
+                                                component={MyInputPassword}
+                                                placeholder="Password"
+                                            />
+
+                                        </div>
+                                        <div className="forgot-password text-right">
+                                            <Link href="/" className="hover:text-orange-600">Quên Mật Khẩu? </Link>
+                                        </div>
+                                        <Button type="submit" radius="full" className="bg-gradient-to-tr w-full from-pink-500 to-yellow-500 text-white shadow-lg" >
+                                            Đăng nhập
+                                        </Button>
                                     </div>
-                                    <div style={{ ["display" as any]: "flex" }} className="space-y-2 relative">
-                                        <Input
-                                            type={isShowPassword ? "text" : "password"}
-                                            value={password}
-                                            label="Mật khẩu"
-                                            onChange={(event) => setPassword(event.target.value)}
-                                        />
-                                        <span
-                                            className="absolute right-3 top-1/2 transform -translate-y-1/2 cursor-pointer"
-                                            onClick={() => setIsShowPassword(!isShowPassword)}
-                                        >
-                                            {isShowPassword ? <VscEyeClosed /> : <VscEye />}
-                                        </span>
-                                    </div>
-                                    <div className="forgot-password text-right">
-                                        <Link href="/" className="hover:text-orange-600">Quên Mật Khẩu? </Link>
-                                    </div>
-                                    <Button onClick={() => handleLogin()} radius="full" className="bg-gradient-to-tr w-full from-pink-500 to-yellow-500 text-white shadow-lg" type="submit">
-                                        Đăng nhập
-                                    </Button>
-                                </div>
-                            </CardBody>
-                            <CardFooter>
-                                Bạn chưa có tài khoản phải không?
-                                <Link href="/signUp" className="hover:text-orange-600" >  <span> Đăng ký ở đây </span> </Link>
-                            </CardFooter>
-                        </Card>
-                    </form>
+                                </CardBody>
+                                <CardFooter>
+                                    Bạn chưa có tài khoản phải không?
+                                    <Link href="/signUp" className="hover:text-orange-600" >  <span> Đăng ký ở đây </span> </Link>
+                                </CardFooter>
+                            </Card>
+                        </Form>
+                    </Formik>
+
+
                 </div>
                 <div className="grow-0 basis-auto md:mb-0 md:w-9/12 md:shrink-0 lg:w-6/12 xl:w-6/12">
                     <img

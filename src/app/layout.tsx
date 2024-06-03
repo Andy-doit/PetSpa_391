@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { NextUIProvider } from "@nextui-org/react";
+import { Providers } from "@/lib/redux/provider";
 
 
 
@@ -19,9 +20,12 @@ export default function RootLayout({
     <>
       <html lang="en">
         <body>
-          <NextUIProvider>
-            {children}
-          </NextUIProvider>
+          <Providers>
+            <NextUIProvider>
+              {children}
+            </NextUIProvider>
+          </Providers>
+
 
         </body>
       </html>
