@@ -70,7 +70,7 @@ export default function SignUp() {
                             <CardFooter>
                                 <div className='header'>
                                     <span> Bạn đã có sãn một tài khoản?</span>
-                                    <Link href="/logIn" className="hover:text-orange-600">Đăng Nhập </Link>
+                                    <Link href="/logIn" className="text-blue-500 hover:text-orange-600">Đăng Nhập </Link>
                                 </div>
                             </CardFooter>
                         </Card>

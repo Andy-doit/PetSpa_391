@@ -10,6 +10,8 @@ import { Field, Form, Formik } from "formik";
 import { MyInput, MyInputPassword } from "@/components/ui/loginInput";
 
 export default function Login() {
+    const router = useRouter();
+    const [isShowPassword, setIsShowPassword] = useState(false);
     const initialValues = {
         username: "",
         password: "",
@@ -23,15 +25,12 @@ export default function Login() {
         handleLogin(values);
 
     };
-    console.log("username: ", userData.username);
-    console.log("password: ", userData.password);
-
 
     return (
         <section className="h-screen relative">
             <Button
 
-
+                onClick={() => router.push('/')}
                 className="absolute top-4 left-4 z-10"
             >
                 Trở về trang chính
@@ -52,20 +51,22 @@ export default function Login() {
                                             <Field
                                                 name="username"
                                                 component={MyInput}
-
+                                                type={isShowPassword ? "text" : "password"}
                                             />
                                         </div>
-                                        <div style={{ ["display" as any]: "flex" }} className="space-y-2 relative">
-                                            <Field
-                                                name="password"
-                                                fullWidth
-                                                component={MyInputPassword}
-                                                placeholder="Password"
-                                            />
-
+                                        <div className="space-y-4">
+                                            <div className="relative flex flex-col space-y-2">
+                                                <Field
+                                                    name="password"
+                                                    fullWidth
+                                                    component={MyInputPassword}
+                                                    placeholder="Password"
+                                                />
+                                            </div>
                                         </div>
+
                                         <div className="forgot-password text-right">
-                                            <Link href="/" className="hover:text-orange-600">Quên Mật Khẩu? </Link>
+                                            <Link href="/" className="text-blue-500 hover:text-orange-600">Quên Mật Khẩu? </Link>
                                         </div>
                                         <Button type="submit" radius="full" className="bg-gradient-to-tr w-full from-pink-500 to-yellow-500 text-white shadow-lg" >
                                             Đăng nhập
@@ -74,7 +75,9 @@ export default function Login() {
                                 </CardBody>
                                 <CardFooter>
                                     Bạn chưa có tài khoản phải không?
-                                    <Link href="/signUp" className="hover:text-orange-600" >  <span> Đăng ký ở đây </span> </Link>
+                                    <Link href="/signUp">
+                                        <span className="text-blue-500 hover:text-orange-600"> Đăng ký ở đây </span>
+                                    </Link>
                                 </CardFooter>
                             </Card>
                         </Form>
