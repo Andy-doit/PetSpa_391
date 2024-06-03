@@ -1,7 +1,7 @@
 import React from "react";
 import { ErrorMessage } from "formik";
 import { Input } from "@nextui-org/react";
-
+import { VscEye, VscEyeClosed } from 'react-icons/vsc';
 //de tam vi ch fix dc
 
 export interface MyInputProps {
@@ -25,7 +25,7 @@ function MyInput({ field, placeholder, error, helperText }: MyInputProps) {
                 value={field.value || ""}
                 onChange={field.onChange}
                 autoComplete="off"
-                placeholder="Username" required
+                placeholder="Nhập  tên đăng nhập" required
 
             />
             <ErrorMessage
@@ -55,11 +55,17 @@ function MyInputPassword({
                 type={showPassword ? "text" : "password"}
                 value={field.value || ""}
                 onChange={field.onChange}
-                placeholder="Enter your password"
+                placeholder="Nhập mật khẩu    "
                 autoComplete="off"
                 required
 
             />
+            <span
+                className="absolute right-3 top-1/2 transform -translate-y-1/2 cursor-pointer"
+                onClick={toggleShowPassword}
+            >
+                {showPassword ? <VscEyeClosed /> : <VscEye />}
+            </span>
             <ErrorMessage
                 name={field.name}
                 component="p"
