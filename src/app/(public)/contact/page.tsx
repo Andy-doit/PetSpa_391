@@ -14,7 +14,7 @@ const ContactUs = () => {
     };
     return (
 
-        <div className="bg-white p-8 bg-cover bg-center min-h-screen  items-center justify-center" style={{ backgroundImage: "url('https://media.istockphoto.com/id/1369274625/vi/vec-to/c%C3%A1c-%C4%91%C6%B0%E1%BB%9Dng-ch%C3%A9o-tr%E1%BB%ABu-t%C6%B0%E1%BB%A3ng-n%E1%BB%81n-tr%E1%BA%AFng-v%E1%BB%9Bi-s%E1%BB%8Dc-m%E1%BB%8Bn-m%E1%BA%ABu-ph%C3%B4ng-n%E1%BB%81n-trang-web-t%E1%BB%91i-thi%E1%BB%83u-thi%E1%BA%BFt-k%E1%BA%BF.jpg?s=612x612&w=0&k=20&c=uo7LsNaPv_sv9gUL347epiXa0pv9xESN3IdTX2UkB1U=')" }}>
+        <div className="bg-white p-8 bg-cover bg-center min-h-screen  items-center justify-center" >
             <div className="text-center">
                 <h2 className="text-6xl font-bold mb-8 mx-auto">Liên hệ với chúng tôi </h2>
                 <p className="text-2xl text-gray-600 mb-12 mx-auto max-w-2xl">hãy cho chúng tôi biết chúng tôi có thể giúp gì được cho bạn</p>
@@ -145,7 +145,7 @@ const ContactUs = () => {
                     </button>
                 </div>
             </div>
-        </div>
+        </div >
 
     );
 };
