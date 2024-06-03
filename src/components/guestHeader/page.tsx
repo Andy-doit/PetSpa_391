@@ -12,13 +12,13 @@ export default function GuestHeader() {
         <Navbar className="bg-transparent  top-0 z-50 ">
             <NavbarContent className="hidden sm:flex gap-4 " justify="start">
                 <NavbarItem>
-                    <Link className="font-mono hover:text-orange-600" color="foreground" href="aboutUs">
+                    <Link className="font-mono hover:text-orange-600" color="foreground" href="/aboutUs">
                         Về chúng tôi
                     </Link>
                 </NavbarItem>
 
                 <NavbarItem>
-                    <Link className="font-mono hover:text-orange-600" color="foreground" href="contact">
+                    <Link className="font-mono hover:text-orange-600" color="foreground" href="/contact">
                         Liên hệ
                     </Link>
                 </NavbarItem>
@@ -39,18 +39,6 @@ export default function GuestHeader() {
             </NavbarBrand>
             <NavbarContent justify="end" >
                 {isLoggedIn ? (
-                    <>
-                        <NavbarItem className="hidden lg:flex">
-                            <Link className="font-mono hover:text-orange-600" href="/logIn" color="foreground">Đăng nhập</Link>
-                        </NavbarItem>
-                        <NavbarItem>
-
-                            <Link className="font-mono hover:text-orange-600" href="/signUp" color="foreground">Đăng ký</Link>
-
-
-                        </NavbarItem>
-                    </>
-                ) : (
                     <>
                         <NotificationsDropdown />
                         <NavbarItem>
@@ -98,6 +86,19 @@ export default function GuestHeader() {
                         </NavbarItem>
 
                     </>
+                ) : (
+                    <>
+                        <NavbarItem className="hidden lg:flex">
+                            <Link className="font-mono hover:text-orange-600" href="/logIn" color="foreground">Đăng nhập</Link>
+                        </NavbarItem>
+                        <NavbarItem>
+
+                            <Link className="font-mono hover:text-orange-600" href="/signUp" color="foreground">Đăng ký</Link>
+
+
+                        </NavbarItem>
+                    </>
+
                 )}
 
 

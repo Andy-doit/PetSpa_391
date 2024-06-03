@@ -2,8 +2,9 @@
 import PriceTable from "@/components/priceTable/page";
 import introJs from 'intro.js';
 import 'intro.js/introjs.css';
-import { Breadcrumbs, BreadcrumbItem, Card, CardHeader, Image, CardFooter, Button, Checkbox, Select, SelectItem, DatePicker, Input, Textarea, Link } from "@nextui-org/react";
+import { Card, Image, Button, Checkbox, DatePicker, Input, Textarea, Link } from "@nextui-org/react";
 import { useEffect, useState } from "react";
+import { today, getLocalTimeZone } from "@internationalized/date";
 const Slot = [
     { label: "Slot 1", value: "Slot 1", description: "08: 00 - 09: 30", process: 'blank' },
     { label: "Slot 2", value: "Slot 2", description: "09: 30 - 11: 00", process: 'booked' },
@@ -12,6 +13,7 @@ const Slot = [
     { label: "Slot 4", value: "Slot 4", description: "15: 00 - 16: 30", process: 'blank' },
 
 ];
+
 export default function BookingPage() {
     const [isDogChecked, setIsDogChecked] = useState(false);
     const [isCatChecked, setIsCatChecked] = useState(false);
@@ -29,7 +31,7 @@ export default function BookingPage() {
     useEffect(() => {
         introJs().start();
     }, []);
-    const [quantity, setQuantity] = useState(null);
+
 
 
     const handleSlotClick = (index: any) => {
@@ -163,7 +165,12 @@ export default function BookingPage() {
                         <div className="   ">
                             <p className="text-1xl font-medium mb-2">Chọn ngày</p>
                             <div className="w-full">
-                                <DatePicker label="Chọn ngày" className="w-full" />
+                                <DatePicker label="Chọn ngày" className="w-full"
+
+                                    minValue={today(getLocalTimeZone())}
+
+                                    defaultValue={today(getLocalTimeZone())}
+                                />
                             </div>
                         </div>
                     </div>
