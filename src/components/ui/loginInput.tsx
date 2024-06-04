@@ -56,6 +56,26 @@ function MyInputFirstName({ field, placeholder, error, helperText }: MyInputProp
         </div>
     );
 }
+function MyInputPhoneNumber({ field, placeholder, error, helperText }: MyInputProps) {
+    return (
+        <div className="relative">
+            <Input
+                {...field}
+                id={field.name}
+                value={field.value || ""}
+                onChange={field.onChange}
+                autoComplete="off"
+                placeholder="Số điện thoại" required
+
+            />
+            <ErrorMessage
+                name={field.name}
+                component="p"
+                className="pt-2 text-sm text-red-500"
+            />
+        </div>
+    );
+}
 function MyInputLastName({ field, placeholder, error, helperText }: MyInputProps) {
     return (
         <div className="relative">

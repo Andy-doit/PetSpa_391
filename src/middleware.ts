@@ -19,7 +19,7 @@ export function middleware(request: NextRequestWithAuth) {
       request.nextUrl.pathname.startsWith('/admin') ||
       request.nextUrl.pathname.startsWith('/shopOwner'))
   ) {
-    return NextResponse.redirect(new URL('/login', request.url));
+    return NextResponse.redirect(new URL('/logIn', request.url));
   };
   if (request.nextUrl.pathname.startsWith('/customer') && currentRole?.value != ROLE.role1 && token) {
     return NextResponse.redirect(new URL('/403', request.url));
@@ -30,7 +30,7 @@ export function middleware(request: NextRequestWithAuth) {
   if (request.nextUrl.pathname.startsWith('/admin') && currentRole?.value != ROLE.role3 && token) {
     return NextResponse.redirect(new URL('/403', request.url));
   };
-  if ((request.nextUrl.pathname.startsWith('/login') || request.nextUrl.pathname.startsWith('/signup')) && token) {
+  if ((request.nextUrl.pathname.startsWith('/logIn') || request.nextUrl.pathname.startsWith('/signup')) && token) {
     switch (currentRole?.value) {
       case ROLE.role3: {
         return NextResponse.redirect(new URL('/admin', request.url));

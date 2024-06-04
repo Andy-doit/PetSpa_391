@@ -92,7 +92,7 @@ export default function CardService() {
         if (token) {
             router.replace('/customer/bookingPage')
         } else {
-            router.replace('/login');
+            router.replace('/logIn');
         }
     };
     return (
