@@ -2,52 +2,47 @@
 import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 import { NextRequestWithAuth } from 'next-auth/middleware';
+import { ROLE } from './utilities/roleUtils/role';
 import { JwtPayload, jwtDecode } from 'jwt-decode';
-
+import { RequestCookie } from 'next/dist/compiled/@edge-runtime/cookies';
 interface roleJwt extends JwtPayload {
   role: string;
 
 }
 export function middleware(request: NextRequestWithAuth) {
-    // const token = localStorage.getItem("token");
-    // if (token) {
-    //     const decodeToken = jwtDecode(token) as roleJwt;
-    //     console.log(decodeToken)
-    // }
-//   const currentRole = cookies().get('rl'); 
-//   if (
-//     !access_token?.value &&
-//     (request.nextUrl.pathname.startsWith('/customer') ||
-//     request.nextUrl.pathname.startsWith('/admin') ||
-//     request.nextUrl.pathname.startsWith('/shopOwner'))
-//   ) {
-//     return NextResponse.redirect(new URL('/login', request.url));
-//   };
-//   if (request.nextUrl.pathname.startsWith('/admin') && currentRole?.value != roleNameSecret.ql && access_token?.value) {
-//     return NextResponse.redirect(new URL('/403', request.url));
-//   };
-//   if (request.nextUrl.pathname.startsWith('/creator') && currentRole?.value != roleNameSecret.pt && access_token?.value) {
-//     return NextResponse.redirect(new URL('/403', request.url));
-//   };
-//   if (request.nextUrl.pathname.startsWith('/customer') && currentRole?.value != roleNameSecret.cs && access_token?.value) {
-//     return NextResponse.redirect(new URL('/403', request.url));
-//   };
-//   if (!request.nextUrl.pathname.startsWith('/admin') && currentRole?.value === roleNameSecret.ql && access_token?.value) {
-//     return NextResponse.redirect(new URL('/admin/dashboard', request.url));
-//   };
-//   if ((request.nextUrl.pathname.startsWith('/login') || request.nextUrl.pathname.startsWith('/signup')) && access_token?.value) {
-//     switch (currentRole?.value) {
-//       case roleNameSecret.ql: {
-//         return NextResponse.redirect(new URL('/admin/dashboard', request.url));
-//       };
-//       case roleNameSecret.pt: {
-//         return NextResponse.redirect(new URL('/creator/profile', request.url));
-//       };
-//       default: {
-//         return NextResponse.redirect(new URL('/', request.url));
-//       };
-//     };
-//   };
+
+  const token = cookies().get('token');
+  const currentRole = cookies().get('role');
+  if (
+    !token &&
+    (request.nextUrl.pathname.startsWith('/customer') ||
+      request.nextUrl.pathname.startsWith('/admin') ||
+      request.nextUrl.pathname.startsWith('/shopOwner'))
+  ) {
+    return NextResponse.redirect(new URL('/login', request.url));
+  };
+  if (request.nextUrl.pathname.startsWith('/customer') && currentRole?.value != ROLE.role1 && token) {
+    return NextResponse.redirect(new URL('/403', request.url));
+  };
+  if (request.nextUrl.pathname.startsWith('/shopOwner') && currentRole?.value != ROLE.role2 && token) {
+    return NextResponse.redirect(new URL('/403', request.url));
+  };
+  if (request.nextUrl.pathname.startsWith('/admin') && currentRole?.value != ROLE.role3 && token) {
+    return NextResponse.redirect(new URL('/403', request.url));
+  };
+  if ((request.nextUrl.pathname.startsWith('/login') || request.nextUrl.pathname.startsWith('/signup')) && token) {
+    switch (currentRole?.value) {
+      case ROLE.role3: {
+        return NextResponse.redirect(new URL('/admin', request.url));
+      };
+      case ROLE.role2: {
+        return NextResponse.redirect(new URL('/shopOwner', request.url));
+      };
+      default: {
+        return NextResponse.redirect(new URL('/', request.url));
+      };
+    };
+  };
 };
 
 // export const config = {

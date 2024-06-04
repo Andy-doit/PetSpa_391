@@ -7,13 +7,12 @@ import { useAppDispatch, useAppSelector } from "@/lib/redux/store";
 import { LoginInput, SignupInput } from "@/models/authentication";
 import baseApi from "@/utilities/baseApi";
 import { ROLE } from "@/utilities/roleUtils/role";
-
+import Cookies from 'js-cookie';
 import { useRouter } from "next/navigation";
 import { LoginError, SignUpError } from "@/utilities/authUtils/loginValidation";
 interface roleJwt extends JwtPayload {
   role: string;
-  id: string;
-  unique_name: string;
+
 }
 export function useAuth() {
   const state = useAppSelector((state) => state.auth);
@@ -27,31 +26,27 @@ export function useAuth() {
         username: value.username,
         password: value.password,
       });
-         console.log(data)
+      Cookies.set('token', data.token, { expires: 1 });
       const decodeToken = jwtDecode(data.token) as roleJwt;
-      console.log(decodeToken)
-    
-
-      console.log(decodeToken);
+      Cookies.set('role', decodeToken?.role, { expires: 1 })
       switch (decodeToken?.role) {
         case ROLE.role1:
-             router.replace(`/`);
+          router.replace(`/`);
           break;
         case ROLE.role2:
-         router.replace(`/shopOwner`);
+          router.replace(`/shopOwner`);
           break;
         case ROLE.role3:
-         router.replace(`/`);
+          router.replace(`/`);
           break;
         default:
           break;
       }
-
       localStorage.setItem("token", data.token);
     } catch (error) {
       if (error instanceof AxiosError) {
         const errorResponse = error?.response?.data?.error?.message;
-        if (errorResponse in LoginError ) {
+        if (errorResponse in LoginError) {
           const translatedError =
             LoginError[errorResponse as keyof typeof LoginError];
           dispatch(loginFailure(translatedError));
@@ -64,9 +59,9 @@ export function useAuth() {
     }
   };
   const handleSignup = async (value: SignupInput) => {
-      dispatch(signUpStart());
-    try { 
- const { data } = await baseApi.post(`api/v1/auth/signup`, {
+    dispatch(signUpStart());
+    try {
+      const { data } = await baseApi.post(`api/v1/auth/signup`, {
         firstName: value.firstName,
         lastName: value.lastName,
         email: value.email,
@@ -74,11 +69,11 @@ export function useAuth() {
         password: value.password,
       });
     } catch (error) {
-       if (error instanceof AxiosError) {
+      if (error instanceof AxiosError) {
         const errorResponse = error?.response?.data?.error?.message;
-        if (errorResponse in SignUpError ) {
+        if (errorResponse in SignUpError) {
           const translatedError =
-           SignUpError[errorResponse as keyof typeof LoginError];
+            SignUpError[errorResponse as keyof typeof LoginError];
           dispatch(signUpFailure(translatedError));
         } else {
           dispatch(signUpFailure(errorResponse));

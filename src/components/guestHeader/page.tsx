@@ -4,7 +4,7 @@ import { Navbar, NavbarBrand, NavbarContent, NavbarItem, Link, Button, Badge, Ca
 import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, cn } from "@nextui-org/react";
 import { NotificationsDropdown } from "../notify/page";
 import { useRouter } from "next/navigation";
-
+import Cookies from 'js-cookie';
 export default function GuestHeader() {
     const router = useRouter()
     const iconClasses = "text-xl text-default-500 pointer-events-none flex-shrink-0 w-5 h-5";
@@ -18,6 +18,7 @@ export default function GuestHeader() {
 
     const handleLogout = async () => {
         await localStorage.clear();
+        Cookies.remove('token');
         router.replace('/login');
     };
     return (
