@@ -1,12 +1,25 @@
 'use client'
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Navbar, NavbarBrand, NavbarContent, NavbarItem, Link, Button, Badge, Card, CardHeader, Divider, CardBody, CardFooter, Avatar } from "@nextui-org/react";
 import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, cn } from "@nextui-org/react";
 import { NotificationsDropdown } from "../notify/page";
+import { useRouter } from "next/navigation";
 
 export default function GuestHeader() {
+    const router = useRouter()
     const iconClasses = "text-xl text-default-500 pointer-events-none flex-shrink-0 w-5 h-5";
     const [isLoggedIn, setIsLoggedIn] = useState(false);
+    useEffect(() => {
+        const token = localStorage.getItem("token");
+        if (token) {
+            setIsLoggedIn(true);
+        }
+    }, []);
+
+    const handleLogout = async () => {
+        await localStorage.clear();
+        router.replace('/login');
+    };
     return (
 
         <Navbar className="bg-transparent  top-0 z-50 ">
@@ -70,7 +83,7 @@ export default function GuestHeader() {
                                         <Link href="/customer/orderHistory" color="foreground">Lịch sử đặt hàng</Link>
                                     </DropdownItem>
                                     <DropdownItem
-
+                                        onClick={handleLogout}
                                         startContent={
                                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className={iconClasses}>
                                                 <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15m3 0 3-3m0 0-3-3m3 3H9" />
@@ -89,7 +102,7 @@ export default function GuestHeader() {
                 ) : (
                     <>
                         <NavbarItem className="hidden lg:flex">
-                            <Link className="font-mono hover:text-orange-600" href="/logIn" color="foreground">Đăng nhập</Link>
+                            <Link className="font-mono hover:text-orange-600" href="/login" color="foreground">Đăng nhập</Link>
                         </NavbarItem>
                         <NavbarItem>
 

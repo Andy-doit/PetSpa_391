@@ -4,6 +4,7 @@
 import { Card, CardHeader, CardBody, CardFooter, Divider, Link, Image } from "@nextui-org/react";
 import ServiceDetail from "../orderDetail/page";
 import { Button } from "@nextui-org/react";
+import { useRouter } from "next/navigation";
 const serviceItem = [
     {
         name: "Dịch vụ tắm rửa",
@@ -85,6 +86,15 @@ const serviceItem = [
 
 ]
 export default function CardService() {
+    const router = useRouter()
+    const bookingBtn = async () => {
+        const token = localStorage.getItem("token");
+        if (token) {
+            router.replace('/customer/bookingPage')
+        } else {
+            router.replace('/login');
+        }
+    };
     return (
         <div className="mb-5">
             <div className="grid grid-cols-4 gap-4 container">
@@ -105,8 +115,8 @@ export default function CardService() {
                         </CardBody>
                         <Divider />
                         <CardFooter>
-                            <Button className="bg-gradient-to-tr from-pink-500 to-yellow-500 text-white shadow-lg">
-                                <Link color="foreground" href="bookingPage"> Đặt lịch ngay </Link>
+                            <Button onClick={bookingBtn} className="bg-gradient-to-tr from-pink-500 to-yellow-500 text-white shadow-lg">
+                                Đặt lịch
                             </Button>
                         </CardFooter>
                     </Card>
