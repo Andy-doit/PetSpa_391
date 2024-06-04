@@ -46,7 +46,8 @@ export interface SignupInput {
   username: string;
   email: string;
   password: string;
-  confirmPassword: string;
+   firstName: string;
+ lastName: string;
 }
 
 export type ErrorResponse = {
