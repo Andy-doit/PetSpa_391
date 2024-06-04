@@ -104,7 +104,7 @@ export default function SignUp() {
                                 </CardBody>
                                 <CardFooter>
                                     Bạn đã có tài khoản?
-                                    <Link href='/login'>
+                                    <Link href='/logIn'>
                                         <span className='text-blue-500 hover:text-orange-600'> Đăng nhập ở đây </span>
                                     </Link>
                                 </CardFooter>

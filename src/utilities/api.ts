@@ -7,20 +7,20 @@ const baseURL = Envs.apiRemote;
 
 const apiJWT = axios.create({
   baseURL,
-  withCredentials: true, 
+  withCredentials: true,
 });
 
-const sleep = () => new Promise((resolve) => setTimeout(resolve, 500)); 
- 
+const sleep = () => new Promise((resolve) => setTimeout(resolve, 500));
+
 apiJWT.interceptors.request.use(async (config) => {
-  const token = localStorage.getItem('token'); 
-  const user = localStorage.getItem('user'); 
-  
+  const token = localStorage.getItem('token');
+  const user = localStorage.getItem('user');
+
   const userObj = user ? JSON.parse(user) : {};
   if (token) {
     const date = new Date();
     const decodeToken = jwtDecode(token) as { exp: number };
-    
+
     if (decodeToken.exp < date.getTime() / 1000) {
       try {
         const { data } = await baseApi.post(`/auth/refresh-token`);
@@ -33,8 +33,8 @@ apiJWT.interceptors.request.use(async (config) => {
           console.log(error.response?.data.error);
           if (error.response?.data.error.message === 'You are not authenticated') {
             localStorage.clear();
-         redirect('/login');
-     
+            redirect('/logIn');
+
           }
         } else {
           console.log(error);
@@ -57,7 +57,7 @@ apiJWT.interceptors.response.use(
     const token = localStorage.getItem('token');
     if (error.response && error.response?.status === 401) {
       localStorage.clear();
-      redirect('/login');
+      redirect('/logIn');
     }
     if (
       error.response &&

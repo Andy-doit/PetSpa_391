@@ -34,7 +34,7 @@ export function useAuth() {
           router.replace(`/`);
           break;
         case ROLE.role2:
-          router.replace(`/shopOwner`);
+          router.replace(`/shopOwner/home`);
           break;
         case ROLE.role3:
           router.replace(`/`);
