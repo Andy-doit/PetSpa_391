@@ -15,11 +15,12 @@ const sleep = () => new Promise((resolve) => setTimeout(resolve, 500));
 apiJWT.interceptors.request.use(async (config) => {
   const token = localStorage.getItem('token'); 
   const user = localStorage.getItem('user'); 
+  
   const userObj = user ? JSON.parse(user) : {};
   if (token) {
     const date = new Date();
     const decodeToken = jwtDecode(token) as { exp: number };
-
+    
     if (decodeToken.exp < date.getTime() / 1000) {
       try {
         const { data } = await baseApi.post(`/auth/refresh-token`);
@@ -53,7 +54,7 @@ apiJWT.interceptors.response.use(
     return response.data;
   },
   (error) => {
-    const token = localStorage.getItem('access_token');
+    const token = localStorage.getItem('token');
     if (error.response && error.response?.status === 401) {
       localStorage.clear();
       redirect('/login');

@@ -8,6 +8,8 @@ import { VscEye, VscEyeClosed } from "react-icons/vsc";
 import { SignupInput } from "@/models/authentication";
 import { useAuth } from "@/hooks/useAuth";
 import { Field, Form, Formik } from "formik";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { MyInput, MyInputEmail, MyInputFirstName, MyInputLastName, MyInputPassword } from "@/components/ui/loginInput";
 
 export default function SignUp() {
@@ -22,9 +24,20 @@ export default function SignUp() {
     };
     const { state, handleSignup } = useAuth();
     const handleSubmit = async (values: SignupInput) => {
-        handleSignup(values);
-        router.replace('/login')
+        try {
+            await handleSignup(values);
+            toast("Đăng ký thành công! Bạn sẽ chuyển đến trang đăng nhập trong giây lát...", {
+                onClose: () => {
 
+                    setTimeout(() => {
+                        router.replace('/login');
+                    }, 3000);
+                },
+                autoClose: 3000,
+            });
+        } catch (error) {
+            toast.error("Đăng ký không thành công. Vui lòng thử lại.");
+        }
     };
 
     return (
@@ -107,6 +120,7 @@ export default function SignUp() {
                     />
                 </div>
             </div>
+            <ToastContainer />
         </section>
     );
 }
