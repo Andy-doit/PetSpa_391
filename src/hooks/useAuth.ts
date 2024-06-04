@@ -2,14 +2,14 @@
 import { AxiosError } from "axios";
 import { jwtDecode } from "jwt-decode";
 import { JwtPayload } from "jwt-decode";
-import { loginFailure, loginStart } from "@/lib/redux/slice/authSlice";
+import { loginFailure, loginStart, signUpFailure, signUpStart } from "@/lib/redux/slice/authSlice";
 import { useAppDispatch, useAppSelector } from "@/lib/redux/store";
-import { LoginInput } from "@/models/authentication";
+import { LoginInput, SignupInput } from "@/models/authentication";
 import baseApi from "@/utilities/baseApi";
 import { ROLE } from "@/utilities/roleUtils/role";
 
 import { useRouter } from "next/navigation";
-import { LoginError } from "@/utilities/authUtils/loginValidation";
+import { LoginError, SignUpError } from "@/utilities/authUtils/loginValidation";
 interface roleJwt extends JwtPayload {
   role: string;
   id: string;
@@ -28,11 +28,9 @@ export function useAuth() {
         password: value.password,
       });
          console.log(data)
-    
       const decodeToken = jwtDecode(data.token) as roleJwt;
       console.log(decodeToken)
-     await localStorage.setItem("id", decodeToken?.id);
-     await localStorage.setItem("name", decodeToken?.unique_name)
+    
 
       console.log(decodeToken);
       switch (decodeToken?.role) {
@@ -65,6 +63,31 @@ export function useAuth() {
       }
     }
   };
+  const handleSignup = async (value: SignupInput) => {
+      dispatch(signUpStart());
+    try { 
+ const { data } = await baseApi.post(`api/v1/auth/signup`, {
+        firstName: value.firstName,
+        lastName: value.lastName,
+        email: value.email,
+        username: value.username,
+        password: value.password,
+      });
+    } catch (error) {
+       if (error instanceof AxiosError) {
+        const errorResponse = error?.response?.data?.error?.message;
+        if (errorResponse in SignUpError ) {
+          const translatedError =
+           SignUpError[errorResponse as keyof typeof LoginError];
+          dispatch(signUpFailure(translatedError));
+        } else {
+          dispatch(signUpFailure(errorResponse));
+        }
+      } else {
+        dispatch(signUpFailure("Đã có lỗi xảy ra"));
+      }
+    }
+  }
 
-  return { state, handleLogin };
+  return { state, handleLogin, handleSignup };
 }

@@ -13,7 +13,7 @@ const apiJWT = axios.create({
 const sleep = () => new Promise((resolve) => setTimeout(resolve, 500)); 
  
 apiJWT.interceptors.request.use(async (config) => {
-  const token = localStorage.getItem('access_token'); 
+  const token = localStorage.getItem('token'); 
   const user = localStorage.getItem('user'); 
   const userObj = user ? JSON.parse(user) : {};
   if (token) {
