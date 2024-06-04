@@ -19,7 +19,7 @@ export default function GuestHeader() {
     const handleLogout = async () => {
         await localStorage.clear();
         Cookies.remove('token');
-        router.replace('/login');
+        router.replace('/logIn');
     };
     return (
 
@@ -103,7 +103,7 @@ export default function GuestHeader() {
                 ) : (
                     <>
                         <NavbarItem className="hidden lg:flex">
-                            <Link className="font-mono hover:text-orange-600" href="/login" color="foreground">Đăng nhập</Link>
+                            <Link className="font-mono hover:text-orange-600" href="/logIn" color="foreground">Đăng nhập</Link>
                         </NavbarItem>
                         <NavbarItem>
 
