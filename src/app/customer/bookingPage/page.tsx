@@ -4,7 +4,9 @@ import introJs from 'intro.js';
 import 'intro.js/introjs.css';
 import { Card, Image, Button, Checkbox, DatePicker, Input, Textarea, Link } from "@nextui-org/react";
 import { useEffect, useState } from "react";
-import { today, getLocalTimeZone } from "@internationalized/date";
+import { today, getLocalTimeZone, CalendarDate } from "@internationalized/date";
+import { useRouter } from "next/navigation";
+import { createBooking } from "@/models/bookingModels";
 const Slot = [
     { label: "Slot 1", value: "Slot 1", description: "08: 00 - 09: 30", process: 'blank' },
     { label: "Slot 2", value: "Slot 2", description: "09: 30 - 11: 00", process: 'booked' },
@@ -15,32 +17,59 @@ const Slot = [
 ];
 
 export default function BookingPage() {
-    const [isDogChecked, setIsDogChecked] = useState(false);
-    const [isCatChecked, setIsCatChecked] = useState(false);
 
-    const handleDogCardClick = () => {
-        setIsDogChecked(true);
-        setIsCatChecked(false);
+    const [bookingData, setBookingData] = useState<createBooking>({
+        customer_Id: '',
+        serviceName: '',
+        addressShop: '',
+        nameShop: '',
+        shop_id: '',
+        petType: '',
+        appointmentDate: '',
+        appointmentSlot: '',
+        petName: '',
+        petWeight: 0,
+        notes: '',
+    });
+    console.log(bookingData);
+    const [selectedSlotIndex, setSelectedSlotIndex] = useState(null);
+    const handleInputChange = (fieldName: string, newValue: string | number) => {
+        setBookingData(prevData => ({
+            ...prevData,
+            [fieldName]: newValue
+        }));
+    };
+    const handlePetTypeChange = (newType: string) => {
+        setBookingData(prevData => ({
+            ...prevData,
+            petType: newType
+        }));
     };
 
-    const handleCatCardClick = () => {
-        setIsCatChecked(true);
-        setIsDogChecked(false);
+    const handleDateChange = (newDate: CalendarDate) => {
+        const formattedDate = `${newDate.day}/${newDate.month}/${newDate.year}`;
+        setBookingData(prevData => ({
+            ...prevData,
+            appointmentDate: formattedDate
+        }));
     };
-    const [selectedSlot, setSelectedSlot] = useState(null);
+
+    const handleSlotClick = (index: any) => {
+        setSelectedSlotIndex(index);
+        const selectedSlot = Slot[index].description;
+        setBookingData(prevData => ({
+            ...prevData,
+            appointmentSlot: selectedSlot
+        }));
+    };
+
     useEffect(() => {
         introJs().start();
     }, []);
 
 
 
-    const handleSlotClick = (index: any) => {
-        if (selectedSlot === index) {
-            setSelectedSlot(null);
-        } else {
-            setSelectedSlot(index);
-        }
-    };
+
 
     return (
 
@@ -119,7 +148,7 @@ export default function BookingPage() {
                     </div>
                     <div className="flex mb-2 justify-around w-1/3" >
 
-                        <div onClick={handleDogCardClick}>
+                        <div onClick={() => handlePetTypeChange('Chó')}>
                             <Card
                                 radius="lg"
                                 className="border-none"
@@ -133,7 +162,7 @@ export default function BookingPage() {
                                 />
                                 <div className="absolute z-10 right-3 bottom-0 items-center flex">
                                     <Checkbox
-                                        isSelected={isDogChecked}
+                                        isSelected={bookingData.petType === 'Chó'}
                                         color="danger"
                                         radius="full"
                                         size="lg"
@@ -143,7 +172,7 @@ export default function BookingPage() {
                                 </div>
                             </Card>
                         </div>
-                        <div onClick={handleCatCardClick}>
+                        <div onClick={() => handlePetTypeChange('mèo')}>
                             <Card
                                 radius="lg"
                                 className="border-none"
@@ -156,7 +185,13 @@ export default function BookingPage() {
                                     width={100}
                                 />
                                 <div className="absolute z-10 right-3 bottom-0 items-center flex">
-                                    <Checkbox color="danger" size="lg" radius="full" isSelected={isCatChecked}>Mèo</Checkbox>
+                                    <Checkbox
+                                        isSelected={bookingData.petType === 'cat'}
+                                        color="danger"
+                                        radius="full"
+                                        size="lg"
+                                    > Mèo
+                                    </Checkbox>
                                 </div>
                             </Card>
                         </div>
@@ -165,10 +200,11 @@ export default function BookingPage() {
                         <div className="   ">
                             <p className="text-1xl font-medium mb-2">Chọn ngày</p>
                             <div className="w-full">
-                                <DatePicker label="Chọn ngày" className="w-full"
-
+                                <DatePicker
+                                    label="Chọn ngày"
+                                    className="w-full"
+                                    onChange={handleDateChange}
                                     minValue={today(getLocalTimeZone())}
-
                                     defaultValue={today(getLocalTimeZone())}
                                 />
                             </div>
@@ -182,7 +218,7 @@ export default function BookingPage() {
                                     <Button
                                         key={index}
                                         onClick={() => handleSlotClick(index)}
-                                        color={selectedSlot === index ? 'success' : slot.process === 'booked' ? 'warning' : 'default'}
+                                        color={slot.process === 'booked' ? 'warning' : (selectedSlotIndex === index ? 'success' : 'default')}
                                         disabled={slot.process === 'booked'}
                                     >
                                         {slot.description}
@@ -196,14 +232,25 @@ export default function BookingPage() {
                             <div>
                                 <p className="text-1xl font-medium mb-2">Tên thú cưng</p>
                                 <div className="w-full">
-                                    <Input className="w-[300px]" type="Petname" label="Tên thú cưng" />
+                                    <Input
+                                        className="w-[300px]"
+                                        onChange={(e) => handleInputChange('petName', e.target.value)}
+                                        type="Petname"
+                                        label="Tên thú cưng"
+                                    />
+
 
                                 </div>
                             </div>
                             <div>
                                 <p className="text-1xl font-medium mb-2">Cân nặng</p>
                                 <div className="w-full">
-                                    <Input className="w-[300px]" type="Petweight" label="Cân nặng" />
+                                    <Input
+                                        className="w-[300px]"
+                                        onChange={(e) => handleInputChange('petWeight', parseFloat(e.target.value))}
+                                        type="Petweight"
+                                        label="Cân nặng"
+                                    />
                                 </div>
                             </div>
                         </div>
@@ -215,6 +262,7 @@ export default function BookingPage() {
                                 <p className="text-1xl font-medium mb-2">Ghi chú</p>
                                 <div className="w-full">
                                     <Textarea
+                                        onChange={(e) => handleInputChange('notes', e.target.value)}
                                         label="Ghi chú"
                                         placeholder="Những điều cần lưu ý đối với thú cưng của bạn"
                                         className="w-[500px]"
@@ -224,11 +272,11 @@ export default function BookingPage() {
                         </div>
                     </div>
                     <div className='mt-11'>
-
-                        <Link className="w-full" href="/customer/confirmInfor">   <Button className="bg-gradient-to-tr from-pink-500 to-yellow-500 text-white shadow-lg w-full">Đặt lịch</Button></Link>
+                        <Button type="submit" className="bg-gradient-to-tr from-pink-500 to-yellow-500 text-white shadow-lg w-full">Đặt lịch</Button>
 
                     </div>
                 </div>
+
             </div>
         </div >
     )
