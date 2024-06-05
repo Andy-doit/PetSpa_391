@@ -1,6 +1,27 @@
+'use client'
 import { Button, Card, CardBody, CardFooter, CardHeader } from "@nextui-org/react";
+import { useEffect, useState } from "react";
 
-export default function Confirm() {
+export default function Confirm({ }) {
+    const [formData, setFormData] = useState({
+        petType: '',
+        petName: '',
+        petWeight: '',
+        appointmentSlot: '',
+        appointmentDate: '',
+        notes: '',
+    });
+
+    useEffect(() => {
+
+        const dataFromStorage = localStorage.getItem('formData');
+        if (dataFromStorage) {
+
+            setFormData(JSON.parse(dataFromStorage));
+        }
+    }, []);
+
+
     return (
         <div
             style={{
@@ -15,12 +36,12 @@ export default function Confirm() {
 
                 }}>
                 <Card style={{
-                    backgroundColor: 'rgba(255, 255, 255, 0.8)',
+                    backgroundColor: 'rgba(255, 255, 255, 0.😎',
                 }}>
                     <div className="rounded-lg">
                         <div className="rounded-lg p-6"
                             style={{
-                                backgroundImage: `url("https://i.pinimg.com/564x/11/e5/bd/11e5bd4736dbf8f404eb90bf306a0562.jpg")`,
+                                backgroundImage: 'url(https://i.pinimg.com/736x/91/27/3e/91273ed3de2f0c4f869655e05668a9d2.jpg)',
                                 backgroundRepeat: 'no-repeat',
                                 backgroundSize: "cover",
 
@@ -50,12 +71,12 @@ export default function Confirm() {
                                             <p className="text-xl font-light">Ghi chú</p>
                                         </div>
                                         <div className="ml-20">
-                                            <p className="text-xl font-medium">Chó</p>
-                                            <p className="text-xl font-medium">Justin</p>
-                                            <p className="text-xl font-medium">45Kg</p>
-                                            <p className="text-xl font-medium">09:00 - 10:30</p>
-                                            <p className="text-xl font-medium">25/04/2025</p>
-                                            <p className="text-xl font-medium">Có tiền sử bị bệnh tim</p>
+                                            <p className="text-xl font-medium">{formData.petType}</p>
+                                            <p className="text-xl font-medium">{formData.petName}</p>
+                                            <p className="text-xl font-medium">{formData.petWeight}</p>
+                                            <p className="text-xl font-medium">{formData.appointmentSlot}</p>
+                                            <p className="text-xl font-medium">{formData.appointmentDate}</p>
+                                            <p className="text-xl font-medium">{formData.notes}</p>
                                         </div>
                                     </div>
 
