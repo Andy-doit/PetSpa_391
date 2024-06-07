@@ -33,7 +33,7 @@ export default function CardService() {
         <div className="mb-5">
             <div className="grid grid-cols-4 gap-4 container">
                 {items.map((items, index) => (
-                    <Card className="max-w-[400px]">
+                    <Card className="max-w-[400px]" key={index}>
                         <CardHeader className="flex gap-3">
                             <div className="flex flex-col">
                                 <p className="text-lg">{items.serviceName}</p>
