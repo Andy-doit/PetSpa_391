@@ -68,9 +68,6 @@ export default function BookingPage() {
     }, []);
 
 
-
-
-
     return (
 
         <div className="container w-full mb-4 mt-3">
