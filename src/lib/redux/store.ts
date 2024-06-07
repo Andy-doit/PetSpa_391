@@ -3,11 +3,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import type { TypedUseSelectorHook } from 'react-redux';
 import AuthenticationSlice from './slice/authSlice';
 import RoleSlice from './slice/roleSlice';
+import listAllServiceSlice from './slice/listAllServiceSlice';
+
 
 export const store = configureStore({
   reducer: {
     auth: AuthenticationSlice,
     role: RoleSlice,
+    service: listAllServiceSlice,
   },
 });
 

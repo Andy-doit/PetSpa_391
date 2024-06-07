@@ -7,7 +7,7 @@ export default function BookingSpa() {
         <>
             <SortService />
             <div className="flex justify-center ">
-                <div className="p-9 h-screen">
+                <div className="p-9 ">
                     <CardService />
                 </div>
             </div>

@@ -11,3 +11,19 @@ export interface createBooking {
     petWeight: number;
     notes: string;
 }
+export interface allServicesPaginationData {
+    id: number,
+    serviceName: string;
+    price: number;
+    address: string,
+    nomination: number,
+}
+export interface allServicesPaginationResponse {
+    success: boolean;
+    status: number;
+    data: {
+        data: allServicesPaginationData[];
+        totalCount: number;
+        pageCount: number;
+    };
+}
