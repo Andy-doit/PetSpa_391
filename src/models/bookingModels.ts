@@ -3,7 +3,7 @@ export interface createBooking {
     serviceName: string;
     addressShop: string;
     nameShop: string;
-    shop_id: string;
+    _shopId: string;
     petType: string;
     appointmentDate: string;
     appointmentSlot: string;
@@ -17,6 +17,12 @@ export interface allServicesPaginationData {
     price: number;
     address: string,
     nomination: number,
+    shopName: string,
+    shopOwner: {
+        _id: number,
+        _shopId: number;
+
+    };
 }
 export interface allServicesPaginationResponse {
     success: boolean;
@@ -26,4 +32,16 @@ export interface allServicesPaginationResponse {
         totalCount: number;
         pageCount: number;
     };
+}
+export interface ServiceDetail {
+    _id: string;
+    _shopId: string;
+    title: string;
+    slug: string;
+    serviceName: string,
+    serviceDescription: string,
+    minWeight: number,
+    maxWeight: number,
+    shopName: string,
+
 }

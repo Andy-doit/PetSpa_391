@@ -6,7 +6,7 @@ import { Card, Image, Button, Checkbox, DatePicker, Input, Textarea, Link } from
 import { useEffect, useState } from "react";
 import { today, getLocalTimeZone, CalendarDate } from "@internationalized/date";
 import { useRouter } from "next/navigation";
-import { createBooking } from "@/models/bookingModels";
+import { ServiceDetail, createBooking } from "@/models/bookingModels";
 const Slot = [
     { label: "Slot 1", value: "Slot 1", description: "08: 00 - 09: 30", process: 'blank' },
     { label: "Slot 2", value: "Slot 2", description: "09: 30 - 11: 00", process: 'booked' },
@@ -23,7 +23,7 @@ export default function BookingPage() {
         serviceName: '',
         addressShop: '',
         nameShop: '',
-        shop_id: '',
+        _shopId: '',
         petType: '',
         appointmentDate: '',
         appointmentSlot: '',

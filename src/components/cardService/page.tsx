@@ -24,7 +24,7 @@ export default function CardService() {
     const bookingBtn = async () => {
         const token = localStorage.getItem("token");
         if (token) {
-            router.replace('/customer/bookingPage')
+            router.replace('/customer/bookingPage/[slug]')
         } else {
             router.replace('/logIn');
         }
@@ -36,21 +36,20 @@ export default function CardService() {
                     <Card className="max-w-[400px]" key={index}>
                         <CardHeader className="flex gap-3">
                             <div className="flex flex-col">
-                                <p className="text-lg">{items.serviceName}</p>
-                                <p className="text-md text-orange-600 ">Khoi Spa</p>
+                                <p className="text-2xl font-semibold">{items.serviceName}</p>
+                                <p className="text-md text-orange-600 ">{items.shopName}</p>
                                 <p className="text-md text-default-500">{items.address}</p>
                             </div>
                         </CardHeader>
                         <Divider />
+
                         <CardBody>
-                            <p>Đánh giá: {items.nomination}</p>
-                        </CardBody>
-                        <CardBody>
-                            <p>Giá: {items.price}</p>
+                            <p >Đánh giá: {items.nomination}</p>
+                            <p className="text-xl font-medium">Giá: {items.price}</p>
                         </CardBody>
                         <Divider />
                         <CardFooter>
-                            <Button onClick={bookingBtn} className="bg-gradient-to-tr from-pink-500 to-yellow-500 text-white shadow-lg">
+                            <Button onClick={bookingBtn} className="bg-gradient-to-tr from-pink-500 to-yellow-500 text-white shadow-lg w-full">
                                 Đặt lịch
                             </Button>
                         </CardFooter>

@@ -1,4 +1,4 @@
-import { allServicesPaginationData, allServicesPaginationResponse } from '@/models/bookingModels';
+import { ServiceDetail, allServicesPaginationData, allServicesPaginationResponse } from '@/models/bookingModels';
 import agent from '@/utilities/agent';
 import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { AxiosError } from 'axios';
@@ -27,6 +27,7 @@ const initialState: ServiceState = {
     returnedDataError: false,
     returnedDataLoading: false,
 };
+
 export const fetchAllServicesPagination = createAsyncThunk(
     'service/fetchAllServicesPagination',
     async () => {
@@ -46,6 +47,23 @@ export const fetchAllServicesPagination = createAsyncThunk(
         }
     },
 );
+
+
+export const fetchServiceDetail = createAsyncThunk<ServiceDetail, { slug: string }>(
+    'role/fetchServiceDetail',
+    async (arg: { slug: string }) => {
+        const { slug } = arg;
+        
+        try {
+            const response = await agent.ServiceAPI.getServiceBySlug(slug);
+            console.log(response);
+            return { ...response.data.post, ...{ bought: response.data.bought } };
+        } catch (error) {
+            console.error(error);
+        }
+    },
+);
+
 const serviceSlice = createSlice({
     name: 'service',
     initialState,
