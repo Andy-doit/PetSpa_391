@@ -1,92 +1,26 @@
-
-
 'use client'
+import { fetchAllServicesPagination } from "@/lib/redux/slice/listAllServiceSlice";
+import { useAppDispatch } from "@/lib/redux/store";
+import { allServicesPaginationData } from "@/models/bookingModels";
 import { Card, CardHeader, CardBody, CardFooter, Divider, Link, Image } from "@nextui-org/react";
-import ServiceDetail from "../orderDetail/page";
 import { Button } from "@nextui-org/react";
 import { useRouter } from "next/navigation";
-const serviceItem = [
-    {
-        name: "Dịch vụ tắm rửa",
-        company: "Khoi Spa",
-        price: "150.000",
+import { useEffect, useState } from "react";
 
-    },
-    {
-        name: "Dịch vụ tắm rửa",
-        company: "An Spa",
-        price: "150.000",
-
-
-    },
-    {
-        name: "Dịch vụ mát xa",
-        company: "Hoang Spa",
-        price: "150.000",
-
-
-    },
-    {
-        name: "Dịch vụ mát xa",
-        company: "Minh Spa",
-        price: "150.000",
-
-
-    },
-    {
-        name: "Dịch vụ làm đẹp",
-        company: "Truc Spa",
-        price: "150.000",
-
-
-    },
-    {
-        name: "Dịch vụ làm đẹp",
-        company: "Truc Spa",
-        price: "150.000",
-
-
-    },
-    {
-        name: "Khách sạn thú cưng",
-        company: "Truc Spa",
-        price: "150.000",
-
-
-    },
-    {
-
-        name: "Khách sạn thú cưng",
-        company: "Truc Spa",
-        price: "150.000",
-
-
-    },
-    {
-        name: "Dịch vụ tắm rửa",
-        company: "Truc Spa",
-        price: "150.000",
-
-
-    },
-    {
-        name: "Dịch vụ tắm rửa",
-        company: "Truc Spa",
-        price: "150.000",
-
-
-    },
-    {
-        name: "Dịch vụ mát xa",
-        company: "Hung Spa",
-        price: "150.000",
-
-
-    }
-
-]
 export default function CardService() {
+    const dispatch = useAppDispatch();
+    const [items, setItems] = useState<allServicesPaginationData[]>([]);
+
     const router = useRouter()
+    useEffect(() => {
+        const allService = async () => {
+            const response = await dispatch(fetchAllServicesPagination());
+            setItems(response.payload);
+            console.log(response.payload)
+        }
+        allService();
+    }, [dispatch]);
+    console.log(items);
     const bookingBtn = async () => {
         const token = localStorage.getItem("token");
         if (token) {
@@ -98,20 +32,21 @@ export default function CardService() {
     return (
         <div className="mb-5">
             <div className="grid grid-cols-4 gap-4 container">
-
-                {serviceItem.map((item, index) => (
-                    <Card key={index} className="max-w-[400px]">
+                {items.map((items, index) => (
+                    <Card className="max-w-[400px]" key={index}>
                         <CardHeader className="flex gap-3">
-
                             <div className="flex flex-col">
-                                <p className="text-lg">{item.name}</p>
-                                <p className="text-md text-orange-600 ">{item.company}</p>
-                                <p className="text-md text-default-500">Khu 2 Hoàng Cương, Thanh Ba, Phú Thọ</p>
+                                <p className="text-lg">{items.serviceName}</p>
+                                <p className="text-md text-orange-600 ">Khoi Spa</p>
+                                <p className="text-md text-default-500">{items.address}</p>
                             </div>
                         </CardHeader>
                         <Divider />
                         <CardBody>
-                            <p>Giá: {item.price}</p>
+                            <p>Đánh giá: {items.nomination}</p>
+                        </CardBody>
+                        <CardBody>
+                            <p>Giá: {items.price}</p>
                         </CardBody>
                         <Divider />
                         <CardFooter>
@@ -121,6 +56,7 @@ export default function CardService() {
                         </CardFooter>
                     </Card>
                 ))}
+
             </div>
 
         </div>
