@@ -5,6 +5,7 @@ import { allServicesPaginationData } from "@/models/bookingModels";
 import { Card, CardHeader, CardBody, CardFooter, Divider, Link, Image } from "@nextui-org/react";
 import { Button } from "@nextui-org/react";
 import { useRouter } from "next/navigation";
+import { FaStar } from "react-icons/fa";
 import { useEffect, useState } from "react";
 
 export default function CardService() {
@@ -44,7 +45,18 @@ export default function CardService() {
                         <Divider />
 
                         <CardBody>
-                            <p >Đánh giá: {items.nomination}</p>
+                            <div className="flex">
+                                {[...Array(5)].map((_, index) => {
+                                    const ratingValue = index + 1;
+                                    return (
+                                        <FaStar
+                                            key={index}
+                                            className="star"
+                                            color={ratingValue <= items.nomination ? 'gold' : 'gray'}
+                                        />
+                                    );
+                                })}
+                            </div>
                             <p className="text-xl font-medium">Giá: {items.price}</p>
                         </CardBody>
                         <Divider />
