@@ -1,9 +1,9 @@
 'use client'
 import { FcPlus } from "react-icons/fc";
-import React, { useState } from "react";
+import { useState } from "react";
 import ServiceManagement from "@/components/tableServiceofShop/page";
 import ModalCreateService from "@/components/modalCreateService/page";
-import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure } from "@nextui-org/react";
+
 
 const manageService = (props: any) => {
     const [showModalCreateService, setShowModalCreateService] = useState(false);
@@ -25,7 +25,7 @@ const manageService = (props: any) => {
             </div>
             <div className="table-user-container">
                 < ServiceManagement />
-                {/* <App /> */}
+
                 <ModalCreateService
                     isOpen={showModalCreateService}
                     onClose={handleCloseModal}
