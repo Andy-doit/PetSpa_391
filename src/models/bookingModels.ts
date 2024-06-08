@@ -3,7 +3,7 @@ export interface createBooking {
     serviceName: string;
     addressShop: string;
     nameShop: string;
-    _shopId: string;
+    shopId: number;
     petType: string;
     appointmentDate: string;
     appointmentSlot: string;
@@ -19,8 +19,8 @@ export interface allServicesPaginationData {
     nomination: number,
     shopName: string,
     shopOwner: {
-        _id: number,
-        _shopId: number;
+        id: number,
+        shopId: number;
 
     };
 }
@@ -34,8 +34,8 @@ export interface allServicesPaginationResponse {
     };
 }
 export interface ServiceDetail {
-    _id: string;
-    _shopId: string;
+    id: number | null;
+    shopId: string;
     title: string;
     slug: string;
     serviceName: string,

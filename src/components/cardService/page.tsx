@@ -21,15 +21,9 @@ export default function CardService() {
         }
         allService();
     }, [dispatch]);
+
     console.log(items);
-    const bookingBtn = async () => {
-        const token = localStorage.getItem("token");
-        if (token) {
-            router.replace('/customer/bookingPage/[slug]')
-        } else {
-            router.replace('/logIn');
-        }
-    };
+
     return (
         <div className="mb-5">
             <div className="grid grid-cols-4 gap-4 container">
@@ -61,9 +55,11 @@ export default function CardService() {
                         </CardBody>
                         <Divider />
                         <CardFooter>
-                            <Button onClick={bookingBtn} className="bg-gradient-to-tr from-pink-500 to-yellow-500 text-white shadow-lg w-full">
-                                Đặt lịch
-                            </Button>
+                            <Link href={localStorage.getItem('token') ? `customer/bookingPage/${items.id}` : '/login'}>
+                                <Button className="bg-gradient-to-tr from-pink-500 to-yellow-500 text-white shadow-lg w-full">
+                                    Đặt lịch
+                                </Button>
+                            </Link>
                         </CardFooter>
                     </Card>
                 ))}
