@@ -1,5 +1,5 @@
 
-import React, { use, useState } from "react";
+import { useState } from "react";
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure } from "@nextui-org/react"; interface ModalCreateUserProps {
     isOpen: boolean;
     onOpenChange: (open: boolean) => void;

@@ -1,6 +1,6 @@
 'use client'
 import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Button, Input } from "@nextui-org/react";
-import React, { useState } from "react";
+import { useState } from "react";
 
 export default function ServiceManagement() {
     const [services, setServices] = useState([
