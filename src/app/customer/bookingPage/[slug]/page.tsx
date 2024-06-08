@@ -6,7 +6,9 @@ import { Card, Image, Button, Checkbox, DatePicker, Input, Textarea, Link } from
 import { useEffect, useState } from "react";
 import { today, getLocalTimeZone, CalendarDate } from "@internationalized/date";
 import { useRouter } from "next/navigation";
+import { useAppDispatch } from "@/lib/redux/store";
 import { ServiceDetail, createBooking } from "@/models/bookingModels";
+import { fetchServiceDetail } from "@/lib/redux/slice/listAllServiceSlice";
 const Slot = [
     { label: "Slot 1", value: "Slot 1", description: "08: 00 - 09: 30", process: 'blank' },
     { label: "Slot 2", value: "Slot 2", description: "09: 30 - 11: 00", process: 'booked' },
@@ -16,14 +18,16 @@ const Slot = [
 
 ];
 
-export default function BookingPage() {
+export default function BookingPage(
+    { params }: { params: { slug: string } }
+) {
 
     const [bookingData, setBookingData] = useState<createBooking>({
         customer_Id: '',
         serviceName: '',
         addressShop: '',
         nameShop: '',
-        _shopId: '',
+        shopId: 0,
         petType: '',
         appointmentDate: '',
         appointmentSlot: '',
@@ -31,6 +35,19 @@ export default function BookingPage() {
         petWeight: 0,
         notes: '',
     });
+    const [service, setService] = useState<ServiceDetail | any>();
+    const dispatch = useAppDispatch();
+    useEffect(() => {
+        const serviceDetail = async () => {
+            const response = await dispatch(fetchServiceDetail(params));
+            if (response) {
+                setService(response.payload);
+            }
+            console.log(response.payload)
+        }
+        serviceDetail();
+    }, [dispatch]);
+    console.log(service);
     console.log(bookingData);
     const [selectedSlotIndex, setSelectedSlotIndex] = useState(null);
     const handleInputChange = (fieldName: string, newValue: string | number) => {
@@ -45,7 +62,6 @@ export default function BookingPage() {
             petType: newType
         }));
     };
-
     const handleDateChange = (newDate: CalendarDate) => {
         const formattedDate = `${newDate.day}/${newDate.month}/${newDate.year}`;
         setBookingData(prevData => ({
@@ -53,7 +69,6 @@ export default function BookingPage() {
             appointmentDate: formattedDate
         }));
     };
-
     const handleSlotClick = (index: any) => {
         setSelectedSlotIndex(index);
         const selectedSlot = Slot[index].description;
@@ -71,48 +86,54 @@ export default function BookingPage() {
     return (
 
         <div className="container w-full mb-4 mt-3">
-            <div className="py-2">
-                <nav className="flex" aria-label="Breadcrumb">
-                    <ol className="inline-flex items-center space-x-1 md:space-x-2 rtl:space-x-reverse">
-                        <li className="inline-flex items-center">
-                            <a href="/" className="inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600 dark:text-gray-400 dark:hover:text-black">
-                                <svg className="w-3 h-3 me-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                                    <path d="m19.707 9.293-2-2-7-7a1 1 0 0 0-1.414 0l-7 7-2 2a1 1 0 0 0 1.414 1.414L2 10.414V18a2 2 0 0 0 2 2h3a1 1 0 0 0 1-1v-4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v4a1 1 0 0 0 1 1h3a2 2 0 0 0 2-2v-7.586l.293.293a1 1 0 0 0 1.414-1.414Z" />
-                                </svg>
-                                Trang chủ
-                            </a>
-                        </li>
-                        <li>
-                            <div className="flex items-center">
-                                <svg className="rtl:rotate-180 w-3 h-3 text-gray-400 mx-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
-                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4" />
-                                </svg>
-                                <a href="#" className="ms-1 text-sm font-medium text-gray-700 hover:text-blue-600 md:ms-2 dark:text-gray-400 dark:hover:text-black">Dịch vụ</a>
-                            </div>
-                        </li>
-                        <li aria-current="page">
-                            <div className="flex items-center">
-                                <svg className="rtl:rotate-180 w-3 h-3 text-black mx-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
-                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4" />
-                                </svg>
-                                <span className="ms-1 text-sm font-medium text-black md:ms-2 dark:text-black">Dịch vụ tắm rửa</span>
-                            </div>
-                        </li>
-                    </ol>
-                </nav>
-            </div>
-            <div className='flex text-center items-center justify-center border-imgcus rounded-md '>
+            {service && (
                 <div>
-                    <div>
-                        <h1 className='text-4xl font-semibold'>Dịch vụ tắm rửa </h1>
+                    <div className="py-2">
+                        <nav className="flex" aria-label="Breadcrumb">
+                            <ol className="inline-flex items-center space-x-1 md:space-x-2 rtl:space-x-reverse">
+                                <li className="inline-flex items-center">
+                                    <a href="/" className="inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600 dark:text-gray-400 dark:hover:text-black">
+                                        <svg className="w-3 h-3 me-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                                            <path d="m19.707 9.293-2-2-7-7a1 1 0 0 0-1.414 0l-7 7-2 2a1 1 0 0 0 1.414 1.414L2 10.414V18a2 2 0 0 0 2 2h3a1 1 0 0 0 1-1v-4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v4a1 1 0 0 0 1 1h3a2 2 0 0 0 2-2v-7.586l.293.293a1 1 0 0 0 1.414-1.414Z" />
+                                        </svg>
+                                        Trang chủ
+                                    </a>
+                                </li>
+                                <li>
+                                    <div className="flex items-center">
+                                        <svg className="rtl:rotate-180 w-3 h-3 text-gray-400 mx-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4" />
+                                        </svg>
+                                        <a href="#" className="ms-1 text-sm font-medium text-gray-700 hover:text-blue-600 md:ms-2 dark:text-gray-400 dark:hover:text-black">Dịch vụ</a>
+                                    </div>
+                                </li>
+                                <li aria-current="page">
+                                    <div className="flex items-center">
+                                        <svg className="rtl:rotate-180 w-3 h-3 text-black mx-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4" />
+                                        </svg>
+                                        <span className="ms-1 text-sm font-medium text-black md:ms-2 dark:text-black">{service.serviceName}</span>
+                                    </div>
+                                </li>
+                            </ol>
+                        </nav>
                     </div>
-                    <div className='my-2 mx-5'>
-                        <h1 className='text-1xl font-normal'>Bạn có một thành viên gia đình có bộ lông lấp lánh cần được chăm sóc? Đừng lo, chúng tôi ở đây để giúp bạn! Tại Khôi Spa, chúng tôi hiểu rằng việc tắm rửa và chăm sóc cho thú cưng của bạn không chỉ là một công việc mà còn là một trải nghiệm đặc biệt đầy yêu thương.</h1>
+                    <div className='flex text-center items-center justify-center border-imgcus rounded-md '>
+                        <div>
+                            <div>
+                                <h1 className='text-4xl font-semibold'>{service.serviceName}</h1>
+                            </div>
+                            <div className='my-2 mx-5'>
+                                <h1 className='text-1xl font-normal'>{service.serviceDescription}</h1>
+                            </div>
+                            <Link href='/profileShopOwner' className="text-2xl font-medium hover:text-orange-600" color="foreground" data-title="Chào mừng bạn" data-intro="Bấm vào đây nếu bạn muốn xem chi tiết Shop">{service.shopName}</Link>
+                            <h2 className="text-1xl font-light ">Khu 2 hoang duong, thanh ba, phu tho</h2>
+                        </div>
                     </div>
-                    <Link href='/profileShopOwner' className="text-2xl font-medium hover:text-orange-600" color="foreground" data-title="Chào mừng bạn" data-intro="Bấm vào đây nếu bạn muốn xem chi tiết Shop">Khoi Spa</Link>
-                    <h2 className="text-1xl font-light ">Khu 2 Hoàng Cương, Thanh Ba, Phú Thọ</h2>
                 </div>
-            </div>
+
+            )}
+
             <div className="flex mt-2 justify-around">
                 <div className="w-1/2 gap-2 grid grid-cols-12 grid-rows-2 ">
                     <Card isFooterBlurred className="w-full h-[400px] col-span-12 sm:col-span-5">
