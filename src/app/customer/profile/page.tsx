@@ -3,14 +3,15 @@ import { Avatar, Button, Card, CardBody, CardFooter, CardHeader, Divider, Input,
 import React, { useState } from 'react'
 import { BiEdit } from 'react-icons/bi'
 export default function Profile() {
-    const [isDisabled, setIsDisabled] = useState(false);
-
+    const [isEditing, setIsEditing] = useState(false);
     const handleEditClick = () => {
-        setIsDisabled(false);
+        setIsEditing(true);
     };
-
     const handleSaveClick = () => {
-        setIsDisabled(true);
+        setIsEditing(false);
+    };
+    const handleCancelClick = () => {
+        setIsEditing(false);
     };
     return (
 
@@ -25,22 +26,42 @@ export default function Profile() {
                     height: '21px'
                 }}>
             </div>
-            <div className='container'>
+            <div className='container relative'>
                 <div className='justify-center flex items-center'>
                     <Avatar src="https://i.pravatar.cc/150?u=a04258114e29026302d" size="lg" />
                 </div>
-                <div className='flex justify-end '>
-                    <div className='fixed'>
-                        <Button>
-                            <BiEdit className="mr-2 h-4 w-4" onClick={handleEditClick} />Chỉnh sửa
-                        </Button>
-                    </div>
-                </div>
+
                 <div className='justify-center flex items-center mt-2'>
-                    <h1 className='text-2xl font-bold uppercase'>Thien An</h1>
+                    {!isEditing && (
+                        <h1 className='text-2xl font-bold uppercase'>Thien An</h1>
+                    )}
+
+                    {isEditing && (
+                        <div className='w-fit'>
+                            <Input className="text-center" size='sm' type="name" variant='faded' defaultValue='Thien An' />
+                        </div>
+                    )}
                 </div>
                 <div className='justify-center flex items-center'>
-                    <h1 className='text-1xl font-light '>A funny man</h1>
+                    {!isEditing && (
+                        <h1 className='text-1xl font-light '>A funny man</h1>
+                    )}
+
+                    {isEditing && (
+                        <div className='w-fit my-2'>
+                            <Input className="text-center" size='sm' type="name" variant='faded' defaultValue='A funny man' />
+                        </div>
+                    )}
+
+                </div>
+                <div className='flex justify-end '>
+                    <div className=' absolute mt-2' >
+                        {!isEditing && (
+                            <Button onClick={handleEditClick} startContent={<BiEdit className=" h-4 w-4" />}>
+                                Chỉnh sửa
+                            </Button>
+                        )}
+                    </div>
                 </div>
 
                 <Divider />
@@ -59,16 +80,19 @@ export default function Profile() {
                                 <CardBody className="space-y-2">
                                     <div className="space-y-1">
                                         <p >Email</p>
-                                        <Input id="email" disabled={isDisabled} defaultValue="andy@gmail.com" />
+                                        <Input id="email" disabled={!isEditing} defaultValue="andy@gmail.com" />
                                     </div>
                                     <div className="space-y-1">
                                         <p >Số điện thoại</p>
-                                        <Input id="phone" disabled={isDisabled} defaultValue="078956489" />
+                                        <Input id="phone" disabled={!isEditing} defaultValue="078956489" />
                                     </div>
                                 </CardBody>
-                                <CardFooter>
-                                    <Button >Lưu</Button>
-                                </CardFooter>
+                                {isEditing && (
+                                    <CardFooter>
+                                        <Button color="success" onClick={handleSaveClick}>Lưu</Button>
+                                        <Button className="ml-5" onClick={handleCancelClick}>Huỷ</Button>
+                                    </CardFooter>
+                                )}
                             </Card>
                         </Tab>
                         <Tab className='flex justify-center' key="password" title="Mật khẩu">
@@ -84,16 +108,19 @@ export default function Profile() {
                                 <CardBody className="space-y-2">
                                     <div className="space-y-1">
                                         <p >Mật khẩu hiện tại</p>
-                                        <Input id="currentPassword" disabled={isDisabled} type='password' />
+                                        <Input id="currentPassword" disabled={!isEditing} type='password' />
                                     </div>
                                     <div className="space-y-1">
                                         <p >Mật khẩu mới</p>
-                                        <Input id="newPassword" disabled={isDisabled} type='password' />
+                                        <Input id="newPassword" disabled={!isEditing} type='password' />
                                     </div>
                                 </CardBody>
-                                <CardFooter>
-                                    <Button onClick={handleSaveClick} >Lưu</Button>
-                                </CardFooter>
+                                {isEditing && (
+                                    <CardFooter>
+                                        <Button color="success" onClick={handleSaveClick}>Lưu</Button>
+                                        <Button className="ml-5" onClick={handleCancelClick}>Huỷ</Button>
+                                    </CardFooter>
+                                )}
                             </Card>
                         </Tab>
 
