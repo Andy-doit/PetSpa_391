@@ -27,8 +27,8 @@ const requests = {
 const ServiceAPI = {
   getServiceList: () =>
     requests.baseApiGet("/api/v1/services"),
-  getServiceBySlug: (slug: string) =>
-    requests.baseApiGet(`/api/v1/service/${slug}`),
+  getServiceBySlug: (id: number) =>
+    requests.baseApiGet(`/api/v1/service/${id}`),
 };
 
 const agent = {

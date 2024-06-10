@@ -52,9 +52,9 @@ export const fetchAllServicesPagination = createAsyncThunk(
 
 export const fetchServiceDetail = createAsyncThunk(
     'role/fetchServiceDetail',
-    async ({ slug }: { slug: string }) => {
+    async ({ id }: { id: number }) => {
         try {
-            const response = await agent.ServiceAPI.getServiceBySlug(slug) as ServiceDetail;
+            const response = await agent.ServiceAPI.getServiceBySlug(id) as ServiceDetail;
             return response;
         } catch (error) {
             if (error instanceof AxiosError) {
