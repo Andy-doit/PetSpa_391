@@ -3,8 +3,8 @@ import { Card, CardBody, CardFooter, CardHeader, Divider, Image } from "@nextui-
 import { FaStar } from "react-icons/fa";
 import { MdHomeRepairService } from "react-icons/md";
 import { Tabs, Tab } from "@nextui-org/react";
-import CardService from "@/components/cardService/page";
 import FeedbackDetail from "@/components/feedbackDetail/page";
+import ListAllService from "@/components/listAllService/page";
 
 export default function ProfileShopOwner() {
     return (
@@ -59,7 +59,7 @@ export default function ProfileShopOwner() {
                             </Tab>
                             <Tab key="service" title="Dịch vụ" className="px-12 py-5 text-xl">
                                 <div className="w-full">
-                                    <CardService />
+                                    <ListAllService />
                                 </div>
                             </Tab>
                             <Tab key="Feedback" title="Đánh giá" className="px-12 py-5 text-xl">
