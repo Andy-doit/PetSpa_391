@@ -55,7 +55,7 @@ export default function CardService() {
                         </CardBody>
                         <Divider />
                         <CardFooter>
-                            <Link href={localStorage.getItem('token') ? `customer/bookingPage/${items.id}` : '/login'}>
+                            <Link className="w-full" href={localStorage.getItem('token') ? `customer/bookingPage/${items.id}` : '/login'}>
                                 <Button className="bg-gradient-to-tr from-pink-500 to-yellow-500 text-white shadow-lg w-full">
                                     Đặt lịch
                                 </Button>
