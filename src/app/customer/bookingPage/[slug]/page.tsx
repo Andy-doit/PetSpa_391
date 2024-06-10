@@ -37,16 +37,7 @@ export default function BookingPage(
     });
     const [service, setService] = useState<ServiceDetail | any>();
     const dispatch = useAppDispatch();
-    useEffect(() => {
-        const serviceDetail = async () => {
-            const response = await dispatch(fetchServiceDetail(params));
-            if (response) {
-                setService(response.payload);
-            }
-            console.log(response.payload)
-        }
-        serviceDetail();
-    }, [dispatch]);
+
     console.log(service);
     console.log(bookingData);
     const [selectedSlotIndex, setSelectedSlotIndex] = useState(null);

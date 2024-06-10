@@ -8,14 +8,16 @@ export default function MenuGuest() {
             <div className="flex container py-10">
                 <div className="flex-1 flex  items-center">
                     <div>
-                        <p className="font-mono font-bold text-6xl text-orange-600">Pet Place</p>
+                        <p className=" font-bold text-6xl text-orange-600">Pet Place</p>
                         <div className="w-3/4 py-3">
-                            <p className="font-mono  text-xl ">Cuộc sống quá khó khăn ư. Hãy để chúng tôi khiến nó trở nên dễ hơn</p>
+                            <p className="font-medium  text-2xl ">Cuộc sống quá khó khăn ư. Hãy để chúng tôi khiến nó trở nên dễ hơn</p>
                         </div>
                         <div>
-                            <Button className="bg-gradient-to-tr from-pink-500 to-yellow-500 text-white shadow-lg">
-                                <Link color="foreground" href="listService"> Khám phá </Link>
-                            </Button>
+                            <Link color="foreground" href="listService">
+                                <Button className="bg-gradient-to-tr from-pink-500 to-yellow-500 text-white shadow-lg w-[200px]">
+                                    Khám phá
+                                </Button>
+                            </Link>
                         </div>
                     </div>
                 </div>
@@ -31,11 +33,11 @@ export default function MenuGuest() {
                 </div>
                 <div className="flex-1 flex justify-end items-center ">
                     <ul>
-                        <li><Link href="#" className="font-mono py-5 text-xl hover:text-orange-600" color="foreground">Dịch vụ tắm rửa</Link></li>
-                        <li><Link href="#" className=" font-mono py-5 text-xl hover:text-orange-600" color="foreground">Dịch vụ làm đẹp</Link></li>
-                        <li><Link href="#" className="font-mono py-5 text-xl hover:text-orange-600" color="foreground">Dịch vụ mát xa </Link></li>
-                        <li><Link href="#" className="font-mono py-5 text-xl hover:text-orange-600" color="foreground">Dịch vụ mát xa đặc biệt</Link></li>
-                        <li><Link href="#" className=" font-mono py-5 text-xl hover:text-orange-600" color="foreground">Khách sạn thú cưng</Link></li>
+                        <li><Link href="#" className="font-medium py-5 text-xl hover:text-orange-600" color="foreground">Dịch vụ tắm rửa</Link></li>
+                        <li><Link href="#" className=" font-medium py-5 text-xl hover:text-orange-600" color="foreground">Dịch vụ làm đẹp</Link></li>
+                        <li><Link href="#" className="font-medium py-5 text-xl hover:text-orange-600" color="foreground">Dịch vụ mát xa </Link></li>
+                        <li><Link href="#" className="font-medium py-5 text-xl hover:text-orange-600" color="foreground">Dịch vụ mát xa đặc biệt</Link></li>
+                        <li><Link href="#" className=" font-medium py-5 text-xl hover:text-orange-600" color="foreground">Khách sạn thú cưng</Link></li>
                     </ul>
                 </div>
             </div>
