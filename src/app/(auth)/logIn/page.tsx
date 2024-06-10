@@ -7,10 +7,15 @@ import { VscEye, VscEyeClosed } from 'react-icons/vsc';
 import { LoginInput } from '@/models/authentication';
 import { useAuth } from '@/hooks/useAuth';
 import { Field, Form, Formik } from 'formik';
+import * as Yup from 'yup';
+import { ClipLoader } from 'react-spinners'; // Import the spinner
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { MyInput, MyInputPassword } from '@/components/ui/loginInput';
 
 export default function Login() {
     const router = useRouter();
+    const [isLoading, setIsLoading] = useState(false);
     const [isShowPassword, setIsShowPassword] = useState(false);
     const initialValues = {
         username: '',
@@ -20,11 +25,44 @@ export default function Login() {
         username: '',
         password: '',
     });
-    const { state, handleLogin } = useAuth();
-    const handleSubmit = async (values: LoginInput) => {
-        handleLogin(values);
+    const validationSchema = Yup.object().shape({
+        username: Yup.string()
+            .required('Tên người dùng là bắt buộc')
+            .min(3, 'Tên người dùng phải có ít nhất 3 ký tự')
+            .max(20, 'Tên người dùng không được vượt quá 20 ký tự'),
+        password: Yup.string()
+            .required('Mật khẩu là bắt buộc')
+            .min(6, 'Mật khẩu phải có ít nhất 6 ký tự')
+            .max(50, 'Mật khẩu không được vượt quá 50 ký tự'),
+    });
 
+    const { state, handleLogin } = useAuth();
+    const setLoading = (loading: boolean) => {
+        setIsLoading(loading);
     };
+    const handleSubmit = async (values: LoginInput) => {
+        setLoading(true);
+
+        try {
+            await handleLogin(values);
+            toast.success("Đăng nhập Thành Công! Bạn sẽ chuyển đến trang chủ trong giây lát...", {
+                onClose: () => {
+
+                    setTimeout(() => {
+                        router.replace('/');
+                    }, 3000);
+                },
+                autoClose: 3000,
+            });
+
+
+        } catch (error) {
+
+            toast.error('Đăng nhập không thành công. Vui lòng kiểm tra lại tên đăng nhập và mật khẩu.');
+            setLoading(false);
+        }
+    };
+
 
     return (
         <section className='h-screen relative'>
@@ -39,6 +77,7 @@ export default function Login() {
                 <div className='mb-12 md:mb-0 md:w-8/12 lg:w-5/12 xl:w-6/12'>
                     <Formik
                         initialValues={initialValues}
+                        validationSchema={validationSchema}
                         onSubmit={handleSubmit}>
                         <Form>
                             <Card className='mx-auto w-3/5'>
@@ -68,8 +107,9 @@ export default function Login() {
                                         <div className='forgot-password text-right'>
                                             <Link href='/' className='text-blue-500 hover:text-orange-600'>Quên Mật Khẩu? </Link>
                                         </div>
-                                        <Button type='submit' radius='full' className='bg-gradient-to-tr w-full from-pink-500 to-yellow-500 text-white shadow-lg' >
+                                        <Button disabled={isLoading} type='submit' radius='full' className='bg-gradient-to-tr w-full from-pink-500 to-yellow-500 text-white shadow-lg'>
                                             Đăng nhập
+                                            {isLoading && <ClipLoader size={20} color="#ffffff" />}
                                         </Button>
                                     </div>
                                 </CardBody>
@@ -93,6 +133,7 @@ export default function Login() {
                     />
                 </div>
             </div>
+            <ToastContainer />
         </section>
     );
 }
