@@ -5,6 +5,7 @@ import { Link } from "@nextui-org/react";
 import NextLink from "next/link";
 import { QuantityFeedBack } from "@/components/quantityFeedBack/page";
 import { QuantityService } from "@/components/quantityService/page";
+import { QuantityBooking } from "@/components/quantityBooking/page";
 
 const Chart = dynamic(
     () => import("../../components/chartShopowner/page").then((mod) => mod.Steam),
@@ -22,7 +23,7 @@ export default function Home() {
                         <div className="grid md:grid-cols-2 grid-cols-1 2xl:grid-cols-3 gap-5  justify-center w-full">
                             <QuantityFeedBack />
                             <QuantityService />
-                            <QuantityFeedBack />
+                            <QuantityBooking />
                         </div>
                     </div>
 
