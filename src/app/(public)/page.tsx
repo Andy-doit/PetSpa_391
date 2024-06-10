@@ -1,6 +1,6 @@
 
 import MenuGuest from "@/components/menuGuest/page";
-import TableSerivce from "@/components/tableService/page";
+import CarouselService from "@/components/carouselService/page";
 
 export default function Home() {
     return (
@@ -14,10 +14,10 @@ export default function Home() {
             </div>
 
             <div className="text-center py-3">
-                <p className="text-5xl font-medium">Dịch vụ</p>
+                <p className="text-5xl font-medium">Dịch vụ nổi bật</p>
             </div>
-            <div >
-                <TableSerivce />
+            <div className="container" >
+                <CarouselService />
             </div>
 
         </div>

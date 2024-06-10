@@ -26,19 +26,24 @@ export default function GuestHeader() {
         <Navbar className="bg-transparent  top-0 z-50 ">
             <NavbarContent className="hidden sm:flex gap-4 " justify="start">
                 <NavbarItem>
-                    <Link className="font-mono hover:text-orange-600" color="foreground" href="/aboutUs">
+                    <Link className="font-medium hover:text-orange-600" color="foreground" href="/">
+                        Trang chủ
+                    </Link>
+                </NavbarItem>
+                <NavbarItem>
+                    <Link className="font-medium hover:text-orange-600" color="foreground" href="/aboutUs">
                         Về chúng tôi
                     </Link>
                 </NavbarItem>
 
                 <NavbarItem>
-                    <Link className="font-mono hover:text-orange-600" color="foreground" href="/contact">
+                    <Link className="font-medium hover:text-orange-600" color="foreground" href="/contact">
                         Liên hệ
                     </Link>
                 </NavbarItem>
 
                 <NavbarItem>
-                    <Link className="font-mono hover:text-orange-600" color="foreground" href="/listService">
+                    <Link className="font-medium hover:text-orange-600" color="foreground" href="/listService">
                         Dịch vụ
 
 
@@ -48,7 +53,7 @@ export default function GuestHeader() {
             <NavbarBrand className="sm:flex justify-center text-center">
                 <div>
                     <Link href="/" className="font-bold text-3xl text-inherit">Pet Place</Link>
-                    <p className="font-mono font-light text-gray-400">Best Pet Care Service</p>
+                    <p className=" font-light text-gray-400">Best Pet Care Service</p>
                 </div>
             </NavbarBrand>
             <NavbarContent justify="end" >
@@ -103,11 +108,11 @@ export default function GuestHeader() {
                 ) : (
                     <>
                         <NavbarItem className="hidden lg:flex">
-                            <Link className="font-mono hover:text-orange-600" href="/logIn" color="foreground">Đăng nhập</Link>
+                            <Link className="font-medium hover:text-orange-600" href="/logIn" color="foreground">Đăng nhập</Link>
                         </NavbarItem>
                         <NavbarItem>
 
-                            <Link className="font-mono hover:text-orange-600" href="/signUp" color="foreground">Đăng ký</Link>
+                            <Link className="font-medium hover:text-orange-600" href="/signUp" color="foreground">Đăng ký</Link>
 
 
                         </NavbarItem>

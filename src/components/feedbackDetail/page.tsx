@@ -26,9 +26,9 @@ export default function FeedbackDetail() {
     return (
         <>
 
-            <div className="max-w-[900px] mt-5 mx-auto">
+            <div className=" mt-2 flex justify-evenly">
 
-                <div className="grid grid-cols-2 gap-5">
+                <div className="grid grid-cols-2 gap-2">
                     {feedback.map((item, index) => (
                         <Card key={index} className="w-full">
                             <CardHeader className="justify-between">
