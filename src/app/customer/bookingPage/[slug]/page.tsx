@@ -1,14 +1,13 @@
 'use client'
-import PriceTable from "@/components/priceTable/page";
-import introJs from 'intro.js';
 import 'intro.js/introjs.css';
 import { Card, Image, Button, Checkbox, DatePicker, Input, Textarea, Link } from "@nextui-org/react";
 import { useEffect, useState } from "react";
 import { today, getLocalTimeZone, CalendarDate } from "@internationalized/date";
-import { useRouter } from "next/navigation";
-import { useAppDispatch } from "@/lib/redux/store";
-import { ServiceDetail, createBooking } from "@/models/bookingModels";
-import { fetchServiceDetail } from "@/lib/redux/slice/listAllServiceSlice";
+import { ServiceDetail, createBookingInput } from "@/models/bookingModels";
+import { useAppDispatch } from '@/lib/redux/store';
+import { createBooking, fetchServiceDetail } from '@/lib/redux/slice/listAllServiceSlice';
+import getAccessAndRefreshCookie from '@/utilities/authUtils/getCookieForValidation';
+
 const Slot = [
     { label: "Slot 1", value: "Slot 1", description: "08: 00 - 09: 30", process: 'blank' },
     { label: "Slot 2", value: "Slot 2", description: "09: 30 - 11: 00", process: 'booked' },
@@ -21,24 +20,67 @@ const Slot = [
 export default function BookingPage(
     { params }: { params: { slug: string } }
 ) {
+    const [userId, setUid] = useState<string>('');
+    useEffect(() => {
+        const fetchUid = async () => {
+            try {
+                const { uid } = await getAccessAndRefreshCookie();
+                console.log('userId:', uid);
+                if (uid) {
+                    setUid(uid);
 
-    const [bookingData, setBookingData] = useState<createBooking>({
-        customer_Id: '',
+                }
+            } catch (error) {
+                console.error('Error fetching UID:', error);
+            }
+        };
+        fetchUid();
+    }, [userId]);
+    const [service, setService] = useState<ServiceDetail | any>();
+    const dispatch = useAppDispatch();
+    useEffect(() => {
+        const serviceDetail = async () => {
+            const response = await dispatch(fetchServiceDetail(params));
+            if (response.payload) {
+                setService(response.payload)
+                setBookingData(prevData => ({
+                    ...prevData,
+                    customerId: userId,
+
+                }));
+            }
+        }
+        serviceDetail();
+    }, [dispatch, userId]);
+    console.log(service)
+
+    const [bookingData, setBookingData] = useState<createBookingInput>({
+        customerAddress: '',
+        customerPhone: 0,
+        customerEmail: '',
+        additionalMessage: '',
+        serviceId: '',
+        localDate: '',
+        timeSlot: '',
+        customerId: userId,
         serviceName: '',
+        shopName: '',
+        customerName: '',
         addressShop: '',
-        nameShop: '',
-        shopId: 0,
         petType: '',
-        appointmentDate: '',
-        appointmentSlot: '',
         petName: '',
         petWeight: 0,
         notes: '',
     });
-    const [service, setService] = useState<ServiceDetail | any>();
-    const dispatch = useAppDispatch();
-
-    console.log(service);
+    const handleCreateBooking = async () => {
+        try {
+            if (userId) {
+                await dispatch(createBooking({ bookingData })).unwrap();
+            }
+        } catch (error) {
+            console.error('Error creating post:', error);
+        }
+    };
     console.log(bookingData);
     const [selectedSlotIndex, setSelectedSlotIndex] = useState(null);
     const handleInputChange = (fieldName: string, newValue: string | number) => {
@@ -68,11 +110,6 @@ export default function BookingPage(
             appointmentSlot: selectedSlot
         }));
     };
-
-    useEffect(() => {
-        introJs().start();
-    }, []);
-
 
     return (
 
@@ -109,49 +146,47 @@ export default function BookingPage(
                             </ol>
                         </nav>
                     </div>
-                    <div className='flex text-center items-center justify-center border-imgcus rounded-md '>
-                        <div>
-                            <div>
-                                <h1 className='text-4xl font-semibold'>{service.serviceName}</h1>
-                            </div>
-                            <div className='my-2 mx-5'>
-                                <h1 className='text-1xl font-normal'>{service.serviceDescription}</h1>
-                            </div>
-                            <Link href='/profileShopOwner' className="text-2xl font-medium hover:text-orange-600" color="foreground" data-title="Chào mừng bạn" data-intro="Bấm vào đây nếu bạn muốn xem chi tiết Shop">{service.shopName}</Link>
-                            <h2 className="text-1xl font-light ">Khu 2 hoang duong, thanh ba, phu tho</h2>
-                        </div>
-                    </div>
                 </div>
 
             )}
 
+
+
             <div className="flex mt-2 justify-around">
-                <div className="w-1/2 gap-2 grid grid-cols-12 grid-rows-2 ">
-                    <Card isFooterBlurred className="w-full h-[400px] col-span-12 sm:col-span-5">
+                {service && (
+                    <div className="w-1/2  ">
+                        <div className='flex text-center items-center justify-center border-imgcus rounded-md '>
+                            <div>
+                                <div>
+                                    <h1 className='text-4xl font-semibold'>{service.serviceName}</h1>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="gap-2 grid grid-cols-12 grid-rows-2 mt-5">
+                            <Card isFooterBlurred className="w-full h-[400px] col-span-12 sm:col-span-5">
+                                <Image
+                                    removeWrapper
+                                    alt="Card example background"
+                                    className="z-0 w-full h-full scale-125 -translate-y-6 object-cover"
+                                    src="https://i.pinimg.com/564x/4a/67/a2/4a67a27669112468d6cceefc5b8b824a.jpg"
+                                />
 
-                        <Image
-                            removeWrapper
-                            alt="Card example background"
-                            className="z-0 w-full h-full scale-125 -translate-y-6 object-cover"
-                            src="https://i.pinimg.com/564x/4a/67/a2/4a67a27669112468d6cceefc5b8b824a.jpg"
-                        />
+                            </Card>
+                            <Card isFooterBlurred className="w-full h-[400px] col-span-12 sm:col-span-7">
 
-                    </Card>
-                    <Card isFooterBlurred className="w-full h-[400px] col-span-12 sm:col-span-7">
-
-                        <Image
-                            removeWrapper
-                            alt="Relaxing app background"
-                            className="z-0 w-full h-full object-cover"
-                            src="https://i.pinimg.com/736x/69/75/82/69758271818635c7ff76b4a850795186.jpg"
-                        />
-                    </Card>
-                    <div className="w-full col-span-12 sm:col-span-12">
-                        <PriceTable />
+                                <Image
+                                    removeWrapper
+                                    alt="Relaxing app background"
+                                    className="z-0 w-full h-full object-cover"
+                                    src="https://i.pinimg.com/736x/69/75/82/69758271818635c7ff76b4a850795186.jpg"
+                                />
+                            </Card>
+                        </div>
                     </div>
-                </div>
+                )}
 
-                <div className="w-1/2 px-4" data-title="Chào mừng bạn" data-intro="Mỗi lượt đặt lịch bạn chỉ có thể đặt cho một thú cưng">
+
+                <div className="w-1/2 px-4" data-title="Chào mừng bạn" >
                     <div className='mb-2'>
                         <p className="text-1xl font-medium">Loại thú cưng</p>
                     </div>
@@ -195,7 +230,7 @@ export default function BookingPage(
                                 />
                                 <div className="absolute z-10 right-3 bottom-0 items-center flex">
                                     <Checkbox
-                                        isSelected={bookingData.petType === 'cat'}
+                                        isSelected={bookingData.petType === 'Mèo'}
                                         color="danger"
                                         radius="full"
                                         size="lg"
@@ -222,7 +257,7 @@ export default function BookingPage(
                     <div className='mb-2'>
                         <div className="   ">
                             <p className="text-1xl font-medium mb-2">Khung giờ</p>
-                            <div className="w-full flex justify-around" data-title="Chào mừng bạn" data-intro="Ở đây, ô màu vàng có nghĩa là khung giờ đó đã hết chỗ trống, còn ô màu xám có nghĩa là khung giờ vẫn trống, khi bạn chọn một khung giờ thì nó sẽ hiện màu xanh">
+                            <div className="w-full flex justify-around" >
                                 {Slot.map((slot, index) => (
                                     <Button
                                         key={index}
@@ -236,7 +271,7 @@ export default function BookingPage(
                             </div>
                         </div>
                     </div>
-                    <div className='mb-2'>
+                    {/* <div className='mb-2'>
                         <div className=" flex  justify-between">
                             <div>
                                 <p className="text-1xl font-medium mb-2">Tên thú cưng</p>
@@ -264,7 +299,7 @@ export default function BookingPage(
                             </div>
                         </div>
 
-                    </div>
+                    </div> */}
                     <div className='mb-2'>
                         <div className=" flex  justify-between">
                             <div>
@@ -281,7 +316,7 @@ export default function BookingPage(
                         </div>
                     </div>
                     <div className='mt-11'>
-                        <Button type="submit" className="bg-gradient-to-tr from-pink-500 to-yellow-500 text-white shadow-lg w-full">Đặt lịch</Button>
+                        <Button onClick={handleCreateBooking} type="submit" className="bg-gradient-to-tr from-pink-500 to-yellow-500 text-white shadow-lg w-full">Đặt lịch</Button>
 
                     </div>
                 </div>

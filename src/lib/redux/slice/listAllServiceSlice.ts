@@ -1,4 +1,4 @@
-import { ServiceDetail, allServicesPaginationData, allServicesPaginationResponse } from '@/models/bookingModels';
+import { ServiceDetail, allServicesPaginationData, allServicesPaginationResponse, bookingCreateResponseSuccess, createBookingInput } from '@/models/bookingModels';
 import agent from '@/utilities/agent';
 import baseApi from '@/utilities/baseApi';
 import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
@@ -52,9 +52,9 @@ export const fetchAllServicesPagination = createAsyncThunk(
 
 export const fetchServiceDetail = createAsyncThunk(
     'role/fetchServiceDetail',
-    async ({ id }: { id: number }) => {
+    async ({ slug }: { slug: string }) => {
         try {
-            const response = await agent.ServiceAPI.getServiceBySlug(id) as ServiceDetail;
+            const response = await agent.ServiceAPI.getServiceBySlug(slug) as ServiceDetail;
             return response;
         } catch (error) {
             if (error instanceof AxiosError) {
@@ -91,6 +91,36 @@ const serviceSlice = createSlice({
 
     },
 });
+export const createBooking = createAsyncThunk(
+    'servie/createBooking',
+    async ({ bookingData }: { bookingData: createBookingInput }) => {
+        try {
+            console.log(bookingData);
+            const formData = new FormData();
+
+            formData.append('customerId', bookingData.customerId);
+            formData.append('customerName', bookingData.customerName);
+            formData.append('customerAddress', bookingData.customerAddress);
+            formData.append('customerPhone', bookingData.customerPhone.toString());
+            formData.append('additionalMessage', bookingData.additionalMessage);
+            formData.append('serviceId', bookingData.serviceId);
+            formData.append('serviceName', bookingData.serviceName);
+            formData.append('localDate', bookingData.localDate);
+            formData.append('timeSlot', bookingData.timeSlot);
+            const response = (await agent.ServiceAPI.createBooking(
+                formData,
+            )) as bookingCreateResponseSuccess;
+            return response.message;
+        } catch (error) {
+            if (error instanceof AxiosError) {
+                return {
+                    message: error.response?.data.error.message,
+                    status: error.response?.status,
+                };
+            }
+        }
+    },
+);
 
 export const serviceReducer = serviceSlice.actions;
 

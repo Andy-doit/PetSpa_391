@@ -27,9 +27,13 @@ const requests = {
 const ServiceAPI = {
   getServiceList: () =>
     requests.baseApiGet("/api/v1/services"),
-  getServiceBySlug: (id: number) =>
-    requests.baseApiGet(`/api/v1/service/${id}`),
+  getServiceBySlug: (slug: string) =>
+    requests.baseApiGet(`/api/v1/service/${slug}`),
+  createBooking: (input: FormData) =>
+    requests.baseApiPost('api/v1/customer/booking', input),
 };
+
+
 
 const agent = {
   ServiceAPI
