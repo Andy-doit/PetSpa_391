@@ -12,6 +12,7 @@ import { useRouter } from "next/navigation";
 import { LoginError, SignUpError } from "@/utilities/authUtils/loginValidation";
 interface roleJwt extends JwtPayload {
   role: string;
+  userId: string;
 
 }
 export function useAuth() {
@@ -29,6 +30,7 @@ export function useAuth() {
       Cookies.set('token', data.token, { expires: 1 });
       const decodeToken = jwtDecode(data.token) as roleJwt;
       Cookies.set('role', decodeToken?.role, { expires: 1 })
+      Cookies.set('userId', decodeToken?.userId, { expires: 1 })
       switch (decodeToken?.role) {
         case ROLE.role1:
           router.replace(`/`);
