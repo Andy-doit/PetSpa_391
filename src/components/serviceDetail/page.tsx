@@ -10,17 +10,17 @@ import FeedbackDetail from "../feedbackDetail/page";
 
 
 
-export default function DetailService({ params }: { params: { id: number } }) {
+export default function DetailService({ params }: { params: { slug: string } }) {
     const [service, setService] = useState<ServiceDetail | any>();
     const dispatch = useAppDispatch();
+
     useEffect(() => {
         const serviceDetail = async () => {
             const response = await dispatch(fetchServiceDetail(params));
-            if (response) {
+            if (response.payload) {
                 setService(response.payload);
             }
-            console.log(response.payload)
-        }
+        };
         serviceDetail();
     }, [dispatch]);
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
@@ -63,7 +63,7 @@ export default function DetailService({ params }: { params: { id: number } }) {
                                 <div className="rounded-lg p-6 ">
                                     <div className="flex justify-end ">
                                         <div className="fixed">
-                                            <Link className=" w-[350px]" href={localStorage.getItem('token') ? `/customer/bookingPage/${service.id}` : '/login'}>
+                                            <Link className=" w-[350px]" href={localStorage.getItem('token') ? `/customer/bookingPage/${service.id}` : '/logIn'}>
                                                 <Button className="bg-gradient-to-tr from-pink-500 to-yellow-500   text-white shadow-lg w-[350px]">
                                                     Đặt lịch
                                                 </Button>

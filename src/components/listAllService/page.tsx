@@ -18,13 +18,9 @@ export default function ListAllService() {
         const allService = async () => {
             const response = await dispatch(fetchAllServicesPagination());
             setItems(response.payload);
-            console.log(response.payload)
         }
         allService();
     }, [dispatch]);
-
-    console.log(items);
-
     return (
         <div className="mb-5">
             <div className="grid grid-cols-4 gap-4 container">

@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Slider from "react-slick";
-import "../../app/globals.css";
+import "./carousel.css";
 import { fetchAllServicesPagination } from "@/lib/redux/slice/listAllServiceSlice"; // Giả sử đường dẫn
 import { useAppDispatch } from "@/lib/redux/store";
 import CardService from "../cardService/page";
