@@ -8,7 +8,7 @@ import { LoginInput } from '@/models/authentication';
 import { useAuth } from '@/hooks/useAuth';
 import { Field, Form, Formik } from 'formik';
 import * as Yup from 'yup';
-import { ClipLoader } from 'react-spinners'; // Import the spinner
+import { ClipLoader } from 'react-spinners';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { MyInput, MyInputPassword } from '@/components/ui/loginInput';

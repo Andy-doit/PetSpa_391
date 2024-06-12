@@ -1,12 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import { Card, CardHeader, CardBody, CardFooter, Divider, Link } from "@nextui-org/react";
 
 import { FaStar } from "react-icons/fa";
 import DetailService from "../serviceDetail/page";
-import { allServicesPaginationData } from "@/models/bookingModels";
+import { ServiceDetail, allServicesPaginationData } from "@/models/bookingModels";
+import { fetchServiceDetail } from "@/lib/redux/slice/listAllServiceSlice";
 
 export default function CardService({ service }: { service: allServicesPaginationData }) {
-    console.log(service)
+
     return (
         <div className="mb-5">
             <Card className="max-w-[400px]">
@@ -39,7 +40,7 @@ export default function CardService({ service }: { service: allServicesPaginatio
                         </Button>
                     </Link> */}
                     <div className="w-full">
-                        <DetailService params={service} />
+                        <DetailService params={{ slug: service.id }} />
                     </div>
                 </CardFooter>
             </Card>

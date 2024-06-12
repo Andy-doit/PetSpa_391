@@ -1,18 +1,24 @@
-export interface createBooking {
-    customer_Id: string;
-    serviceName: string;
-    addressShop: string;
-    nameShop: string;
-    shopId: number;
-    petType: string;
-    appointmentDate: string;
-    appointmentSlot: string;
-    petName: string;
-    petWeight: number;
-    notes: string;
+export interface createBookingInput {
+    customerId: number,
+    additionalMessage: string,
+    serviceId: number,
+    localDate: string,
+    timeSlotDto: {
+        startLocalDateTime: string,
+        endLocalDateTime: string
+    },
+    petName: string,
+    petAge: number,
+    typePet: string,
+    petWeight: number,
+    petId: string,
+    petGender: string,
 }
+
+
 export interface allServicesPaginationData {
-    id: number,
+    id: string,
+    slug: string,
     serviceName: string;
     price: number;
     address: string,
@@ -34,7 +40,7 @@ export interface allServicesPaginationResponse {
     };
 }
 export interface ServiceDetail {
-    id: number | null;
+    id: string;
     shopId: string;
     title: string;
     slug: string;
@@ -44,4 +50,9 @@ export interface ServiceDetail {
     maxWeight: number,
     shopName: string,
 
+}
+export interface bookingCreateResponseSuccess {
+    status: number;
+    message: string;
+    success: boolean;
 }
