@@ -66,6 +66,22 @@ export const fetchServiceDetail = createAsyncThunk(
         }
     },
 );
+// export const fetchTimeSlot = createAsyncThunk(
+//     'id/fetchTimeSlot',
+//     async ({ localDate }: { localDate: string }) => {
+//         try {
+//             const response = await agent.ServiceAPI.getTimeSlot(localDate) as getTimeSlot;
+//             return response;
+//         } catch (error) {
+//             if (error instanceof AxiosError) {
+//                 return {
+//                     message: error.response?.data.error.message,
+//                     status: error.response?.status,
+//                 };
+//             }
+//         }
+//     },
+// );
 
 const serviceSlice = createSlice({
     name: 'service',
@@ -96,19 +112,22 @@ export const createBooking = createAsyncThunk(
     async ({ bookingData }: { bookingData: createBookingInput }) => {
         try {
             console.log(bookingData);
-            const formData = new FormData();
 
-            formData.append('customerId', bookingData.customerId);
-            formData.append('customerName', bookingData.customerName);
-            formData.append('customerAddress', bookingData.customerAddress);
-            formData.append('customerPhone', bookingData.customerPhone.toString());
-            formData.append('additionalMessage', bookingData.additionalMessage);
-            formData.append('serviceId', bookingData.serviceId);
-            formData.append('serviceName', bookingData.serviceName);
-            formData.append('localDate', bookingData.localDate);
-            formData.append('timeSlot', bookingData.timeSlot);
+            // const formData = new FormData();
+
+            // formData.append('customerId', bookingData.customerId);
+            // formData.append('additionalMessage', bookingData.additionalMessage);
+            // formData.append('serviceId', bookingData.serviceId);
+            // formData.append('localDate', bookingData.localDate);
+            // formData.append('petName', bookingData.petName);
+            // formData.append('petAge', bookingData.petAge.toString());
+            // formData.append('typePet', bookingData.typePet);
+            // formData.append('petWeight', bookingData.petWeight.toString());
+            // formData.append('petId', bookingData.localDate);
+            // formData.append('petGender', bookingData.localDate);
+            // formData.append('timeSlotDto', bookingData.timeSlotDto);
             const response = (await agent.ServiceAPI.createBooking(
-                formData,
+                bookingData,
             )) as bookingCreateResponseSuccess;
             return response.message;
         } catch (error) {

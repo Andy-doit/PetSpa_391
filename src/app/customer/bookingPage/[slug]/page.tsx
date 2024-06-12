@@ -1,6 +1,6 @@
 'use client'
 import 'intro.js/introjs.css';
-import { Card, Image, Button, Checkbox, DatePicker, Input, Textarea, Link } from "@nextui-org/react";
+import { Card, Image, Button, Checkbox, DatePicker, Input, Textarea, Link, Select } from "@nextui-org/react";
 import { useEffect, useState } from "react";
 import { today, getLocalTimeZone, CalendarDate } from "@internationalized/date";
 import { ServiceDetail, createBookingInput } from "@/models/bookingModels";
@@ -8,13 +8,21 @@ import { useAppDispatch } from '@/lib/redux/store';
 import { createBooking, fetchServiceDetail } from '@/lib/redux/slice/listAllServiceSlice';
 import getAccessAndRefreshCookie from '@/utilities/authUtils/getCookieForValidation';
 
-const Slot = [
-    { label: "Slot 1", value: "Slot 1", description: "08: 00 - 09: 30", process: 'blank' },
-    { label: "Slot 2", value: "Slot 2", description: "09: 30 - 11: 00", process: 'booked' },
-    { label: "Slot 3", value: "Slot 3", description: "11: 00 - 12: 30", process: 'blank' },
-    { label: "Slot 4", value: "Slot 4", description: "13: 30 - 15: 00", process: 'booked' },
-    { label: "Slot 4", value: "Slot 4", description: "15: 00 - 16: 30", process: 'blank' },
+interface SlotItem {
+    label: string;
+    value: string;
+    description: string;
+    process: string;
+    startLocalDateTime: string;
+    endLocalDateTime: string;
+}
 
+const Slot: SlotItem[] = [
+    { label: "Slot 1", value: "Slot 1", description: "08:00 - 09:30", process: 'blank', startLocalDateTime: '09:00', endLocalDateTime: '12:00' },
+    { label: "Slot 2", value: "Slot 2", description: "09:30 - 11:00", process: 'booked', startLocalDateTime: '10:00', endLocalDateTime: '12:00' },
+    { label: "Slot 3", value: "Slot 3", description: "11:00 - 12:30", process: 'blank', startLocalDateTime: '12:00', endLocalDateTime: '14:00' },
+    { label: "Slot 4", value: "Slot 4", description: "13:30 - 15:00", process: 'booked', startLocalDateTime: '14:00', endLocalDateTime: '16:00' },
+    { label: "Slot 5", value: "Slot 5", description: "15:00 - 16:30", process: 'blank', startLocalDateTime: '16:00', endLocalDateTime: '18:00' },
 ];
 
 export default function BookingPage(
@@ -43,10 +51,10 @@ export default function BookingPage(
             const response = await dispatch(fetchServiceDetail(params));
             if (response.payload) {
                 setService(response.payload)
+
                 setBookingData(prevData => ({
                     ...prevData,
-                    customerId: userId,
-
+                    customerId: parseInt(userId),
                 }));
             }
         }
@@ -55,59 +63,74 @@ export default function BookingPage(
     console.log(service)
 
     const [bookingData, setBookingData] = useState<createBookingInput>({
-        customerAddress: '',
-        customerPhone: 0,
-        customerEmail: '',
+        customerId: parseInt(userId),
         additionalMessage: '',
-        serviceId: '',
+        serviceId: parseInt(params.slug),
         localDate: '',
-        timeSlot: '',
-        customerId: userId,
-        serviceName: '',
-        shopName: '',
-        customerName: '',
-        addressShop: '',
-        petType: '',
+        timeSlotDto: {
+            startLocalDateTime: '',
+            endLocalDateTime: ''
+        },
         petName: '',
+        petAge: 0,
+        typePet: 'CAT',
         petWeight: 0,
-        notes: '',
+        petId: '',
+        petGender: '',
     });
     const handleCreateBooking = async () => {
         try {
             if (userId) {
                 await dispatch(createBooking({ bookingData })).unwrap();
+                console.log(bookingData);
             }
+
         } catch (error) {
             console.error('Error creating post:', error);
         }
+
     };
     console.log(bookingData);
-    const [selectedSlotIndex, setSelectedSlotIndex] = useState(null);
+
+    const [selectedSlotIndex, setSelectedSlotIndex] = useState<number | null>(null);
     const handleInputChange = (fieldName: string, newValue: string | number) => {
         setBookingData(prevData => ({
             ...prevData,
             [fieldName]: newValue
         }));
     };
-    const handlePetTypeChange = (newType: string) => {
+    // const handlePetTypeChange = (newType: string) => {
+    //     setBookingData(prevData => ({
+    //         ...prevData,
+    //         petType: newType
+    //     }));
+    // };
+    const [selectedGender, setSelectedGender] = useState<string>('');
+
+
+    const handleGenderChange = (gender: string) => {
+        setSelectedGender(gender);
         setBookingData(prevData => ({
             ...prevData,
-            petType: newType
+            petGender: gender
         }));
     };
     const handleDateChange = (newDate: CalendarDate) => {
-        const formattedDate = `${newDate.day}/${newDate.month}/${newDate.year}`;
+        const formattedDate = `${newDate.year}-${("0" + newDate.month).slice(-2)}-${("0" + newDate.day).slice(-2)}`;
         setBookingData(prevData => ({
             ...prevData,
-            appointmentDate: formattedDate
+            localDate: formattedDate
         }));
     };
-    const handleSlotClick = (index: any) => {
+    const handleSlotClick = (index: number) => {
         setSelectedSlotIndex(index);
-        const selectedSlot = Slot[index].description;
+        const selectedSlot = Slot[index];
         setBookingData(prevData => ({
             ...prevData,
-            appointmentSlot: selectedSlot
+            timeSlotDto: {
+                startLocalDateTime: selectedSlot.startLocalDateTime,
+                endLocalDateTime: selectedSlot.endLocalDateTime
+            }
         }));
     };
 
@@ -187,12 +210,12 @@ export default function BookingPage(
 
 
                 <div className="w-1/2 px-4" data-title="Chào mừng bạn" >
-                    <div className='mb-2'>
+                    {/* <div className='mb-2'>
                         <p className="text-1xl font-medium">Loại thú cưng</p>
                     </div>
                     <div className="flex mb-2 justify-around w-1/3" >
 
-                        <div onClick={() => handlePetTypeChange('Chó')}>
+                        <div onClick={() => handlePetTypeChange('DOG')}>
                             <Card
                                 radius="lg"
                                 className="border-none"
@@ -206,7 +229,7 @@ export default function BookingPage(
                                 />
                                 <div className="absolute z-10 right-3 bottom-0 items-center flex">
                                     <Checkbox
-                                        isSelected={bookingData.petType === 'Chó'}
+                                        isSelected={bookingData.typePet === 'DOG'}
                                         color="danger"
                                         radius="full"
                                         size="lg"
@@ -216,7 +239,7 @@ export default function BookingPage(
                                 </div>
                             </Card>
                         </div>
-                        <div onClick={() => handlePetTypeChange('mèo')}>
+                        <div onClick={() => handlePetTypeChange('CAT')}>
                             <Card
                                 radius="lg"
                                 className="border-none"
@@ -230,7 +253,7 @@ export default function BookingPage(
                                 />
                                 <div className="absolute z-10 right-3 bottom-0 items-center flex">
                                     <Checkbox
-                                        isSelected={bookingData.petType === 'Mèo'}
+                                        isSelected={bookingData.typePet === 'CAT'}
                                         color="danger"
                                         radius="full"
                                         size="lg"
@@ -239,7 +262,7 @@ export default function BookingPage(
                                 </div>
                             </Card>
                         </div>
-                    </div>
+                    </div> */}
                     <div className='mb-2'>
                         <div className="   ">
                             <p className="text-1xl font-medium mb-2">Chọn ngày</p>
@@ -271,7 +294,7 @@ export default function BookingPage(
                             </div>
                         </div>
                     </div>
-                    {/* <div className='mb-2'>
+                    <div className='mb-2'>
                         <div className=" flex  justify-between">
                             <div>
                                 <p className="text-1xl font-medium mb-2">Tên thú cưng</p>
@@ -299,14 +322,51 @@ export default function BookingPage(
                             </div>
                         </div>
 
-                    </div> */}
+                    </div>
+                    <div className='mb-2'>
+                        <div className=" flex  justify-between">
+                            <div>
+                                <p className="text-1xl font-medium mb-2">Tuổi thú cưng</p>
+                                <div className="w-full">
+                                    <Input
+                                        className="w-[300px]"
+                                        onChange={(e) => handleInputChange('petAge', parseInt(e.target.value))}
+                                        type="Petage"
+                                        label="Tuổi"
+                                    />
+
+
+                                </div>
+                            </div>
+                            <div>
+                                <p className="text-1xl font-medium mb-2">Giới tính</p>
+                                <div className="flex gap-4">
+                                    <Checkbox
+                                        checked={selectedGender === "Male"}
+                                        onChange={() => handleGenderChange("Male")}
+                                        disabled={selectedGender === "Female"}
+                                    >
+                                        Đực
+                                    </Checkbox>
+                                    <Checkbox
+                                        checked={selectedGender === "Female"}
+                                        onChange={() => handleGenderChange("Female")}
+                                        disabled={selectedGender === "Male"}
+                                    >
+                                        Cái
+                                    </Checkbox>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
                     <div className='mb-2'>
                         <div className=" flex  justify-between">
                             <div>
                                 <p className="text-1xl font-medium mb-2">Ghi chú</p>
                                 <div className="w-full">
                                     <Textarea
-                                        onChange={(e) => handleInputChange('notes', e.target.value)}
+                                        onChange={(e) => handleInputChange('additionalMessage', e.target.value)}
                                         label="Ghi chú"
                                         placeholder="Những điều cần lưu ý đối với thú cưng của bạn"
                                         className="w-[500px]"

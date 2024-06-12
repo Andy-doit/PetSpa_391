@@ -1,21 +1,21 @@
 export interface createBookingInput {
-    customerAddress: string,
-    customerPhone: number,
-    customerEmail: string,
+    customerId: number,
     additionalMessage: string,
-    serviceId: string,
+    serviceId: number,
     localDate: string,
-    timeSlot: string,
-    customerId: string;
-    serviceName: string;
-    shopName: string
-    customerName: string;
-    addressShop: string;
-    petType: string;
-    petName: string;
-    petWeight: number;
-    notes: string;
+    timeSlotDto: {
+        startLocalDateTime: string,
+        endLocalDateTime: string
+    },
+    petName: string,
+    petAge: number,
+    typePet: string,
+    petWeight: number,
+    petId: string,
+    petGender: string,
 }
+
+
 export interface allServicesPaginationData {
     id: string,
     slug: string,
