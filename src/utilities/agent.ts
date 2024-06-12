@@ -1,6 +1,7 @@
 import { AxiosResponse } from "axios";
 import apiJWT from "./api";
 import baseApi from "./baseApi";
+import { createBookingInput } from "@/models/bookingModels";
 
 
 const responseBody = (response: AxiosResponse) => response.data;
@@ -29,8 +30,10 @@ const ServiceAPI = {
     requests.baseApiGet("/api/v1/services"),
   getServiceBySlug: (slug: string) =>
     requests.baseApiGet(`/api/v1/service/${slug}`),
-  createBooking: (input: FormData) =>
+  createBooking: (input: createBookingInput) =>
     requests.baseApiPost('api/v1/customer/booking', input),
+  getTimeSlot: (localDate: string) =>
+    requests.baseApiGet(`api/v1/customer/booking/service/id/${localDate}`)
 };
 
 
