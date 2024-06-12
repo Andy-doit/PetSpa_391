@@ -32,8 +32,8 @@ const ServiceAPI = {
     requests.baseApiGet(`/api/v1/service/${slug}`),
   createBooking: (input: createBookingInput) =>
     requests.baseApiPost('api/v1/customer/booking', input),
-  getTimeSlot: (localDate: string) =>
-    requests.baseApiGet(`api/v1/customer/booking/service/id/${localDate}`)
+  getTimeSlot: (params: string, localDate: string) =>
+    requests.baseApiGet(`api/v1/customer/booking/service/${params}/${localDate}`)
 };
 
 
