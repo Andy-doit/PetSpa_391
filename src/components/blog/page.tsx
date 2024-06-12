@@ -95,11 +95,7 @@ const BlogPage = () => {
                         </div>
                     </div>
                 </div>
-                <div className="flex justify-end mt-8">
-                    <Link href="/blog" className="text-blue-500">
-                        Read Our Blog
-                    </Link>
-                </div>
+
             </div>
         </div>
     );

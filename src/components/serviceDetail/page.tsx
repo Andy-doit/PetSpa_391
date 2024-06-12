@@ -7,7 +7,7 @@ import { fetchServiceDetail } from "@/lib/redux/slice/listAllServiceSlice";
 import PriceTable from "../priceTable/page";
 import FeedbackDetail from "../feedbackDetail/page";
 
-
+import { FaEye, FaShoppingCart } from 'react-icons/fa';
 
 
 export default function DetailService({ params }: { params: { slug: string } }) {
@@ -28,7 +28,8 @@ export default function DetailService({ params }: { params: { slug: string } }) 
 
         <div>
             <Button className="bg-gradient-to-tr from-pink-500 to-yellow-500 text-white shadow-lg w-full" onPress={onOpen}>
-                Xem chi tiết
+                <FaEye />   Xem chi tiết
+
             </Button>
             <div className="flex flex-col gap-2">
 
@@ -64,8 +65,8 @@ export default function DetailService({ params }: { params: { slug: string } }) 
                                     <div className="flex justify-end ">
                                         <div className="fixed">
                                             <Link className=" w-[350px]" href={localStorage.getItem('token') ? `/customer/bookingPage/${service.id}` : '/logIn'}>
-                                                <Button className="bg-gradient-to-tr from-pink-500 to-yellow-500   text-white shadow-lg w-[350px]">
-                                                    Đặt lịch
+                                                <Button className="bg-gradient-to-tr from-pink-500 to-yellow-500 text-white shadow-lg">
+                                                    <FaShoppingCart /> Đặt lịch
                                                 </Button>
                                             </Link>
                                         </div>

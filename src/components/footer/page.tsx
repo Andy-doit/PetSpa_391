@@ -1,3 +1,4 @@
+import Link from 'next/link';
 export default function Footer() {
     return (
         <div>
@@ -50,20 +51,20 @@ export default function Footer() {
                         <div className="sm:flex sm:items-center sm:justify-between">
 
                             <div className="flex mt-4 space-x-6 sm:justify-center sm:mt-0">
-                                <a href="#" className="text-gray-500 hover:text-gray-900 light:hover:text-white">
-                                    Home
-                                </a>
-                                <a href="#" className="text-gray-500 hover:text-gray-900 light:hover:text-white">
+                                <Link href="/" className="text-gray-500 hover:text-gray-900 light:hover:text-white">
+                                    Trang chủ
+                                </Link>
+                                <a href="blog" className="text-gray-500 hover:text-gray-900 light:hover:text-white">
                                     Blog
                                 </a>
-                                <a href="#" className="text-gray-500 hover:text-gray-900 light:hover:text-white">
-                                    Site Map
+                                <a href="listService" className="text-gray-500 hover:text-gray-900 light:hover:text-white">
+                                    Dịch vụ
                                 </a>
-                                <a href="#" className="text-gray-500 hover:text-gray-900 light:hover:text-white">
-                                    Privacy Policy
+                                <a href="aboutUs" className="text-gray-500 hover:text-gray-900 light:hover:text-white">
+                                    Về chúng tôi
                                 </a>
-                                <a href="#" className="text-gray-500 hover:text-gray-900 light:hover:text-white">
-                                    Terms of Service
+                                <a href="contact" className="text-gray-500 hover:text-gray-900 light:hover:text-white">
+                                    Liên hệ
                                 </a>
                             </div>
                         </div>

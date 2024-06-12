@@ -1,13 +1,12 @@
-import React, { useState } from "react";
+import React from "react";
 import { Card, CardHeader, CardBody, CardFooter, Divider, Link } from "@nextui-org/react";
 
 import { FaStar } from "react-icons/fa";
 import DetailService from "../serviceDetail/page";
-import { ServiceDetail, allServicesPaginationData } from "@/models/bookingModels";
-import { fetchServiceDetail } from "@/lib/redux/slice/listAllServiceSlice";
+import { allServicesPaginationData } from "@/models/bookingModels";
 
 export default function CardService({ service }: { service: allServicesPaginationData }) {
-
+    console.log(service)
     return (
         <div className="mb-5">
             <Card className="max-w-[400px]">
@@ -34,13 +33,13 @@ export default function CardService({ service }: { service: allServicesPaginatio
                 </CardBody>
                 <Divider />
                 <CardFooter className="w-full flex justify-center">
-                    {/* <Link href={localStorage.getItem('token') ? `/customer/bookingPage/${service.id}` : '/login'}>
+                    {/* <Link href={localStorage.getItem('token') ? /customer/bookingPage/${service.id} : '/login'}>
                         <Button className="bg-gradient-to-tr from-pink-500 to-yellow-500 text-white shadow-lg w-[180px]">
                             Đặt lịch
                         </Button>
                     </Link> */}
                     <div className="w-full">
-                        <DetailService params={{ slug: service.id }} />
+                        <DetailService params={service} />
                     </div>
                 </CardFooter>
             </Card>
