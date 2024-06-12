@@ -14,6 +14,13 @@ export interface createBookingInput {
     petId: string,
     petGender: string,
 }
+export interface getTimeSlot {
+    availableSlots: number | null,
+    timeSlotDto: {
+        startLocalDateTime: string,
+        endLocalDateTime: string
+    }
+}
 
 
 export interface allServicesPaginationData {
