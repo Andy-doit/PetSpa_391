@@ -3,27 +3,12 @@ import 'intro.js/introjs.css';
 import { Card, Image, Button, Checkbox, DatePicker, Input, Textarea, Link, Select } from "@nextui-org/react";
 import { useEffect, useState } from "react";
 import { today, getLocalTimeZone, CalendarDate } from "@internationalized/date";
-import { ServiceDetail, createBookingInput } from "@/models/bookingModels";
+import { ServiceDetail, createBookingInput, getTimeSlot } from "@/models/bookingModels";
 import { useAppDispatch } from '@/lib/redux/store';
-import { createBooking, fetchServiceDetail } from '@/lib/redux/slice/listAllServiceSlice';
+import { createBooking, fetchServiceDetail, fetchTimeSlot } from '@/lib/redux/slice/listAllServiceSlice';
 import getAccessAndRefreshCookie from '@/utilities/authUtils/getCookieForValidation';
 
-interface SlotItem {
-    label: string;
-    value: string;
-    description: string;
-    process: string;
-    startLocalDateTime: string;
-    endLocalDateTime: string;
-}
 
-const Slot: SlotItem[] = [
-    { label: "Slot 1", value: "Slot 1", description: "08:00 - 09:30", process: 'blank', startLocalDateTime: '09:00', endLocalDateTime: '12:00' },
-    { label: "Slot 2", value: "Slot 2", description: "09:30 - 11:00", process: 'booked', startLocalDateTime: '10:00', endLocalDateTime: '12:00' },
-    { label: "Slot 3", value: "Slot 3", description: "11:00 - 12:30", process: 'blank', startLocalDateTime: '12:00', endLocalDateTime: '14:00' },
-    { label: "Slot 4", value: "Slot 4", description: "13:30 - 15:00", process: 'booked', startLocalDateTime: '14:00', endLocalDateTime: '16:00' },
-    { label: "Slot 5", value: "Slot 5", description: "15:00 - 16:30", process: 'blank', startLocalDateTime: '16:00', endLocalDateTime: '18:00' },
-];
 
 export default function BookingPage(
     { params }: { params: { slug: string } }
@@ -73,7 +58,7 @@ export default function BookingPage(
         },
         petName: '',
         petAge: 0,
-        typePet: 'CAT',
+        typePet: 'DOG',
         petWeight: 0,
         petId: '',
         petGender: '',
@@ -92,7 +77,7 @@ export default function BookingPage(
     };
     console.log(bookingData);
 
-    const [selectedSlotIndex, setSelectedSlotIndex] = useState<number | null>(null);
+
     const handleInputChange = (fieldName: string, newValue: string | number) => {
         setBookingData(prevData => ({
             ...prevData,
@@ -106,8 +91,6 @@ export default function BookingPage(
     //     }));
     // };
     const [selectedGender, setSelectedGender] = useState<string>('');
-
-
     const handleGenderChange = (gender: string) => {
         setSelectedGender(gender);
         setBookingData(prevData => ({
@@ -115,6 +98,7 @@ export default function BookingPage(
             petGender: gender
         }));
     };
+
     const handleDateChange = (newDate: CalendarDate) => {
         const formattedDate = `${newDate.year}-${("0" + newDate.month).slice(-2)}-${("0" + newDate.day).slice(-2)}`;
         setBookingData(prevData => ({
@@ -122,9 +106,22 @@ export default function BookingPage(
             localDate: formattedDate
         }));
     };
+    const [timeSlot, setTimeSlot] = useState<getTimeSlot[] | any>([]);
+    const [selectedSlotIndex, setSelectedSlotIndex] = useState<number | null>(null);
+    useEffect(() => {
+        const slotTime = async () => {
+            const dateOnly = new Date().toISOString().split('T')[0];
+            const response = await dispatch(fetchTimeSlot({ params: params.slug, localDate: dateOnly }));
+            if (response) {
+                setTimeSlot(response)
+            }
+        }
+        slotTime();
+    }, [dispatch]);
+    console.log(timeSlot)
     const handleSlotClick = (index: number) => {
         setSelectedSlotIndex(index);
-        const selectedSlot = Slot[index];
+        const selectedSlot = timeSlot[index];
         setBookingData(prevData => ({
             ...prevData,
             timeSlotDto: {
@@ -281,14 +278,14 @@ export default function BookingPage(
                         <div className="   ">
                             <p className="text-1xl font-medium mb-2">Khung giờ</p>
                             <div className="w-full flex justify-around" >
-                                {Slot.map((slot, index) => (
+                                {Array.isArray(timeSlot) && timeSlot.map((slot, index) => (
                                     <Button
                                         key={index}
                                         onClick={() => handleSlotClick(index)}
-                                        color={slot.process === 'booked' ? 'warning' : (selectedSlotIndex === index ? 'success' : 'default')}
-                                        disabled={slot.process === 'booked'}
+                                        color={slot.availableSlots === 0 ? 'warning' : (selectedSlotIndex === index ? 'success' : 'default')}
+                                        disabled={slot.availableSlots === 'booked'}
                                     >
-                                        {slot.description}
+                                        {`${slot.startLocalDateTime} - ${slot.endLocalDateTime}`}
                                     </Button>
                                 ))}
                             </div>

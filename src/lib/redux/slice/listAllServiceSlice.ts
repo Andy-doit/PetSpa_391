@@ -1,4 +1,4 @@
-import { ServiceDetail, allServicesPaginationData, allServicesPaginationResponse, bookingCreateResponseSuccess, createBookingInput } from '@/models/bookingModels';
+import { ServiceDetail, allServicesPaginationData, allServicesPaginationResponse, bookingCreateResponseSuccess, createBookingInput, getTimeSlot } from '@/models/bookingModels';
 import agent from '@/utilities/agent';
 import baseApi from '@/utilities/baseApi';
 import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
@@ -66,22 +66,22 @@ export const fetchServiceDetail = createAsyncThunk(
         }
     },
 );
-// export const fetchTimeSlot = createAsyncThunk(
-//     'id/fetchTimeSlot',
-//     async ({ localDate }: { localDate: string }) => {
-//         try {
-//             const response = await agent.ServiceAPI.getTimeSlot(localDate) as getTimeSlot;
-//             return response;
-//         } catch (error) {
-//             if (error instanceof AxiosError) {
-//                 return {
-//                     message: error.response?.data.error.message,
-//                     status: error.response?.status,
-//                 };
-//             }
-//         }
-//     },
-// );
+export const fetchTimeSlot = createAsyncThunk(
+    'id/fetchTimeSlot',
+    async ({ localDate, params }: { localDate: string, params: string }) => {
+        try {
+            const response = await agent.ServiceAPI.getTimeSlot(params, localDate) as getTimeSlot;
+            return response;
+        } catch (error) {
+            if (error instanceof AxiosError) {
+                return {
+                    message: error.response?.data.error.message,
+                    status: error.response?.status,
+                };
+            }
+        }
+    },
+);
 
 const serviceSlice = createSlice({
     name: 'service',
