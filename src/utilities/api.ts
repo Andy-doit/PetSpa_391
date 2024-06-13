@@ -63,27 +63,6 @@ apiJWT.interceptors.request.use(async (config) => {
   return config;
 });
 
-apiJWT.interceptors.response.use(
-  async (response) => {
-    await sleep();
-    return response.data;
-  },
-  (error) => {
-    const token = localStorage.getItem('token');
-    if (error.response && error.response?.status === 401) {
-      localStorage.clear();
-      redirect('/logIn');
-    }
-    if (
-      error.response &&
-      error.response?.status === 403 &&
-      error.response?.data?.error?.message !== 'User has been blocked' &&
-      token
-    ) {
-      redirect('/forbidden');
-    }
-    return Promise.reject(error.response);
-  }
-);
+
 
 export default apiJWT;

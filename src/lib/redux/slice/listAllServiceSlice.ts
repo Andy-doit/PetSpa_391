@@ -53,7 +53,7 @@ export const fetchServiceDetail = createAsyncThunk(
     'role/fetchServiceDetail',
     async ({ slug }: { slug: string }) => {
         try {
-            const response = await agent.ServiceAPI.getServiceBySlug(slug) as ServiceDetail;
+            const response = await agent.ServiceAPI.getServiceBySlug(slug);
             return response;
         } catch (error) {
             if (error instanceof AxiosError) {
@@ -111,7 +111,7 @@ export const createBooking = createAsyncThunk(
     'servie/createBooking',
     async ({ bookingData }: { bookingData: createBookingInput }) => {
         try {
-            console.log(bookingData);
+
 
             // const formData = new FormData();
 
