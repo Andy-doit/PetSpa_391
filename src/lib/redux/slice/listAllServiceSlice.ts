@@ -1,7 +1,6 @@
-import { ServiceDetail, allServicesPaginationData, allServicesPaginationResponse, bookingCreateResponseSuccess, createBookingInput, getTimeSlot } from '@/models/bookingModels';
+import { ServiceDetail, allServicesPaginationResponse, bookingCreateResponseSuccess, createBookingInput, getTimeSlot } from '@/models/bookingModels';
 import agent from '@/utilities/agent';
-import baseApi from '@/utilities/baseApi';
-import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { AxiosError } from 'axios';
 
 
@@ -14,9 +13,8 @@ export interface ServiceState {
     returnedDataStatus: string;
     returnedDataError: boolean;
     returnedDataLoading: boolean;
-
-
 }
+
 
 const initialState: ServiceState = {
     allServicesPagination: null,
@@ -28,6 +26,7 @@ const initialState: ServiceState = {
     returnedDataError: false,
     returnedDataLoading: false,
 };
+
 
 export const fetchAllServicesPagination = createAsyncThunk(
     'service/fetchAllServicesPagination',
@@ -70,8 +69,8 @@ export const fetchTimeSlot = createAsyncThunk(
     'id/fetchTimeSlot',
     async ({ localDate, params }: { localDate: string, params: string }) => {
         try {
-            const response = await agent.ServiceAPI.getTimeSlot(params, localDate) as getTimeSlot;
-            return response;
+            const response = await agent.ServiceAPI.getTimeSlot(params, localDate);
+            return response as getTimeSlot[];
         } catch (error) {
             if (error instanceof AxiosError) {
                 return {
@@ -79,6 +78,7 @@ export const fetchTimeSlot = createAsyncThunk(
                     status: error.response?.status,
                 };
             }
+            throw error; // Ném lại lỗi để bên ngoài xử lý
         }
     },
 );
