@@ -4,9 +4,11 @@ import { useAppDispatch } from "@/lib/redux/store";
 import { ServiceDetail } from "@/models/bookingModels";
 import getAccessAndRefreshCookie from "@/utilities/authUtils/getCookieForValidation";
 import { Button, Card, CardBody, CardFooter, CardHeader } from "@nextui-org/react";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 
-export default function Confirm({ params }: { params: { slug: string } }) {
+export default function Confirm() {
     const [bookingData, setbookingData] = useState({
         customerId: 0,
         additionalMessage: '',
@@ -23,19 +25,13 @@ export default function Confirm({ params }: { params: { slug: string } }) {
         petId: '',
         petGender: '',
     });
+    const [serviceData, setServiceData] = useState({
+        shopName: '',
+        serviceName: '',
+        shopAddress: '',
+    });
 
-    const [service, setService] = useState<ServiceDetail | any>();
     const dispatch = useAppDispatch();
-    useEffect(() => {
-        const serviceDetail = async () => {
-            const response = await dispatch(fetchServiceDetail(params));
-            if (response.payload) {
-                setService(response);
-            }
-        };
-        serviceDetail();
-    }, [dispatch]);
-    console.log(service)
     const [userId, setUid] = useState<string>('');
     useEffect(() => {
         const fetchUid = async () => {
@@ -53,19 +49,38 @@ export default function Confirm({ params }: { params: { slug: string } }) {
     }, [userId]);
 
     useEffect(() => {
+        const service = sessionStorage.getItem('service');
+        if (service) {
+            setServiceData(JSON.parse(service));
+        }
+    }, []);
+    useEffect(() => {
         const dataFromStorage = sessionStorage.getItem('bookingValues');
+
+
         if (dataFromStorage) {
             console.log(JSON.parse(dataFromStorage))
             setbookingData(JSON.parse(dataFromStorage));
         }
     }, []);
-
+    const router = useRouter()
     const handleBooking = async () => {
         try {
             if (userId) {
                 await dispatch(createBooking({ bookingData })).unwrap();
                 console.log(bookingData);
+
                 sessionStorage.removeItem('bookingValues');
+                sessionStorage.removeItem('service');
+                toast.success("Đặt lịch thành công! Bạn sẽ được chuyển về trang chủ trong giây lát...", {
+                    onClose: () => {
+
+                        setTimeout(() => {
+                            router.replace('/');
+                        }, 3000);
+                    },
+                    autoClose: 3000,
+                });
             }
 
         } catch (error) {
@@ -88,27 +103,25 @@ export default function Confirm({ params }: { params: { slug: string } }) {
                 style={{
 
                 }}>
-                <Card style={{
-                    backgroundColor: 'rgba(255, 255, 255, 0.😎',
-                }}>
+                <Card className="w-[800px]">
                     <div className="rounded-lg">
                         <div className="rounded-lg p-6"
                             style={{
-                                backgroundImage: 'url(https://i.pinimg.com/736x/91/27/3e/91273ed3de2f0c4f869655e05668a9d2.jpg)',
+                                backgroundImage: 'url("https://i.pinimg.com/564x/11/e5/bd/11e5bd4736dbf8f404eb90bf306a0562.jpg")',
                                 backgroundRepeat: 'no-repeat',
                                 backgroundSize: "cover",
 
                             }}
                         >
-                            {service && (
-                                <div className="flex items-center ">
-                                    <div className="">
-                                        <p className=" font-medium text-4xl text-orange-600">{service.serviceName}</p>
-                                        <p className="text-2xl text-white">{service.shopName}</p>
-                                        <p className="text-xl font-light text-white">{service.address}</p>
-                                    </div>
+
+                            <div className="flex items-center ">
+                                <div className="">
+                                    <p className=" font-medium text-4xl text-orange-600">{serviceData.serviceName}</p>
+                                    <p className="text-2xl text-white">{serviceData.shopName}</p>
+                                    <p className="text-xl font-light text-white">{serviceData.shopAddress}</p>
                                 </div>
-                            )}
+                            </div>
+
 
                         </div>
                         <div>
@@ -143,7 +156,7 @@ export default function Confirm({ params }: { params: { slug: string } }) {
                         <Button
                             onClick={handleBooking}
                             radius="full"
-                            className=" w-1/2 bg-gradient-to-tr from-pink-500 to-yellow-500 text-white shadow-lg"
+                            className=" w-full bg-gradient-to-tr from-pink-500 to-yellow-500 text-white shadow-lg"
                         >
                             Xác nhận
                         </Button>

@@ -66,7 +66,9 @@ export default function BookingPage(
     const router = useRouter();
     const handleCreateBooking = async () => {
         await sessionStorage.setItem('bookingValues', JSON.stringify(bookingData));
+        sessionStorage.setItem('service', JSON.stringify(service));
         router.replace('/customer/confirmInfor')
+
     };
     console.log(bookingData);
 
