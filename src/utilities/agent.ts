@@ -36,9 +36,13 @@ const ServiceAPI = {
     requests.baseApiGet(`api/v1/customer/booking/service/${params}/${localDate}`)
 };
 
-
+const User = {
+  getallBooking: () =>
+    requests.get("/api/v1/customer/booking"),
+}
 
 const agent = {
-  ServiceAPI
+  ServiceAPI,
+  User
 };
 export default agent;

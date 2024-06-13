@@ -7,6 +7,7 @@ import { ServiceDetail, createBookingInput, getTimeSlot } from "@/models/booking
 import { useAppDispatch } from '@/lib/redux/store';
 import { createBooking, fetchServiceDetail, fetchTimeSlot } from '@/lib/redux/slice/listAllServiceSlice';
 import getAccessAndRefreshCookie from '@/utilities/authUtils/getCookieForValidation';
+import { useRouter } from 'next/navigation';
 
 
 
@@ -46,7 +47,6 @@ export default function BookingPage(
         serviceDetail();
     }, [dispatch, userId]);
     console.log(service)
-
     const [bookingData, setBookingData] = useState<createBookingInput>({
         customerId: parseInt(userId),
         additionalMessage: '',
@@ -63,17 +63,10 @@ export default function BookingPage(
         petId: '',
         petGender: '',
     });
+    const router = useRouter();
     const handleCreateBooking = async () => {
-        try {
-            if (userId) {
-                await dispatch(createBooking({ bookingData })).unwrap();
-                console.log(bookingData);
-            }
-
-        } catch (error) {
-            console.error('Error creating post:', error);
-        }
-
+        await sessionStorage.setItem('bookingValues', JSON.stringify(bookingData));
+        router.replace('/customer/confirmInfor')
     };
     console.log(bookingData);
 
@@ -99,36 +92,40 @@ export default function BookingPage(
         }));
     };
 
-    const handleDateChange = (newDate: CalendarDate) => {
-        const formattedDate = `${newDate.year}-${("0" + newDate.month).slice(-2)}-${("0" + newDate.day).slice(-2)}`;
+    const handleDateChange = async (newDate: CalendarDate) => {
+        const dateOnly = `${newDate.year}-${("0" + newDate.month).slice(-2)}-${("0" + newDate.day).slice(-2)}`;
+        console.log(dateOnly)
+        const response = await dispatch(fetchTimeSlot({ params: params.slug, localDate: dateOnly }));
+        if (response.payload) {
+            setTimeSlot(response.payload);
+            console.log(response.payload)
+        }
         setBookingData(prevData => ({
             ...prevData,
-            localDate: formattedDate
+            localDate: dateOnly
         }));
     };
+
     const [timeSlot, setTimeSlot] = useState<getTimeSlot[] | any>([]);
     const [selectedSlotIndex, setSelectedSlotIndex] = useState<number | null>(null);
-    useEffect(() => {
-        const slotTime = async () => {
-            const dateOnly = new Date().toISOString().split('T')[0];
-            const response = await dispatch(fetchTimeSlot({ params: params.slug, localDate: dateOnly }));
-            if (response) {
-                setTimeSlot(response)
-            }
-        }
-        slotTime();
-    }, [dispatch]);
+
     console.log(timeSlot)
     const handleSlotClick = (index: number) => {
         setSelectedSlotIndex(index);
         const selectedSlot = timeSlot[index];
-        setBookingData(prevData => ({
-            ...prevData,
-            timeSlotDto: {
-                startLocalDateTime: selectedSlot.startLocalDateTime,
-                endLocalDateTime: selectedSlot.endLocalDateTime
-            }
-        }));
+        console.log('Selected slot:', selectedSlot);
+        if (selectedSlot) {
+            console.log('Updating booking data with selected slot:', selectedSlot);
+            setBookingData(prevData => ({
+                ...prevData,
+                timeSlotDto: {
+                    startLocalDateTime: selectedSlot.timeSlotDto.startLocalDateTime,
+                    endLocalDateTime: selectedSlot.timeSlotDto.endLocalDateTime
+                }
+            }));
+        } else {
+            console.log('Selected slot is undefined or null.');
+        }
     };
 
     return (
@@ -278,14 +275,14 @@ export default function BookingPage(
                         <div className="   ">
                             <p className="text-1xl font-medium mb-2">Khung giờ</p>
                             <div className="w-full flex justify-around" >
-                                {Array.isArray(timeSlot) && timeSlot.map((slot, index) => (
+                                {timeSlot.map((slot: getTimeSlot, index: number) => (
                                     <Button
                                         key={index}
                                         onClick={() => handleSlotClick(index)}
                                         color={slot.availableSlots === 0 ? 'warning' : (selectedSlotIndex === index ? 'success' : 'default')}
-                                        disabled={slot.availableSlots === 'booked'}
+                                        disabled={slot.availableSlots === 0}
                                     >
-                                        {`${slot.startLocalDateTime} - ${slot.endLocalDateTime}`}
+                                        {`${slot.timeSlotDto.startLocalDateTime} - ${slot.timeSlotDto.endLocalDateTime}`}
                                     </Button>
                                 ))}
                             </div>
@@ -373,8 +370,13 @@ export default function BookingPage(
                         </div>
                     </div>
                     <div className='mt-11'>
-                        <Button onClick={handleCreateBooking} type="submit" className="bg-gradient-to-tr from-pink-500 to-yellow-500 text-white shadow-lg w-full">Đặt lịch</Button>
-
+                        <Button
+                            onClick={handleCreateBooking}
+                            type="submit"
+                            className="bg-gradient-to-tr from-pink-500 to-yellow-500 text-white shadow-lg w-full"
+                        >
+                            Đặt lịch
+                        </Button>
                     </div>
                 </div>
 

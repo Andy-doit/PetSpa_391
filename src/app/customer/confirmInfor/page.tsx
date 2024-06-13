@@ -1,26 +1,79 @@
 'use client'
+import { createBooking, fetchServiceDetail } from "@/lib/redux/slice/listAllServiceSlice";
+import { useAppDispatch } from "@/lib/redux/store";
+import { ServiceDetail } from "@/models/bookingModels";
+import getAccessAndRefreshCookie from "@/utilities/authUtils/getCookieForValidation";
 import { Button, Card, CardBody, CardFooter, CardHeader } from "@nextui-org/react";
 import { useEffect, useState } from "react";
 
-export default function Confirm({ }) {
-    const [formData, setFormData] = useState({
-        petType: '',
+export default function Confirm({ params }: { params: { slug: string } }) {
+    const [bookingData, setbookingData] = useState({
+        customerId: 0,
+        additionalMessage: '',
+        serviceId: 0,
+        localDate: '',
+        timeSlotDto: {
+            startLocalDateTime: '',
+            endLocalDateTime: ''
+        },
         petName: '',
-        petWeight: '',
-        appointmentSlot: '',
-        appointmentDate: '',
-        notes: '',
+        petAge: 0,
+        typePet: '',
+        petWeight: 0,
+        petId: '',
+        petGender: '',
     });
 
+    const [service, setService] = useState<ServiceDetail | any>();
+    const dispatch = useAppDispatch();
     useEffect(() => {
+        const serviceDetail = async () => {
+            const response = await dispatch(fetchServiceDetail(params));
+            if (response.payload) {
+                setService(response);
+            }
+        };
+        serviceDetail();
+    }, [dispatch]);
+    console.log(service)
+    const [userId, setUid] = useState<string>('');
+    useEffect(() => {
+        const fetchUid = async () => {
+            try {
+                const { uid } = await getAccessAndRefreshCookie();
+                console.log('userId:', uid);
+                if (uid) {
+                    setUid(uid);
+                }
+            } catch (error) {
+                console.error('Error fetching UID:', error);
+            }
+        };
+        fetchUid();
+    }, [userId]);
 
-        const dataFromStorage = localStorage.getItem('formData');
+    useEffect(() => {
+        const dataFromStorage = sessionStorage.getItem('bookingValues');
         if (dataFromStorage) {
-
-            setFormData(JSON.parse(dataFromStorage));
+            console.log(JSON.parse(dataFromStorage))
+            setbookingData(JSON.parse(dataFromStorage));
         }
     }, []);
 
+    const handleBooking = async () => {
+        try {
+            if (userId) {
+                await dispatch(createBooking({ bookingData })).unwrap();
+                console.log(bookingData);
+                sessionStorage.removeItem('bookingValues');
+            }
+
+        } catch (error) {
+            console.error('Error creating :', error);
+        }
+
+
+    };
 
     return (
         <div
@@ -47,15 +100,16 @@ export default function Confirm({ }) {
 
                             }}
                         >
-                            <div className="flex items-center ">
-                                <div className="">
-                                    <p className=" font-medium text-4xl text-orange-600">Dịch vụ tắm rửa</p>
-                                    <p className="text-2xl text-white"> Khoi Spa</p>
-                                    <p className="text-xl font-light text-white"> Địa chỉ: Lô E2a-7, Đường D1, Khu Công nghệ cao, P.Long Thạnh Mỹ, Tp. Thủ Đức, TP.HCM.</p>
-
-
+                            {service && (
+                                <div className="flex items-center ">
+                                    <div className="">
+                                        <p className=" font-medium text-4xl text-orange-600">{service.serviceName}</p>
+                                        <p className="text-2xl text-white">{service.shopName}</p>
+                                        <p className="text-xl font-light text-white">{service.address}</p>
+                                    </div>
                                 </div>
-                            </div>
+                            )}
+
                         </div>
                         <div>
                             <div className="p-4">
@@ -71,12 +125,12 @@ export default function Confirm({ }) {
                                             <p className="text-xl font-light">Ghi chú</p>
                                         </div>
                                         <div className="ml-20">
-                                            <p className="text-xl font-medium">{formData.petType}</p>
-                                            <p className="text-xl font-medium">{formData.petName}</p>
-                                            <p className="text-xl font-medium">{formData.petWeight}</p>
-                                            <p className="text-xl font-medium">{formData.appointmentSlot}</p>
-                                            <p className="text-xl font-medium">{formData.appointmentDate}</p>
-                                            <p className="text-xl font-medium">{formData.notes}</p>
+                                            <p className="text-xl font-medium">{bookingData.typePet}</p>
+                                            <p className="text-xl font-medium">{bookingData.petName}</p>
+                                            <p className="text-xl font-medium">{bookingData.petWeight}</p>
+                                            <p className="text-xl font-medium">{bookingData.timeSlotDto.startLocalDateTime} - {bookingData.timeSlotDto.endLocalDateTime}</p>
+                                            <p className="text-xl font-medium">{bookingData.localDate}</p>
+                                            <p className="text-xl font-medium">{bookingData.additionalMessage}</p>
                                         </div>
                                     </div>
 
@@ -86,7 +140,13 @@ export default function Confirm({ }) {
 
                     </div>
                     <CardFooter className="w-full flex justify-center mt-3">
-                        <Button radius="full" className=" w-1/2 bg-gradient-to-tr from-pink-500 to-yellow-500 text-white shadow-lg">Xác nhận</Button>
+                        <Button
+                            onClick={handleBooking}
+                            radius="full"
+                            className=" w-1/2 bg-gradient-to-tr from-pink-500 to-yellow-500 text-white shadow-lg"
+                        >
+                            Xác nhận
+                        </Button>
                     </CardFooter>
                 </Card>
             </div>
