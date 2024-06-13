@@ -15,7 +15,9 @@ export interface createBookingInput {
     petGender: string,
 }
 export interface getTimeSlot {
-    availableSlots: number | null,
+    totalSlots: number,
+    usedSlots: number,
+    availableSlots: number,
     timeSlotDto: {
         startLocalDateTime: string,
         endLocalDateTime: string
