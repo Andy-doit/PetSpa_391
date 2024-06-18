@@ -19,7 +19,7 @@ export default function CardOrderShop() {
 
     const getColor = (process: any) => {
         switch (process) {
-           
+
             case "Thành Công":
             case "Thành công":
                 return "success";
@@ -51,10 +51,10 @@ export default function CardOrderShop() {
                         <TableCell>
                             <div className="flex justify-around w-[100px]">
                                 <div className="flex justify-between">
-                                  
+
                                     <Button className="mx-5" color="warning" size="sm">Hủy</Button>
                                 </div>
-                                <OrderDetail />
+
                             </div>
                         </TableCell>
                     </TableRow>
