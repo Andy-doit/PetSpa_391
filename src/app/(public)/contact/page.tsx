@@ -37,7 +37,8 @@ const ContactUs = () => {
                             <div className='text-center'>
                                 <h3 className='text-2xl font-semibold'>Trò chuyện để hỗ trợ</h3>
                                 <p className='text-lg text-gray-600'>Chúng tôi ở đây để giúp đỡ.</p>
-                                <p className='text-lg text-blue-600'>support@untitledui.com</p>
+                                <p className='text-lg text-blue-600'>hoangtdse170030@fpt.edu.vn
+                                </p>
                             </div>
                         </div>
                     </div>

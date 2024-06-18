@@ -1,196 +1,125 @@
+import React from "react";
+import Link from 'next/link';
+import { FaFacebook, FaGithub, FaInstagram, FaLinkedin } from 'react-icons/fa';
+
 export default function Footer() {
     return (
-        <div>
-            <footer className="bg-black text-white">
-                <div className="mx-auto w-full max-w-screen-xl p-4">
-                    <div className="md:flex md:justify-between">
-                        <div className="mb-6 md:mb-0">
-                            <span className="self-center text-2xl font-mono whitespace-nowrap">
-                                GitHub
-                            </span>
-                        </div>
+        <footer className="bg-black text-white">
+            <div className="mx-auto max-w-screen-xl px-4 py-8">
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+
+                    <div>
+                        <span className="text-xl font-mono whitespace-nowrap">GitHub </span>
                     </div>
-                    <hr className="my-6 border-gray-600 lg:my-8" />
-                    <div className="grid grid-cols-2 md:grid-cols-5 gap-8">
-                        <div>
-                            <h2 className="mb-6 text-sm font-semibold uppercase">Product</h2>
-                            <ul className="text-gray-400">
-                                <li className="mb-4">
-                                    <a href="#" className="hover:underline">
-                                        Features
-                                    </a>
-                                </li>
-                                <li className="mb-4">
-                                    <a href="#" className="hover:underline">
-                                        Security
-                                    </a>
-                                </li>
-                                <li className="mb-4">
-                                    <a href="#" className="hover:underline">
-                                        Business
-                                    </a>
-                                </li>
-                                <li className="mb-4">
-                                    <a href="#" className="hover:underline">
-                                        Case studies
-                                    </a>
-                                </li>
-                                <li className="mb-4">
-                                    <a href="#" className="hover:underline">
-                                        Pricing
-                                    </a>
-                                </li>
-                                <li className="mb-4">
-                                    <a href="#" className="hover:underline">
-                                        Resources
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                        <div>
-                            <h2 className="mb-6 text-sm font-semibold uppercase">Explore</h2>
-                            <ul className="text-gray-400">
-                                <li className="mb-4">
-                                    <a href="#" className="hover:underline">
-                                        Developer
-                                    </a>
-                                </li>
-                                <li className="mb-4">
-                                    <a href="#" className="hover:underline">
-                                        AI
-                                    </a>
-                                </li>
-                                <li className="mb-4">
-                                    <a href="#" className="hover:underline">
-                                        Partners
-                                    </a>
-                                </li>
-                                <li className="mb-4">
-                                    <a href="#" className="hover:underline">
-                                        Atom
-                                    </a>
-                                </li>
-                                <li className="mb-4">
-                                    <a href="#" className="hover:underline">
-                                        Electron
-                                    </a>
-                                </li>
-                                <li className="mb-4">
-                                    <a href="#" className="hover:underline">
-                                        GitHub Desktop
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                        <div>
-                            <h2 className="mb-6 text-sm font-semibold uppercase">Support</h2>
-                            <ul className="text-gray-400">
-                                <li className="mb-4">
-                                    <a href="#" className="hover:underline">
-                                        Help
-                                    </a>
-                                </li>
-                                <li className="mb-4">
-                                    <a href="#" className="hover:underline">
-                                        Community
-                                    </a>
-                                </li>
-                                <li className="mb-4">
-                                    <a href="#" className="hover:underline">
-                                        Forum
-                                    </a>
-                                </li>
-                                <li className="mb-4">
-                                    <a href="#" className="hover:underline">
-                                        Training
-                                    </a>
-                                </li>
-                                <li className="mb-4">
-                                    <a href="#" className="hover:underline">
-                                        Status
-                                    </a>
-                                </li>
-                                <li className="mb-4">
-                                    <a href="#" className="hover:underline">
-                                        Contact GitHub
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                        <div>
-                            <h2 className="mb-6 text-sm font-semibold uppercase">Company</h2>
-                            <ul className="text-gray-400">
-                                <li className="mb-4">
-                                    <a href="#" className="hover:underline">
-                                        About
-                                    </a>
-                                </li>
-                                <li className="mb-4">
-                                    <a href="#" className="hover:underline">
-                                        Blog
-                                    </a>
-                                </li>
-                                <li className="mb-4">
-                                    <a href="#" className="hover:underline">
-                                        Careers
-                                    </a>
-                                </li>
-                                <li className="mb-4">
-                                    <a href="#" className="hover:underline">
-                                        Press
-                                    </a>
-                                </li>
-                                <li className="mb-4">
-                                    <a href="#" className="hover:underline">
-                                        Shop
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
+                    <div>
+                        <h2 className="mb-4 text-sm font-semibold uppercase">DỊCH VỤ </h2>
+                        <ul className="text-gray-400">
+                            <li className="mb-2">
+                                <a href="#" className="hover:text-white">
+                                    Dịch vụ tắm rửa
+                                </a>
+                            </li>
+                            <li className="mb-2">
+                                <a href="#" className="hover:text-white">
+                                    Dịch vụ làm đẹp
+                                </a>
+                            </li>
+                            <li className="mb-2">
+                                <a href="#" className="hover:text-white">
+                                    Dịch vụ mát xa
+                                </a>
+                            </li>
+                            <li className="mb-2">
+                                <a href="#" className="hover:text-white">
+                                    Dịch vụ mát xa đặc biệt
+                                </a>
+                            </li>
+                            <li className="mb-2">
+                                <a href="#" className="hover:text-white">
+                                    Khách sạn thú cưng
+                                </a>
+                            </li>
+                            <li className="mb-2">
+                                <a href="#" className="hover:text-white">
+                                    See more
+                                </a>
+                            </li>
+                        </ul>
                     </div>
-                    <hr className="my-6 border-gray-600 lg:my-8" />
-                    <div className="flex justify-between items-center">
-                        <span className="text-sm text-gray-400">
-                            &copy; GitHub Inc. © 2023
-                        </span>
-                        <div className="flex space-x-6">
-                            <a href="#" className="text-gray-400 hover:text-white">
-                                <svg
-                                    className="w-5 h-5"
-                                    fill="currentColor"
-                                    viewBox="0 0 24 24"
-                                    aria-hidden="true"
-                                >
 
-                                </svg>
-                                <span className="sr-only">Facebook page</span>
-                            </a>
-                            <a href="#" className="text-gray-400 hover:text-white">
-                                <svg
-                                    className="w-5 h-5"
-                                    fill="currentColor"
-                                    viewBox="0 0 24 24"
-                                    aria-hidden="true"
-                                >
 
-                                </svg>
-                                <span className="sr-only">Twitter page</span>
-                            </a>
-                            <a href="#" className="text-gray-400 hover:text-white">
-                                <svg
-                                    className="w-5 h-5"
-                                    fill="currentColor"
-                                    viewBox="0 0 24 24"
-                                    aria-hidden="true"
-                                >
+                    <div>
+                        <h2 className="mb-4 text-sm font-semibold uppercase">TRANG CHỦ </h2>
+                        <ul className="text-gray-400">
+                            <li className="mb-2">
+                                <Link href="/" className="hover:text-white">
+                                    Khám phá
+                                </Link>
+                            </li>
+                            <li className="mb-2">
+                                <Link href="/" className="hover:text-white">
+                                    Dịch vụ nổi bật
+                                </Link>
+                            </li>
+                            <li className="mb-2">
+                                <Link href="/" className="hover:text-white">
+                                    Blog
+                                </Link>
+                            </li>
+                            <li className="mb-2">
+                                <a href="aboutUs" className="hover:text-white">
+                                    Về chúng tôi
+                                </a>
+                            </li>
 
-                                </svg>
-                                <span className="sr-only">LinkedIn page</span>
-                            </a>
-                        </div>
+                        </ul>
+                    </div>
+
+
+                    <div>
+                        <h2 className="mb-4 text-sm font-semibold uppercase">LIÊN HỆ</h2>
+                        <ul className="text-gray-400">
+                            <li className="mb-2">Đường D1, Đ. D1, Long Thạnh Mỹ, Thành Phố Thủ Đức, Hồ Chí Minh 700000</li>
+                            <li className="mb-2">
+                                <a href="contact" className="hover:text-white">
+                                    Trò chuyện với chúng tôi
+                                </a>
+                            </li>
+                            <li className="mb-2">0706045758</li>
+                            <li className="mb-2">duyhoangto@gmail.com</li>
+                        </ul>
                     </div>
                 </div>
-            </footer>
-        </div>
+
+
+                <hr className="my-4 border-gray-600" />
+
+
+                <div className="flex flex-col md:flex-row justify-between items-center">
+                    <span className="text-sm text-gray-400 mb-4 md:mb-0">
+                        &copy;2024, PET SPA - SWP 391.
+                    </span>
+                    <div className="flex space-x-4">
+                        <a href="https://www.facebook.com/profile.php?id=100028204926907" className="text-gray-400 hover:text-white">
+                            <FaFacebook className="w-5 h-5" />
+                            <span className="sr-only">Facebook</span>
+                        </a>
+                        <a href="https://github.com/Andy-doit/PetSpa_391" className="text-gray-400 hover:text-white">
+                            <FaGithub className="w-5 h-5" />
+                            <span className="sr-only">GitHub</span>
+                        </a>
+                        <a href="https://www.instagram.com/duyhoangto.37/" className="text-gray-400 hover:text-white">
+                            <FaInstagram className="w-5 h-5" />
+                            <span className="sr-only">Instagram</span>
+                        </a>
+                        <a href="https://www.instagram.com/" className="text-gray-400 hover:text-white">
+                            <FaLinkedin className="w-5 h-5" />
+                            <span className="sr-only">LinkedIn</span>
+                        </a>
+
+                    </div>
+                </div>
+            </div>
+        </footer>
     );
 }
