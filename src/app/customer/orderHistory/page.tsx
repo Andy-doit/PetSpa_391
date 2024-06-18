@@ -1,12 +1,7 @@
 'use client'
 import CardOrder from "@/components/cardOrder/page";
-import { Button, Input, Select, SelectItem } from "@nextui-org/react";
-const Slot = [
 
-    { label: "Slot 3", value: "Slot 3", description: "Giá từ cao đến thấp" },
-    { label: "Slot 4", value: "Slot 4", description: "Giá từ thấp đến cao" },
 
-];
 export default function OrderHistory() {
     return (
         <div className="">

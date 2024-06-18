@@ -6,8 +6,8 @@ import getAccessAndRefreshCookie from "@/utilities/authUtils/getCookieForValidat
 import { Button, Card, CardBody, CardFooter, CardHeader } from "@nextui-org/react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { toast } from "react-toastify";
-
+import { ToastContainer, toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 export default function Confirm() {
     const [bookingData, setbookingData] = useState({
         customerId: 0,
@@ -57,7 +57,6 @@ export default function Confirm() {
     useEffect(() => {
         const dataFromStorage = sessionStorage.getItem('bookingValues');
 
-
         if (dataFromStorage) {
             console.log(JSON.parse(dataFromStorage))
             setbookingData(JSON.parse(dataFromStorage));
@@ -66,29 +65,26 @@ export default function Confirm() {
     const router = useRouter()
     const handleBooking = async () => {
         try {
+
             if (userId) {
                 await dispatch(createBooking({ bookingData })).unwrap();
-                console.log(bookingData);
-
                 sessionStorage.removeItem('bookingValues');
                 sessionStorage.removeItem('service');
                 toast.success("Đặt lịch thành công! Bạn sẽ được chuyển về trang chủ trong giây lát...", {
                     onClose: () => {
-
                         setTimeout(() => {
-                            router.replace('/');
-                        }, 3000);
+                            router.push('/');
+                        }, 1500);
                     },
-                    autoClose: 3000,
+                    autoClose: 1500,
                 });
             }
-
         } catch (error) {
-            console.error('Error creating :', error);
+            console.error('Error creating booking:', error);
+            toast.error("Đã xảy ra lỗi khi đặt lịch. Vui lòng thử lại sau!");
         }
-
-
     };
+
 
     return (
         <div
@@ -163,6 +159,7 @@ export default function Confirm() {
                     </CardFooter>
                 </Card>
             </div>
+            <ToastContainer />
         </div>
     )
 }
