@@ -39,6 +39,10 @@ const ServiceAPI = {
 const User = {
   getallBooking: () =>
     requests.get("/api/v1/booking/auth"),
+  getorderBooking: (slug: string) =>
+    requests.get(`api/v1/booking/auth/${slug}`),
+  getProfileInfor: () =>
+    requests.get("api/v1/user"),
 }
 
 const agent = {

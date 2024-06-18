@@ -1,6 +1,6 @@
 'use client'
 import 'intro.js/introjs.css';
-import { Card, Image, Button, Checkbox, DatePicker, Input, Textarea, Link, Select } from "@nextui-org/react";
+import { Card, Image, Button, Checkbox, DatePicker, Input, Textarea, Link, Select, SelectItem } from "@nextui-org/react";
 import { useEffect, useState } from "react";
 import { today, getLocalTimeZone, CalendarDate } from "@internationalized/date";
 import { ServiceDetail, createBookingInput, getTimeSlot } from "@/models/bookingModels";
@@ -335,7 +335,27 @@ export default function BookingPage(
                                 </div>
                             </div>
                             <div>
-                                <p className="text-1xl font-medium mb-2">Giới tính</p>
+                                <div className="ml-2">
+                                    <p className="text-1xl font-medium mb-2">Giới tính</p>
+                                    <div className="w-full">
+                                        <Select
+                                            label="Giới tính"
+                                            className="w-[300px]"
+                                            value={selectedGender}
+                                            onChange={(event) => handleGenderChange(event.target.value)}
+                                        >
+                                            <SelectItem key="Male" value="Male"
+                                            >
+                                                Đực
+                                            </SelectItem>
+                                            <SelectItem key="Female" value="Female"
+                                            >
+                                                Cái
+                                            </SelectItem>
+                                        </Select>
+                                    </div>
+                                </div>
+                                {/* <p className="text-1xl font-medium mb-2">Giới tính</p>
                                 <div className="flex gap-4">
                                     <Checkbox
                                         checked={selectedGender === "Male"}
@@ -351,7 +371,7 @@ export default function BookingPage(
                                     >
                                         Cái
                                     </Checkbox>
-                                </div>
+                                </div> */}
                             </div>
                         </div>
 

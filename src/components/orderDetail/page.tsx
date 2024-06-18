@@ -1,13 +1,29 @@
 'use client'
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure, RadioGroup, Radio, Avatar, Link, Chip } from "@nextui-org/react";
 import PriceTable from "../priceTable/page";
 import CustomerFeedback from "../customerFeedback/page";
+import { BookingDetail } from "@/models/userModels";
+import { useAppDispatch } from "@/lib/redux/store";
+import { fetchOrderBooking } from "@/lib/redux/slice/userSlice";
 
-export default function     OrderDetail() {
+export default function OrderDetail({ params }: { params: string }) {
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
+    const [booking, setBooking] = useState<BookingDetail | any>();
+    const dispatch = useAppDispatch();
 
 
+    useEffect(() => {
+        const bookingDetail = async () => {
+            const response = await dispatch(fetchOrderBooking({ slug: params }));
+            if (response.payload) {
+                setBooking(response.payload);
+
+            }
+        };
+        bookingDetail();
+    }, [dispatch, params]);
+    console.log(booking);
     return (
         <div className="flex flex-col gap-2">
             <Button radius="sm" className="bg-gradient-to-tr from-pink-500 to-yellow-500 text-white shadow-lg" size="sm" onPress={onOpen}>
@@ -33,11 +49,11 @@ export default function     OrderDetail() {
                             >
                                 <div className="flex items-center ">
                                     <div className="ml-4">
-                                        <p className=" font-medium text-4xl text-orange-600">Dịch vụ tắm rửa</p>
-                                        <p className="text-xl text-white"> Slot1, 25/04/2025</p>
-                                        <p className="text-2xl text-white"> Khoi Spa</p>
-                                        <p className="text-xl font-light text-white"> Địa chỉ: Lô E2a-7, Đường D1, Khu Công nghệ cao, P.Long Thạnh Mỹ, Tp. Thủ Đức, TP.HCM.</p>
-                                        <Chip className="my-2" color="success">Thành công</Chip>
+                                        <p className=" font-medium text-4xl text-orange-600">{booking.serviceName}</p>
+                                        <p className="text-xl text-white">{booking.startTime} - {booking.endTime}/{booking.localDate}</p>
+                                        <p className="text-2xl text-white">{booking.shopName}</p>
+                                        <p className="text-xl font-light text-white"> {booking.shopAddress}</p>
+                                        <Chip className="my-2" color="success">{booking.status}</Chip>
 
                                     </div>
                                 </div>
@@ -56,12 +72,12 @@ export default function     OrderDetail() {
                                                 <p className="text-xl font-light">Ghi chú</p>
                                             </div>
                                             <div className="ml-6">
-                                                <p className="text-xl font-medium">Chó</p>
-                                                <p className="text-xl font-medium">Justin</p>
-                                                <p className="text-xl font-medium">45Kg</p>
-                                                <p className="text-xl font-medium">Slot 1 , 9:00 - 10:30</p>
-                                                <p className="text-xl font-medium">25/04/2025</p>
-                                                <p className="text-xl font-medium">Có tiền sử bị bệnh tim</p>
+                                                <p className="text-xl font-medium">{booking.typePet}</p>
+                                                <p className="text-xl font-medium">{booking.petName}</p>
+                                                <p className="text-xl font-medium">{booking.petWeight}</p>
+                                                <p className="text-xl font-medium">{booking.startTime} - {booking.endTime}</p>
+                                                <p className="text-xl font-medium">{booking.localDate}</p>
+                                                <p className="text-xl font-medium">/{booking.bookingNote}</p>
                                             </div>
                                         </div>
                                         <div className="flex justify-end items-end">

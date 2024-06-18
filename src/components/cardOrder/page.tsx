@@ -18,7 +18,7 @@ export default function CardOrder() {
         }
         allService();
     }, [dispatch]);
-    console.log(items)
+    // console.log(items)
     const getColor = (process: any) => {
         switch (process) {
 
@@ -44,8 +44,8 @@ export default function CardOrder() {
                 <TableColumn > <span className="sr-only">Action</span></TableColumn>
             </TableHeader>
             <TableBody>
-                {items.map((service, index) => (
-                    <TableRow key={index}>
+                {items.map((service) => (
+                    <TableRow key={service.id}>
                         <TableCell>{service.serviceName}</TableCell>
                         <TableCell>{service.localDate}</TableCell>
                         <TableCell>{service.timeSlotDto.startLocalDateTime} - {service.timeSlotDto.endLocalDateTime}</TableCell>
@@ -55,7 +55,7 @@ export default function CardOrder() {
                             <Chip color={getColor(service.status)}>{service.status}</Chip>
                         </TableCell>
                         <TableCell>
-                            <OrderDetail />
+                            <OrderDetail params={service.id} />
                         </TableCell>
                     </TableRow>
                 ))}

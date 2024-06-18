@@ -47,6 +47,22 @@ export const fetchAllBookingPagination = createAsyncThunk(
         }
     },
 );
+export const fetchOrderBooking = createAsyncThunk(
+    'id/fetchOrderBooking',
+    async ({ slug }: { slug: string }) => {
+        try {
+            const response = await agent.User.getorderBooking(slug);
+            return response;
+        } catch (error) {
+            if (error instanceof AxiosError) {
+                return {
+                    message: error.response?.data.error.message,
+                    status: error.response?.status,
+                };
+            }
+        }
+    },
+);
 
 const userSlice = createSlice({
     name: 'user',
