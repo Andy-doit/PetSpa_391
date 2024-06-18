@@ -1,11 +1,15 @@
 export interface allBookingPaginationData {
     id: string,
-    slug: string,
-    serviceName: string,
     localDate: string,
-    timeSlotDto: string,
-    typePet: number,
+    status: string,
+    serviceName: string,
     shopName: string,
+    petName: string,
+    timeSlotDto: {
+        startLocalDateTime: string | null,
+        endLocalDateTime: string | null,
+    }
+
 }
 export interface allBookingPaginationResponse {
     success: boolean;
