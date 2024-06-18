@@ -28,20 +28,13 @@ export default function SiderbarHost() {
                     </div>
                     <div className="flex gap-2 w-full min-h-[44px] h-full items-center px-3.5 rounded-xl cursor-pointer transition-all duration-150 active:scale-[0.98]">
                         <IoToday className="w-6 h-6" />
-                        <Link href="/shopOwner/bookingOrder" className="text-default-900 text-xl font-medium">Lịch đặt hàng </Link>
+                        <Link href="/shopOwner/bookingOrder" className="text-default-900 text-xl font-medium">Lịch đặt chăm sóc thú cưng </Link>
                     </div>
                     <div className="flex gap-2 w-full min-h-[44px] h-full items-center px-3.5 rounded-xl cursor-pointer transition-all duration-150 active:scale-[0.98]">
                         <MdWorkHistory className="w-6 h-6" />
                         <Link href="/shopOwner/timeSlot" className="text-default-900 text-xl font-medium">Thời gian hoạt động</Link>
                     </div>
-                    <div className="flex gap-2  w-full min-h-[44px] h-full items-center px-3.5 rounded-xl cursor-pointer transition-all duration-150 active:scale-[0.98]">
-                        <FaUserCircle className="w-6 h-6" />
-                        <Link href="/shopOwner/profile" className="text-default-900 text-xl font-medium">Trang cá nhân</Link>
-                    </div>
-                    <div className="flex gap-2 w-full min-h-[44px] h-full items-center px-3.5 rounded-xl cursor-pointer transition-all duration-150 active:scale-[0.98]">
-                        <IoLogOut className="w-6 h-6" />
-                        <Link onClick={handleLogout} className="text-default-900 text-xl font-medium">Đăng xuất</Link>
-                    </div>
+
 
                 </div>
             </div>
