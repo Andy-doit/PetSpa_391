@@ -1,7 +1,7 @@
 import MenuGuest from "@/components/menuGuest/page";
 import CarouselService from "@/components/carouselService/page";
 import FeedbackDetail from "@/components/feedbackDetail/page";
-import BlogPage from "@/components/blog/page";
+import Blog from "@/components/blog/page";
 
 export default function Home() {
     return (
@@ -21,7 +21,7 @@ export default function Home() {
                 <CarouselService />
             </div>
             <div className="container" >
-                <BlogPage />
+                <Blog />
             </div>
 
         </div>

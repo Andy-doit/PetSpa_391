@@ -4,7 +4,7 @@ import Image from 'next/image';
 import { Button, Card } from '@nextui-org/react';
 import Link from 'next/link';
 import bannerImg from "../../../public/assets/img/banner.svg";
-const BlogPage = () => {
+const Blog = () => {
     return (
         <div className="bg-gray-100 py-16">
             <div className="container mx-auto px-4">
@@ -104,4 +104,4 @@ const BlogPage = () => {
     );
 };
 
-export default BlogPage;
+export default Blog;
