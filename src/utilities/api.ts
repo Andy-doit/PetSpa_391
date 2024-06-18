@@ -1,8 +1,6 @@
 import axios, { AxiosError } from 'axios';
 import { Envs } from './env';
-import baseApi from './baseApi';
-import { redirect } from 'next/navigation';
-import { jwtDecode } from 'jwt-decode';
+
 const baseURL = Envs.apiRemote;
 
 const apiJWT = axios.create({

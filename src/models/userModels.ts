@@ -1,5 +1,6 @@
 export interface allBookingPaginationData {
     id: string,
+    slug: string;
     localDate: string,
     status: string,
     serviceName: string,
@@ -19,4 +20,28 @@ export interface allBookingPaginationResponse {
         totalCount: number;
         pageCount: number;
     };
+}
+export interface BookingDetail {
+    id: string,
+    bookingNote: string,
+    status: string,
+    localDate: string,
+    startTime: string,
+    endTime: string,
+    shopId: string,
+    shopName: string,
+    shopAddress: string,
+    userId: string,
+    firstName: string,
+    lastName: string,
+    userName: string,
+    serviceId: string,
+    serviceName: string,
+    typePet: string,
+    petName: string,
+    petWeight: number,
+
+    done: boolean,
+    canceled: boolean,
+
 }
