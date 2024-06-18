@@ -27,18 +27,18 @@ const requests = {
 
 const ServiceAPI = {
   getServiceList: () =>
-    requests.baseApiGet("/api/v1/services"),
+    requests.baseApiGet("api/v1/service/all"),
   getServiceBySlug: (slug: string) =>
     requests.baseApiGet(`/api/v1/service/${slug}`),
   createBooking: (input: createBookingInput) =>
-    requests.baseApiPost('api/v1/customer/booking', input),
+    requests.baseApiPost('api/v1/booking/auth', input),
   getTimeSlot: (params: string, localDate: string) =>
-    requests.baseApiGet(`api/v1/customer/booking/service/${params}/${localDate}`)
+    requests.baseApiGet(`api/v1/cache-shop-time-slot/${params}/${localDate}`)
 };
 
 const User = {
   getallBooking: () =>
-    requests.get("/api/v1/customer/booking"),
+    requests.get("/api/v1/booking/auth"),
 }
 
 const agent = {

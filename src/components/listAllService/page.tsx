@@ -13,7 +13,6 @@ export default function ListAllService() {
     const dispatch = useAppDispatch();
     const [items, setItems] = useState<allServicesPaginationData[]>([]);
 
-    const router = useRouter()
     useEffect(() => {
         const allService = async () => {
             const response = await dispatch(fetchAllServicesPagination());
