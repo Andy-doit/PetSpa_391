@@ -45,3 +45,4 @@ export interface BookingDetail {
     canceled: boolean,
 
 }
+
