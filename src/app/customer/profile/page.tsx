@@ -1,8 +1,23 @@
 "use client"
+import { fetchUserInforPagination } from '@/lib/redux/slice/userSlice';
+import { useAppDispatch } from '@/lib/redux/store';
+import { UserInfor } from '@/models/userModels';
 import { Avatar, Button, Card, CardBody, CardFooter, CardHeader, Divider, Input, Tab, Tabs } from '@nextui-org/react'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { BiEdit } from 'react-icons/bi'
+
 export default function Profile() {
+    const dispatch = useAppDispatch();
+    const [items, setItems] = useState<UserInfor>();
+    useEffect(() => {
+        const allService = async () => {
+            const response = await dispatch(fetchUserInforPagination());
+            setItems(response.payload);
+
+        }
+        allService();
+    }, [dispatch]);
+    console.log(items)
     const [isEditing, setIsEditing] = useState(false);
     const handleEditClick = () => {
         setIsEditing(true);
@@ -33,12 +48,12 @@ export default function Profile() {
 
                 <div className='justify-center flex items-center mt-2'>
                     {!isEditing && (
-                        <h1 className='text-2xl font-bold uppercase'>Thien An</h1>
+                        <h1 className='text-2xl font-bold uppercase'>{items?.username}</h1>
                     )}
 
                     {isEditing && (
                         <div className='w-fit'>
-                            <Input className="text-center" size='sm' type="name" variant='faded' defaultValue='Thien An' />
+                            <Input className="text-center" size='sm' type="name" variant='faded' defaultValue={items?.username} />
                         </div>
                     )}
                 </div>
@@ -79,12 +94,20 @@ export default function Profile() {
                                 </CardHeader>
                                 <CardBody className="space-y-2">
                                     <div className="space-y-1">
+                                        <p >Tên</p>
+                                        <Input id="firstName" disabled={!isEditing} defaultValue={items?.firstName} />
+                                    </div>
+                                    <div className="space-y-1">
+                                        <p >Họ</p>
+                                        <Input id="lastName" disabled={!isEditing} defaultValue={items?.lastName} />
+                                    </div>
+                                    <div className="space-y-1">
                                         <p >Email</p>
-                                        <Input id="email" disabled={!isEditing} defaultValue="andy@gmail.com" />
+                                        <Input id="email" disabled={!isEditing} defaultValue={items?.email} />
                                     </div>
                                     <div className="space-y-1">
                                         <p >Số điện thoại</p>
-                                        <Input id="phone" disabled={!isEditing} defaultValue="078956489" />
+                                        <Input id="phone" disabled={!isEditing} defaultValue=".." />
                                     </div>
                                 </CardBody>
                                 {isEditing && (
