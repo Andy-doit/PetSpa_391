@@ -77,7 +77,7 @@ export default function OrderDetail({ params }: { params: string }) {
                                                 <p className="text-xl font-medium">{booking.petWeight}</p>
                                                 <p className="text-xl font-medium">{booking.startTime} - {booking.endTime}</p>
                                                 <p className="text-xl font-medium">{booking.localDate}</p>
-                                                <p className="text-xl font-medium">/{booking.bookingNote}</p>
+                                                <p className="text-xl font-medium">{booking.bookingNote}</p>
                                             </div>
                                         </div>
                                         <div className="flex justify-end items-end">
