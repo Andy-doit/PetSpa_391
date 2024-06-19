@@ -12,6 +12,19 @@ export interface allBookingPaginationData {
     }
 
 }
+export interface UserInfor {
+    id: string,
+    username: string,
+    role: string,
+    firstName: string,
+    lastName: string,
+    email: string,
+    phone: number | undefined,
+    profileImageUrl: string,
+    coverImageUrl: string,
+    birthday: string,
+
+}
 export interface allBookingPaginationResponse {
     success: boolean;
     status: number;

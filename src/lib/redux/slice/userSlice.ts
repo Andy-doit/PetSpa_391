@@ -47,6 +47,24 @@ export const fetchAllBookingPagination = createAsyncThunk(
         }
     },
 );
+export const fetchUserInforPagination = createAsyncThunk(
+    'customer/UserInfor',
+    async () => {
+        try {
+            const response = await agent.User.getProfileInfor();
+            console.log(response)
+            return response;
+
+        } catch (error) {
+            if (error instanceof AxiosError) {
+                return {
+                    message: error.response?.data.error.message,
+                    status: error.response?.status,
+                };
+            }
+        }
+    },
+);
 export const fetchOrderBooking = createAsyncThunk(
     'id/fetchOrderBooking',
     async ({ slug }: { slug: string }) => {
