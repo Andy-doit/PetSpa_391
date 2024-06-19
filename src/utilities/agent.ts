@@ -2,6 +2,8 @@ import { AxiosResponse } from "axios";
 import apiJWT from "./api";
 import baseApi from "./baseApi";
 import { createBookingInput } from "@/models/bookingModels";
+import { request } from "http";
+import { createService } from '@/models/shopModel';
 
 
 const responseBody = (response: AxiosResponse) => response.data;
@@ -36,6 +38,11 @@ const ServiceAPI = {
     requests.baseApiGet(`api/v1/cache-shop-time-slot/${params}/${localDate}`)
 };
 
+const ShopOnwer = {
+  postCreateService : (input : createService) => 
+    requests.baseApiPost("/api/v1/booking/auth",input),
+  
+}
 const User = {
   getallBooking: () =>
     requests.get("/api/v1/booking/auth"),
@@ -47,6 +54,7 @@ const User = {
 
 const agent = {
   ServiceAPI,
-  User
+  User,
+  ShopOnwer
 };
 export default agent;
