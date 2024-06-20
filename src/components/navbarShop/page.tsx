@@ -14,6 +14,8 @@ export default function NavbarShop({ children }: Props) {
     const handleLogout = async () => {
         await localStorage.clear();
         Cookies.remove('token');
+        Cookies.remove('role');
+        Cookies.remove('uid');
         router.replace('/logIn');
     };
     return (

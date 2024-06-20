@@ -1,5 +1,12 @@
 import Footer from "@/components/footer/page";
+import NavbarAdmin from "@/components/navbarAdmin/page";
+import SiderbarAdmin from "@/components/siderbarAdmin/page";
+
+
+
+
 import type { Metadata } from "next";
+import { Children } from "react";
 
 export const metadata: Metadata = {
     title: "Admin",
@@ -13,10 +20,14 @@ export default function RootLayout({
 }>) {
     return (
         <>
-            {children}
+            <div className="flex">
+                <SiderbarAdmin />
+                <NavbarAdmin>   {children}</NavbarAdmin>
+            </div>
+
+            <Footer />
+
         </>
-
-
 
     );
 }
