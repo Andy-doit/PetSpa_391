@@ -5,6 +5,7 @@ import AuthenticationSlice from './slice/authSlice';
 import RoleSlice from './slice/roleSlice';
 import listAllServiceSlice from './slice/listAllServiceSlice';
 import userSlice from './slice/userSlice';
+import shopSlice from './slice/shopSlice';
 
 
 export const store = configureStore({
@@ -12,7 +13,8 @@ export const store = configureStore({
     auth: AuthenticationSlice,
     role: RoleSlice,
     service: listAllServiceSlice,
-    user: userSlice
+    user: userSlice,
+    shop: shopSlice,
   },
 });
 

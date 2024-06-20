@@ -1,11 +1,16 @@
-import React from "react";
-import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button } from "@nextui-org/react";
+import React, { useEffect, useState } from "react";
+import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, Input, Select, SelectItem, Textarea } from "@nextui-org/react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-
+import { createServiceInput } from "@/models/shopModel";
+import { useAppDispatch } from "@/lib/redux/store";
+import { createService } from "@/lib/redux/slice/shopSlice";
+import { ToastContainer, toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 interface ModalCreateServiceProps {
     isOpen: boolean;
     onClose: () => void;
+    userId: string;
 }
 
 const validationSchema = Yup.object().shape({
@@ -24,7 +29,8 @@ const validationSchema = Yup.object().shape({
         .max(500, 'Mô tả dịch vụ không được vượt quá 500 ký tự')
 });
 
-export default function ModalCreateService({ isOpen, onClose }: ModalCreateServiceProps) {
+export default function ModalCreateService({ isOpen, onClose, userId }: ModalCreateServiceProps) {
+    console.log(userId)
     const formik = useFormik({
         initialValues: {
             serviceName: '',
@@ -34,11 +40,54 @@ export default function ModalCreateService({ isOpen, onClose }: ModalCreateServi
         },
         validationSchema,
         onSubmit: (values) => {
-            // Handle form submission
             console.log(values);
             onClose();
         },
     });
+    useEffect(() => {
+        if (userId) {
+            setServiceData(prevData => ({
+                ...prevData,
+                userId: userId,
+            }));
+        }
+    }, [userId]);
+
+    const [serviceData, setServiceData] = useState<createServiceInput>({
+        userId: userId,
+        serviceCategoryId: 0,
+        serviceName: '',
+        serviceDescription: '',
+        price: 0,
+        minWeight: 0,
+        maxWeight: 0,
+        typePet: '',
+        tags: '',
+
+    });
+    const dispatch = useAppDispatch();
+    const handleCreate = async () => {
+        try {
+            if (userId) {
+                await dispatch(createService({ serviceData })).unwrap();
+                toast.success("Tạo dịch thành công!", {
+                    onClose: onClose,
+                    autoClose: 1500,
+                });
+            }
+        } catch (error) {
+            console.error('Error creating service:', error);
+            toast.error("Đã xảy ra lỗi khi tạo dịch vụ. Vui lòng thử lại sau!");
+        }
+    };
+    console.log(serviceData)
+    console.log(userId)
+    const handleInputChange = (fieldName: string, newValue: string | number) => {
+        setServiceData(prevData => ({
+            ...prevData,
+            [fieldName]: newValue
+        }));
+    };
 
     return (
         <>
@@ -50,60 +99,122 @@ export default function ModalCreateService({ isOpen, onClose }: ModalCreateServi
                         </ModalHeader>
                         <ModalBody className="space-y-6">
                             <form onSubmit={formik.handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <div className="col-span-1 md:col-span-2">
-                                    <label className="form-label text-lg font-semibold">Tên dịch vụ</label>
-                                    <input
-                                        type="text"
-                                        name="serviceName"
-                                        onChange={formik.handleChange}
-                                        onBlur={formik.handleBlur}
-                                        value={formik.values.serviceName}
-                                        className="form-control border border-gray-300 rounded-md px-4 py-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                <div className="col-span-1 ">
+
+                                    <Input
+                                        className="w-[300px]"
+                                        onChange={(e) => handleInputChange('serviceName', e.target.value)}
+
+                                        label="Tên dịch vụ"
                                     />
                                     {formik.touched.serviceName && formik.errors.serviceName ? (
                                         <div className="text-red-500">{formik.errors.serviceName}</div>
                                     ) : null}
                                 </div>
                                 <div className="col-span-1">
-                                    <label className="form-label text-lg font-semibold">Giá dịch vụ</label>
-                                    <input
-                                        type="number"
-                                        name="servicePrice"
-                                        onChange={formik.handleChange}
-                                        onBlur={formik.handleBlur}
-                                        value={formik.values.servicePrice}
-                                        className="form-control border border-gray-300 rounded-md px-4 py-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    <Select
+                                        label="Category"
+                                        className="w-[300px]"
+                                        onChange={(e) => handleInputChange('serviceCategoryId', e.target.value)}
+                                    >
+                                        <SelectItem key="1" value="1">
+                                            Dịch vụ tắm rứa
+                                        </SelectItem>
+                                        <SelectItem key="2" value="2">
+                                            Dịch vụ làm đẹp
+                                        </SelectItem>
+                                        <SelectItem key="3" value="3">
+                                            Dịch vụ mát xa
+                                        </SelectItem>
+                                        <SelectItem key="4" value="4">
+                                            Dịch vụ mát xa đặc biệt
+                                        </SelectItem>
+                                        <SelectItem key="5" value="5">
+                                            Khách sạn thú cưng
+                                        </SelectItem>
+
+                                    </Select>
+
+                                    {formik.touched.petType && formik.errors.petType ? (
+                                        <div className="text-red-500">{formik.errors.petType}</div>
+                                    ) : null}
+                                </div>
+                                <div className="col-span-1">
+                                    <Select
+                                        label="Category"
+                                        className="w-[300px]"
+                                        onChange={(e) => handleInputChange('tags', e.target.value)}
+                                    >
+                                        <SelectItem key="tag1" value="tags1">
+                                            Tag 1
+                                        </SelectItem>
+                                        <SelectItem key="tag2" value="tags2">
+                                            Tag 2
+                                        </SelectItem>
+                                        <SelectItem key="tag3" value="tags3">
+                                            Tag 2
+                                        </SelectItem>
+
+
+                                    </Select>
+
+                                    {formik.touched.petType && formik.errors.petType ? (
+                                        <div className="text-red-500">{formik.errors.petType}</div>
+                                    ) : null}
+                                </div>
+                                <div className="col-span-1">
+                                    <Input
+                                        className="w-[300px]"
+                                        onChange={(e) => handleInputChange('price', e.target.value)}
+                                        label="Giá dịch vụ"
                                     />
                                     {formik.touched.servicePrice && formik.errors.servicePrice ? (
                                         <div className="text-red-500">{formik.errors.servicePrice}</div>
                                     ) : null}
                                 </div>
+
                                 <div className="col-span-1">
-                                    <label className="form-label text-lg font-semibold">Loại thú cưng</label>
-                                    <select
-                                        name="petType"
-                                        onChange={formik.handleChange}
-                                        onBlur={formik.handleBlur}
-                                        value={formik.values.petType}
-                                        className="form-control border border-gray-300 rounded-md px-4 py-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    <Select
+                                        label="Loại thú cưng"
+                                        className="w-[300px]"
+                                        onChange={(e) => handleInputChange('typePet', e.target.value)}
                                     >
-                                        <option value="">Chọn loại thú cưng</option>
-                                        <option value="dog">Chó</option>
-                                        <option value="cat">Mèo</option>
-                                    </select>
+                                        <SelectItem key="DOG" value="DOG">
+                                            Chó
+                                        </SelectItem>
+                                        <SelectItem key="CAT" value="CAT">
+                                            Mèo
+                                        </SelectItem>
+                                    </Select>
+
                                     {formik.touched.petType && formik.errors.petType ? (
                                         <div className="text-red-500">{formik.errors.petType}</div>
                                     ) : null}
                                 </div>
-                                <div className="col-span-1 md:col-span-2">
-                                    <label className="form-label text-lg font-semibold">Mô tả dịch vụ</label>
-                                    <textarea
-                                        name="serviceDescription"
-                                        onChange={formik.handleChange}
-                                        onBlur={formik.handleBlur}
-                                        value={formik.values.serviceDescription}
-                                        className="form-control border border-gray-300 rounded-md px-4 py-2 w-full h-32 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                <div className="col-span-1">
+                                    <Input
+                                        className="w-[300px]"
+                                        onChange={(e) => handleInputChange('minWeight', e.target.value)}
+                                        label="Cân nặng nhỏ nhất"
                                     />
+
+                                </div>
+                                <div className="col-span-1">
+                                    <Input
+                                        className="w-[300px]"
+                                        onChange={(e) => handleInputChange('maxWeight', e.target.value)}
+                                        label="Cân nặng lớn nhất"
+                                    />
+
+                                </div>
+                                <div className="col-span-1 md:col-span-2">
+                                    <div className="w-full">
+                                        <Textarea
+                                            onChange={(e) => handleInputChange('serviceDescription', e.target.value)}
+                                            placeholder="Mô tả dịch vụ"
+                                            className="w-full"
+                                        />
+                                    </div>
                                     {formik.touched.serviceDescription && formik.errors.serviceDescription ? (
                                         <div className="text-red-500">{formik.errors.serviceDescription}</div>
                                     ) : null}
@@ -119,14 +230,15 @@ export default function ModalCreateService({ isOpen, onClose }: ModalCreateServi
                             </Button>
                             <Button
                                 color="primary"
-                                onClick={onClose}
+                                onClick={handleCreate}
                                 className="bg-blue-500 text-white px-6 py-2 rounded-md hover:bg-blue-600"
                             >
-                                Lưu
+                                Tạo
                             </Button>
                         </ModalFooter>
                     </>
                 </ModalContent>
+                <ToastContainer />
             </Modal>
         </>
     );
