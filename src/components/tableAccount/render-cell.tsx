@@ -65,7 +65,7 @@ export const RenderCell = ({ user, columnKey }: Props) => {
                     </div>
                     <div>
                         <Tooltip
-                            content="Xem chi tiết"
+                            content="Xoá tài khoạn"
                             color="danger"
                             onClick={() => console.log("Xoá tài khoản", user.id)}
                         >
