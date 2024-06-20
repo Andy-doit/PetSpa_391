@@ -2,8 +2,7 @@ import { AxiosResponse } from "axios";
 import apiJWT from "./api";
 import baseApi from "./baseApi";
 import { createBookingInput } from "@/models/bookingModels";
-import { request } from "http";
-import { createService } from '@/models/shopModel';
+import { createServiceInput } from '@/models/shopModel';
 
 
 const responseBody = (response: AxiosResponse) => response.data;
@@ -39,9 +38,9 @@ const ServiceAPI = {
 };
 
 const ShopOnwer = {
-  postCreateService : (input : createService) => 
-    requests.baseApiPost("/api/v1/booking/auth",input),
-  
+  postCreateService: (input: createServiceInput) =>
+    requests.baseApiPost("api/v1/shop-owner/manageService/create", input),
+
 }
 const User = {
   getallBooking: () =>
