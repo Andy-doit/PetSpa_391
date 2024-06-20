@@ -1,12 +1,31 @@
 'use client'
 import { FcPlus } from "react-icons/fc";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ServiceManagement from "@/components/tableServiceofShop/page";
 import ModalCreateService from "@/components/modalCreateService/page";
 import ModalViewServiceProps from "@/components/modalViewDetailService/page";
 import ModalUpdateServiceProps from "@/components/modalUpdateSerivce/page";
 import ModalDeleteServiceProps from "@/components/modalDeleteService/page"
+import getAccessAndRefreshCookie from "@/utilities/authUtils/getCookieForValidation";
+
 const ManageService = () => {
+    const [userId, setUserId] = useState<string>('');
+
+    useEffect(() => {
+        const fetchUid = async () => {
+            try {
+                const { uid } = await getAccessAndRefreshCookie();
+                if (uid) {
+                    setUserId(uid);
+                }
+            } catch (error) {
+                console.error('Error fetching UID:', error);
+            }
+        };
+        fetchUid();
+    }, [userId]);
+
+
     const [showModalCreateService, setShowModalCreateService] = useState(false);
     const [showModalViewService, setShowModalViewService] = useState(false);
     const [showModalUpdateService, setShowModalUpdateService] = useState(false);
@@ -60,6 +79,7 @@ const ManageService = () => {
             <div className="table-user-container">
                 <ServiceManagement onViewService={handleViewService} onUpdateService={handleUpdateService} onDeleteService={handleDeleteService} />
                 <ModalCreateService
+                    userId={userId}
                     isOpen={showModalCreateService}
                     onClose={handleCloseModal}
                 />
@@ -79,6 +99,7 @@ const ManageService = () => {
                     serviceToDelete={selectedService}
                 />
             </div>
+  
         </div>
     );
 };

@@ -278,6 +278,7 @@ export default function BookingPage(
                             <p className="text-1xl font-medium mb-2">Khung giờ</p>
                             <div className="w-full flex justify-around" >
                                 {timeSlot.map((slot: getTimeSlot, index: number) => (
+
                                     <Button
                                         key={index}
                                         onClick={() => handleSlotClick(index)}
@@ -287,6 +288,16 @@ export default function BookingPage(
                                         {`${slot.timeSlotDto.startLocalDateTime} - ${slot.timeSlotDto.endLocalDateTime}`}
                                     </Button>
                                 ))}
+                            </div>
+                            <div className='flex justify-center mt-5'>
+
+
+                                <Card className='w-[550px] px-5 py-2'>
+                                    <div className='flex'>
+                                        <p className='font-bold mr-2 text-default-600'>Màu xám:</p>
+                                        <p>là những khung giờ trống</p>
+                                    </div>
+                                </Card>
                             </div>
                         </div>
                     </div>

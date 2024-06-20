@@ -1,39 +1,52 @@
-import { AxiosError } from 'axios';
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import agent from '@/utilities/agent';
-import { createResponseSuccess, createService } from '@/models/shopModel';
+import { createServiceInput, serviceCreateResponseSuccess } from "@/models/shopModel";
+import agent from "@/utilities/agent";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { AxiosError } from "axios";
 
-    export const createServicebyShop = createAsyncThunk(
-        'servie/createService',
-        async ({ bookingData }: { bookingData: createService }) => {
-            try {
-    
-    
-                // const formData = new FormData();
-    
-                // formData.append('customerId', bookingData.customerId);
-                // formData.append('additionalMessage', bookingData.additionalMessage);
-                // formData.append('serviceId', bookingData.serviceId);
-                // formData.append('localDate', bookingData.localDate);
-                // formData.append('petName', bookingData.petName);
-                // formData.append('petAge', bookingData.petAge.toString());
-                // formData.append('typePet', bookingData.typePet);
-                // formData.append('petWeight', bookingData.petWeight.toString());
-                // formData.append('petId', bookingData.localDate);
-                // formData.append('petGender', bookingData.localDate);
-                // formData.append('timeSlotDto', bookingData.timeSlotDto);
-                const response = (await agent.ShopOnwer.postCreateService(
-                    bookingData,
-                )) as createResponseSuccess;
-                return response.message;
-            } catch (error) {
-                if (error instanceof AxiosError) {
-                    return {
-                        message: error.response?.data.error.message,
-                        status: error.response?.status,
-                    };
-                }
+export interface ShopState {
+    returnedData: any;
+    returnedDataStatus: string;
+    returnedDataError: boolean;
+    returnedDataLoading: boolean;
+
+
+}
+
+const initialState: ShopState = {
+    returnedData: null,
+    returnedDataStatus: 'idle',
+    returnedDataError: false,
+    returnedDataLoading: false,
+};
+export const createService = createAsyncThunk(
+    'shopOwner/createService',
+    async ({ serviceData }: { serviceData: createServiceInput }) => {
+        try {
+            const response = (await agent.ShopOnwer.postCreateService(
+                serviceData,
+            )) as serviceCreateResponseSuccess;
+            return response.message;
+        } catch (error) {
+            if (error instanceof AxiosError) {
+                return {
+                    message: error.response?.data.error.message,
+                    status: error.response?.status,
+                };
             }
-        },
-    );
+        }
+    },
+);
+const shopSlice = createSlice({
+    name: 'shop',
+    initialState,
+    reducers: {},
+    extraReducers: (builder) => {
 
+
+    },
+});
+
+
+export const userReducer = shopSlice.actions;
+
+export default shopSlice.reducer;
