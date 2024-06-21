@@ -1,6 +1,6 @@
 'use client'
 import 'intro.js/introjs.css';
-import { Card, Image, Button, Checkbox, DatePicker, Input, Textarea, Link, Select, SelectItem } from "@nextui-org/react";
+import { Card, Image, Button, Checkbox, DatePicker, Input, Textarea, Link, Select, SelectItem, cn, User } from "@nextui-org/react";
 import { useEffect, useState } from "react";
 import { today, getLocalTimeZone, CalendarDate } from "@internationalized/date";
 import { ServiceDetail, createBookingInput, getTimeSlot } from "@/models/bookingModels";
@@ -205,7 +205,147 @@ export default function BookingPage(
                 )}
 
 
-                <div className="w-1/2 px-4" data-title="Chào mừng bạn" >
+                <div className="w-1/2 px-4" >
+                    <div className='mb-4 flex justify-between'>
+                        <Checkbox
+
+                            classNames={{
+                                base: cn(
+                                    "inline-flex w-[300px] max-w-md bg-content2",
+                                    "hover:bg-content3 items-center justify-start",
+                                    "cursor-pointer rounded-xl gap-2 p-4 border-2 border-transparent",
+                                    "data-[selected=true]:border-primary",
+                                ),
+                                label: "w-full",
+                            }}
+                        // isSelected={isSelected}
+                        // onValueChange={setIsSelected}
+                        >
+                            <div className="w-full flex justify-between gap-2">
+                                <p>Thú cưng bạn đã có</p>
+                            </div>
+                        </Checkbox>
+                        <Checkbox
+
+                            classNames={{
+                                base: cn(
+                                    "inline-flex w-[300px] max-w-md bg-content2",
+                                    "hover:bg-content3 items-center justify-start",
+                                    "cursor-pointer rounded-xl gap-2 p-4 border-2 border-transparent",
+                                    "data-[selected=true]:border-primary",
+                                ),
+                                label: "w-full",
+                            }}
+                        // isSelected={isSelected}
+                        // onValueChange={setIsSelected}
+                        >
+                            <div className="w-full flex justify-between gap-2">
+                                <p>Thú cưng thú cưng mới</p>
+                            </div>
+                        </Checkbox>
+                    </div>
+                    <div className='mb-2'>
+                        <div className=" flex  justify-between">
+                            <div>
+                                <p className="text-1xl font-medium mb-2">Tên thú cưng</p>
+                                <div className="w-full">
+                                    <Input
+                                        className="w-[300px]"
+                                        onChange={(e) => handleInputChange('petName', e.target.value)}
+                                        type="Petname"
+                                        label="Tên thú cưng"
+                                    />
+
+
+                                </div>
+                            </div>
+                            <div>
+                                <p className="text-1xl font-medium mb-2">Cân nặng</p>
+                                <div className="w-full">
+                                    <Input
+                                        className="w-[300px]"
+                                        onChange={(e) => handleInputChange('petWeight', parseFloat(e.target.value))}
+                                        type="Petweight"
+                                        label="Cân nặng"
+                                    />
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div className='mb-2'>
+                        <div className=" flex  justify-between">
+                            <div>
+                                <p className="text-1xl font-medium mb-2">Tuổi thú cưng</p>
+                                <div className="w-full">
+                                    <Input
+                                        className="w-[300px]"
+                                        onChange={(e) => handleInputChange('petAge', parseInt(e.target.value))}
+                                        type="Petage"
+                                        label="Tuổi"
+                                    />
+
+
+                                </div>
+                            </div>
+                            <div>
+                                <div className="ml-2">
+                                    <p className="text-1xl font-medium mb-2">Giới tính</p>
+                                    <div className="w-full">
+                                        <Select
+                                            label="Giới tính"
+                                            className="w-[300px]"
+                                            value={selectedGender}
+                                            onChange={(event) => handleGenderChange(event.target.value)}
+                                        >
+                                            <SelectItem key="Male" value="Male"
+                                            >
+                                                Đực
+                                            </SelectItem>
+                                            <SelectItem key="Female" value="Female"
+                                            >
+                                                Cái
+                                            </SelectItem>
+                                        </Select>
+                                    </div>
+                                </div>
+                                {/* <p className="text-1xl font-medium mb-2">Giới tính</p>
+                                <div className="flex gap-4">
+                                    <Checkbox
+                                        checked={selectedGender === "Male"}
+                                        onChange={() => handleGenderChange("Male")}
+                                        disabled={selectedGender === "Female"}
+                                    >
+                                        Đực
+                                    </Checkbox>
+                                    <Checkbox
+                                        checked={selectedGender === "Female"}
+                                        onChange={() => handleGenderChange("Female")}
+                                        disabled={selectedGender === "Male"}
+                                    >
+                                        Cái
+                                    </Checkbox>
+                                </div> */}
+                            </div>
+                        </div>
+
+                    </div>
+                    <div className='mb-2'>
+                        <div className=" flex  justify-between">
+                            <div className='w-full'>
+                                <p className="text-1xl font-medium mb-2">Ghi chú</p>
+                                <div className="w-full">
+
+                                    <Textarea
+                                        onChange={(e) => handleInputChange('additionalMessage', e.target.value)}
+                                        label="Ghi chú"
+                                        placeholder="Những điều cần lưu ý đối với thú cưng của bạn"
+                                        className="w-full"
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     {/* <div className='mb-2'>
                         <p className="text-1xl font-medium">Loại thú cưng</p>
                     </div>
@@ -301,107 +441,7 @@ export default function BookingPage(
                             </div>
                         </div>
                     </div>
-                    <div className='mb-2'>
-                        <div className=" flex  justify-between">
-                            <div>
-                                <p className="text-1xl font-medium mb-2">Tên thú cưng</p>
-                                <div className="w-full">
-                                    <Input
-                                        className="w-[300px]"
-                                        onChange={(e) => handleInputChange('petName', e.target.value)}
-                                        type="Petname"
-                                        label="Tên thú cưng"
-                                    />
 
-
-                                </div>
-                            </div>
-                            <div>
-                                <p className="text-1xl font-medium mb-2">Cân nặng</p>
-                                <div className="w-full">
-                                    <Input
-                                        className="w-[300px]"
-                                        onChange={(e) => handleInputChange('petWeight', parseFloat(e.target.value))}
-                                        type="Petweight"
-                                        label="Cân nặng"
-                                    />
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-                    <div className='mb-2'>
-                        <div className=" flex  justify-between">
-                            <div>
-                                <p className="text-1xl font-medium mb-2">Tuổi thú cưng</p>
-                                <div className="w-full">
-                                    <Input
-                                        className="w-[300px]"
-                                        onChange={(e) => handleInputChange('petAge', parseInt(e.target.value))}
-                                        type="Petage"
-                                        label="Tuổi"
-                                    />
-
-
-                                </div>
-                            </div>
-                            <div>
-                                <div className="ml-2">
-                                    <p className="text-1xl font-medium mb-2">Giới tính</p>
-                                    <div className="w-full">
-                                        <Select
-                                            label="Giới tính"
-                                            className="w-[300px]"
-                                            value={selectedGender}
-                                            onChange={(event) => handleGenderChange(event.target.value)}
-                                        >
-                                            <SelectItem key="Male" value="Male"
-                                            >
-                                                Đực
-                                            </SelectItem>
-                                            <SelectItem key="Female" value="Female"
-                                            >
-                                                Cái
-                                            </SelectItem>
-                                        </Select>
-                                    </div>
-                                </div>
-                                {/* <p className="text-1xl font-medium mb-2">Giới tính</p>
-                                <div className="flex gap-4">
-                                    <Checkbox
-                                        checked={selectedGender === "Male"}
-                                        onChange={() => handleGenderChange("Male")}
-                                        disabled={selectedGender === "Female"}
-                                    >
-                                        Đực
-                                    </Checkbox>
-                                    <Checkbox
-                                        checked={selectedGender === "Female"}
-                                        onChange={() => handleGenderChange("Female")}
-                                        disabled={selectedGender === "Male"}
-                                    >
-                                        Cái
-                                    </Checkbox>
-                                </div> */}
-                            </div>
-                        </div>
-
-                    </div>
-                    <div className='mb-2'>
-                        <div className=" flex  justify-between">
-                            <div>
-                                <p className="text-1xl font-medium mb-2">Ghi chú</p>
-                                <div className="w-full">
-                                    <Textarea
-                                        onChange={(e) => handleInputChange('additionalMessage', e.target.value)}
-                                        label="Ghi chú"
-                                        placeholder="Những điều cần lưu ý đối với thú cưng của bạn"
-                                        className="w-[500px]"
-                                    />
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                     <div className='mt-11'>
                         <Button
                             onClick={handleCreateBooking}

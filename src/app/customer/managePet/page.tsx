@@ -10,6 +10,7 @@ import { useAppDispatch } from "@/lib/redux/store";
 import { allPetPaginationData } from "@/models/userModels";
 import { fetchAllPetPagination } from "@/lib/redux/slice/userSlice";
 import PetDetail from "@/components/petDetails/page";
+import DeletePet from "@/components/deletePet/page";
 
 export default function ManageAccount() {
     const dispatch = useAppDispatch();
@@ -17,7 +18,7 @@ export default function ManageAccount() {
     useEffect(() => {
         const allPet = async () => {
             const response = await dispatch(fetchAllPetPagination());
-            setPets(response.payload);
+            setPets(response.payload || []);
         }
         allPet();
     }, [dispatch]);
@@ -56,50 +57,49 @@ export default function ManageAccount() {
                 </div>
             </div>
             <div className="max-w-[95rem] mx-auto w-full">
-                <Table aria-label="Example static collection table">
-                    <TableHeader>
-                        <TableColumn>Tên thú cưng</TableColumn>
-                        <TableColumn>Loại thú cưng</TableColumn>
-                        <TableColumn>Giới tính</TableColumn>
-                        <TableColumn>Hành động</TableColumn>
-                    </TableHeader>
-                    <TableBody>
-                        {pets.map((pet) => (
-                            <TableRow key={pet.id}>
-                                <TableCell>{pet.petName}</TableCell>
-                                <TableCell>{pet.petType}</TableCell>
-                                <TableCell>{pet.petGender}</TableCell>
-                                <TableCell>
-                                    <div className="flex items-center gap-4 ">
-                                        <div>
-                                            <PetDetail params={pet.id} />
+                {pets.length === 0 ? (
+                    <div>Không có thú cưng nào</div>
+
+                ) : (
+                    <Table aria-label="Example static collection table">
+                        <TableHeader>
+                            <TableColumn>Tên thú cưng</TableColumn>
+                            <TableColumn>Loại thú cưng</TableColumn>
+                            <TableColumn>Giới tính</TableColumn>
+                            <TableColumn>Hành động</TableColumn>
+                        </TableHeader>
+                        <TableBody>
+                            {pets.map((pet) => (
+                                <TableRow key={pet.id}>
+                                    <TableCell>{pet.petName}</TableCell>
+                                    <TableCell>{pet.petType}</TableCell>
+                                    <TableCell>{pet.petGender}</TableCell>
+                                    <TableCell>
+                                        <div className="flex items-center gap-4 ">
+                                            <div>
+                                                <PetDetail params={pet.id} />
+                                            </div>
+                                            <div>
+                                                <Tooltip content="Chỉnh sửa thú cưng">
+                                                    <button onClick={() => console.log("Chỉnh sửa thú cưng")}>
+                                                        <MdChangeCircle size={20} fill="#979797" />
+                                                    </button>
+                                                </Tooltip>
+                                            </div>
+                                            <div>
+                                                <DeletePet params={pet.id} />
+                                            </div>
                                         </div>
-                                        <div>
-                                            <Tooltip content="Chỉnh sửa thú cưng">
-                                                <button onClick={() => console.log("Chỉnh sửa thú cưng")}>
-                                                    <MdChangeCircle size={20} fill="#979797" />
-                                                </button>
-                                            </Tooltip>
-                                        </div>
-                                        <div>
-                                            <Tooltip
-                                                content="Xoá thú cưng"
-                                                color="danger"
-                                                onClick={() => console.log("Xoá thú cưng")}
-                                            >
-                                                <button>
-                                                    <MdDelete size={20} fill="#FF0080" />
-                                                </button>
-                                            </Tooltip>
-                                        </div>
-                                    </div>
-                                </TableCell>
-                            </TableRow>
-                        ))}
+                                    </TableCell>
+                                </TableRow>
+                            ))}
 
 
-                    </TableBody>
-                </Table>
+                        </TableBody>
+                    </Table>
+
+                )}
+
             </div>
         </div>
     );
