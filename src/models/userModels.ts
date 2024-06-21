@@ -99,15 +99,15 @@ export interface allPetPaginationResponse {
     };
 }
 export interface PetInfor {
-    slug: string,
-    userId: string,
-    petName: string,
-    petType: string,
-    petAge: number,
-    petGender: string,
-    petWeight: number,
-    petDescription: string,
-    petPhoto: string,
-    petNote: string,
+    slug: string | undefined | null,
+    userId: string | undefined | null,
+    petName: string | undefined | null,
+    petType: string | undefined | null,
+    petAge: number | undefined | null,
+    petGender: string | undefined | null,
+    petWeight: number | undefined | null,
+    petDescription: string | undefined | null,
+    petPhoto: string | undefined | null,
+    petNote: string | undefined | null,
 
 }

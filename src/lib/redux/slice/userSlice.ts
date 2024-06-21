@@ -142,6 +142,22 @@ export const fetchPetInfor = createAsyncThunk(
         }
     },
 );
+export const deletePet = createAsyncThunk(
+    'customer/fetchDeletePet',
+    async ({ slug }: { slug: string }) => {
+        try {
+            const response = await agent.User.deletePet(slug);
+            return response;
+        } catch (error) {
+            if (error instanceof AxiosError) {
+                return {
+                    message: error.response?.data.error.message,
+                    status: error.response?.status,
+                };
+            }
+        }
+    },
+);
 
 
 const userSlice = createSlice({

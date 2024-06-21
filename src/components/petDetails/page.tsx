@@ -26,8 +26,8 @@ export default function PetDetail({ params }: { params: string }) {
     useEffect(() => {
         const petDetail = async () => {
             const response = await dispatch(fetchPetInfor({ slug: params }));
-            if (response) {
-                setPet(response);
+            if (response.payload) {
+                setPet(response.payload);
             }
         };
         petDetail();
@@ -41,7 +41,7 @@ export default function PetDetail({ params }: { params: string }) {
                 </Button>
             </Tooltip>
 
-            <Modal size='md' isOpen={isOpen} onOpenChange={onOpenChange} placement="top-center">
+            <Modal size='lg' isOpen={isOpen} onOpenChange={onOpenChange} placement="top-center">
                 <ModalContent>
                     <ModalHeader className='text-3xl text-orange-600'>Chi Tiết thú cưng</ModalHeader>
                     <ModalBody>
@@ -57,13 +57,19 @@ export default function PetDetail({ params }: { params: string }) {
                                     <p className="text-xl font-light">Ghi chú</p>
                                 </div>
                                 <div className="ml-20">
-                                    <p className="text-xl font-medium">{pet.petType}</p>
-                                    <p className="text-xl font-medium">{pet.petName}</p>
-                                    <p className="text-xl font-medium">{pet.petAge}</p>
-                                    <p className="text-xl font-medium">{pet.petWeight}</p>
-                                    <p className="text-xl font-medium">{pet.petGender}</p>
-                                    <p className="text-xl font-medium">{pet.petDescription}</p>
-                                    <p className="text-xl font-medium">{pet.petNote}</p>
+                                    {pet ? (
+                                        <>
+                                            <p className="text-xl font-medium">{pet.petType || "Không có gì"}</p>
+                                            <p className="text-xl font-medium">{pet.petName || "Không có gì"}</p>
+                                            <p className="text-xl font-medium">{pet.petAge || "Không có gì"}</p>
+                                            <p className="text-xl font-medium">{pet.petWeight || "Không có gì"}</p>
+                                            <p className="text-xl font-medium">{pet.petGender || "Không có gì"}</p>
+                                            <p className="text-xl font-medium">{pet.petDescription || "Không có gì"}</p>
+                                            <p className="text-xl font-medium">{pet.petNote || "Không có gì"}</p>
+                                        </>
+                                    ) : (
+                                        <p className="text-xl font-medium">Không có gì</p>
+                                    )}
                                 </div>
                             </div>
 
