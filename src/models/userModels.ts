@@ -60,7 +60,6 @@ export interface BookingDetail {
 }
 export interface createPetInput {
     userId: string,
-    slug: string,
     petName: string,
     petType: string,
     petAge: number,
