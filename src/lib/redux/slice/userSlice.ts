@@ -1,5 +1,5 @@
 
-import { allBookingPaginationResponse } from '@/models/userModels';
+import { allBookingPaginationResponse, allPetPaginationResponse, createPetInput, petCreateResponseSuccess } from '@/models/userModels';
 import agent from '@/utilities/agent';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { AxiosError } from 'axios';
@@ -10,6 +10,10 @@ export interface UserState {
     allBookingFetchingStatus: string;
     allBookingFetchingError: boolean;
     allBookingFetchingLoading: boolean;
+    allPetPagination: allPetPaginationResponse | null | undefined;
+    allPetFetchingStatus: string;
+    allPetFetchingError: boolean;
+    allPetFetchingLoading: boolean;
     returnedData: any;
     returnedDataStatus: string;
     returnedDataError: boolean;
@@ -19,9 +23,13 @@ export interface UserState {
 }
 
 const initialState: UserState = {
+    allPetPagination: null,
     allBookingPagination: null,
     allBookingFetchingStatus: 'idle',
     allBookingFetchingError: false,
+    allPetFetchingStatus: 'idle',
+    allPetFetchingError: false,
+    allPetFetchingLoading: false,
     allBookingFetchingLoading: false,
     returnedData: null,
     returnedDataStatus: 'idle',
@@ -81,6 +89,60 @@ export const fetchOrderBooking = createAsyncThunk(
         }
     },
 );
+export const createPet = createAsyncThunk(
+    'customer/createPet',
+    async ({ petData }: { petData: createPetInput }) => {
+        try {
+            const response = (await agent.User.createPet(
+                petData,
+            )) as petCreateResponseSuccess;
+            return response.message;
+        } catch (error) {
+            if (error instanceof AxiosError) {
+                return {
+                    message: error.response?.data.error.message,
+                    status: error.response?.status,
+                };
+            }
+        }
+    },
+);
+export const fetchAllPetPagination = createAsyncThunk(
+    'customer/fetchAllPetPagination',
+    async () => {
+        try {
+            const response = await agent.User.getAllPet();
+            console.log(response)
+            return response;
+
+        } catch (error) {
+            if (error instanceof AxiosError) {
+                return {
+                    message: error.response?.data.error.message,
+                    status: error.response?.status,
+                };
+            }
+        }
+    },
+);
+
+export const fetchPetInfor = createAsyncThunk(
+    'customer/fetchPetInfor',
+    async ({ slug }: { slug: string }) => {
+        try {
+            const response = await agent.User.getPetInfor(slug);
+            return response;
+        } catch (error) {
+            if (error instanceof AxiosError) {
+                return {
+                    message: error.response?.data.error.message,
+                    status: error.response?.status,
+                };
+            }
+        }
+    },
+);
+
 
 const userSlice = createSlice({
     name: 'user',
@@ -101,6 +163,20 @@ const userSlice = createSlice({
                 state.allBookingFetchingStatus = 'failed';
                 state.allBookingFetchingError = true;
                 state.allBookingFetchingLoading = false;
+            });
+        builder.addCase(fetchAllPetPagination.pending, (state) => {
+            state.allPetFetchingLoading = true;
+            state.allPetFetchingStatus = 'loading';
+        });
+        builder.addCase(fetchAllPetPagination.fulfilled, (state, action) => {
+            state.allPetPagination = action.payload;
+            state.allPetFetchingLoading = false;
+        });
+        builder
+            .addCase(fetchAllPetPagination.rejected, (state) => {
+                state.allPetFetchingStatus = 'failed';
+                state.allPetFetchingError = true;
+                state.allPetFetchingLoading = false;
             });
 
     },

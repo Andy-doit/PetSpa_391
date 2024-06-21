@@ -99,7 +99,7 @@ const ManageService = () => {
                     serviceToDelete={selectedService}
                 />
             </div>
-  
+
         </div>
     );
 };

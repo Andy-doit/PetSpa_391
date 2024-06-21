@@ -3,6 +3,7 @@ import apiJWT from "./api";
 import baseApi from "./baseApi";
 import { createBookingInput } from "@/models/bookingModels";
 import { createServiceInput } from '@/models/shopModel';
+import { createPetInput } from "@/models/userModels";
 
 
 const responseBody = (response: AxiosResponse) => response.data;
@@ -49,6 +50,12 @@ const User = {
     requests.get(`api/v1/booking/auth/${slug}`),
   getProfileInfor: () =>
     requests.get("api/v1/user"),
+  createPet: (input: createPetInput) =>
+    requests.baseApiPost("api/v1/pet", input),
+  getAllPet: () =>
+    requests.get("api/v1/pet/all/auth"),
+  getPetInfor: (slug: string) =>
+    requests.baseApiGet(`api/v1/pet/${slug}`),
 }
 
 const agent = {

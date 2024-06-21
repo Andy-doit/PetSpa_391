@@ -23,7 +23,7 @@ export default function OrderDetail({ params }: { params: string }) {
         };
         bookingDetail();
     }, [dispatch, params]);
-    console.log(booking);
+    // console.log(booking);
     return (
         <div className="flex flex-col gap-2">
             <Button radius="sm" className="bg-gradient-to-tr from-pink-500 to-yellow-500 text-white shadow-lg" size="sm" onPress={onOpen}>

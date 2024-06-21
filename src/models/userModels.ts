@@ -58,4 +58,56 @@ export interface BookingDetail {
     canceled: boolean,
 
 }
+export interface createPetInput {
+    userId: string,
+    petName: string,
+    petType: string,
+    petAge: number,
+    petGender: string,
+    petWeight: number,
+    petDescription: string,
+    petPhoto: string,
+    petNote: string,
 
+}
+export interface petCreateResponseSuccess {
+    status: number;
+    message: string;
+    success: boolean;
+}
+
+export interface allPetPaginationData {
+    id: string,
+    slug: string,
+    petName: string,
+    petType: string,
+    petAge: number,
+    petGender: string,
+    petPhoto: string,
+    ownerId: string,
+    ownerName: string,
+    doHaveUpcomingSchedule: boolean
+
+}
+export interface allPetPaginationResponse {
+    success: boolean;
+    status: number;
+    data: {
+        data: allPetPaginationData[];
+        totalCount: number;
+        pageCount: number;
+    };
+}
+export interface PetInfor {
+    slug: string,
+    userId: string,
+    petName: string,
+    petType: string,
+    petAge: number,
+    petGender: string,
+    petWeight: number,
+    petDescription: string,
+    petPhoto: string,
+    petNote: string,
+
+}
