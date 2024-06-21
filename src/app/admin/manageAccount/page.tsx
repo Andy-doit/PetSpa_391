@@ -26,6 +26,9 @@ export default function ManageAccount() {
                 <div className="flex flex-row gap-3.5 flex-wrap">
                     <AddUser />
                 </div>
+                {/* <div className="max-w-[95rem] mx-auto w-full">
+                    <ViewDetailAccount />
+                </div> */}
             </div>
             <div className="max-w-[95rem] mx-auto w-full">
                 <TableAccount />
