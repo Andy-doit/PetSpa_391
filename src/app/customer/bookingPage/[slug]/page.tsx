@@ -63,7 +63,9 @@ export default function BookingPage(
         petId: '',
         petGender: '',
     });
+
     const router = useRouter();
+
     const handleCreateBooking = async () => {
         await sessionStorage.setItem('bookingValues', JSON.stringify(bookingData));
         sessionStorage.setItem('service', JSON.stringify(service));
@@ -71,29 +73,12 @@ export default function BookingPage(
 
     };
     console.log(bookingData);
-
-
     const handleInputChange = (fieldName: string, newValue: string | number) => {
         setBookingData(prevData => ({
             ...prevData,
             [fieldName]: newValue
         }));
     };
-    // const handlePetTypeChange = (newType: string) => {
-    //     setBookingData(prevData => ({
-    //         ...prevData,
-    //         petType: newType
-    //     }));
-    // };
-    const [selectedGender, setSelectedGender] = useState<string>('');
-    const handleGenderChange = (gender: string) => {
-        setSelectedGender(gender);
-        setBookingData(prevData => ({
-            ...prevData,
-            petGender: gender
-        }));
-    };
-
     const handleDateChange = async (newDate: CalendarDate) => {
         const dateOnly = `${newDate.year}-${("0" + newDate.month).slice(-2)}-${("0" + newDate.day).slice(-2)}`;
         console.log(dateOnly)
@@ -110,8 +95,7 @@ export default function BookingPage(
 
     const [timeSlot, setTimeSlot] = useState<getTimeSlot[] | any>([]);
     const [selectedSlotIndex, setSelectedSlotIndex] = useState<number | null>(null);
-
-    console.log(timeSlot)
+    // console.log(timeSlot)
     const handleSlotClick = (index: number) => {
         setSelectedSlotIndex(index);
         const selectedSlot = timeSlot[index];
@@ -171,9 +155,9 @@ export default function BookingPage(
 
 
 
-            <div className="flex mt-2 justify-around">
+            <div className="mt-2 justify-around">
                 {service && (
-                    <div className="w-1/2  ">
+                    <div className="w-full  ">
                         <div className='flex text-center items-center justify-center border-imgcus rounded-md '>
                             <div>
                                 <div>
@@ -181,39 +165,19 @@ export default function BookingPage(
                                 </div>
                             </div>
                         </div>
-                        <div className="gap-2 grid grid-cols-12 grid-rows-2 mt-5">
-                            <Card isFooterBlurred className="w-full h-[400px] col-span-12 sm:col-span-5">
-                                <Image
-                                    removeWrapper
-                                    alt="Card example background"
-                                    className="z-0 w-full h-full scale-125 -translate-y-6 object-cover"
-                                    src="https://i.pinimg.com/564x/4a/67/a2/4a67a27669112468d6cceefc5b8b824a.jpg"
-                                />
 
-                            </Card>
-                            <Card isFooterBlurred className="w-full h-[400px] col-span-12 sm:col-span-7">
-
-                                <Image
-                                    removeWrapper
-                                    alt="Relaxing app background"
-                                    className="z-0 w-full h-full object-cover"
-                                    src="https://i.pinimg.com/736x/69/75/82/69758271818635c7ff76b4a850795186.jpg"
-                                />
-                            </Card>
-                        </div>
                     </div>
                 )}
 
 
-                <div className="w-1/2 px-4" >
-                    <div className='mb-4 flex justify-between'>
+                <div className="w-full px-4 mt-5" >
+                    <div className='mb-4 flex justify-center'>
                         <Checkbox
-
                             classNames={{
                                 base: cn(
                                     "inline-flex w-[300px] max-w-md bg-content2",
                                     "hover:bg-content3 items-center justify-start",
-                                    "cursor-pointer rounded-xl gap-2 p-4 border-2 border-transparent",
+                                    "cursor-pointer rounded-xl gap-2 p-4 border-2 border-transparent mr-10",
                                     "data-[selected=true]:border-primary",
                                 ),
                                 label: "w-full",
@@ -240,13 +204,14 @@ export default function BookingPage(
                         // onValueChange={setIsSelected}
                         >
                             <div className="w-full flex justify-between gap-2">
-                                <p>Thú cưng thú cưng mới</p>
+                                <p>Tạo thú cưng mới</p>
                             </div>
                         </Checkbox>
                     </div>
-                    <div className='mb-2'>
-                        <div className=" flex  justify-between">
-                            <div>
+                    {/* Pet */}
+                    <div className='mb-2 '>
+                        <div className=" flex  justify-center">
+                            <div className='mr-10'>
                                 <p className="text-1xl font-medium mb-2">Tên thú cưng</p>
                                 <div className="w-full">
                                     <Input
@@ -274,8 +239,8 @@ export default function BookingPage(
 
                     </div>
                     <div className='mb-2'>
-                        <div className=" flex  justify-between">
-                            <div>
+                        <div className=" flex  justify-center">
+                            <div className='mr-10'>
                                 <p className="text-1xl font-medium mb-2">Tuổi thú cưng</p>
                                 <div className="w-full">
                                     <Input
@@ -289,14 +254,13 @@ export default function BookingPage(
                                 </div>
                             </div>
                             <div>
-                                <div className="ml-2">
+                                <div >
                                     <p className="text-1xl font-medium mb-2">Giới tính</p>
                                     <div className="w-full">
                                         <Select
                                             label="Giới tính"
                                             className="w-[300px]"
-                                            value={selectedGender}
-                                            onChange={(event) => handleGenderChange(event.target.value)}
+                                            onChange={(e) => handleInputChange('petGender', e.target.value)}
                                         >
                                             <SelectItem key="Male" value="Male"
                                             >
@@ -309,100 +273,81 @@ export default function BookingPage(
                                         </Select>
                                     </div>
                                 </div>
-                                {/* <p className="text-1xl font-medium mb-2">Giới tính</p>
-                                <div className="flex gap-4">
-                                    <Checkbox
-                                        checked={selectedGender === "Male"}
-                                        onChange={() => handleGenderChange("Male")}
-                                        disabled={selectedGender === "Female"}
-                                    >
-                                        Đực
-                                    </Checkbox>
-                                    <Checkbox
-                                        checked={selectedGender === "Female"}
-                                        onChange={() => handleGenderChange("Female")}
-                                        disabled={selectedGender === "Male"}
-                                    >
-                                        Cái
-                                    </Checkbox>
-                                </div> */}
+
                             </div>
                         </div>
 
                     </div>
                     <div className='mb-2'>
-                        <div className=" flex  justify-between">
-                            <div className='w-full'>
+                        <div className=" flex  justify-center">
+                            <div className='mr-10'>
+                                <p className="text-1xl font-medium mb-2">Mô tả</p>
+                                <div className="w-full">
+                                    <Input
+                                        onChange={(e) => handleInputChange('petDescription', e.target.value)}
+                                        type="petDescription"
+                                        label="Mô tả"
+                                        className="w-[300px]"
+                                    />
+
+
+                                </div>
+                            </div>
+                            <div>
+                                <div className="ml-2">
+                                    <p className="text-1xl font-medium mb-2">Loại thú cưng</p>
+                                    <div className="w-full">
+                                        <Select label="Loại thú cưng" className="w-[300px]"
+                                            onChange={(e) => handleInputChange('petType', e.target.value)}
+                                        >
+                                            <SelectItem key="DOG">Chó</SelectItem>
+                                            <SelectItem key="CAT">Mèo</SelectItem>
+                                        </Select>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+                    <div className='mb-2'>
+                        <div className=" flex  justify-center">
+                            <div className='w-1/2'>
                                 <p className="text-1xl font-medium mb-2">Ghi chú</p>
                                 <div className="w-full">
 
                                     <Textarea
                                         onChange={(e) => handleInputChange('additionalMessage', e.target.value)}
                                         label="Ghi chú"
-                                        placeholder="Những điều cần lưu ý đối với thú cưng của bạn"
+                                        placeholder="Ghi chú về thú cưng của bạn"
+                                        className="w-full"
+                                    />
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    {/* Pet */}
+                    <div className='mb-2'>
+                        <div className=" flex  justify-center">
+                            <div className='w-1/2'>
+                                <p className="text-1xl font-medium mb-2">Ghi chú cho shop</p>
+                                <div className="w-full">
+
+                                    <Textarea
+                                        onChange={(e) => handleInputChange('additionalMessage', e.target.value)}
+                                        label="Ghi chú"
+                                        placeholder="Những điều bạn muốn nhắn gửi đến shop"
                                         className="w-full"
                                     />
                                 </div>
                             </div>
                         </div>
                     </div>
-                    {/* <div className='mb-2'>
-                        <p className="text-1xl font-medium">Loại thú cưng</p>
-                    </div>
-                    <div className="flex mb-2 justify-around w-1/3" >
-
-                        <div onClick={() => handlePetTypeChange('DOG')}>
-                            <Card
-                                radius="lg"
-                                className="border-none"
-
-                            >
-                                <Image
-                                    className="object-cover"
-                                    height={100}
-                                    src="https://i.pinimg.com/564x/a1/5d/f9/a15df9417030a5dd3c9806e2371123b0.jpg"
-                                    width={100}
-                                />
-                                <div className="absolute z-10 right-3 bottom-0 items-center flex">
-                                    <Checkbox
-                                        isSelected={bookingData.typePet === 'DOG'}
-                                        color="danger"
-                                        radius="full"
-                                        size="lg"
-                                    >
-                                        Chó
-                                    </Checkbox>
-                                </div>
-                            </Card>
-                        </div>
-                        <div onClick={() => handlePetTypeChange('CAT')}>
-                            <Card
-                                radius="lg"
-                                className="border-none"
-                            >
-                                <Image
-
-                                    className="object-cover"
-                                    height={100}
-                                    src="https://i.pinimg.com/564x/65/e3/bf/65e3bff241ef51e93cf4ddb514723101.jpg"
-                                    width={100}
-                                />
-                                <div className="absolute z-10 right-3 bottom-0 items-center flex">
-                                    <Checkbox
-                                        isSelected={bookingData.typePet === 'CAT'}
-                                        color="danger"
-                                        radius="full"
-                                        size="lg"
-                                    > Mèo
-                                    </Checkbox>
-                                </div>
-                            </Card>
-                        </div>
-                    </div> */}
                     <div className='mb-2'>
-                        <div className="   ">
-                            <p className="text-1xl font-medium mb-2">Chọn ngày</p>
-                            <div className="w-full">
+                        <div className=" flex justify-center  ">
+                            <div className="w-1/2 ">
+                                <p className="text-1xl font-medium mb-2">Chọn ngày</p>
                                 <DatePicker
                                     label="Chọn ngày"
                                     className="w-full"
@@ -414,39 +359,39 @@ export default function BookingPage(
                         </div>
                     </div>
                     <div className='mb-2'>
-                        <div className="   ">
-                            <p className="text-1xl font-medium mb-2">Khung giờ</p>
-                            <div className="w-full flex justify-around" >
-                                {timeSlot.map((slot: getTimeSlot, index: number) => (
+                        <div className=" flex justify-center  ">
+                            <div className='w-1/2'>
+                                <p className="text-1xl font-medium mb-2">Khung giờ</p>
+                                <div className="w-full flex justify-around" >
+                                    {timeSlot.map((slot: getTimeSlot, index: number) => (
 
-                                    <Button
-                                        key={index}
-                                        onClick={() => handleSlotClick(index)}
-                                        color={slot.availableSlots === 0 ? 'warning' : (selectedSlotIndex === index ? 'success' : 'default')}
-                                        disabled={slot.availableSlots === 0}
-                                    >
-                                        {`${slot.timeSlotDto.startLocalDateTime} - ${slot.timeSlotDto.endLocalDateTime}`}
-                                    </Button>
-                                ))}
+                                        <Button
+                                            key={index}
+                                            onClick={() => handleSlotClick(index)}
+                                            color={slot.availableSlots === 0 ? 'warning' : (selectedSlotIndex === index ? 'success' : 'default')}
+                                            disabled={slot.availableSlots === 0}
+                                        >
+                                            {`${slot.timeSlotDto.startLocalDateTime} - ${slot.timeSlotDto.endLocalDateTime}`}
+                                        </Button>
+                                    ))}
+                                </div>
                             </div>
-                            <div className='flex justify-center mt-5'>
-
-
-                                <Card className='w-[550px] px-5 py-2'>
-                                    <div className='flex'>
-                                        <p className='font-bold mr-2 text-default-600'>Màu xám:</p>
-                                        <p>là những khung giờ trống</p>
-                                    </div>
-                                </Card>
-                            </div>
+                        </div>
+                        <div className='flex justify-center mt-5'>
+                            <Card className='w-[550px] px-5 py-2'>
+                                <div className='flex'>
+                                    <p className='font-bold mr-2 text-default-600'>Màu xám:</p>
+                                    <p>là những khung giờ trống</p>
+                                </div>
+                            </Card>
                         </div>
                     </div>
 
-                    <div className='mt-11'>
+                    <div className='mt-11 flex justify-center'>
                         <Button
                             onClick={handleCreateBooking}
                             type="submit"
-                            className="bg-gradient-to-tr from-pink-500 to-yellow-500 text-white shadow-lg w-full"
+                            className="bg-gradient-to-tr from-pink-500 to-yellow-500 text-white shadow-lg w-1/2"
                         >
                             Đặt lịch
                         </Button>
