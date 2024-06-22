@@ -131,7 +131,6 @@ export const fetchAllPetPagination = createAsyncThunk(
     async () => {
         try {
             const response = await agent.User.getAllPet();
-            console.log(response)
             return response;
 
         } catch (error) {

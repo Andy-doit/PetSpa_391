@@ -13,7 +13,7 @@ import PetDetail from "@/components/petDetails/page";
 import DeletePet from "@/components/deletePet/page";
 import UpdatePet from "@/components/updatePet/page";
 
-export default function ManageAccount() {
+export default function ManagePet() {
     const dispatch = useAppDispatch();
     const [pets, setPets] = useState<allPetPaginationData[]>([]);
     useEffect(() => {
@@ -81,7 +81,7 @@ export default function ManageAccount() {
                                                 <PetDetail params={pet.id} />
                                             </div>
                                             <div>
-                                               <UpdatePet params={pet.id}/>
+                                                <UpdatePet params={pet.id} />
                                             </div>
                                             <div>
                                                 <DeletePet params={pet.id} />
