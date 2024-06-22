@@ -97,7 +97,7 @@ export default function UpdatePet({ params }: { params: string }) {
 
             <Modal size='xl' isOpen={isOpen} onClose={onClose} placement="top-center">
                 <ModalContent>
-                    <ModalHeader className='text-3xl text-orange-600'>Tạo mới thú cưng</ModalHeader>
+                    <ModalHeader className='text-3xl text-orange-600'>Cập nhật thú cưng</ModalHeader>
                     <ModalBody>
                         <div className="mt-2 flex">
                             <div className="">
