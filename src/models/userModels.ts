@@ -59,6 +59,7 @@ export interface BookingDetail {
 
 }
 export interface createPetInput {
+    id: string,
     userId: string,
     petName: string,
     petType: string,
@@ -82,6 +83,7 @@ export interface allPetPaginationData {
     petName: string,
     petType: string,
     petAge: number,
+    petWeight: number,
     petGender: string,
     petPhoto: string,
     ownerId: string,
