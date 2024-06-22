@@ -11,6 +11,7 @@ import { allPetPaginationData } from "@/models/userModels";
 import { fetchAllPetPagination } from "@/lib/redux/slice/userSlice";
 import PetDetail from "@/components/petDetails/page";
 import DeletePet from "@/components/deletePet/page";
+import UpdatePet from "@/components/updatePet/page";
 
 export default function ManageAccount() {
     const dispatch = useAppDispatch();
@@ -80,11 +81,7 @@ export default function ManageAccount() {
                                                 <PetDetail params={pet.id} />
                                             </div>
                                             <div>
-                                                <Tooltip content="Chỉnh sửa thú cưng">
-                                                    <button onClick={() => console.log("Chỉnh sửa thú cưng")}>
-                                                        <MdChangeCircle size={20} fill="#979797" />
-                                                    </button>
-                                                </Tooltip>
+                                               <UpdatePet params={pet.id}/>
                                             </div>
                                             <div>
                                                 <DeletePet params={pet.id} />
