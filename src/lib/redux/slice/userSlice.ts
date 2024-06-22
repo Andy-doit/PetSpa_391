@@ -107,6 +107,25 @@ export const createPet = createAsyncThunk(
         }
     },
 );
+
+export const updatePet = createAsyncThunk(
+    'customer/updatePet',
+    async ({ petData }: { petData: createPetInput }) => {
+        try {
+            const response = (await agent.User.updatePet(
+                petData,
+            )) as petCreateResponseSuccess;
+            return response.message;
+        } catch (error) {
+            if (error instanceof AxiosError) {
+                return {
+                    message: error.response?.data.error.message,
+                    status: error.response?.status,
+                };
+            }
+        }
+    },
+);
 export const fetchAllPetPagination = createAsyncThunk(
     'customer/fetchAllPetPagination',
     async () => {
