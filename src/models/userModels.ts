@@ -1,6 +1,6 @@
 export interface allBookingPaginationData {
     id: string,
-    slug: string | undefined | null;
+    slug: string;
     localDate: string | undefined | null,
     status: string | undefined | null,
     serviceName: string | undefined | null,
@@ -14,11 +14,11 @@ export interface allBookingPaginationData {
 }
 export interface UserInfor {
     id: string,
-    username: string | undefined | null,
-    role: string | undefined | null,
-    firstName: string | undefined | null,
-    lastName: string | undefined | null,
-    email: string | undefined | null,
+    username: string,
+    role: string,
+    firstName: string,
+    lastName: string,
+    email: string,
     phone: number | undefined,
     profileImageUrl: string | undefined | null,
     coverImageUrl: string | undefined | null,
