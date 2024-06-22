@@ -12,6 +12,7 @@ export default function AddShop({ shopId }: { shopId: string }) {
     const { isOpen, onOpen, onClose } = useDisclosure();
     const [isLoading, setIsLoading] = useState(false);
     const [shopData, setShopData] = useState<AccountInput>({
+        id: '',
         firstname: '',
         lastName: '',
         email: '',
