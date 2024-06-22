@@ -82,8 +82,25 @@ export default function CreatePet({ userId }: { userId: string }) {
 
             <Modal size='xl' isOpen={isOpen} onClose={onClose} placement="top-center">
                 <ModalContent>
-                    <ModalHeader className='text-3xl text-orange-600'>Tạo mới thú cưng</ModalHeader>
-                    <ModalBody>
+                    <ModalHeader
+                        className='text-3xl flex justify-center font-bold uppercase text-white'
+                        style={{
+                            backgroundImage: 'url("https://i.pinimg.com/736x/b4/38/8d/b4388d3b0601a64cad25d2fe73b2224b.jpg")',
+                            backgroundRepeat: 'no-repeat',
+                            backgroundSize: "cover",
+
+
+                        }}
+                    >Tạo mới thú cưng</ModalHeader>
+                    <ModalBody
+                        style={{
+                            backgroundImage: 'url("https://i.pinimg.com/736x/32/9e/2f/329e2f6a54fdb1f53f4126991fcc6143.jpg")',
+                            backgroundRepeat: 'no-repeat',
+                            backgroundSize: "cover",
+
+
+                        }}
+                    >
                         <div className="mt-2 flex">
                             <div className="">
                                 <div className="flex w-full mb-4">
@@ -153,8 +170,6 @@ export default function CreatePet({ userId }: { userId: string }) {
                                 </div>
                             </div>
                         </div>
-                    </ModalBody>
-                    <ModalFooter>
                         <div className="mt-4 flex w-full justify-end">
                             <Button
                                 className=" mr-3 w-full"
@@ -175,7 +190,7 @@ export default function CreatePet({ userId }: { userId: string }) {
                                 )}
                             </Button>
                         </div>
-                    </ModalFooter>
+                    </ModalBody>
                 </ModalContent>
             </Modal>
             <ToastContainer />

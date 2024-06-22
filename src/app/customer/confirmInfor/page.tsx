@@ -89,9 +89,8 @@ export default function Confirm() {
     return (
         <div
             style={{
-                backgroundImage: 'url(https://i.pinimg.com/736x/91/27/3e/91273ed3de2f0c4f869655e05668a9d2.jpg)',
-                backgroundSize: 'cover',
-                backgroundPosition: 'center',
+                backgroundImage: 'url("https://i.pinimg.com/564x/42/5c/a8/425ca85160d963b912a45cd4bb5cecf2.jpg")',
+
 
             }}
         >

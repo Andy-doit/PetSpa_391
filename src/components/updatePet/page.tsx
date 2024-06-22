@@ -89,15 +89,32 @@ export default function UpdatePet({ params }: { params: allPetPaginationData }) 
     return (
         <div>
             <Tooltip content="Chỉnh sửa thú cưng">
-                <Button color="success" variant="faded" isIconOnly onPress={onOpen}>
-                    <MdChangeCircle size={20} />
+                <Button variant="bordered" className='rounded-full' isIconOnly onPress={onOpen}>
+                    <MdChangeCircle size={20} color="green" />
                 </Button>
             </Tooltip>
 
             <Modal size='xl' isOpen={isOpen} onClose={onClose} placement="top-center">
                 <ModalContent>
-                    <ModalHeader className='text-3xl text-orange-600'>Cập nhật thú cưng</ModalHeader>
-                    <ModalBody>
+                    <ModalHeader
+                        className='text-3xl flex justify-center font-bold uppercase text-white'
+                        style={{
+                            backgroundImage: 'url("https://i.pinimg.com/736x/b4/38/8d/b4388d3b0601a64cad25d2fe73b2224b.jpg")',
+                            backgroundRepeat: 'no-repeat',
+                            backgroundSize: "cover",
+
+
+                        }}
+                    >Chỉnh sửa thú cưng</ModalHeader>
+                    <ModalBody
+                        style={{
+                            backgroundImage: 'url("https://i.pinimg.com/736x/32/9e/2f/329e2f6a54fdb1f53f4126991fcc6143.jpg")',
+                            backgroundRepeat: 'no-repeat',
+                            backgroundSize: "cover",
+
+
+                        }}
+                    >
                         <div className="mt-2 flex">
                             <div className="">
                                 <div className="flex w-full mb-4">
@@ -175,9 +192,7 @@ export default function UpdatePet({ params }: { params: allPetPaginationData }) 
                                 </div>
                             </div>
                         </div>
-                    </ModalBody>
-                    <ModalFooter>
-                        <div className="mt-4 flex w-full justify-end">
+                        <div className=" flex w-full justify-end">
                             <Button
                                 className=" mr-3 w-full"
                                 onPress={onClose}
@@ -197,7 +212,7 @@ export default function UpdatePet({ params }: { params: allPetPaginationData }) 
                                 )}
                             </Button>
                         </div>
-                    </ModalFooter>
+                    </ModalBody>
                 </ModalContent>
             </Modal>
             <ToastContainer />
