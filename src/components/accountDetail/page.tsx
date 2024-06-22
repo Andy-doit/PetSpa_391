@@ -1,59 +1,88 @@
-import { Card, CardBody, CardHeader, Divider } from '@nextui-org/react';
-import React from 'react';
+'use client'
+import React, { useEffect, useState } from 'react';
+import {
+    Button,
+    Modal,
+    ModalBody,
+    ModalContent,
+    ModalFooter,
+    ModalHeader,
+    useDisclosure,
+    Tooltip,
+} from '@nextui-org/react';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
-import { columns, users } from "../tableAccount/data";
+import { FaEye, FaPlus } from 'react-icons/fa';
 
-interface User {
-    id: number;
-    name: string;
-    role: string;
-    team: string;
-    status: string;
-    age: string;
-    avatar: string;
-    email: string;
-}
-const ViewDetailAccount: React.FC<{ user: User }> = ({ user }) => {
+import { useAppDispatch } from '@/lib/redux/store';
+import { ShopInfor } from '@/models/adminModel';
+import { fetchShopInfor } from '@/lib/redux/slice/adminSlice';
+
+export default function AccountDetail({ params }: { params: string }) {
+    const { isOpen, onOpen, onOpenChange } = useDisclosure();
+    const [shop, setShop] = useState<ShopInfor | any>();
+    const dispatch = useAppDispatch();
+    useEffect(() => {
+        const petDetail = async () => {
+            const response = await dispatch(fetchShopInfor({ slug: params }));
+            if (response.payload) {
+                setShop(response.payload);
+            }
+        };
+        petDetail();
+    }, [dispatch, params]);
     return (
-        <Card className='w-full md:w-[550px] p-4'>
-            <CardHeader className='w-full text-center'>
-                <div>
-                    <p className='text-2xl font-bold'>Thông tin người dùng</p>
-                    <p>Xem chi tiết tài khoản của {user.name}</p>
-                </div>
-            </CardHeader>
-            <CardBody className="space-y-2">
-                <div>
-                    <img src={user.avatar} alt={user.name} className="w-20 h-20 rounded-full mx-auto" />
-                </div>
-                <Divider />
-                <div className="space-y-1">
-                    <label htmlFor="name">Họ và tên</label>
-                    <p>{user.name}</p>
-                </div>
-                <div className="space-y-1">
-                    <label htmlFor="role">Vai trò</label>
-                    <p>{user.role}</p>
-                </div>
-                <div className="space-y-1">
-                    <label htmlFor="team">Nhóm</label>
-                    <p>{user.team}</p>
-                </div>
-                <div className="space-y-1">
-                    <label htmlFor="status">Trạng thái</label>
-                    <p>{user.status}</p>
-                </div>
-                <div className="space-y-1">
-                    <label htmlFor="age">Tuổi</label>
-                    <p>{user.age}</p>
-                </div>
-                <div className="space-y-1">
-                    <label htmlFor="email">Email</label>
-                    <p>{user.email}</p>
-                </div>
-            </CardBody>
-        </Card>
+        <div>
+            <Tooltip content="Xem chi tiết">
+                <Button color="warning" variant="faded" isIconOnly onPress={onOpen}>
+                    <FaEye size={20} />
+                </Button>
+
+            </Tooltip>
+
+            <Modal size='lg' isOpen={isOpen} onOpenChange={onOpenChange} placement="top-center">
+                <ModalContent>
+                    <ModalHeader className='text-3xl text-orange-600'>Chi Tiết thú cưng</ModalHeader>
+                    <ModalBody>
+                        <div className="flex justify-between">
+                            <div className="flex">
+                                <div>
+                                    <p className="text-xl font-light">Tên</p>
+                                    <p className="text-xl font-light">Họ</p>
+                                    <p className="text-xl font-light">Email</p>
+                                    <p className="text-xl font-light">Tên người dùng</p>
+                                    <p className="text-xl font-light">Mật khẩu </p>
+                                    <p className="text-xl font-light">Số điện thoại</p>
+
+                                </div>
+                                <div className="ml-20">
+                                    {shop ? (
+                                        <>
+                                            <p className="text-xl font-medium">{shop.firstName || "Không có gì"}</p>
+                                            <p className="text-xl font-medium">{shop.lastName || "Không có gì"}</p>
+                                            <p className="text-xl font-medium">{shop.email || "Không có gì"}</p>
+                                            <p className="text-xl font-medium">{shop.usename || "Không có gì"}</p>
+                                            <p className="text-xl font-medium">{shop.password || "Không có gì"}</p>
+                                            <p className="text-xl font-medium">{shop.phone || "Không có gì"}</p>
+
+                                        </>
+                                    ) : (
+                                        <p className="text-xl font-medium">Không có gì</p>
+                                    )}
+                                </div>
+                            </div>
+
+                        </div>
+                    </ModalBody>
+                    <ModalFooter>
+
+                    </ModalFooter>
+                </ModalContent>
+            </Modal>
+            <ToastContainer />
+        </div>
     );
 };
 
-export default ViewDetailAccount;
+
