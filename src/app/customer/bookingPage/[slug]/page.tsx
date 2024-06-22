@@ -8,6 +8,8 @@ import { useAppDispatch } from '@/lib/redux/store';
 import { createBooking, fetchServiceDetail, fetchTimeSlot } from '@/lib/redux/slice/listAllServiceSlice';
 import getAccessAndRefreshCookie from '@/utilities/authUtils/getCookieForValidation';
 import { useRouter } from 'next/navigation';
+import { allPetPaginationData } from '@/models/userModels';
+import { fetchAllPetPagination } from '@/lib/redux/slice/userSlice';
 
 
 
@@ -30,6 +32,7 @@ export default function BookingPage(
         };
         fetchUid();
     }, [userId]);
+
     const [service, setService] = useState<ServiceDetail | any>();
     const dispatch = useAppDispatch();
     useEffect(() => {
@@ -46,7 +49,16 @@ export default function BookingPage(
         }
         serviceDetail();
     }, [dispatch, userId]);
-    console.log(service)
+    // console.log(service)
+    const [pets, setPets] = useState<allPetPaginationData[]>([]);
+    useEffect(() => {
+        const allPet = async () => {
+            const response = await dispatch(fetchAllPetPagination());
+            setPets(response.payload || []);
+        }
+        allPet();
+    }, [dispatch]);
+    // console.log(pets)
     const [bookingData, setBookingData] = useState<createBookingInput>({
         customerId: parseInt(userId),
         additionalMessage: '',
@@ -92,7 +104,27 @@ export default function BookingPage(
             localDate: dateOnly
         }));
     };
+    const [isSelected, setIsSelected] = useState('');
 
+    const handleCheckboxChange = (selected: any) => {
+        setIsSelected(selected);
+    };
+    const [selectedPetId, setSelectedPetId] = useState(null);
+
+    const handlePetCheckChange = (petId: any) => {
+        const selectedPet = pets.find(pet => pet.id === petId);
+        if (selectedPet) {
+            setBookingData(prevData => ({
+                ...prevData,
+                petId: selectedPet.id,
+                petName: selectedPet.petName,
+                petType: selectedPet.petType,
+                petAge: selectedPet.petAge,
+                petGender: selectedPet.petGender,
+            }));
+        }
+        setSelectedPetId(petId);
+    };
     const [timeSlot, setTimeSlot] = useState<getTimeSlot[] | any>([]);
     const [selectedSlotIndex, setSelectedSlotIndex] = useState<number | null>(null);
     // console.log(timeSlot)
@@ -113,6 +145,8 @@ export default function BookingPage(
             console.log('Selected slot is undefined or null.');
         }
     };
+
+
 
     return (
 
@@ -178,12 +212,13 @@ export default function BookingPage(
                                     "inline-flex w-[300px] max-w-md bg-content2",
                                     "hover:bg-content3 items-center justify-start",
                                     "cursor-pointer rounded-xl gap-2 p-4 border-2 border-transparent mr-10",
-                                    "data-[selected=true]:border-primary",
+                                    "data-[selected='petsOwned']:border-primary",
                                 ),
                                 label: "w-full",
                             }}
-                        // isSelected={isSelected}
-                        // onValueChange={setIsSelected}
+                            isSelected={isSelected === 'petsOwned'}
+                            onValueChange={() => handleCheckboxChange('petsOwned')}
+
                         >
                             <div className="w-full flex justify-between gap-2">
                                 <p>Thú cưng bạn đã có</p>
@@ -196,12 +231,12 @@ export default function BookingPage(
                                     "inline-flex w-[300px] max-w-md bg-content2",
                                     "hover:bg-content3 items-center justify-start",
                                     "cursor-pointer rounded-xl gap-2 p-4 border-2 border-transparent",
-                                    "data-[selected=true]:border-primary",
+                                    "data-[selected='createPet']:border-primary",
                                 ),
                                 label: "w-full",
                             }}
-                        // isSelected={isSelected}
-                        // onValueChange={setIsSelected}
+                            isSelected={isSelected === 'createPet'}
+                            onValueChange={() => handleCheckboxChange('createPet')}
                         >
                             <div className="w-full flex justify-between gap-2">
                                 <p>Tạo thú cưng mới</p>
@@ -209,124 +244,171 @@ export default function BookingPage(
                         </Checkbox>
                     </div>
                     {/* Pet */}
-                    <div className='mb-2 '>
-                        <div className=" flex  justify-center">
-                            <div className='mr-10'>
-                                <p className="text-1xl font-medium mb-2">Tên thú cưng</p>
-                                <div className="w-full">
-                                    <Input
-                                        className="w-[300px]"
-                                        onChange={(e) => handleInputChange('petName', e.target.value)}
-                                        type="Petname"
-                                        label="Tên thú cưng"
-                                    />
+                    {isSelected === 'createPet' && (
+                        <div>
+                            <div className='mb-2 '>
+                                <div className=" flex  justify-center">
+                                    <div className='mr-10'>
+                                        <p className="text-1xl font-medium mb-2">Tên thú cưng</p>
+                                        <div className="w-full">
+                                            <Input
+                                                className="w-[300px]"
+                                                onChange={(e) => handleInputChange('petName', e.target.value)}
+                                                type="Petname"
+                                                label="Tên thú cưng"
+                                            />
 
 
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <p className="text-1xl font-medium mb-2">Cân nặng</p>
+                                        <div className="w-full">
+                                            <Input
+                                                className="w-[300px]"
+                                                onChange={(e) => handleInputChange('petWeight', parseFloat(e.target.value))}
+                                                type="Petweight"
+                                                label="Cân nặng"
+                                            />
+                                        </div>
+                                    </div>
                                 </div>
+
                             </div>
-                            <div>
-                                <p className="text-1xl font-medium mb-2">Cân nặng</p>
-                                <div className="w-full">
-                                    <Input
-                                        className="w-[300px]"
-                                        onChange={(e) => handleInputChange('petWeight', parseFloat(e.target.value))}
-                                        type="Petweight"
-                                        label="Cân nặng"
-                                    />
+                            <div className='mb-2'>
+                                <div className=" flex  justify-center">
+                                    <div className='mr-10'>
+                                        <p className="text-1xl font-medium mb-2">Tuổi thú cưng</p>
+                                        <div className="w-full">
+                                            <Input
+                                                className="w-[300px]"
+                                                onChange={(e) => handleInputChange('petAge', parseInt(e.target.value))}
+                                                type="Petage"
+                                                label="Tuổi"
+                                            />
+
+
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div >
+                                            <p className="text-1xl font-medium mb-2">Giới tính</p>
+                                            <div className="w-full">
+                                                <Select
+                                                    label="Giới tính"
+                                                    className="w-[300px]"
+                                                    onChange={(e) => handleInputChange('petGender', e.target.value)}
+                                                >
+                                                    <SelectItem key="Male" value="Male"
+                                                    >
+                                                        Đực
+                                                    </SelectItem>
+                                                    <SelectItem key="Female" value="Female"
+                                                    >
+                                                        Cái
+                                                    </SelectItem>
+                                                </Select>
+                                            </div>
+                                        </div>
+
+                                    </div>
                                 </div>
+
                             </div>
-                        </div>
-
-                    </div>
-                    <div className='mb-2'>
-                        <div className=" flex  justify-center">
-                            <div className='mr-10'>
-                                <p className="text-1xl font-medium mb-2">Tuổi thú cưng</p>
-                                <div className="w-full">
-                                    <Input
-                                        className="w-[300px]"
-                                        onChange={(e) => handleInputChange('petAge', parseInt(e.target.value))}
-                                        type="Petage"
-                                        label="Tuổi"
-                                    />
+                            <div className='mb-2'>
+                                <div className=" flex  justify-center">
+                                    <div className='mr-10'>
+                                        <p className="text-1xl font-medium mb-2">Mô tả</p>
+                                        <div className="w-full">
+                                            <Input
+                                                onChange={(e) => handleInputChange('petDescription', e.target.value)}
+                                                type="petDescription"
+                                                label="Mô tả"
+                                                className="w-[300px]"
+                                            />
 
 
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div className="ml-2">
+                                            <p className="text-1xl font-medium mb-2">Loại thú cưng</p>
+                                            <div className="w-full">
+                                                <Select label="Loại thú cưng" className="w-[300px]"
+                                                    onChange={(e) => handleInputChange('petType', e.target.value)}
+                                                >
+                                                    <SelectItem key="DOG">Chó</SelectItem>
+                                                    <SelectItem key="CAT">Mèo</SelectItem>
+                                                </Select>
+                                            </div>
+                                        </div>
+
+                                    </div>
                                 </div>
+
                             </div>
-                            <div>
-                                <div >
-                                    <p className="text-1xl font-medium mb-2">Giới tính</p>
-                                    <div className="w-full">
-                                        <Select
-                                            label="Giới tính"
-                                            className="w-[300px]"
-                                            onChange={(e) => handleInputChange('petGender', e.target.value)}
-                                        >
-                                            <SelectItem key="Male" value="Male"
-                                            >
-                                                Đực
-                                            </SelectItem>
-                                            <SelectItem key="Female" value="Female"
-                                            >
-                                                Cái
-                                            </SelectItem>
-                                        </Select>
+                            <div className='mb-2'>
+                                <div className=" flex  justify-center">
+                                    <div className='w-1/2'>
+                                        <p className="text-1xl font-medium mb-2">Ghi chú</p>
+                                        <div className="w-full">
+
+                                            <Textarea
+                                                onChange={(e) => handleInputChange('additionalMessage', e.target.value)}
+                                                label="Ghi chú"
+                                                placeholder="Ghi chú về thú cưng của bạn"
+                                                className="w-full"
+                                            />
+                                        </div>
                                     </div>
                                 </div>
 
                             </div>
                         </div>
+                    )}
+                    {isSelected === 'petsOwned' && (
+                        <div className='flex justify-center'>
+                            {pets.length === 0 ? (
+                                <div>Không có thú cưng nào</div>
 
-                    </div>
-                    <div className='mb-2'>
-                        <div className=" flex  justify-center">
-                            <div className='mr-10'>
-                                <p className="text-1xl font-medium mb-2">Mô tả</p>
-                                <div className="w-full">
-                                    <Input
-                                        onChange={(e) => handleInputChange('petDescription', e.target.value)}
-                                        type="petDescription"
-                                        label="Mô tả"
-                                        className="w-[300px]"
-                                    />
+                            ) : (
+                                <div className='mb-2'>
+                                    {pets.map((petinfor) => (
+                                        <div key={petinfor.id} className='mb-1'>
+                                            <Checkbox
+                                                isSelected={selectedPetId === petinfor.id}
 
+                                                onValueChange={() => handlePetCheckChange(petinfor.id)}
 
+                                                classNames={{
+                                                    base: cn(
+                                                        "inline-flex w-[400px] max-w-md bg-content2 mt-3",
+                                                        "hover:bg-content3 items-center justify-start",
+                                                        "cursor-pointer rounded-xl gap-2 p-4 border-2 border-transparent mr-10",
+                                                        "data-[selected='petsOwned']:border-primary",
+                                                    ),
+                                                    label: "w-full",
+
+                                                }}
+                                            >
+                                                <div className="w-full flex justify-between ">
+                                                    <div className='flex'>
+                                                        <p className='mr-2'>Tên thú cưng: </p>
+                                                        <p className='font-bold'>{petinfor.petName}</p>
+                                                    </div>
+                                                    <div className='flex'>
+                                                        <p className='mr-2'>Loại thú cưng: </p>
+                                                        <p className='font-bold'>{petinfor.petType}</p>
+                                                    </div>
+                                                </div>
+                                            </Checkbox>
+                                        </div>
+                                    ))}
                                 </div>
-                            </div>
-                            <div>
-                                <div className="ml-2">
-                                    <p className="text-1xl font-medium mb-2">Loại thú cưng</p>
-                                    <div className="w-full">
-                                        <Select label="Loại thú cưng" className="w-[300px]"
-                                            onChange={(e) => handleInputChange('petType', e.target.value)}
-                                        >
-                                            <SelectItem key="DOG">Chó</SelectItem>
-                                            <SelectItem key="CAT">Mèo</SelectItem>
-                                        </Select>
-                                    </div>
-                                </div>
+                            )}
 
-                            </div>
                         </div>
-
-                    </div>
-                    <div className='mb-2'>
-                        <div className=" flex  justify-center">
-                            <div className='w-1/2'>
-                                <p className="text-1xl font-medium mb-2">Ghi chú</p>
-                                <div className="w-full">
-
-                                    <Textarea
-                                        onChange={(e) => handleInputChange('additionalMessage', e.target.value)}
-                                        label="Ghi chú"
-                                        placeholder="Ghi chú về thú cưng của bạn"
-                                        className="w-full"
-                                    />
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
+                    )}
                     {/* Pet */}
                     <div className='mb-2'>
                         <div className=" flex  justify-center">
