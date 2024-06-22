@@ -58,6 +58,8 @@ const User = {
     requests.baseApiGet(`api/v1/pet/${slug}`),
   deletePet: (slug: string) =>
     requests.baseApiDelete(`api/v1/pet/${slug}`),
+  updatePet: (input: createPetInput) =>
+    requests.baseApiPut("/api/v1/pet", input),
 }
 
 const agent = {
