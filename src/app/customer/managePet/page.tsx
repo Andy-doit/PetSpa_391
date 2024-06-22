@@ -81,7 +81,7 @@ export default function ManagePet() {
                                                 <PetDetail params={pet.id} />
                                             </div>
                                             <div>
-                                                <UpdatePet params={pet.id} />
+                                                <UpdatePet params={pet} />
                                             </div>
                                             <div>
                                                 <DeletePet params={pet.id} />

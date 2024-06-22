@@ -68,8 +68,6 @@ const User = {
     requests.baseApiPut("/api/v1/pet", input),
 }
 
-
-
 //Admin
 const Admin = {
   getAllShops: () =>

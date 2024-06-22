@@ -2,9 +2,6 @@
 import React, { useEffect, useState } from 'react';
 import {
     Button,
-    Card,
-    Checkbox,
-    Image,
     Input,
     Select,
     SelectItem,
@@ -21,13 +18,12 @@ import { ClipLoader } from 'react-spinners';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useAppDispatch } from '@/lib/redux/store';
-import { createPetInput } from '@/models/userModels';
-import { createPet, updatePet } from '@/lib/redux/slice/userSlice';
-import { FaPlus } from 'react-icons/fa';
+import { allPetPaginationData, createPetInput } from '@/models/userModels';
+import { updatePet } from '@/lib/redux/slice/userSlice';
 import getAccessAndRefreshCookie from '@/utilities/authUtils/getCookieForValidation';
 import { MdChangeCircle } from 'react-icons/md';
 
-export default function UpdatePet({ params }: { params: string }) {
+export default function UpdatePet({ params }: { params: allPetPaginationData }) {
     const [userId, setUserId] = useState<string>('');
     useEffect(() => {
         const fetchUid = async () => {
@@ -42,6 +38,7 @@ export default function UpdatePet({ params }: { params: string }) {
         };
         fetchUid();
     }, [userId]);
+
     const { isOpen, onOpen, onClose } = useDisclosure();
     const [isLoading, setIsLoading] = useState(false);
     useEffect(() => {
@@ -53,17 +50,19 @@ export default function UpdatePet({ params }: { params: string }) {
         }
     }, [userId]);
     const [petData, setPetData] = useState<createPetInput>({
+        id: params.id.toString(),
         userId: userId,
-        petName: '',
-        petType: '',
-        petAge: 0,
-        petGender: '',
-        petWeight: 0,
+        petName: params.petName,
+        petType: params.petType,
+        petAge: params.petAge,
+        petGender: params.petGender,
+        petWeight: params.petWeight,
         petDescription: '',
         petPhoto: '',
         petNote: '',
 
     });
+    console.log(petData)
     const dispatch = useAppDispatch();
 
     const handleInputChange = (fieldName: string, newValue: string | number) => {
@@ -89,8 +88,8 @@ export default function UpdatePet({ params }: { params: string }) {
 
     return (
         <div>
-            <Tooltip content="Xem chi tiết">
-                <Button color="warning" variant="faded" isIconOnly onPress={onOpen}>
+            <Tooltip content="Chỉnh sửa thú cưng">
+                <Button color="success" variant="faded" isIconOnly onPress={onOpen}>
                     <MdChangeCircle size={20} />
                 </Button>
             </Tooltip>
@@ -105,6 +104,7 @@ export default function UpdatePet({ params }: { params: string }) {
                                     <div className="mr-4">
                                         <Input
                                             type="Petname"
+                                            value={petData.petName}
                                             onChange={(e) => handleInputChange('petName', e.target.value)}
                                             label="Tên thú cưng"
                                             className="w-[250px]"
@@ -112,6 +112,8 @@ export default function UpdatePet({ params }: { params: string }) {
                                     </div>
                                     <div className="ml-4">
                                         <Select label="Loại thú cưng" className="w-[250px]"
+
+                                            defaultSelectedKeys={[petData.petType]}
                                             onChange={(e) => handleInputChange('petType', e.target.value)}
                                         >
                                             <SelectItem key="DOG">Chó</SelectItem>
@@ -124,12 +126,14 @@ export default function UpdatePet({ params }: { params: string }) {
                                         <Input
                                             onChange={(e) => handleInputChange('petAge', e.target.value)}
                                             type="Petage"
+                                            value={petData.petAge.toString()}
                                             label="Tuổi thú cưng"
                                             className="w-[250px]"
                                         />
                                     </div>
                                     <div className="ml-4">
                                         <Select label="Giới tính"
+                                            defaultSelectedKeys={[petData.petGender]}
                                             onChange={(e) => handleInputChange('petGender', e.target.value)}
                                             className="w-[250px]">
                                             <SelectItem key="Male">Đực</SelectItem>
@@ -140,6 +144,7 @@ export default function UpdatePet({ params }: { params: string }) {
                                 <div className="flex mb-4">
                                     <div className="w-full mr-4">
                                         <Input
+                                            value={petData.petWeight.toString()}
                                             onChange={(e) => handleInputChange('petWeight', e.target.value)}
                                             type="Petweight"
                                             label="Cân nặng"
@@ -149,6 +154,7 @@ export default function UpdatePet({ params }: { params: string }) {
                                     </div>
                                     <div className="w-full ml-4">
                                         <Input
+
                                             onChange={(e) => handleInputChange('petDescription', e.target.value)}
                                             type="petDescription"
                                             label="Mô tả"
@@ -159,6 +165,7 @@ export default function UpdatePet({ params }: { params: string }) {
                                 <div className="flex mb-4">
                                     <div className="w-full">
                                         <Textarea
+                                            value={petData.petNote}
                                             onChange={(e) => handleInputChange('petNote', e.target.value)}
                                             type="petNote"
                                             label="Ghi chú"
@@ -186,7 +193,7 @@ export default function UpdatePet({ params }: { params: string }) {
                                 {isLoading ? (
                                     <ClipLoader size={20} color="#ffffff" />
                                 ) : (
-                                    'Tạo mới'
+                                    'Cập nhật'
                                 )}
                             </Button>
                         </div>
