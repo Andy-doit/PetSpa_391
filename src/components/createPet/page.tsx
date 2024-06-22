@@ -37,6 +37,7 @@ export default function CreatePet({ userId }: { userId: string }) {
         }
     }, [userId]);
     const [petData, setPetData] = useState<createPetInput>({
+        id: '',
         userId: userId,
         petName: '',
         petType: '',
