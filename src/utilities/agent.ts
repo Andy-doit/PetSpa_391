@@ -4,6 +4,7 @@ import baseApi from "./baseApi";
 import { createBookingInput } from "@/models/bookingModels";
 import { createServiceInput } from '@/models/shopModel';
 import { createPetInput } from "@/models/userModels";
+import { AccountInput } from "@/models/adminModel";
 
 
 const responseBody = (response: AxiosResponse) => response.data;
@@ -26,7 +27,7 @@ const requests = {
     baseApi.delete(url, { params }).then(responseBody),
 };
 
-
+//booking
 const ServiceAPI = {
   getServiceList: () =>
     requests.baseApiGet("api/v1/service/all"),
@@ -38,11 +39,16 @@ const ServiceAPI = {
     requests.baseApiGet(`api/v1/cache-shop-time-slot/${params}/${localDate}`)
 };
 
+
+//ShopOnwer
 const ShopOnwer = {
   postCreateService: (input: createServiceInput) =>
     requests.baseApiPost("api/v1/shop-owner/manageService/create", input),
 
 }
+
+
+//User
 const User = {
   getallBooking: () =>
     requests.get("/api/v1/booking/auth"),
@@ -62,9 +68,22 @@ const User = {
     requests.baseApiPut("/api/v1/pet", input),
 }
 
+
+
+//Admin
+const Admin = {
+  getAllShops: () =>
+    requests.get("api/v1/admin/manageShopOwner/viewAll"),
+  createShop: (input: AccountInput) =>
+    requests.baseApiPost("api/v1/admin/manageShopOwner/addShopOwner", input)
+}
+
+
+
 const agent = {
   ServiceAPI,
   User,
-  ShopOnwer
+  ShopOnwer,
+  Admin
 };
 export default agent;
