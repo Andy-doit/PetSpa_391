@@ -33,34 +33,46 @@ export default function CardOrder() {
     }
 
     return (
-        <Table aria-label="Example static collection table ">
-            <TableHeader>
-                <TableColumn>Tên dịch vụ</TableColumn>
-                <TableColumn>Ngày đặt</TableColumn>
-                <TableColumn>Khung giờ</TableColumn>
-                <TableColumn>Tên thú cưng</TableColumn>
-                <TableColumn>Spa</TableColumn>
-                <TableColumn>Tình trạng</TableColumn>
-                <TableColumn > <span className="sr-only">Action</span></TableColumn>
-            </TableHeader>
-            <TableBody>
-                {items.map((service) => (
-                    <TableRow key={service.id}>
-                        <TableCell>{service.serviceName}</TableCell>
-                        <TableCell>{service.localDate}</TableCell>
-                        <TableCell>{service.timeSlotDto.startLocalDateTime} - {service.timeSlotDto.endLocalDateTime}</TableCell>
-                        <TableCell>{service.petName}</TableCell>
-                        <TableCell>{service.shopName}</TableCell>
-                        <TableCell>
-                            <Chip color={getColor(service.status)}>{service.status}</Chip>
-                        </TableCell>
-                        <TableCell>
-                            <OrderDetail params={service.id} />
-                        </TableCell>
-                    </TableRow>
-                ))}
-            </TableBody>
-        </Table>
+        <>
+            {items.length === 0 ? (
+                <div>Không có lịch đặt hàng nào</div>
 
+            ) : (
+                <Table aria-label="Example static collection table ">
+                    <TableHeader>
+                        <TableColumn>Tên dịch vụ</TableColumn>
+                        <TableColumn>Ngày đặt</TableColumn>
+                        <TableColumn>Khung giờ</TableColumn>
+                        <TableColumn>Tên thú cưng</TableColumn>
+                        <TableColumn>Spa</TableColumn>
+                        <TableColumn>Tình trạng</TableColumn>
+                        <TableColumn > <span className="sr-only">Action</span></TableColumn>
+                    </TableHeader>
+                    <TableBody>
+
+                        <div>
+                            {items.map((service) => (
+                                <TableRow key={service.id}>
+                                    <TableCell>{service.serviceName}</TableCell>
+                                    <TableCell>{service.localDate}</TableCell>
+                                    <TableCell>{service.timeSlotDto.startLocalDateTime} - {service.timeSlotDto.endLocalDateTime}</TableCell>
+                                    <TableCell>{service.petName}</TableCell>
+                                    <TableCell>{service.shopName}</TableCell>
+                                    <TableCell>
+                                        <Chip color={getColor(service.status)}>{service.status}</Chip>
+                                    </TableCell>
+                                    <TableCell>
+                                        <OrderDetail params={service.id} />
+                                    </TableCell>
+                                </TableRow>
+                            ))
+                            }
+                        </div>
+
+
+                    </TableBody>
+                </Table>
+            )}
+        </>
     )
 }
