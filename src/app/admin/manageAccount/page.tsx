@@ -2,14 +2,14 @@
 import { Button, Input, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow } from "@nextui-org/react";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
-
-import { TableAccount } from "@/components/tableAccount/page";
 import { BiUser } from "react-icons/bi";
 import { MdHouse } from "react-icons/md";
 import AddShop from "@/components/createShop/page";
 import { useAppDispatch } from "@/lib/redux/store";
 import { allShopPaginationData } from "@/models/adminModel";
 import { fetchAllShopPagination } from "@/lib/redux/slice/adminSlice";
+import AccountDetail from "@/components/accountDetail/page";
+import DeleteShop from "@/components/deleteAccount/page";
 
 
 
@@ -60,6 +60,7 @@ export default function ManageAccount() {
                             <TableColumn>Tên Shop</TableColumn>
                             <TableColumn>Email</TableColumn>
                             <TableColumn>Số điện thoại</TableColumn>
+                            <TableColumn>Status</TableColumn>
                             <TableColumn>Hành động</TableColumn>
                         </TableHeader>
                         <TableBody>
@@ -67,18 +68,25 @@ export default function ManageAccount() {
                                 <TableRow key={sp.id}>
                                     <TableCell>{sp.username}</TableCell>
                                     <TableCell>{sp.email}</TableCell>
-                                    <TableCell>{sp.phoneNumber}</TableCell>
+                                    <TableCell>{sp.phone}</TableCell>
+                                    <TableCell>
+                                        <span
+                                            className={`px-2 py-1 rounded-full text-xs text-white ${sp.status ? 'bg-red-500' : 'bg-green-500'
+                                                }`}
+                                            style={{ opacity: 0.8 }}
+                                        >
+                                            {sp.status ? 'Paused' : 'Active'}
+                                        </span>
+                                    </TableCell>
 
                                     <TableCell>
                                         <div className="flex items-center gap-4 ">
                                             <div>
-                                                {/* <PetDetail params={pet.id} /> */}
+                                                <AccountDetail params={sp.id} />
                                             </div>
+
                                             <div>
-                                                {/* <UpdatePet params={pet.id} /> */}
-                                            </div>
-                                            <div>
-                                                {/* <DeletePet params={pet.id} /> */}
+                                                <DeleteShop params={sp.id} />
                                             </div>
                                         </div>
                                     </TableCell>
@@ -92,9 +100,7 @@ export default function ManageAccount() {
                 )}
 
             </div>
-            <div className="max-w-[95rem] mx-auto w-full">
-                <TableAccount />
-            </div>
+
         </div>
     );
 }

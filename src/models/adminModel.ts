@@ -5,22 +5,10 @@ export interface AccountInput {
     email: string,
     password: string,
     username: string,
-    phoneNumber: string
+    phone: string
 
 }
 
-export interface ShopOnwerInfor {
-    slug: string | undefined | null,
-    id: string,
-    firstname: string | undefined | null,
-    lastName: string | undefined | null,
-    email: string | undefined | null,
-    password: number | undefined | null,
-    username: string | undefined | null,
-    phoneNumber: string | undefined | null,
-
-
-}
 
 export interface shopCreateResponseSuccess {
     status: number;
@@ -32,9 +20,20 @@ export interface allShopPaginationData {
     id: string,
     email: string,
     username: string,
-    phoneNumber: string,
+    phone: string,
     status: boolean
 
+}
+export interface ShopInfor {
+    slug: string | undefined | null,
+    id: string | undefined | null,
+    firstname: string | undefined | null,
+    lastName: string | undefined | null,
+    email: string | undefined | null,
+    password: string | undefined | null,
+    username: string | undefined | null,
+    phone: string | undefined | null
+    status: boolean
 }
 
 
