@@ -80,33 +80,39 @@ export default function Profile() {
                 </div>
 
                 <Divider />
-                <div className='container mt-4'>
+                <div className='container mt-4'
+                >
                     <Tabs className="flex justify-center">
                         <Tab className='flex justify-center' key="account" title="Tài khoản">
-                            <Card className='w-[550px] p-4'>
+                            <Card className='w-[550px] p-4'
+                                style={{
+                                    backgroundImage: 'url(https://i.pinimg.com/564x/a6/b0/89/a6b0891684b7e9d0ddc6262191ff340c.jpg)',
+                                    backgroundSize: 'top',
+                                }}
+                            >
                                 <CardHeader className='w-full flex justify-center text-center'>
                                     <div>
-                                        <p className='text-2xl font-bold'>Tài Khoản</p>
-                                        <p>
+                                        <p className='text-3xl text-white uppercase font-bold'>Tài Khoản</p>
+                                        <p className='text-white'>
                                             Thực hiện thay đổi cho tài khoản của bạn tại đây.
                                         </p>
                                     </div>
                                 </CardHeader>
                                 <CardBody className="space-y-2">
                                     <div className="space-y-1">
-                                        <p >Tên</p>
+                                        <p className='text-white'>Tên</p>
                                         <Input id="firstName" disabled={!isEditing} defaultValue={items?.firstName} />
                                     </div>
                                     <div className="space-y-1">
-                                        <p >Họ</p>
+                                        <p className='text-white'>Họ</p>
                                         <Input id="lastName" disabled={!isEditing} defaultValue={items?.lastName} />
                                     </div>
                                     <div className="space-y-1">
-                                        <p >Email</p>
+                                        <p className='text-white'>Email</p>
                                         <Input id="email" disabled={!isEditing} defaultValue={items?.email} />
                                     </div>
                                     <div className="space-y-1">
-                                        <p >Số điện thoại</p>
+                                        <p className='text-white'>Số điện thoại</p>
                                         <Input id="phone" disabled={!isEditing} defaultValue=".." />
                                     </div>
                                 </CardBody>

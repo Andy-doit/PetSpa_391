@@ -55,21 +55,27 @@ export default function DeletePet({ params }: { params: string }) {
     return (
         <div>
             <Tooltip content="Xoá thú cưng">
-                <Button color="danger" variant="faded" isIconOnly onPress={onOpen}>
-                    <MdDelete size={20} />
+                <Button variant="bordered" className='rounded-full' isIconOnly onPress={onOpen}>
+                    <MdDelete size={20} color='red' />
                 </Button>
             </Tooltip>
 
             <Modal size='md' isOpen={isOpen} onClose={onClose} placement="top-center">
                 <ModalContent>
-                    <ModalHeader className='text-3xl text-orange-600'>Bạn có chắc chắn về quyết định của mình?</ModalHeader>
+                    <ModalHeader
+                        className='text-3xl flex justify-center text-center font-bold bg-gray-300  text-orange-600'
+                    >Bạn có chắc về quyết định của mình hay không?
+
+                    </ModalHeader>
                     <ModalFooter>
-                        <Button color="danger" variant="light" onClick={onClose}>
+
+                        <Button className='w-full' onClick={onClose}>
                             Đóng
                         </Button>
-                        <Button color="primary" onClick={handleDetete} >
+                        <Button className="bg-gradient-to-tr from-pink-500 to-yellow-500 text-white shadow-lg w-full" onClick={handleDetete} >
                             Xoá
                         </Button>
+
                     </ModalFooter>
                 </ModalContent>
             </Modal>

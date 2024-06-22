@@ -189,13 +189,13 @@ export default function BookingPage(
 
 
 
-            <div className="mt-2 justify-around">
+            <div className="justify-around">
                 {service && (
                     <div className="w-full  ">
-                        <div className='flex text-center items-center justify-center border-imgcus rounded-md '>
+                        <div className='flex text-center items-center justify-center  rounded-md '>
                             <div>
                                 <div>
-                                    <h1 className='text-4xl font-semibold'>{service.serviceName}</h1>
+                                    <h1 className='text-4xl uppercase text-orange-600 font-semibold'>{service.serviceName}</h1>
                                 </div>
                             </div>
                         </div>
@@ -204,8 +204,14 @@ export default function BookingPage(
                 )}
 
 
-                <div className="w-full px-4 mt-5" >
-                    <div className='mb-4 flex justify-center'>
+                <div className="w-full px-4 "
+                    style={{
+                        backgroundImage: 'url("https://i.pinimg.com/564x/a6/af/f1/a6aff11f5a7a2a8120302403328af68d.jpg")',
+                        backgroundRepeat: 'no-repeat',
+
+                    }}
+                >
+                    <div className='mb-4 pt-5 flex justify-center'>
                         <Checkbox
                             classNames={{
                                 base: cn(

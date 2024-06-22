@@ -36,16 +36,33 @@ export default function PetDetail({ params }: { params: string }) {
     return (
         <div>
             <Tooltip content="Xem chi tiết">
-                <Button color="warning" variant="faded" isIconOnly onPress={onOpen}>
-                    <FaEye size={20} />
+                <Button className='rounded-full' variant="bordered" isIconOnly onPress={onOpen}>
+                    <FaEye size={20} color="warning" />
                 </Button>
             </Tooltip>
 
             <Modal size='lg' isOpen={isOpen} onOpenChange={onOpenChange} placement="top-center">
                 <ModalContent>
-                    <ModalHeader className='text-3xl text-orange-600'>Chi Tiết thú cưng</ModalHeader>
-                    <ModalBody>
-                        <div className="flex justify-between">
+                    <ModalHeader
+                        className='text-3xl flex justify-center font-bold uppercase text-white'
+                        style={{
+                            backgroundImage: 'url("https://i.pinimg.com/736x/b4/38/8d/b4388d3b0601a64cad25d2fe73b2224b.jpg")',
+                            backgroundRepeat: 'no-repeat',
+                            backgroundSize: "cover",
+
+
+                        }}
+                    >Chi Tiết thú cưng</ModalHeader>
+                    <ModalBody
+                        style={{
+                            backgroundImage: 'url("https://i.pinimg.com/736x/32/9e/2f/329e2f6a54fdb1f53f4126991fcc6143.jpg")',
+                            backgroundRepeat: 'no-repeat',
+                            backgroundSize: "cover",
+
+
+                        }}
+                    >
+                        <div className="flex justify-center">
                             <div className="flex">
                                 <div>
                                     <p className="text-xl font-light">Loại thú cưng</p>
@@ -59,13 +76,13 @@ export default function PetDetail({ params }: { params: string }) {
                                 <div className="ml-20">
                                     {pet ? (
                                         <>
-                                            <p className="text-xl font-medium">{pet.petType || "Không có gì"}</p>
-                                            <p className="text-xl font-medium">{pet.petName || "Không có gì"}</p>
-                                            <p className="text-xl font-medium">{pet.petAge || "Không có gì"}</p>
-                                            <p className="text-xl font-medium">{pet.petWeight || "Không có gì"}</p>
-                                            <p className="text-xl font-medium">{pet.petGender || "Không có gì"}</p>
-                                            <p className="text-xl font-medium">{pet.petDescription || "Không có gì"}</p>
-                                            <p className="text-xl font-medium">{pet.petNote || "Không có gì"}</p>
+                                            <p className="text-xl font-bold">{pet.petType || "Không có gì"}</p>
+                                            <p className="text-xl font-bold">{pet.petName || "Không có gì"}</p>
+                                            <p className="text-xl font-bold">{pet.petAge || "Không có gì"}</p>
+                                            <p className="text-xl font-bold">{pet.petWeight || "Không có gì"}</p>
+                                            <p className="text-xl font-bold">{pet.petGender || "Không có gì"}</p>
+                                            <p className="text-xl font-bold">{pet.petDescription || "Không có gì"}</p>
+                                            <p className="text-xl font-bold">{pet.petNote || "Không có gì"}</p>
                                         </>
                                     ) : (
                                         <p className="text-xl font-medium">Không có gì</p>
@@ -75,9 +92,6 @@ export default function PetDetail({ params }: { params: string }) {
 
                         </div>
                     </ModalBody>
-                    <ModalFooter>
-
-                    </ModalFooter>
                 </ModalContent>
             </Modal>
             <ToastContainer />
