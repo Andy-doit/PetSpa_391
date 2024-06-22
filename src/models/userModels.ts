@@ -1,11 +1,11 @@
 export interface allBookingPaginationData {
     id: string,
-    slug: string;
-    localDate: string,
-    status: string,
-    serviceName: string,
-    shopName: string,
-    petName: string,
+    slug: string | undefined | null;
+    localDate: string | undefined | null,
+    status: string | undefined | null,
+    serviceName: string | undefined | null,
+    shopName: string | undefined | null,
+    petName: string | undefined | null,
     timeSlotDto: {
         startLocalDateTime: string | null,
         endLocalDateTime: string | null,
@@ -14,15 +14,15 @@ export interface allBookingPaginationData {
 }
 export interface UserInfor {
     id: string,
-    username: string,
-    role: string,
-    firstName: string,
-    lastName: string,
-    email: string,
+    username: string | undefined | null,
+    role: string | undefined | null,
+    firstName: string | undefined | null,
+    lastName: string | undefined | null,
+    email: string | undefined | null,
     phone: number | undefined,
-    profileImageUrl: string,
-    coverImageUrl: string,
-    birthday: string,
+    profileImageUrl: string | undefined | null,
+    coverImageUrl: string | undefined | null,
+    birthday: string | undefined | null,
 
 }
 export interface allBookingPaginationResponse {
@@ -100,7 +100,7 @@ export interface allPetPaginationResponse {
 }
 export interface PetInfor {
     slug: string | undefined | null,
-    userId: string | undefined | null,
+    userId: string,
     petName: string | undefined | null,
     petType: string | undefined | null,
     petAge: number | undefined | null,
