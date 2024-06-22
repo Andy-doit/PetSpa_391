@@ -40,14 +40,14 @@ export default function DeletePet({ params }: { params: string }) {
         try {
             if (userId) {
                 await dispatch(deletePet({ slug: params })).unwrap();
-                toast.success("Tạo thú cưng thành công!", {
+                toast.success("xoá thú cưng thành công!", {
                     onClose: onClose,
                     autoClose: 1500,
                 });
             }
         } catch (error) {
             console.error('Error creating service:', error);
-            toast.error("Đã xảy ra lỗi khi tạo thú cưng. Vui lòng thử lại sau!");
+            toast.error("Đã xảy ra lỗi khi xoá thú cưng. Vui lòng thử lại sau!");
         }
     };
 
@@ -65,7 +65,7 @@ export default function DeletePet({ params }: { params: string }) {
                     <ModalHeader className='text-3xl text-orange-600'>Bạn có chắc chắn về quyết định của mình?</ModalHeader>
                     <ModalFooter>
                         <Button color="danger" variant="light" onClick={onClose}>
-                            Close
+                            Đóng
                         </Button>
                         <Button color="primary" onClick={handleDetete} >
                             Xoá

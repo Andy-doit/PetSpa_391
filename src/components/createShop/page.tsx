@@ -18,7 +18,7 @@ export default function AddShop({ shopId }: { shopId: string }) {
         email: '',
         password: '',
         username: '',
-        phoneNumber: ''
+        phone: ''
     });
 
     const dispatch = useAppDispatch();
@@ -110,7 +110,7 @@ export default function AddShop({ shopId }: { shopId: string }) {
                                     <div className="ml-4">
                                         <Input
                                             type="text"
-                                            onChange={(e) => handleInputChange('phoneNumber', e.target.value)}
+                                            onChange={(e) => handleInputChange('phone', e.target.value)}
                                             label="Số điện thoại"
                                             className="w-[250px]"
                                         />

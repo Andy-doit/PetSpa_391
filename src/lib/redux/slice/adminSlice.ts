@@ -14,13 +14,13 @@ const initialState = {
     returnedDataLoading: false,
 };
 
-// Define async thunk for creating a shop
+
 export const createShop = createAsyncThunk(
     'admin/createShop',
     async ({ shopData }: { shopData: AccountInput }) => {
         try {
             const response = await agent.Admin.createShop(shopData);
-            return response.data as shopCreateResponseSuccess; // Assuming response.data contains the success details
+            return response.data as shopCreateResponseSuccess;
         } catch (error) {
             if (error instanceof AxiosError) {
                 throw error.response?.data.error.message || "An error occurred";
@@ -46,7 +46,38 @@ export const fetchAllShopPagination = createAsyncThunk(
         }
     },
 );
-// Create admin slice with reducers and extra reducers for async actions
+export const fetchShopInfor = createAsyncThunk(
+    'admin/fetchShopInfor',
+    async ({ slug }: { slug: string }) => {
+        try {
+            const response = await agent.Admin.getShopInfor(slug);
+            return response;
+        } catch (error) {
+            if (error instanceof AxiosError) {
+                return {
+                    message: error.response?.data.error.message,
+                    status: error.response?.status,
+                };
+            }
+        }
+    },
+);
+export const deleteShop = createAsyncThunk(
+    'customer/fetchDeletePet',
+    async ({ slug }: { slug: string }) => {
+        try {
+            const response = await agent.Admin.deleteShop(slug);
+            return response;
+        } catch (error) {
+            if (error instanceof AxiosError) {
+                return {
+                    message: error.response?.data.error.message,
+                    status: error.response?.status,
+                };
+            }
+        }
+    },
+);
 const adminSlice = createSlice({
     name: 'admin',
     initialState,
