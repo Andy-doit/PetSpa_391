@@ -78,6 +78,7 @@ export const deleteShop = createAsyncThunk(
         }
     },
 );
+
 const adminSlice = createSlice({
     name: 'admin',
     initialState,

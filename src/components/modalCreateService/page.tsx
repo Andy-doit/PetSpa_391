@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, Input, Select, SelectItem, Textarea } from "@nextui-org/react";
+import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, Input, Select, SelectItem, Textarea, useDisclosure } from "@nextui-org/react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { createServiceInput } from "@/models/shopModel";
@@ -7,11 +7,7 @@ import { useAppDispatch } from "@/lib/redux/store";
 import { createService } from "@/lib/redux/slice/shopSlice";
 import { ToastContainer, toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
-interface ModalCreateServiceProps {
-    isOpen: boolean;
-    onClose: () => void;
-    userId: string;
-}
+import { FaPlus } from "react-icons/fa";
 
 const validationSchema = Yup.object().shape({
     serviceName: Yup.string()
@@ -21,6 +17,13 @@ const validationSchema = Yup.object().shape({
     servicePrice: Yup.number()
         .required('Giá dịch vụ là bắt buộc')
         .min(1, 'Giá dịch vụ phải lớn hơn 0'),
+    minWeight: Yup.number()
+        .required('Cân nặng nhỏ nhất là bắt buộc phải là số')
+        .min(1, 'Cân nặng vụ phải lớn hơn 0'),
+    maxWeight: Yup.number()
+        .required('Cân nặng lớn nhất là bắt buộc phải là số')
+        .min(1, 'Cân nặng phải lớn hơn 0')
+        .max(500, 'Mô tả dịch vụ không được vượt quá 500 ký tự'),
     petType: Yup.string()
         .required('Loại thú cưng là bắt buộc'),
     serviceDescription: Yup.string()
@@ -29,12 +32,14 @@ const validationSchema = Yup.object().shape({
         .max(500, 'Mô tả dịch vụ không được vượt quá 500 ký tự')
 });
 
-export default function ModalCreateService({ isOpen, onClose, userId }: ModalCreateServiceProps) {
-    console.log(userId)
+export default function ModalCreateService({ userId }: { userId: string }) {
+    const { isOpen, onOpen, onClose } = useDisclosure();
     const formik = useFormik({
         initialValues: {
             serviceName: '',
             servicePrice: '',
+            maxWeight: 99,
+            minWeight: 0,
             petType: '',
             serviceDescription: '',
         },
@@ -80,8 +85,7 @@ export default function ModalCreateService({ isOpen, onClose, userId }: ModalCre
             toast.error("Đã xảy ra lỗi khi tạo dịch vụ. Vui lòng thử lại sau!");
         }
     };
-    console.log(serviceData)
-    console.log(userId)
+
     const handleInputChange = (fieldName: string, newValue: string | number) => {
         setServiceData(prevData => ({
             ...prevData,
@@ -91,6 +95,13 @@ export default function ModalCreateService({ isOpen, onClose, userId }: ModalCre
 
     return (
         <>
+            <Button
+                startContent={<FaPlus className='w-5 x' />}
+                onPress={onOpen}
+                className="bg-gradient-to-tr from-pink-500 to-yellow-500 text-white shadow-lg"
+            >
+                Tạo mới dịch vụ
+            </Button>
             <Modal isOpen={isOpen} onClose={onClose} size="4xl" backdrop="blur">
                 <ModalContent className="bg-white rounded-xl p-8 w-full max-w-4xl">
                     <>
