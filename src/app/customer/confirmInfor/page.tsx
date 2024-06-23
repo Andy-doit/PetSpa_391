@@ -133,7 +133,7 @@ export default function Confirm() {
                                             <p className="text-xl font-light">Ghi chú</p>
                                         </div>
                                         <div className="ml-20">
-                                            <p className="text-xl font-medium">{bookingData.typePet}</p>
+                                            <p className="text-xl font-medium">{bookingData.typePet === 'DOG' ? 'Chó' : (bookingData.typePet === 'CAT' ? 'Mèo' : '')}</p>
                                             <p className="text-xl font-medium">{bookingData.petName}</p>
                                             <p className="text-xl font-medium">{bookingData.petWeight}</p>
                                             <p className="text-xl font-medium">{bookingData.timeSlotDto.startLocalDateTime} - {bookingData.timeSlotDto.endLocalDateTime}</p>

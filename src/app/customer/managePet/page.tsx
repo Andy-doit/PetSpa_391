@@ -71,7 +71,7 @@ export default function ManagePet() {
                     <CreatePet userId={userId} />
                 </div>
             </div>
-            <div className="w-[1000px] mx-auto ">
+            <div className="w-[800px] mx-auto ">
                 {pets.length === 0 ? (
                     <div>Không có thú cưng nào</div>
 
@@ -87,8 +87,8 @@ export default function ManagePet() {
                             {pets.map((pet) => (
                                 <TableRow key={pet.id}>
                                     <TableCell>{pet.petName}</TableCell>
-                                    <TableCell>{pet.petType}</TableCell>
-                                    <TableCell>{pet.petGender}</TableCell>
+                                    <TableCell>{pet.petType === 'DOG' ? 'Chó' : (pet.petType === 'CAT' ? 'Mèo' : '')}</TableCell>
+                                    <TableCell>{pet.petGender === 'Male' ? 'Đực' : (pet.petGender === 'Female' ? 'Cái' : '')}</TableCell>
                                     <TableCell>
                                         <div className="flex items-center gap-4 ">
                                             <div>
