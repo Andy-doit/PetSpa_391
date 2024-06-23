@@ -32,7 +32,7 @@ export default function BookingPage(
         };
         fetchUid();
     }, [userId]);
-
+    const [showNote, setShowNote] = useState(false);
     const [service, setService] = useState<ServiceDetail | any>();
     const dispatch = useAppDispatch();
     useEffect(() => {
@@ -103,6 +103,7 @@ export default function BookingPage(
             ...prevData,
             localDate: dateOnly
         }));
+        setShowNote(true);
     };
     const [isSelected, setIsSelected] = useState('');
 
@@ -120,6 +121,7 @@ export default function BookingPage(
                 petName: selectedPet.petName,
                 petType: selectedPet.petType,
                 petAge: selectedPet.petAge,
+                petWeight: selectedPet.petWeight,
                 petGender: selectedPet.petGender,
             }));
         }
@@ -383,28 +385,20 @@ export default function BookingPage(
                                         <div key={petinfor.id} className='mb-1'>
                                             <Checkbox
                                                 isSelected={selectedPetId === petinfor.id}
-
                                                 onValueChange={() => handlePetCheckChange(petinfor.id)}
-
                                                 classNames={{
-                                                    base: cn(
-                                                        "inline-flex w-[400px] max-w-md bg-content2 mt-3",
-                                                        "hover:bg-content3 items-center justify-start",
-                                                        "cursor-pointer rounded-xl gap-2 p-4 border-2 border-transparent mr-10",
-                                                        "data-[selected='petsOwned']:border-primary",
-                                                    ),
+                                                    base: `inline-flex w-[400px] max-w-md mt-3 bg-content3 hover:bg-content3 items-center justify-start cursor-pointer rounded-xl gap-2 p-4 border-2 border-transparent mr-10 ${petinfor.petType === 'CAT' ? 'bg-cat-image' : petinfor.petType === 'DOG' ? 'bg-dog-image' : ''}`,
                                                     label: "w-full",
-
                                                 }}
                                             >
-                                                <div className="w-full flex justify-between ">
-                                                    <div className='flex'>
-                                                        <p className='mr-2'>Tên thú cưng: </p>
-                                                        <p className='font-bold'>{petinfor.petName}</p>
+                                                <div className="w-full flex justify-between bg-white bg-opacity-85 p-1 rounded-lg">
+                                                    <div className='flex '>
+                                                        <p className='mr-2 '>Tên thú cưng: </p>
+                                                        <p className='font-bold '>{petinfor.petName}</p>
                                                     </div>
-                                                    <div className='flex'>
+                                                    <div className='flex '>
                                                         <p className='mr-2'>Loại thú cưng: </p>
-                                                        <p className='font-bold'>{petinfor.petType}</p>
+                                                        <p className='font-bold'> {petinfor.petType === 'DOG' ? 'Chó' : (petinfor.petType === 'CAT' ? 'Mèo' : '')}</p>
                                                     </div>
                                                 </div>
                                             </Checkbox>
@@ -464,15 +458,28 @@ export default function BookingPage(
                                     ))}
                                 </div>
                             </div>
+
                         </div>
-                        <div className='flex justify-center mt-5'>
-                            <Card className='w-[550px] px-5 py-2'>
-                                <div className='flex'>
-                                    <p className='font-bold mr-2 text-default-600'>Màu xám:</p>
-                                    <p>là những khung giờ trống</p>
-                                </div>
-                            </Card>
-                        </div>
+                        {showNote && (
+                            <div className="flex justify-center mt-5">
+                                <Card className="w-[350px] px-5 py-2">
+                                    <div className='text-center'>
+                                        <div className="flex">
+                                            <p className="font-bold mr-2 text-default-600">Màu xám:</p>
+                                            <p>là những khung giờ trống</p>
+                                        </div>
+                                        <div className="flex">
+                                            <p className="font-bold mr-2 text-orange-600">Màu Cam:</p>
+                                            <p>là những khung giờ hết chỗ</p>
+                                        </div>
+                                        <div className="flex">
+                                            <p className="font-bold mr-2 text-green-600">Màu xanh:</p>
+                                            <p>khi bạn chọn 1 khung giờ</p>
+                                        </div>
+                                    </div>
+                                </Card>
+                            </div>
+                        )}
                     </div>
 
                     <div className='mt-11 flex justify-center'>
