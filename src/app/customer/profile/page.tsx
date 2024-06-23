@@ -125,16 +125,21 @@ export default function Profile() {
                             </Card>
                         </Tab>
                         <Tab className='flex justify-center' key="password" title="Mật khẩu">
-                            <Card className='w-[550px] p-4'>
+                            <Card className='w-[550px] p-4'
+                                style={{
+                                    backgroundImage: 'url(https://i.pinimg.com/564x/a6/b0/89/a6b0891684b7e9d0ddc6262191ff340c.jpg)',
+                                    backgroundSize: 'top',
+                                }}
+                            >
                                 <CardHeader className='w-full flex justify-center text-center'>
                                     <div>
-                                        <p className='text-2xl font-bold'>Tài Khoản</p>
-                                        <p>
-                                            Thay đổi mật khẩu của bạn ở đây.
+                                        <p className='text-3xl text-white uppercase font-bold'>Tài Khoản</p>
+                                        <p className='text-white'>
+                                            Thay đổi mật khẩu cho tài khoản của bạn tại đây.
                                         </p>
                                     </div>
                                 </CardHeader>
-                                <CardBody className="space-y-2">
+                                <CardBody className="space-y-2 text-white">
                                     <div className="space-y-1">
                                         <p >Mật khẩu hiện tại</p>
                                         <Input id="currentPassword" disabled={!isEditing} type='password' />

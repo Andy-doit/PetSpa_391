@@ -7,8 +7,8 @@ export interface allBookingPaginationData {
     shopName: string | undefined | null,
     petName: string | undefined | null,
     timeSlotDto: {
-        startLocalDateTime: string | null,
-        endLocalDateTime: string | null,
+        startLocalDateTime: string | undefined | null,
+        endLocalDateTime: string | undefined | null,
     }
 
 }
@@ -29,7 +29,7 @@ export interface allBookingPaginationResponse {
     success: boolean;
     status: number;
     data: {
-        data: allBookingPaginationData[];
+        data: allBookingPaginationData[] | undefined | null;
         totalCount: number;
         pageCount: number;
     };

@@ -18,7 +18,7 @@ export default function CardOrder() {
         }
         allService();
     }, [dispatch]);
-    // console.log(items)
+    console.log(items)
     const getColor = (process: any) => {
         switch (process) {
 
@@ -33,7 +33,7 @@ export default function CardOrder() {
     }
 
     return (
-        <>
+        <div>
             {items.length === 0 ? (
                 <div>Không có lịch đặt hàng nào</div>
 
@@ -45,34 +45,38 @@ export default function CardOrder() {
                         <TableColumn>Khung giờ</TableColumn>
                         <TableColumn>Tên thú cưng</TableColumn>
                         <TableColumn>Spa</TableColumn>
-                        <TableColumn>Tình trạng</TableColumn>
+                        <TableColumn>Trạng thái</TableColumn>
                         <TableColumn > <span className="sr-only">Action</span></TableColumn>
                     </TableHeader>
                     <TableBody>
 
-                        <div>
-                            {items.map((service) => (
-                                <TableRow key={service.id}>
-                                    <TableCell>{service.serviceName}</TableCell>
-                                    <TableCell>{service.localDate}</TableCell>
-                                    <TableCell>{service.timeSlotDto.startLocalDateTime} - {service.timeSlotDto.endLocalDateTime}</TableCell>
-                                    <TableCell>{service.petName}</TableCell>
-                                    <TableCell>{service.shopName}</TableCell>
-                                    <TableCell>
-                                        <Chip color={getColor(service.status)}>{service.status}</Chip>
-                                    </TableCell>
-                                    <TableCell>
-                                        <OrderDetail params={service.id} />
-                                    </TableCell>
-                                </TableRow>
-                            ))
-                            }
-                        </div>
+
+                        {items.map((service) => (
+                            <TableRow key={service.id}>
+                                <TableCell>{service.serviceName || "Lỗi"}</TableCell>
+                                <TableCell>{service.localDate || "Lỗi"}</TableCell>
+                                <TableCell>
+                                    {service.timeSlotDto && service.timeSlotDto.startLocalDateTime && service.timeSlotDto.endLocalDateTime ?
+                                        `${service.timeSlotDto.startLocalDateTime} - ${service.timeSlotDto.endLocalDateTime}` :
+                                        "Lỗi"
+                                    }
+                                </TableCell>
+                                <TableCell>{service.petName || "Lỗi"}</TableCell>
+                                <TableCell>{service.shopName || "Lỗi"}</TableCell>
+                                <TableCell>
+                                    <Chip color={getColor(service.status)}>{service.status || "Lỗi"}</Chip>
+                                </TableCell>
+                                <TableCell>
+                                    <OrderDetail params={service.id} />
+                                </TableCell>
+                            </TableRow>
+                        ))}
+
 
 
                     </TableBody>
                 </Table>
             )}
-        </>
+        </div>
     )
 }

@@ -76,11 +76,11 @@ export default function PetDetail({ params }: { params: string }) {
                                 <div className="ml-20">
                                     {pet ? (
                                         <>
-                                            <p className="text-xl font-bold">{pet.petType || "Không có gì"}</p>
+                                            <p className="text-xl font-bold">{pet.petType === 'DOG' ? 'Chó' : (pet.petType === 'CAT' ? 'Mèo' : 'Không có gì')}</p>
                                             <p className="text-xl font-bold">{pet.petName || "Không có gì"}</p>
                                             <p className="text-xl font-bold">{pet.petAge || "Không có gì"}</p>
                                             <p className="text-xl font-bold">{pet.petWeight || "Không có gì"}</p>
-                                            <p className="text-xl font-bold">{pet.petGender || "Không có gì"}</p>
+                                            <p className="text-xl font-bold">{pet.petGender === 'Male' ? 'Đực' : (pet.petGender === 'Female' ? 'Cái' : 'Không có gì')}</p>
                                             <p className="text-xl font-bold">{pet.petDescription || "Không có gì"}</p>
                                             <p className="text-xl font-bold">{pet.petNote || "Không có gì"}</p>
                                         </>
