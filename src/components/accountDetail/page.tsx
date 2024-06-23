@@ -43,7 +43,7 @@ export default function AccountDetail({ params }: { params: string }) {
 
             <Modal size='lg' isOpen={isOpen} onOpenChange={onOpenChange} placement="top-center">
                 <ModalContent>
-                    <ModalHeader className='text-3xl text-orange-600'>Chi Tiết thú cưng</ModalHeader>
+                    <ModalHeader className='text-3xl text-orange-600'>Chi Tiết Shop</ModalHeader>
                     <ModalBody>
                         <div className="flex justify-between">
                             <div className="flex">
@@ -52,8 +52,8 @@ export default function AccountDetail({ params }: { params: string }) {
                                     <p className="text-xl font-light">Họ</p>
                                     <p className="text-xl font-light">Email</p>
                                     <p className="text-xl font-light">Tên người dùng</p>
-                                    <p className="text-xl font-light">Mật khẩu </p>
                                     <p className="text-xl font-light">Số điện thoại</p>
+                                    <p className="text-xl font-light">Status</p>
 
                                 </div>
                                 <div className="ml-20">
@@ -62,10 +62,9 @@ export default function AccountDetail({ params }: { params: string }) {
                                             <p className="text-xl font-medium">{shop.firstName || "Không có gì"}</p>
                                             <p className="text-xl font-medium">{shop.lastName || "Không có gì"}</p>
                                             <p className="text-xl font-medium">{shop.email || "Không có gì"}</p>
-                                            <p className="text-xl font-medium">{shop.usename || "Không có gì"}</p>
-                                            <p className="text-xl font-medium">{shop.password || "Không có gì"}</p>
+                                            <p className="text-xl font-medium">{shop.username || "Không có gì"}</p>
                                             <p className="text-xl font-medium">{shop.phone || "Không có gì"}</p>
-
+                                            <p className="text-xl font-medium">{shop.status ? "Paused" : "Active"}</p>
                                         </>
                                     ) : (
                                         <p className="text-xl font-medium">Không có gì</p>

@@ -30,7 +30,6 @@ export interface ShopInfor {
     firstname: string | undefined | null,
     lastName: string | undefined | null,
     email: string | undefined | null,
-    password: string | undefined | null,
     username: string | undefined | null,
     phone: string | undefined | null
     status: boolean

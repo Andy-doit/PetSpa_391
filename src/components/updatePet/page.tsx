@@ -171,7 +171,7 @@ export default function UpdatePet({ params }: { params: allPetPaginationData }) 
                                     </div>
                                     <div className="w-full ml-4">
                                         <Input
-
+                                            value={petData.petDescription}
                                             onChange={(e) => handleInputChange('petDescription', e.target.value)}
                                             type="petDescription"
                                             label="Mô tả"

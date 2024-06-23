@@ -1,16 +1,17 @@
 'use client'
 import { FcPlus } from "react-icons/fc";
 import { useEffect, useState } from "react";
-import ServiceManagement from "@/components/tableServiceofShop/page";
 import ModalCreateService from "@/components/modalCreateService/page";
 import ModalViewServiceProps from "@/components/modalViewDetailService/page";
 import ModalUpdateServiceProps from "@/components/modalUpdateSerivce/page";
 import ModalDeleteServiceProps from "@/components/modalDeleteService/page"
 import getAccessAndRefreshCookie from "@/utilities/authUtils/getCookieForValidation";
-
+import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, Input, Select, SelectItem, Textarea, useDisclosure, Table, TableHeader, TableColumn, TableBody, TableRow, TableCell } from "@nextui-org/react";
+import { allServicePaginationData } from "@/models/shopModel";
+import ModalDeleteService from "@/components/modalDeleteService/page";
 const ManageService = () => {
     const [userId, setUserId] = useState<string>('');
-
+    const [service, setService] = useState<allServicePaginationData[]>([]);
     useEffect(() => {
         const fetchUid = async () => {
             try {
@@ -27,77 +28,84 @@ const ManageService = () => {
 
 
     const [showModalCreateService, setShowModalCreateService] = useState(false);
-    const [showModalViewService, setShowModalViewService] = useState(false);
-    const [showModalUpdateService, setShowModalUpdateService] = useState(false);
-    const [selectedService, setSelectedService] = useState(null);
-    const [showModalDeleteService, setShowModalDeleteService] = useState(false);
 
-    const handleCloseModal = () => {
-        setShowModalCreateService(false);
-    };
 
-    const handleViewService = (service: any) => {
-        setSelectedService(service);
-        setShowModalViewService(true);
-    };
 
-    const handleCloseViewModal = () => {
-        setShowModalViewService(false);
-        setSelectedService(null);
-    };
-
-    const handleUpdateService = (service: any) => {
-        setSelectedService(service);
-        setShowModalUpdateService(true);
-    };
-
-    const handleCloseUpdateModal = () => {
-        setShowModalUpdateService(false);
-        setSelectedService(null);
-    };
-    const handleDeleteService = (service: any) => {
-        setSelectedService(service);
-        setShowModalDeleteService(true);
-    };
-    const handleCloseDeleteModal = () => {
-        setShowModalDeleteService(false);
-        setSelectedService(null);
-    };
 
     return (
-        <div className="mx-auto px-4">
-            <div className="flex justify-between items-center mb-4">
-                <h2 className="text-2xl font-bold">Quản Lí Dịch Vụ</h2>
-                <button
-                    onClick={() => setShowModalCreateService(true)}
-                    className="flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-                >
-                    <FcPlus className="mr-2" />
-                    Thêm dịch vụ mới
-                </button>
+        <div className=" lg:px-6 max-w-[95rem]  w-full flex flex-col gap-4">
+            <h3 className="text-xl font-semibold">Danh sách dịch vụ</h3>
+            <div className="flex justify-between flex-wrap gap-4 items-center">
+                <div className="flex items-center gap-3 flex-wrap md:flex-nowrap">
+                    <Input
+                        classNames={{
+                            input: "w-full",
+                            mainWrapper: "w-full",
+                        }}
+                        placeholder="Tìm kiếm dịch vụ"
+                    />
+
+                </div>
+                <div className="flex flex-row gap-3.5 flex-wrap">
+                    <ModalCreateService userId={userId} />
+                </div>
+
             </div>
-            <div className="table-user-container">
-                <ServiceManagement onViewService={handleViewService} onUpdateService={handleUpdateService} onDeleteService={handleDeleteService} />
-                <ModalCreateService
-                    userId={userId}
-                    isOpen={showModalCreateService}
-                    onClose={handleCloseModal}
-                />
-                <ModalViewServiceProps
-                    isOpen={showModalViewService}
-                    onClose={handleCloseViewModal}
-                    service={selectedService}
-                />
-                <ModalUpdateServiceProps
-                    isOpen={showModalUpdateService}
-                    onClose={handleCloseUpdateModal}
-                    service={selectedService}
-                />
-                <ModalDeleteServiceProps
-                    isOpen={showModalDeleteService}
-                    onClose={handleCloseDeleteModal}
-                    serviceToDelete={selectedService}
-                />
+
+            <div className="max-w-[95rem] mx-auto w-full">
+                {service.length === 0 ? (
+                    <div>Không có dịch vụ nào</div>
+
+                ) : (
+                    <Table aria-label="Example static collection table">
+                        <TableHeader>
+
+                            <TableColumn>Tên dịch vụ</TableColumn>
+                            <TableColumn>Giá dịch vụ</TableColumn>
+                            <TableColumn>Loại thú cưng</TableColumn>
+                            <TableColumn>Mô tả</TableColumn>
+                            <TableColumn>Hành động</TableColumn>
+                        </TableHeader>
+                        <TableBody>
+                            {service.map((sp) => (
+                                <TableRow key={sp.userId}>
+                                    <TableCell>{sp.serviceName}</TableCell>
+                                    <TableCell>{sp.price}</TableCell>
+                                    <TableCell>{sp.typePet}</TableCell>
+                                    <TableCell>{sp.serviceDescription}</TableCell>
+
+                                    <TableCell>
+                                        <div className="flex items-center gap-4 ">
+                                            {/* <div>
+                                                <AccountDetail params={sp.id} />
+                                            </div>
+                                            <div>
+                                                <AccountDetail params={sp.id} />
+                                            </div>
+                                            <div>
+                                                <DeleteShop params={sp.id} />
+                                            </div> */}
+                                            <div>
+                                                <ModalViewServiceProps params={sp.userId} />
+                                            </div>
+                                            <div>
+                                                <ModalUpdateServiceProps params={sp} />
+                                            </div>
+
+                                            <div>
+                                                <ModalDeleteService params={sp.userId} />
+                                            </div>
+                                        </div>
+                                    </TableCell>
+                                </TableRow>
+                            ))}
+
+
+                        </TableBody>
+                    </Table>
+
+                )}
+
             </div>
 
         </div>
