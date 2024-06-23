@@ -1,147 +1,72 @@
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure, Tooltip } from "@nextui-org/react"; import { FaEye } from "react-icons/fa";
 import { Input, Select, SelectItem, Textarea } from "@nextui-org/react";
-interface ModalCreateUserProps {
-    isOpen: boolean;
-    onOpenChange: (open: boolean) => void;
-    service: any;
-}
-interface ModalViewServiceProps {
-    isOpen: boolean;
-    onClose: () => void;
-    service: any; // Định nghĩa kiểu dữ liệu cho onClose là một hàm không tham số
-}
+import { ServiceInfor } from "@/models/shopModel";
+import { useAppDispatch } from "@/lib/redux/store";
+import { fetchServiceInfo } from "@/lib/redux/slice/shopSlice";
 
-export default function ModalViewServiceProps({ isOpen, onClose, service }: ModalViewServiceProps) {
-    const [show, setShow] = useState(false);
 
-    const handleClose = () => setShow(false)
-    const handleShow = () => setShow(true);
+export default function ModalViewServiceProps({ params }: { params: string }) {
+    const { isOpen, onOpen, onClose } = useDisclosure();
+    const [service, setService] = useState<ServiceInfor | any>();
+    const dispatch = useAppDispatch();
+    useEffect(() => {
+        const petDetail = async () => {
+            const response = await dispatch(fetchServiceInfo({ slug: params }));
+            if (response.payload) {
+                setService(response.payload);
+            }
+        };
+        petDetail();
+    }, [dispatch, params]);
     return (
         <>
-            <Modal isOpen={isOpen} onClose={onClose} size="4xl" backdrop="blur">
+            <Tooltip content="Xem chi tiết">
+                <Button color="warning" variant="faded" isIconOnly onPress={onOpen}>
+                    <FaEye size={20} />
+                </Button>
+
+            </Tooltip>
+            <Modal size='lg' isOpen={isOpen} placement="top-center">
                 <ModalContent className="bg-white rounded-xl p-8 w-full max-w-4xl">
                     <>
                         <ModalHeader className="flex flex-col gap-1 text-2xl font-bold text-pink-600 mb-4">
                             Xem chi tiết dịch vụ
                         </ModalHeader>
                         <ModalBody className="space-y-6">
-                            {service ? (
-                                <form className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                    <div className="col-span-1 ">
-
-                                        <Input
-                                            className="w-[300px]"
-                                            value={service.name}
-
-                                            label="Tên dịch vụ"
-                                        />
-
-                                    </div>
-                                    <div className="col-span-1">
-                                        <Select
-                                            label="Category"
-                                            className="w-[300px]"
-
-                                        >
-                                            <SelectItem key="1" value="1">
-                                                Dịch vụ tắm rứa
-                                            </SelectItem>
-                                            <SelectItem key="2" value="2">
-                                                Dịch vụ làm đẹp
-                                            </SelectItem>
-                                            <SelectItem key="3" value="3">
-                                                Dịch vụ mát xa
-                                            </SelectItem>
-                                            <SelectItem key="4" value="4">
-                                                Dịch vụ mát xa đặc biệt
-                                            </SelectItem>
-                                            <SelectItem key="5" value="5">
-                                                Khách sạn thú cưng
-                                            </SelectItem>
-
-                                        </Select>
-
+                            <div className="flex justify-between">
+                                <div className="flex">
+                                    <div>
+                                        <p className="text-xl font-light">Tên dịch vụ</p>
+                                        <p className="text-xl font-light">Category</p>
+                                        <p className="text-xl font-light">Giá dịch vụ</p>
+                                        <p className="text-xl font-light">Loại thú cưng</p>
+                                        <p className="text-xl font-light">Cân nặng nhỏ nhất</p>
+                                        <p className="text-xl font-light">Cân nặng lớn nhất </p>
+                                        <p className="text-xl font-light">Mô tả dịch vụ </p>
 
                                     </div>
-                                    <div className="col-span-1">
-                                        <Select
-                                            label="Category"
-                                            className="w-[300px]"
-
-                                        >
-                                            <SelectItem key="tag1" value="tags1">
-                                                Tag 1
-                                            </SelectItem>
-                                            <SelectItem key="tag2" value="tags2">
-                                                Tag 2
-                                            </SelectItem>
-                                            <SelectItem key="tag3" value="tags3">
-                                                Tag 2
-                                            </SelectItem>
+                                    <div className="ml-20">
+                                        {service ? (
+                                            <>
+                                                <p className="text-xl font-medium">{service.serviceName || "Không có gì"}</p>
+                                                <p className="text-xl font-medium">{service.serviceCategoryId || "Không có gì"}</p>
+                                                <p className="text-xl font-medium">{service.price || "Không có gì"}</p>
+                                                <p className="text-xl font-medium">{service.username || "Không có gì"}</p>
+                                                <p className="text-xl font-medium">{service.minWeight || "Không có gì"}</p>
+                                                <p className="text-xl font-medium">{service.maxWeight || "Không có gì"}</p>
+                                                <p className="text-xl font-medium">{service.serviceDescription || "Không có gì"}</p>
 
 
-                                        </Select>
-
-
+                                            </>
+                                        ) : (
+                                            <p className="text-xl font-medium">Không có gì</p>
+                                        )}
                                     </div>
-                                    <div className="col-span-1">
-                                        <Input
-                                            className="w-[300px]"
-                                            value={service.price}
-                                            label="Giá dịch vụ"
-                                        />
+                                </div>
 
-                                    </div>
-
-                                    <div className="col-span-1">
-                                        <Select
-                                            label="Loại thú cưng"
-                                            className="w-[300px]"
-                                            value={service.type}
-
-                                        >
-                                            <SelectItem key="DOG" value="DOG">
-                                                Chó
-                                            </SelectItem>
-                                            <SelectItem key="CAT" value="CAT">
-                                                Mèo
-                                            </SelectItem>
-                                        </Select>
-
-
-                                    </div>
-                                    <div className="col-span-1">
-                                        <Input
-                                            className="w-[300px]"
-
-                                            label="Cân nặng nhỏ nhất"
-                                        />
-
-                                    </div>
-                                    <div className="col-span-1">
-                                        <Input
-                                            className="w-[300px]"
-
-                                            label="Cân nặng lớn nhất"
-                                        />
-
-                                    </div>
-                                    <div className="col-span-1 md:col-span-2">
-                                        <div className="w-full">
-                                            <Textarea
-                                                value={service.description}
-                                                placeholder="Mô tả dịch vụ"
-                                                className="w-full"
-                                            />
-                                        </div>
-
-                                    </div>
-                                </form>
-                            ) : (
-                                <p>Không có thông tin dịch vụ.</p>
-                            )}
+                            </div>
                         </ModalBody>
                         <ModalFooter className="flex justify-end space-x-4 mt-8">
                             <Button

@@ -1,26 +1,71 @@
 
-import { useState } from "react";
-import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure, Select, SelectItem, Input, Textarea } from "@nextui-org/react";
-
-interface ModalCreateUserProps {
-    isOpen: boolean;
-    onOpenChange: (open: boolean) => void;
-    service: any;
-}
-interface ModalUpdateServiceProps {
-    isOpen: boolean;
-    onClose: () => void;
-    service: any; // Định nghĩa kiểu dữ liệu cho onClose là một hàm không tham số
-}
-
-export default function ModalUpdateServiceProps({ isOpen, onClose, service }: ModalUpdateServiceProps) {
-    const [show, setShow] = useState(false);
+import { useEffect, useState } from "react";
+import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure, Select, SelectItem, Input, Textarea, Tooltip } from "@nextui-org/react";
+import { allServicePaginationData, createServiceInput } from "@/models/shopModel";
+import getAccessAndRefreshCookie from "@/utilities/authUtils/getCookieForValidation";
+import { MdChangeCircle } from "react-icons/md";
+import { updateService } from "@/lib/redux/slice/shopSlice";
+import { useAppDispatch } from '@/lib/redux/store';
+import { toast } from "react-toastify";
+import { ClipLoader } from "react-spinners";
 
 
-    const handleClose = () => setShow(false)
-    const handleShow = () => setShow(true);
+export default function ModalUpdateServiceProps({ params }: { params: allServicePaginationData }) {
+    const [service, setService] = useState<string>('');
+    const [userId, setUserId] = useState<string>('');
+
+    const dispatch = useAppDispatch();
+    const { isOpen, onOpen, onClose } = useDisclosure();
+    const [isLoading, setIsLoading] = useState(false);
+    useEffect(() => {
+        if (userId) {
+            setServiceData(prevData => ({
+                ...prevData,
+                userId: userId,
+            }));
+        }
+    }, [userId]);
+    const [serviceData, setServiceData] = useState<createServiceInput>({
+        userId: params.userId.toString(),
+        serviceName: params.serviceName,
+        serviceCategoryId: params.serviceCategoryId,
+        typePet: params.typePet,
+        price: params.price,
+        minWeight: params.minWeight,
+        maxWeight: params.maxWeight,
+        serviceDescription: '',
+        tags: params.tags,
+
+    });
+    const handleInputChange = (fieldName: string, newValue: string | number) => {
+        setServiceData(prevData => ({
+            ...prevData,
+            [fieldName]: newValue
+        }));
+    };
+    const handleCreate = async () => {
+        try {
+            if (userId) {
+                await dispatch(updateService({ serviceData })).unwrap();
+                toast.success("Cập nhật dịch vụ thành công!", {
+                    onClose: onClose,
+                    autoClose: 1500,
+                });
+            }
+        } catch (error) {
+            console.error('Lỗi  cập nhật:', error);
+            toast.error("Đã xảy ra lỗi khi cập nhật dịch vụ. Vui lòng thử lại sau!");
+        }
+    };
+
+
     return (
         <>
+            <Tooltip content="Chỉnh sửa thú cưng">
+                <Button variant="bordered" className='rounded-full' isIconOnly onPress={onOpen}>
+                    <MdChangeCircle size={20} color="green" />
+                </Button>
+            </Tooltip>
             <Modal isOpen={isOpen} onClose={onClose} size="4xl" backdrop="blur">
                 <ModalContent className="bg-white rounded-xl p-8 w-full max-w-4xl">
                     <>
@@ -33,18 +78,23 @@ export default function ModalUpdateServiceProps({ isOpen, onClose, service }: Mo
                                     <div className="col-span-1 ">
 
                                         <Input
-                                            className="w-[300px]"
-                                            value={service.name}
+                                            className="w-full"
 
                                             label="Tên dịch vụ"
+                                            type="serviceName"
+                                            value={serviceData.serviceName}
+                                            onChange={(e) => handleInputChange('serviceName', e.target.value)}
+
+
                                         />
 
                                     </div>
                                     <div className="col-span-1">
                                         <Select
                                             label="Category"
-                                            className="w-[300px]"
-
+                                            className="w-full"
+                                            defaultSelectedKeys={[serviceData.serviceCategoryId]}
+                                            onChange={(e) => handleInputChange('serviceCategoryId', e.target.value)}
                                         >
                                             <SelectItem key="1" value="1">
                                                 Dịch vụ tắm rứa
@@ -69,7 +119,9 @@ export default function ModalUpdateServiceProps({ isOpen, onClose, service }: Mo
                                     <div className="col-span-1">
                                         <Select
                                             label="Category"
-                                            className="w-[300px]"
+                                            className="w-full"
+                                            defaultSelectedKeys={[serviceData.serviceCategoryId]}
+                                            onChange={(e) => handleInputChange('serviceCategoryId', e.target.value)}
 
                                         >
                                             <SelectItem key="tag1" value="tags1">
@@ -89,9 +141,12 @@ export default function ModalUpdateServiceProps({ isOpen, onClose, service }: Mo
                                     </div>
                                     <div className="col-span-1">
                                         <Input
-                                            className="w-[300px]"
-                                            value={service.price}
+
                                             label="Giá dịch vụ"
+                                            value={serviceData.price.toString()}
+                                            onChange={(e) => handleInputChange('price', e.target.value)}
+                                            type="price"
+                                            className="w-full"
                                         />
 
                                     </div>
@@ -99,8 +154,9 @@ export default function ModalUpdateServiceProps({ isOpen, onClose, service }: Mo
                                     <div className="col-span-1">
                                         <Select
                                             label="Loại thú cưng"
-                                            className="w-[300px]"
-                                            value={service.type}
+                                            value={serviceData.typePet.toString()}
+                                            onChange={(e) => handleInputChange('typePet', e.target.value)}
+                                            className="w-full"
 
                                         >
                                             <SelectItem key="DOG" value="DOG">
@@ -115,7 +171,9 @@ export default function ModalUpdateServiceProps({ isOpen, onClose, service }: Mo
                                     </div>
                                     <div className="col-span-1">
                                         <Input
-                                            className="w-[300px]"
+                                            value={serviceData.minWeight.toString()}
+                                            onChange={(e) => handleInputChange('minWeight', e.target.value)}
+                                            className="w-full"
 
                                             label="Cân nặng nhỏ nhất"
                                         />
@@ -123,7 +181,9 @@ export default function ModalUpdateServiceProps({ isOpen, onClose, service }: Mo
                                     </div>
                                     <div className="col-span-1">
                                         <Input
-                                            className="w-[300px]"
+                                            value={serviceData.maxWeight.toString()}
+                                            onChange={(e) => handleInputChange('maxWeight', e.target.value)}
+                                            className="w-full"
 
                                             label="Cân nặng lớn nhất"
                                         />
@@ -132,9 +192,12 @@ export default function ModalUpdateServiceProps({ isOpen, onClose, service }: Mo
                                     <div className="col-span-1 md:col-span-2">
                                         <div className="w-full">
                                             <Textarea
-                                                value={service.description}
+
                                                 placeholder="Mô tả dịch vụ"
+                                                value={serviceData.serviceDescription.toString()}
+                                                onChange={(e) => handleInputChange('serviceDescription', e.target.value)}
                                                 className="w-full"
+
                                             />
                                         </div>
 
@@ -145,19 +208,27 @@ export default function ModalUpdateServiceProps({ isOpen, onClose, service }: Mo
                             )}
                         </ModalBody>
                         <ModalFooter className="flex justify-end space-x-4 mt-8">
-                            <Button
-                                onClick={onClose}
-                                className="bg-red-500 text-white px-6 py-2 rounded-md hover:bg-red-600"
-                            >
-                                Đóng
-                            </Button>
-                            <Button
-                                color="primary"
+                            <div className=" flex w-full justify-end">
+                                <Button
+                                    className=" mr-3 w-full"
+                                    onPress={onClose}
+                                >
+                                    Huỷ
+                                </Button>
 
-                                className="bg-blue-500 text-white px-6 py-2 rounded-md hover:bg-blue-600"
-                            >
-                                Tạo
-                            </Button>
+                                <Button
+                                    type="submit"
+                                    className="bg-gradient-to-tr from-pink-500 to-yellow-500 text-white shadow-lg w-full"
+                                    disabled={isLoading}
+                                    onPress={handleCreate}
+                                >
+                                    {isLoading ? (
+                                        <ClipLoader size={20} color="#ffffff" />
+                                    ) : (
+                                        'Cập nhật'
+                                    )}
+                                </Button>
+                            </div>
                         </ModalFooter>
                     </>
                 </ModalContent>
