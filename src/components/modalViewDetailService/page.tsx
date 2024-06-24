@@ -41,7 +41,7 @@ export default function ModalViewServiceProps({ params }: { params: string }) {
                                         <p className="text-xl font-light">Tên dịch vụ</p>
                                         <p className="text-xl font-light">Category</p>
                                         <p className="text-xl font-light">Giá dịch vụ</p>
-                                        <p className="text-xl font-light">Loại thú cưng</p>
+
                                         <p className="text-xl font-light">Nomination</p>
                                         <p className="text-xl font-light">Cân nặng nhỏ nhất</p>
                                         <p className="text-xl font-light">Cân nặng lớn nhất </p>
@@ -54,7 +54,7 @@ export default function ModalViewServiceProps({ params }: { params: string }) {
                                                 <p className="text-xl font-medium">{service.serviceName || "Không có gì"}</p>
                                                 <p className="text-xl font-medium">{service.serviceCategoryId || "Không có gì"}</p>
                                                 <p className="text-xl font-medium">{service.price || "Không có gì"}</p>
-                                                <p className="text-xl font-medium">{service.typePet || "Không có gì"}</p>
+
                                                 <p className="text-xl font-medium">{service.nomination || "Không có gì"}</p>
                                                 <p className="text-xl font-medium">{service.minWeight || "Không có gì"}</p>
                                                 <p className="text-xl font-medium">{service.maxWeight || "Không có gì"}</p>
@@ -77,13 +77,7 @@ export default function ModalViewServiceProps({ params }: { params: string }) {
                             >
                                 Đóng
                             </Button>
-                            <Button
-                                color="primary"
 
-                                className="bg-blue-500 text-white px-6 py-2 rounded-md hover:bg-blue-600"
-                            >
-                                Tạo
-                            </Button>
                         </ModalFooter>
                     </>
                 </ModalContent>

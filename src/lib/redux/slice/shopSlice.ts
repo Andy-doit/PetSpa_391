@@ -46,11 +46,14 @@ export const fetchAllServicePagination = createAsyncThunk(
         try {
             const response = await agent.ShopOnwer.getAllService();
             return response;
+
         } catch (error) {
             if (error instanceof AxiosError) {
-                throw error.response?.data.error.message || "An error occurred";
+                return {
+                    message: error.response?.data.error.message,
+                    status: error.response?.status,
+                };
             }
-            throw error;
         }
     },
 );
