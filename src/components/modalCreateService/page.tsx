@@ -40,7 +40,6 @@ export default function ModalCreateService({ userId }: { userId: string }) {
             servicePrice: '',
             maxWeight: 99,
             minWeight: 0,
-            petType: '',
             serviceDescription: '',
         },
         validationSchema,
@@ -66,7 +65,6 @@ export default function ModalCreateService({ userId }: { userId: string }) {
         price: 0,
         minWeight: 0,
         maxWeight: 0,
-        typePet: '',
         tags: '',
 
     });
@@ -146,9 +144,7 @@ export default function ModalCreateService({ userId }: { userId: string }) {
 
                                     </Select>
 
-                                    {formik.touched.petType && formik.errors.petType ? (
-                                        <div className="text-red-500">{formik.errors.petType}</div>
-                                    ) : null}
+
                                 </div>
                                 <div className="col-span-1">
                                     <Select
@@ -169,9 +165,7 @@ export default function ModalCreateService({ userId }: { userId: string }) {
 
                                     </Select>
 
-                                    {formik.touched.petType && formik.errors.petType ? (
-                                        <div className="text-red-500">{formik.errors.petType}</div>
-                                    ) : null}
+
                                 </div>
                                 <div className="col-span-1">
                                     <Input
@@ -198,9 +192,7 @@ export default function ModalCreateService({ userId }: { userId: string }) {
                                         </SelectItem>
                                     </Select>
 
-                                    {formik.touched.petType && formik.errors.petType ? (
-                                        <div className="text-red-500">{formik.errors.petType}</div>
-                                    ) : null}
+
                                 </div>
                                 <div className="col-span-1">
                                     <Input

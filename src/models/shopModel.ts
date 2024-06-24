@@ -6,7 +6,6 @@ export interface createServiceInput {
     price: number,
     minWeight: number,
     maxWeight: number,
-    typePet: string,
     tags: string
 
 }
