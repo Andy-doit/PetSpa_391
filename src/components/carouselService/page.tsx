@@ -34,11 +34,15 @@ export default function CarouselService() {
     return (
         <div className="slider-container">
             <Slider {...settings} className="my-5">
-                {services.map((service, index) => (
-                    <div className="my-5" key={index}>
-                        <CardService service={service} />
-                    </div>
-                ))}
+                {services && services.length > 0 ? (
+                    services.map((service, index) => (
+                        <div className="my-5" key={index}>
+                            <CardService service={service} />
+                        </div>
+                    ))
+                ) : (
+                    <p>Không có dữ liệu để hiển thị</p>
+                )}
             </Slider>
         </div>
     );

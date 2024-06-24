@@ -33,6 +33,7 @@ export function useAuth() {
       Cookies.set('userId', decodeToken?.userId, { expires: 1 })
       switch (decodeToken?.role) {
         case ROLE.role1:
+          console.log('role1')  
           router.replace(`/`);
           break;
         case ROLE.role2:
