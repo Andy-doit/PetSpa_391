@@ -42,6 +42,7 @@ export default function ModalViewServiceProps({ params }: { params: string }) {
                                         <p className="text-xl font-light">Category</p>
                                         <p className="text-xl font-light">Giá dịch vụ</p>
                                         <p className="text-xl font-light">Loại thú cưng</p>
+                                        <p className="text-xl font-light">Nomination</p>
                                         <p className="text-xl font-light">Cân nặng nhỏ nhất</p>
                                         <p className="text-xl font-light">Cân nặng lớn nhất </p>
                                         <p className="text-xl font-light">Mô tả dịch vụ </p>
@@ -53,7 +54,8 @@ export default function ModalViewServiceProps({ params }: { params: string }) {
                                                 <p className="text-xl font-medium">{service.serviceName || "Không có gì"}</p>
                                                 <p className="text-xl font-medium">{service.serviceCategoryId || "Không có gì"}</p>
                                                 <p className="text-xl font-medium">{service.price || "Không có gì"}</p>
-                                                <p className="text-xl font-medium">{service.username || "Không có gì"}</p>
+                                                <p className="text-xl font-medium">{service.typePet || "Không có gì"}</p>
+                                                <p className="text-xl font-medium">{service.nomination || "Không có gì"}</p>
                                                 <p className="text-xl font-medium">{service.minWeight || "Không có gì"}</p>
                                                 <p className="text-xl font-medium">{service.maxWeight || "Không có gì"}</p>
                                                 <p className="text-xl font-medium">{service.serviceDescription || "Không có gì"}</p>

@@ -18,11 +18,11 @@ export default function ManageAccount() {
     const dispatch = useAppDispatch();
     const [shop, setShop] = useState<allShopPaginationData[]>([]);
     useEffect(() => {
-        const allPet = async () => {
+        const allShop = async () => {
             const response = await dispatch(fetchAllShopPagination());
             setShop(response.payload || []);
         }
-        allPet();
+        allShop();
     }, [dispatch]);
 
 
