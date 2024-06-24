@@ -43,15 +43,15 @@ const ServiceAPI = {
 //ShopOnwer
 const ShopOnwer = {
   getAllService: () =>
-    requests.get("api/v1/shop/all"),
+    requests.get("/api/v1/service/all/"),
   postCreateService: (input: createServiceInput) =>
-    requests.baseApiPost("api/v1/shop-owner/manageService/create", input),
+    requests.baseApiPost("api/v1/service", input),
   getServiceInfo: (slug: string) =>
-    requests.baseApiGet(`api/v1/pet/${slug}`),
+    requests.baseApiGet(`api/v1/service/${slug}`),
   deleteService: (slug: string) =>
-    requests.baseApiDelete(`api/v1/pet/${slug}`),
+    requests.baseApiDelete(`api/v1/service/${slug}`),
   updateService: (input: createServiceInput) =>
-    requests.baseApiPut("/api/v1/pet", input),
+    requests.baseApiPut("/api/v1/service", input),
 }
 
 

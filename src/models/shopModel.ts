@@ -27,6 +27,7 @@ export interface ServiceInfor {
     price: number | undefined | null,
     minWeight: number | undefined | null,
     maxWeight: number | undefined | null,
+    nomination: number | undefined | null,
     typePet: string | undefined | null,
     tags: string | undefined | null
 }
@@ -39,7 +40,9 @@ export interface allServicePaginationData {
     price: number,
     minWeight: number,
     maxWeight: number,
+    nomination: number,
     typePet: string,
-    tags: string
+    tags: string,
+    servicephoto: string
 
 }

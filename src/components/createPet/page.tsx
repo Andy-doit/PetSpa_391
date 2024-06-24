@@ -1,5 +1,5 @@
 'use client'
-import React, { useEffect, useState } from 'react';
+import React, { use, useEffect, useState } from 'react';
 import {
     Button,
     Card,
@@ -23,9 +23,11 @@ import { useAppDispatch } from '@/lib/redux/store';
 import { createPetInput } from '@/models/userModels';
 import { createPet } from '@/lib/redux/slice/userSlice';
 import { FaPlus } from 'react-icons/fa';
+import { FcPlus } from 'react-icons/fc';
 
 export default function CreatePet({ userId }: { userId: string }) {
     console.log(userId);
+    const [image, setImage] = useState("")
     const { isOpen, onOpen, onClose } = useDisclosure();
     const [isLoading, setIsLoading] = useState(false);
     useEffect(() => {
@@ -50,7 +52,9 @@ export default function CreatePet({ userId }: { userId: string }) {
 
     });
     const dispatch = useAppDispatch();
+    // const handleUploadImage = (event) => {
 
+    // }
     const handleInputChange = (fieldName: string, newValue: string | number) => {
         setPetData(prevData => ({
             ...prevData,
@@ -158,6 +162,32 @@ export default function CreatePet({ userId }: { userId: string }) {
                                         />
                                     </div>
                                 </div>
+                                <div className="flex items-center mb-4">
+                                    <label htmlFor="upload-file" className="cursor-pointer flex items-center space-x-2">
+                                        <FcPlus className="text-xl" />
+                                        <span className="text-gray-600">Upload file</span>
+                                    </label>
+                                    <input
+                                        id="upload-file"
+                                        type="file"
+                                        // onChange={handleUploadImage}
+                                        hidden
+                                        className="w-full"
+                                    />
+                                </div>
+                                <div className="flex mb-4">
+                                    <label className='' htmlFor='Uploadfile' >
+                                        Preview image
+                                        <Image
+                                            width={300}
+                                            alt="NextUI hero Image"
+                                            src="https://nextui-docs-v2.vercel.app/images/hero-card-complete.jpeg"
+                                        />
+                                    </label>
+
+                                </div>
+
+
                                 <div className="flex mb-4">
                                     <div className="w-full">
                                         <Textarea

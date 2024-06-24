@@ -9,9 +9,22 @@ import getAccessAndRefreshCookie from "@/utilities/authUtils/getCookieForValidat
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, Input, Select, SelectItem, Textarea, useDisclosure, Table, TableHeader, TableColumn, TableBody, TableRow, TableCell } from "@nextui-org/react";
 import { allServicePaginationData } from "@/models/shopModel";
 import ModalDeleteService from "@/components/modalDeleteService/page";
+import { useAppDispatch } from "@/lib/redux/store";
+import { fetchAllServicePagination } from "@/lib/redux/slice/shopSlice";
 const ManageService = () => {
+    const dispatch = useAppDispatch();
     const [userId, setUserId] = useState<string>('');
     const [service, setService] = useState<allServicePaginationData[]>([]);
+    useEffect(() => {
+        const allService = async () => {
+            const response = await dispatch(fetchAllServicePagination());
+            setService(response.payload || []);
+        }
+        allService();
+    }, [dispatch]);
+
+
+
     useEffect(() => {
         const fetchUid = async () => {
             try {
@@ -25,10 +38,6 @@ const ManageService = () => {
         };
         fetchUid();
     }, [userId]);
-
-
-    const [showModalCreateService, setShowModalCreateService] = useState(false);
-
 
 
 
@@ -63,6 +72,7 @@ const ManageService = () => {
                             <TableColumn>Tên dịch vụ</TableColumn>
                             <TableColumn>Giá dịch vụ</TableColumn>
                             <TableColumn>Loại thú cưng</TableColumn>
+                            <TableColumn>Nomination</TableColumn>
                             <TableColumn>Mô tả</TableColumn>
                             <TableColumn>Hành động</TableColumn>
                         </TableHeader>
@@ -72,6 +82,7 @@ const ManageService = () => {
                                     <TableCell>{sp.serviceName}</TableCell>
                                     <TableCell>{sp.price}</TableCell>
                                     <TableCell>{sp.typePet}</TableCell>
+                                    <TableCell>{sp.nomination}</TableCell>
                                     <TableCell>{sp.serviceDescription}</TableCell>
 
                                     <TableCell>
