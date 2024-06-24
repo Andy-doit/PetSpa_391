@@ -29,7 +29,6 @@ export default function ModalUpdateServiceProps({ params }: { params: allService
         userId: params.userId,
         serviceName: params.serviceName,
         serviceCategoryId: params.serviceCategoryId,
-        typePet: params.typePet,
         price: params.price,
         minWeight: params.minWeight,
         maxWeight: params.maxWeight,
@@ -154,8 +153,8 @@ export default function ModalUpdateServiceProps({ params }: { params: allService
                                     <div className="col-span-1">
                                         <Select
                                             label="Loại thú cưng"
-                                            value={serviceData.typePet.toString()}
-                                            onChange={(e) => handleInputChange('typePet', e.target.value)}
+
+                                            // onChange={(e) => handleInputChange('typePet', e.target.value)}
                                             className="w-full"
 
                                         >

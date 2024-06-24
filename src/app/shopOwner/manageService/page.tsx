@@ -15,16 +15,14 @@ const ManageService = () => {
     const dispatch = useAppDispatch();
     const [userId, setUserId] = useState<string>('');
     const [service, setService] = useState<allServicePaginationData[]>([]);
+
     useEffect(() => {
-        const allService = async () => {
+        const allPet = async () => {
             const response = await dispatch(fetchAllServicePagination());
             setService(response.payload || []);
         }
-        allService();
+        allPet();
     }, [dispatch]);
-
-
-
     useEffect(() => {
         const fetchUid = async () => {
             try {
@@ -71,7 +69,7 @@ const ManageService = () => {
 
                             <TableColumn>Tên dịch vụ</TableColumn>
                             <TableColumn>Giá dịch vụ</TableColumn>
-                            <TableColumn>Loại thú cưng</TableColumn>
+                            <TableColumn>Tags</TableColumn>
                             <TableColumn>Nomination</TableColumn>
                             <TableColumn>Mô tả</TableColumn>
                             <TableColumn>Hành động</TableColumn>
@@ -81,7 +79,7 @@ const ManageService = () => {
                                 <TableRow key={sp.userId}>
                                     <TableCell>{sp.serviceName}</TableCell>
                                     <TableCell>{sp.price}</TableCell>
-                                    <TableCell>{sp.typePet}</TableCell>
+                                    <TableCell>{sp.tags}</TableCell>
                                     <TableCell>{sp.nomination}</TableCell>
                                     <TableCell>{sp.serviceDescription}</TableCell>
 
