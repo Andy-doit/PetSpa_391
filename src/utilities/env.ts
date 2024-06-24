@@ -1,5 +1,5 @@
 export const Envs = {
-    apiLocal: "https://perfect-education-production.up.railway.app/",
-    apiRemote: "https://perfect-education-production.up.railway.app/",
-    apiEnv: "https://perfect-education-production.up.railway.app/",
+    apiLocal: "hhttps://philfodennn.up.railway.app/",
+    apiRemote: "https://philfodennn.up.railway.app/",
+    apiEnv: "https://philfodennn.up.railway.app/",
 };

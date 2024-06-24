@@ -50,7 +50,7 @@ export default function OrderDetail({ params }: { params: string }) {
                                 <div className="flex items-center ">
                                     <div className="ml-4">
                                         <p className=" font-medium text-4xl text-orange-600">{booking.serviceName}</p>
-                                        <p className="text-xl text-white">{booking.startTime} - {booking.endTime}/{booking.localDate}</p>
+                                        <p className="text-xl text-white">{booking.startTime} - {booking.endTime} - {booking.localDate}</p>
                                         <p className="text-2xl text-white">{booking.shopName}</p>
                                         <p className="text-xl font-light text-white"> {booking.shopAddress}</p>
                                         <Chip className="my-2" color="success">{booking.status}</Chip>
@@ -72,7 +72,7 @@ export default function OrderDetail({ params }: { params: string }) {
                                                 <p className="text-xl font-light">Ghi chú</p>
                                             </div>
                                             <div className="ml-6">
-                                                <p className="text-xl font-medium">{booking.typePet}</p>
+                                                <p className="text-xl font-medium">{booking.typePet === 'DOG' ? 'Chó' : (booking.typePet === 'CAT' ? 'Mèo' : 'Không có gì')}</p>
                                                 <p className="text-xl font-medium">{booking.petName}</p>
                                                 <p className="text-xl font-medium">{booking.petWeight}</p>
                                                 <p className="text-xl font-medium">{booking.startTime} - {booking.endTime}</p>
