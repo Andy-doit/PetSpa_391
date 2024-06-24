@@ -26,7 +26,7 @@ export default function ModalUpdateServiceProps({ params }: { params: allService
         }
     }, [userId]);
     const [serviceData, setServiceData] = useState<createServiceInput>({
-        userId: params.userId.toString(),
+        userId: params.userId,
         serviceName: params.serviceName,
         serviceCategoryId: params.serviceCategoryId,
         typePet: params.typePet,

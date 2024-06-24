@@ -58,7 +58,7 @@ export default function NavbarShop({ children }: Props) {
 
                                     }
                                 >
-                                    <Link href="/customer/profile" color="foreground">Trang cá nhân</Link>
+                                    <Link href="/shopOwner/profile" color="foreground">Trang cá nhân</Link>
                                 </DropdownItem>
                                 <DropdownItem
                                     onClick={handleLogout}
