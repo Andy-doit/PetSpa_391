@@ -37,8 +37,6 @@ const ManageService = () => {
         fetchUid();
     }, [userId]);
 
-
-
     return (
         <div className=" lg:px-6 max-w-[95rem]  w-full flex flex-col gap-4">
             <h3 className="text-xl font-semibold">Danh sách dịch vụ</h3>
@@ -76,7 +74,7 @@ const ManageService = () => {
                         </TableHeader>
                         <TableBody>
                             {service.map((sp) => (
-                                <TableRow key={sp.userId}>
+                                <TableRow key={sp.id}>
                                     <TableCell>{sp.serviceName}</TableCell>
                                     <TableCell>{sp.price}</TableCell>
                                     <TableCell>{sp.tags}</TableCell>
@@ -85,24 +83,15 @@ const ManageService = () => {
 
                                     <TableCell>
                                         <div className="flex items-center gap-4 ">
-                                            {/* <div>
-                                                <AccountDetail params={sp.id} />
-                                            </div>
                                             <div>
-                                                <AccountDetail params={sp.id} />
-                                            </div>
-                                            <div>
-                                                <DeleteShop params={sp.id} />
-                                            </div> */}
-                                            <div>
-                                                <ModalViewServiceProps params={sp.userId} />
+                                                <ModalViewServiceProps params={sp.id} />
                                             </div>
                                             <div>
                                                 <ModalUpdateServiceProps params={sp} />
                                             </div>
 
                                             <div>
-                                                <ModalDeleteService params={sp.userId} />
+                                                <ModalDeleteService params={sp.id} />
                                             </div>
                                         </div>
                                     </TableCell>
