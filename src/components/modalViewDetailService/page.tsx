@@ -11,6 +11,7 @@ export default function ModalViewServiceProps({ params }: { params: string }) {
     const { isOpen, onOpen, onClose } = useDisclosure();
     const [shop, setShop] = useState<ServiceInfor | any>();
     const dispatch = useAppDispatch();
+
     useEffect(() => {
         const petDetail = async () => {
             const response = await dispatch(fetchServiceInfo({ slug: params }));
