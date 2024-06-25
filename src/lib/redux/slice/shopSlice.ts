@@ -58,6 +58,7 @@ export const fetchAllServicePagination = createAsyncThunk(
     },
 );
 
+
 export const fetchServiceInfo = createAsyncThunk(
     'shopOwner/fetchServiceInfo',
     async ({ slug }: { slug: string }) => {
@@ -66,13 +67,14 @@ export const fetchServiceInfo = createAsyncThunk(
             return response;
         } catch (error) {
             if (error instanceof AxiosError) {
-                throw error.response?.data.error.message || "An error occurred";
+                return {
+                    message: error.response?.data.error.message,
+                    status: error.response?.status,
+                };
             }
-            throw error;
         }
     },
 );
-
 export const deleteService = createAsyncThunk(
     'shopOwner/deleteService',
     async ({ slug }: { slug: string }) => {
@@ -111,39 +113,6 @@ const shopSlice = createSlice({
     reducers: {},
     extraReducers: (builder) => {
         builder
-            // Handle createService
-            .addCase(createService.pending, (state) => {
-                state.returnedDataLoading = true;
-                state.returnedDataStatus = 'loading';
-            })
-            .addCase(createService.fulfilled, (state, action) => {
-                state.returnedData = action.payload;
-                state.returnedDataLoading = false;
-                state.returnedDataStatus = 'succeeded';
-            })
-            .addCase(createService.rejected, (state, action) => {
-                state.returnedDataStatus = 'failed';
-                state.returnedDataError = true;
-                state.returnedDataLoading = false;
-                state.returnedData = action.error.message;
-            })
-            // Handle fetchAllServicePagination
-            .addCase(fetchAllServicePagination.pending, (state) => {
-                state.allServicesFetchingLoading = true;
-                state.allServicesFetchingStatus = 'loading';
-            })
-            .addCase(fetchAllServicePagination.fulfilled, (state, action) => {
-                state.allServicesPagination = action.payload;
-                state.allServicesFetchingLoading = false;
-                state.allServicesFetchingStatus = 'succeeded';
-            })
-            .addCase(fetchAllServicePagination.rejected, (state, action) => {
-                state.allServicesFetchingStatus = 'failed';
-                state.allServicesFetchingError = true;
-                state.allServicesFetchingLoading = false;
-                state.allServicesPagination = action.error.message;
-            })
-            // Handle fetchServiceInfo
             .addCase(fetchServiceInfo.pending, (state) => {
                 state.returnedDataLoading = true;
                 state.returnedDataStatus = 'loading';
@@ -154,22 +123,6 @@ const shopSlice = createSlice({
                 state.returnedDataStatus = 'succeeded';
             })
             .addCase(fetchServiceInfo.rejected, (state, action) => {
-                state.returnedDataStatus = 'failed';
-                state.returnedDataError = true;
-                state.returnedDataLoading = false;
-                state.returnedData = action.error.message;
-            })
-            // Handle deleteService
-            .addCase(deleteService.pending, (state) => {
-                state.returnedDataLoading = true;
-                state.returnedDataStatus = 'loading';
-            })
-            .addCase(deleteService.fulfilled, (state, action) => {
-                state.returnedData = action.payload;
-                state.returnedDataLoading = false;
-                state.returnedDataStatus = 'succeeded';
-            })
-            .addCase(deleteService.rejected, (state, action) => {
                 state.returnedDataStatus = 'failed';
                 state.returnedDataError = true;
                 state.returnedDataLoading = false;

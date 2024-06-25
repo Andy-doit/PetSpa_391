@@ -47,9 +47,9 @@ const ShopOnwer = {
   postCreateService: (input: createServiceInput) =>
     requests.baseApiPost("api/v1/service", input),
   getServiceInfo: (slug: string) =>
-    requests.baseApiGet(`/api/v1/service/${slug}`),
+    requests.baseApiGet(`api/v1/service/${slug}`),
   deleteService: (slug: string) =>
-    requests.baseApiDelete(`api/v1/service/${slug}`),
+    requests.baseApiDelete(`/api/v1/service${slug}`),
   updateService: (input: createServiceInput) =>
     requests.baseApiPut("/api/v1/service", input),
 }
@@ -79,8 +79,8 @@ const User = {
 const Admin = {
   getAllShops: () =>
     requests.get("api/v1/admin/manageShopOwner/viewAll"),
-  // getShopInfor: (slug: string) =>
-  //   requests.baseApiGet(`api/v1/admin/viewDetail/${slug}`),
+  getShopInfor: (slug: string) =>
+    requests.baseApiGet(`api/v1/admin/viewDetail/${slug}`),
   deleteShop: (slug: string) =>
     requests.baseApiDelete(`api/v1/admin/delete/${slug}`),
   createShop: (input: AccountInput) =>
