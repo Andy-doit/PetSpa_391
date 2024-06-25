@@ -32,6 +32,7 @@ export interface ServiceInfor {
 export interface allServicePaginationData {
     userId: string,
     serviceName: string,
+    serviceCategoryId: number,
     serviceDescription: string,
     price: number,
     minWeight: number,
