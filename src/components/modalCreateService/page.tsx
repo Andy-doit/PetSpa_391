@@ -24,8 +24,6 @@ const validationSchema = Yup.object().shape({
         .required('Cân nặng lớn nhất là bắt buộc phải là số')
         .min(1, 'Cân nặng phải lớn hơn 0')
         .max(500, 'Mô tả dịch vụ không được vượt quá 500 ký tự'),
-    petType: Yup.string()
-        .required('Loại thú cưng là bắt buộc'),
     serviceDescription: Yup.string()
         .required('Mô tả dịch vụ là bắt buộc')
         .min(10, 'Mô tả dịch vụ phải có ít nhất 10 ký tự')
@@ -178,22 +176,7 @@ export default function ModalCreateService({ userId }: { userId: string }) {
                                     ) : null}
                                 </div>
 
-                                <div className="col-span-1">
-                                    <Select
-                                        label="Loại thú cưng"
-                                        className="w-[300px]"
-                                        onChange={(e) => handleInputChange('typePet', e.target.value)}
-                                    >
-                                        <SelectItem key="DOG" value="DOG">
-                                            Chó
-                                        </SelectItem>
-                                        <SelectItem key="CAT" value="CAT">
-                                            Mèo
-                                        </SelectItem>
-                                    </Select>
 
-
-                                </div>
                                 <div className="col-span-1">
                                     <Input
                                         className="w-[300px]"

@@ -20,7 +20,6 @@ export interface serviceCreateResponseSuccess {
 export interface ServiceInfor {
     slug: string | undefined | null,
     userId: string | undefined | null,
-    serviceCategoryId: number | undefined | null,
     serviceName: string | undefined | null,
     serviceDescription: string | undefined | null,
     price: number | undefined | null,
@@ -32,14 +31,14 @@ export interface ServiceInfor {
 
 export interface allServicePaginationData {
     userId: string,
-    serviceCategoryId: number,
     serviceName: string,
+    serviceCategoryId: number,
     serviceDescription: string,
     price: number,
     minWeight: number,
     maxWeight: number,
     nomination: number,
     tags: string,
-    servicephoto: string
+
 
 }
