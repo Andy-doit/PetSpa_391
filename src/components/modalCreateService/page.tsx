@@ -57,6 +57,7 @@ export default function ModalCreateService({ userId }: { userId: string }) {
 
     const [serviceData, setServiceData] = useState<createServiceInput>({
         userId: userId,
+        id: '',
         serviceCategoryId: 0,
         serviceName: '',
         serviceDescription: '',

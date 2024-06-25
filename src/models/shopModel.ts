@@ -1,5 +1,6 @@
 export interface createServiceInput {
     userId: string,
+    id: string,
     serviceCategoryId: number,
     serviceName: string,
     serviceDescription: string,
@@ -30,7 +31,7 @@ export interface ServiceInfor {
 }
 
 export interface allServicePaginationData {
-    userId: string,
+    id: string,
     serviceName: string,
     serviceCategoryId: number,
     serviceDescription: string,

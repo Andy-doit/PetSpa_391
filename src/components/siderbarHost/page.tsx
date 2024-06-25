@@ -48,16 +48,7 @@ export default function SiderbarHost() {
 
                 </div>
             </div>
-            <div className={`flex-grow transition-all duration-300 ${isCollapsed ? 'ml-5' : 'ml-10'}`}>
 
-                <div className="p-4">
-
-                    <div className="flex justify-between items-center mb-4">
-                        <h1 className="text-2xl font-bold">Dashboard</h1>
-                    </div>
-
-                </div>
-            </div>
         </div>
     );
 }

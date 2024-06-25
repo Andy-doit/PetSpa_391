@@ -6,17 +6,30 @@ import getAccessAndRefreshCookie from "@/utilities/authUtils/getCookieForValidat
 import { MdChangeCircle } from "react-icons/md";
 import { updateService } from "@/lib/redux/slice/shopSlice";
 import { useAppDispatch } from '@/lib/redux/store';
-import { toast } from "react-toastify";
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { ClipLoader } from "react-spinners";
 
 
 export default function ModalUpdateServiceProps({ params }: { params: allServicePaginationData }) {
-    const [service, setService] = useState<string>('');
     const [userId, setUserId] = useState<string>('');
 
     const dispatch = useAppDispatch();
     const { isOpen, onOpen, onClose } = useDisclosure();
     const [isLoading, setIsLoading] = useState(false);
+    useEffect(() => {
+        const fetchUid = async () => {
+            try {
+                const { uid } = await getAccessAndRefreshCookie();
+                if (uid) {
+                    setUserId(uid);
+                }
+            } catch (error) {
+                console.error('Error fetching UID:', error);
+            }
+        };
+        fetchUid();
+    }, [userId]);
     useEffect(() => {
         if (userId) {
             setServiceData(prevData => ({
@@ -25,8 +38,10 @@ export default function ModalUpdateServiceProps({ params }: { params: allService
             }));
         }
     }, [userId]);
+    console.log(userId);
     const [serviceData, setServiceData] = useState<createServiceInput>({
-        userId: params.userId,
+        id: params.id,
+        userId: userId,
         serviceName: params.serviceName,
         serviceCategoryId: params.serviceCategoryId,
         price: params.price,
@@ -36,6 +51,7 @@ export default function ModalUpdateServiceProps({ params }: { params: allService
         tags: params.tags,
 
     });
+    console.log(serviceData);
     const handleInputChange = (fieldName: string, newValue: string | number) => {
         setServiceData(prevData => ({
             ...prevData,
@@ -72,139 +88,95 @@ export default function ModalUpdateServiceProps({ params }: { params: allService
                             Xem chi tiết dịch vụ
                         </ModalHeader>
                         <ModalBody className="space-y-6">
-                            {service ? (
-                                <form className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                    <div className="col-span-1 ">
 
-                                        <Input
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div className="col-span-1 ">
+                                    <Input
+                                        className="w-full"
+
+                                        label="Tên dịch vụ"
+                                        type="serviceName"
+                                        value={serviceData.serviceName}
+                                        onChange={(e) => handleInputChange('serviceName', e.target.value)}
+
+
+                                    />
+
+                                </div>
+                                <div className="col-span-1">
+                                    <Select
+                                        label="Category"
+                                        className="w-full"
+                                        defaultSelectedKeys={[serviceData.serviceCategoryId]}
+                                        onChange={(e) => handleInputChange('serviceCategoryId', e.target.value)}
+                                    >
+                                        <SelectItem key="1" value="1">
+                                            Dịch vụ tắm rứa
+                                        </SelectItem>
+                                        <SelectItem key="2" value="2">
+                                            Dịch vụ làm đẹp
+                                        </SelectItem>
+                                        <SelectItem key="3" value="3">
+                                            Dịch vụ mát xa
+                                        </SelectItem>
+                                        <SelectItem key="4" value="4">
+                                            Dịch vụ mát xa đặc biệt
+                                        </SelectItem>
+                                        <SelectItem key="5" value="5">
+                                            Khách sạn thú cưng
+                                        </SelectItem>
+
+                                    </Select>
+
+
+                                </div>
+
+                                <div className="col-span-1">
+                                    <Input
+
+                                        label="Giá dịch vụ"
+                                        value={serviceData.price.toString()}
+                                        onChange={(e) => handleInputChange('price', e.target.value)}
+                                        type="price"
+                                        className="w-full"
+                                    />
+
+                                </div>
+                                <div className="col-span-1">
+                                    <Input
+                                        value={serviceData.minWeight.toString()}
+                                        onChange={(e) => handleInputChange('minWeight', e.target.value)}
+                                        className="w-full"
+
+                                        label="Cân nặng nhỏ nhất"
+                                    />
+
+                                </div>
+                                <div className="col-span-1">
+                                    <Input
+                                        value={serviceData.maxWeight.toString()}
+                                        onChange={(e) => handleInputChange('maxWeight', e.target.value)}
+                                        className="w-full"
+
+                                        label="Cân nặng lớn nhất"
+                                    />
+
+                                </div>
+                                <div className="col-span-1 md:col-span-2">
+                                    <div className="w-full">
+                                        <Textarea
+
+                                            placeholder="Mô tả dịch vụ"
+                                            value={serviceData.serviceDescription}
+                                            onChange={(e) => handleInputChange('serviceDescription', e.target.value)}
                                             className="w-full"
-
-                                            label="Tên dịch vụ"
-                                            type="serviceName"
-                                            value={serviceData.serviceName}
-                                            onChange={(e) => handleInputChange('serviceName', e.target.value)}
-
 
                                         />
-
-                                    </div>
-                                    <div className="col-span-1">
-                                        <Select
-                                            label="Category"
-                                            className="w-full"
-                                            defaultSelectedKeys={[serviceData.serviceCategoryId]}
-                                            onChange={(e) => handleInputChange('serviceCategoryId', e.target.value)}
-                                        >
-                                            <SelectItem key="1" value="1">
-                                                Dịch vụ tắm rứa
-                                            </SelectItem>
-                                            <SelectItem key="2" value="2">
-                                                Dịch vụ làm đẹp
-                                            </SelectItem>
-                                            <SelectItem key="3" value="3">
-                                                Dịch vụ mát xa
-                                            </SelectItem>
-                                            <SelectItem key="4" value="4">
-                                                Dịch vụ mát xa đặc biệt
-                                            </SelectItem>
-                                            <SelectItem key="5" value="5">
-                                                Khách sạn thú cưng
-                                            </SelectItem>
-
-                                        </Select>
-
-
-                                    </div>
-                                    <div className="col-span-1">
-                                        <Select
-                                            label="Category"
-                                            className="w-full"
-                                            defaultSelectedKeys={[serviceData.serviceCategoryId]}
-                                            onChange={(e) => handleInputChange('serviceCategoryId', e.target.value)}
-
-                                        >
-                                            <SelectItem key="tag1" value="tags1">
-                                                Tag 1
-                                            </SelectItem>
-                                            <SelectItem key="tag2" value="tags2">
-                                                Tag 2
-                                            </SelectItem>
-                                            <SelectItem key="tag3" value="tags3">
-                                                Tag 2
-                                            </SelectItem>
-
-
-                                        </Select>
-
-
-                                    </div>
-                                    <div className="col-span-1">
-                                        <Input
-
-                                            label="Giá dịch vụ"
-                                            value={serviceData.price.toString()}
-                                            onChange={(e) => handleInputChange('price', e.target.value)}
-                                            type="price"
-                                            className="w-full"
-                                        />
-
                                     </div>
 
-                                    <div className="col-span-1">
-                                        <Select
-                                            label="Loại thú cưng"
+                                </div>
+                            </div>
 
-                                            // onChange={(e) => handleInputChange('typePet', e.target.value)}
-                                            className="w-full"
-
-                                        >
-                                            <SelectItem key="DOG" value="DOG">
-                                                Chó
-                                            </SelectItem>
-                                            <SelectItem key="CAT" value="CAT">
-                                                Mèo
-                                            </SelectItem>
-                                        </Select>
-
-
-                                    </div>
-                                    <div className="col-span-1">
-                                        <Input
-                                            value={serviceData.minWeight.toString()}
-                                            onChange={(e) => handleInputChange('minWeight', e.target.value)}
-                                            className="w-full"
-
-                                            label="Cân nặng nhỏ nhất"
-                                        />
-
-                                    </div>
-                                    <div className="col-span-1">
-                                        <Input
-                                            value={serviceData.maxWeight.toString()}
-                                            onChange={(e) => handleInputChange('maxWeight', e.target.value)}
-                                            className="w-full"
-
-                                            label="Cân nặng lớn nhất"
-                                        />
-
-                                    </div>
-                                    <div className="col-span-1 md:col-span-2">
-                                        <div className="w-full">
-                                            <Textarea
-
-                                                placeholder="Mô tả dịch vụ"
-                                                value={serviceData.serviceDescription.toString()}
-                                                onChange={(e) => handleInputChange('serviceDescription', e.target.value)}
-                                                className="w-full"
-
-                                            />
-                                        </div>
-
-                                    </div>
-                                </form>
-                            ) : (
-                                <p>Không có thông tin dịch vụ.</p>
-                            )}
                         </ModalBody>
                         <ModalFooter className="flex justify-end space-x-4 mt-8">
                             <div className=" flex w-full justify-end">
@@ -231,7 +203,7 @@ export default function ModalUpdateServiceProps({ params }: { params: allService
                         </ModalFooter>
                     </>
                 </ModalContent>
-
+                <ToastContainer />
             </Modal>
         </>
     );
