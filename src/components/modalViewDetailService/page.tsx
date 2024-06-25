@@ -9,13 +9,13 @@ import { fetchServiceInfo } from "@/lib/redux/slice/shopSlice";
 
 export default function ModalViewServiceProps({ params }: { params: string }) {
     const { isOpen, onOpen, onClose } = useDisclosure();
-    const [service, setService] = useState<ServiceInfor | any>();
+    const [shop, setShop] = useState<ServiceInfor | any>();
     const dispatch = useAppDispatch();
     useEffect(() => {
         const petDetail = async () => {
             const response = await dispatch(fetchServiceInfo({ slug: params }));
             if (response.payload) {
-                setService(response.payload);
+                setShop(response.payload);
             }
         };
         petDetail();
@@ -39,9 +39,8 @@ export default function ModalViewServiceProps({ params }: { params: string }) {
                                 <div className="flex">
                                     <div>
                                         <p className="text-xl font-light">Tên dịch vụ</p>
-                                        <p className="text-xl font-light">Category</p>
-                                        <p className="text-xl font-light">Giá dịch vụ</p>
 
+                                        <p className="text-xl font-light">Giá dịch vụ</p>
                                         <p className="text-xl font-light">Nomination</p>
                                         <p className="text-xl font-light">Cân nặng nhỏ nhất</p>
                                         <p className="text-xl font-light">Cân nặng lớn nhất </p>
@@ -49,16 +48,15 @@ export default function ModalViewServiceProps({ params }: { params: string }) {
 
                                     </div>
                                     <div className="ml-20">
-                                        {service ? (
+                                        {shop ? (
                                             <>
-                                                <p className="text-xl font-medium">{service.serviceName || "Không có gì"}</p>
-                                                <p className="text-xl font-medium">{service.serviceCategoryId || "Không có gì"}</p>
-                                                <p className="text-xl font-medium">{service.price || "Không có gì"}</p>
+                                                <p className="text-xl font-medium">{shop.serviceName || "Không có gì"}</p>
 
-                                                <p className="text-xl font-medium">{service.nomination || "Không có gì"}</p>
-                                                <p className="text-xl font-medium">{service.minWeight || "Không có gì"}</p>
-                                                <p className="text-xl font-medium">{service.maxWeight || "Không có gì"}</p>
-                                                <p className="text-xl font-medium">{service.serviceDescription || "Không có gì"}</p>
+                                                <p className="text-xl font-medium">{shop.price || "Không có gì"}</p>
+                                                <p className="text-xl font-medium">{shop.nomination || "Không có gì"}</p>
+                                                <p className="text-xl font-medium">{shop.minWeight || "Không có gì"}</p>
+                                                <p className="text-xl font-medium">{shop.maxWeight || "Không có gì"}</p>
+                                                <p className="text-xl font-medium">{shop.serviceDescription || "Không có gì"}</p>
 
 
                                             </>

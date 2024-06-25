@@ -17,21 +17,21 @@ import { FaEye, FaPlus } from 'react-icons/fa';
 
 import { useAppDispatch } from '@/lib/redux/store';
 import { ShopInfor } from '@/models/adminModel';
-// import { fetchShopInfor } from '@/lib/redux/slice/adminSlice';
+import { fetchShopInfor } from '@/lib/redux/slice/adminSlice';
 
 export default function AccountDetail({ params }: { params: string }) {
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
     const [shop, setShop] = useState<ShopInfor | any>();
     const dispatch = useAppDispatch();
-    // useEffect(() => {
-    //     const petDetail = async () => {
-    //         const response = await dispatch(fetchShopInfor({ slug: params }));
-    //         if (response.payload) {
-    //             setShop(response.payload);
-    //         }
-    //     };
-    //     petDetail();
-    // }, [dispatch, params]);
+    useEffect(() => {
+        const petDetail = async () => {
+            const response = await dispatch(fetchShopInfor({ slug: params }));
+            if (response.payload) {
+                setShop(response.payload);
+            }
+        };
+        petDetail();
+    }, [dispatch, params]);
     return (
         <div>
             <Tooltip content="Xem chi tiết">
