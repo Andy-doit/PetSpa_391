@@ -5,10 +5,24 @@ import { MdHomeRepairService } from "react-icons/md";
 import { Tabs, Tab } from "@nextui-org/react";
 
 import { BiEdit } from 'react-icons/bi'
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useAppDispatch } from "@/lib/redux/store";
+import { fetchShopInforPagination } from "@/lib/redux/slice/shopSlice";
+import { shopInfor } from "@/models/shopModel";
+
 
 export default function Profile() {
+    const dispatch = useAppDispatch();
     const [isEditing, setIsEditing] = useState(false);
+    const [items, setItems] = useState<shopInfor>();
+    useEffect(() => {
+        const allService = async () => {
+            const response = await dispatch(fetchShopInforPagination());
+            setItems(response.payload);
+
+        }
+        allService();
+    }, [dispatch]);
     const handleEditClick = () => {
         setIsEditing(true);
     };
@@ -33,16 +47,16 @@ export default function Profile() {
                             />
                             <div className="flex flex-col">
                                 {!isEditing && (
-                                    <p className="text-3xl font-extrabold text-orange-600 ">Andy Spa</p>
+                                    <p className="text-3xl font-extrabold text-orange-600 ">{items?.shopName}</p>
                                 )}
 
                                 {isEditing && (
                                     <div className='w-fit'>
-                                        <Input size="sm" className="text-center" type="name" variant='underlined' defaultValue='' />
+                                        <Input size="sm" className="text-center" type="name" variant='underlined' defaultValue={items?.shopName} />
                                     </div>
                                 )}
 
-                                <p className="text-2xl text-default-500">Khu 2 Hoàng Cương, Thanh Ba, Phú Thọ</p>
+                                <p className="text-2xl text-default-500">{items?.shopTitle}</p>
                             </div>
                         </CardHeader>
                     </Card>
@@ -50,13 +64,13 @@ export default function Profile() {
                         <div className="flex justify-start items-center">
                             <MdHomeRepairService className="w-8 h-8 mr-5" />
                             <p className="text-2xl font-semibold mr-3">Dịch vụ: </p>
-                            <p className="text-xl font-medium text-orange-600">25</p>
+                            <p className="text-xl font-medium text-orange-600">{items?.totalServices}</p>
                         </div>
 
                         <div className="flex justify-start items-center">
                             <FaStar className="w-8 h-8 mr-5" />
                             <p className="text-2xl font-semibold mr-3">Đánh giá: </p>
-                            <p className="text-xl font-medium text-orange-600">4.8</p>
+                            <p className="text-xl font-medium text-orange-600">{items?.nomination}</p>
                         </div>
                     </div>
                 </div>
@@ -78,7 +92,7 @@ export default function Profile() {
                                         {!isEditing && (
                                             <div>
                                                 <p className="text-3xl font-medium text-orange-600">Giới thiệu</p>
-                                                <p className="text-2xl font-normal ">Andy Spa là điểm đến lý tưởng cho việc chăm sóc và làm đẹp cho thú cưng của bạn. Chúng tôi cung cấp một loạt các dịch vụ chăm sóc chất lượng, bao gồm:</p>
+                                                <p className="text-2xl font-normal ">{items?.shopDescription}</p>
                                                 <p className="text-2xl ">1. Dịch vụ tắm rửa: Thú cưng của bạn sẽ được tận hưởng một buổi tắm rửa thư giãn với các sản phẩm chăm sóc da dịu nhẹ và không gây kích ứng.</p>
                                                 <p className="text-2xl ">2. Dịch vụ mát xa: Để giúp thú cưng giảm căng thẳng và cải thiện tinh thần, chúng tôi cung cấp dịch vụ mát xa chuyên nghiệp dành cho thú cưng của bạn.</p>
                                                 <p className="text-2xl ">3. Dịch vụ làm đẹp: Đội ngũ chuyên gia làm đẹp của chúng tôi sẽ giúp thú cưng của bạn trở nên lộng lẫy hơn bao giờ hết, với các dịch vụ như cắt tỉa lông, làm móng, và làm đẹp tổng thể.</p>
@@ -111,11 +125,11 @@ export default function Profile() {
                                     <CardBody className="space-y-2">
                                         <div className="space-y-1">
                                             <p >Email</p>
-                                            <Input id="email" disabled={!isEditing} defaultValue="andy@gmail.com" />
+                                            <Input id="email" disabled={!isEditing} defaultValue={items?.shopEmail} />
                                         </div>
                                         <div className="space-y-1">
                                             <p >Số điện thoại</p>
-                                            <Input id="phone" disabled={!isEditing} defaultValue="078956489" />
+                                            <Input id="phone" disabled={!isEditing} defaultValue={items?.shopPhone} />
                                         </div>
                                     </CardBody>
                                     {isEditing && (
