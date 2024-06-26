@@ -1,4 +1,5 @@
-import { createServiceInput, serviceCreateResponseSuccess } from "@/models/shopModel";
+
+import { ShopInput, createServiceInput, serviceCreateResponseSuccess, shopCreateResponseSuccess } from "@/models/shopModel";
 import agent from "@/utilities/agent";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { AxiosError } from "axios";
@@ -75,6 +76,21 @@ export const fetchShopInforPagination = createAsyncThunk(
         }
     },
 );
+export const createShopInfor = createAsyncThunk(
+    'shopOnwer/createShop',
+    async ({ shopData }: { shopData: ShopInput }) => {
+        try {
+            const response = await agent.ShopOnwer.createShopInfor(shopData);
+            return response.data as shopCreateResponseSuccess;
+        } catch (error) {
+            if (error instanceof AxiosError) {
+                throw error.response?.data.error.message || "An error occurred";
+            }
+            throw error;
+        }
+    }
+);
+
 
 export const fetchServiceInfo = createAsyncThunk(
     'shopOwner/fetchServiceInfo',

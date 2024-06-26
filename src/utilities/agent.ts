@@ -2,9 +2,9 @@ import { AxiosResponse } from "axios";
 import apiJWT from "./api";
 import baseApi from "./baseApi";
 import { createBookingInput } from "@/models/bookingModels";
-import { createServiceInput } from '@/models/shopModel';
+import { ShopInput, createServiceInput } from '@/models/shopModel';
 import { createPetInput } from "@/models/userModels";
-import { AccountInput } from "@/models/adminModel";
+import { AccountInput, ShopInfor } from "@/models/adminModel";
 
 
 const responseBody = (response: AxiosResponse) => response.data;
@@ -54,6 +54,8 @@ const ShopOnwer = {
     requests.baseApiPut("api/v1/service", input),
   getShopProfileInfor: () =>
     requests.get("api/v1/shop/auth"),
+  createShopInfor: (input: ShopInput) =>
+    requests.baseApiPost("/api/v1/shop", input),
 }
 
 
@@ -88,7 +90,10 @@ const Admin = {
   deleteShop: (slug: string) =>
     requests.baseApiDelete(`api/v1/admin/delete/${slug}`),
   createShop: (input: AccountInput) =>
-    requests.baseApiPost("api/v1/admin/manageShopOwner/addShopOwner", input)
+    requests.baseApiPost("api/v1/admin/manageShopOwner/addShopOwner", input),
+
+  deleteAcount: (slug: string) =>
+    requests.baseApiDelete(`api/v1/admin/delete/${slug}`),
 }
 
 

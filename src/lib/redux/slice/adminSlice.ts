@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { AxiosError } from "axios";
 import agent from "@/utilities/agent";
-import { AccountInput, shopCreateResponseSuccess } from "@/models/adminModel";
+import { AccountInput, ShopInput, shopCreateResponseSuccess } from "@/models/adminModel";
 
 const initialState = {
     allShopsPagination: null,
@@ -17,18 +17,25 @@ const initialState = {
 
 export const createShop = createAsyncThunk(
     'admin/createShop',
-    async ({ shopData }: { shopData: AccountInput }) => {
+    async ({ shopData }: { shopData: ShopInput }) => {
         try {
-            const response = await agent.Admin.createShop(shopData);
-            return response.data as shopCreateResponseSuccess;
+            const response = (await agent.ShopOnwer.createShopInfor(
+                shopData,
+            )) as shopCreateResponseSuccess;
+            return response.message;
+
+
         } catch (error) {
             if (error instanceof AxiosError) {
-                throw error.response?.data.error.message || "An error occurred";
+                return {
+                    message: error.response?.data.error.message,
+                    status: error.response?.status,
+                };
             }
-            throw error;
         }
     }
 );
+
 export const fetchAllShopPagination = createAsyncThunk(
     'admin/fetchAllShopPagination',
     async () => {
@@ -95,7 +102,22 @@ export const deleteShop = createAsyncThunk(
         }
     },
 );
-
+export const deleteCus = createAsyncThunk(
+    'customer/fetchDeletePet',
+    async ({ slug }: { slug: string }) => {
+        try {
+            const response = await agent.Admin.deleteAcount(slug);
+            return response;
+        } catch (error) {
+            if (error instanceof AxiosError) {
+                return {
+                    message: error.response?.data.error.message,
+                    status: error.response?.status,
+                };
+            }
+        }
+    },
+);
 const adminSlice = createSlice({
     name: 'admin',
     initialState,

@@ -10,6 +10,8 @@ import { allCusPaginationData, allShopPaginationData } from "@/models/adminModel
 import { fetchAllCusPagination, fetchAllShopPagination } from "@/lib/redux/slice/adminSlice";
 import AccountDetail from "@/components/accountDetail/page";
 import DeleteShop from "@/components/deleteAccount/page";
+import AccountCusDetail from "@/components/AccountCusDetail/page";
+import DeleteCus from "@/components/deleteAccountCus/page";
 
 
 
@@ -33,7 +35,7 @@ export default function ManageAccountCus() {
         <div className=" lg:px-6 max-w-[95rem] mx-auto w-full flex flex-col gap-4">
             <h3 className="text-xl font-semibold">Danh sách tài khoản khách hàng</h3>
             <div className="flex justify-between flex-wrap gap-4 items-center">
-                <div className="flex items-center gap-3 flex-wrap md:flex-nowrap">
+                {/* <div className="flex items-center gap-3 flex-wrap md:flex-nowrap">
                     <Input
                         classNames={{
                             input: "w-full",
@@ -45,7 +47,7 @@ export default function ManageAccountCus() {
                 </div>
                 <div className="flex flex-row gap-3.5 flex-wrap">
                     <AddShop shopId={shopId} />
-                </div>
+                </div> */}
 
             </div>
 
@@ -57,12 +59,12 @@ export default function ManageAccountCus() {
                     <Table aria-label="Example static collection table">
                         <TableHeader>
 
-                            <TableColumn>Tên Shop</TableColumn>
-                            <TableColumn>Họ</TableColumn>
-                            <TableColumn>Tên</TableColumn>
+                            <TableColumn>Tên Khách hàng</TableColumn>
+                            {/* <TableColumn>Họ</TableColumn>
+                            <TableColumn>Tên</TableColumn> */}
                             <TableColumn>Email</TableColumn>
                             <TableColumn>Số điện thoại</TableColumn>
-                            <TableColumn>Ngày sinh</TableColumn>
+                            {/* <TableColumn>Ngày sinh</TableColumn> */}
                             <TableColumn>Status</TableColumn>
                             <TableColumn>Hành động</TableColumn>
                         </TableHeader>
@@ -70,11 +72,11 @@ export default function ManageAccountCus() {
                             {shop.map((sp) => (
                                 <TableRow key={sp.id}>
                                     <TableCell>{sp.username}</TableCell>
-                                    <TableCell>{sp.firstName}</TableCell>
-                                    <TableCell>{sp.lastName}</TableCell>
+                                    {/* <TableCell>{sp.firstName}</TableCell>
+                                    <TableCell>{sp.lastName}</TableCell> */}
                                     <TableCell>{sp.email}</TableCell>
                                     <TableCell>{sp.phone}</TableCell>
-                                    <TableCell>{sp.birthday}</TableCell>
+                                    {/* <TableCell>{sp.birthday}</TableCell> */}
                                     <TableCell>
                                         <span
                                             className={`px-2 py-1 rounded-full text-xs text-white ${sp.status ? 'bg-red-500' : 'bg-green-500'
@@ -88,11 +90,11 @@ export default function ManageAccountCus() {
                                     <TableCell>
                                         <div className="flex items-center gap-4 ">
                                             <div>
-                                                <AccountDetail params={sp.id} />
+                                                <AccountCusDetail params={sp.id} />
                                             </div>
 
                                             <div>
-                                                <DeleteShop params={sp.id} />
+                                                <DeleteCus params={sp.id} />
                                             </div>
                                         </div>
                                     </TableCell>
