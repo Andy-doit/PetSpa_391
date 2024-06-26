@@ -15,7 +15,20 @@ export interface shopCreateResponseSuccess {
     message: string;
     success: boolean;
 }
+export interface allCusPaginationData {
+    id: string,
+    email: string,
+    username: string,
+    phone: string,
+    role : string ,
+    firstName :string,
+    lastName : string,
+    profileImageUrl : string ,
+    coverImageUrl : string,
+    birthday : string,
+    status: boolean
 
+}
 export interface allShopPaginationData {
     id: string,
     email: string,

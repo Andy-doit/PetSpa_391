@@ -57,7 +57,24 @@ export const fetchAllServicePagination = createAsyncThunk(
         }
     },
 );
+export const fetchShopInforPagination = createAsyncThunk(
+    'shopOnwer/ShopInfor',
+    async () => {
+        try {
+            const response = await agent.ShopOnwer.getShopProfileInfor();
+            console.log(response)
+            return response;
 
+        } catch (error) {
+            if (error instanceof AxiosError) {
+                return {
+                    message: error.response?.data.error.message,
+                    status: error.response?.status,
+                };
+            }
+        }
+    },
+);
 
 export const fetchServiceInfo = createAsyncThunk(
     'shopOwner/fetchServiceInfo',
