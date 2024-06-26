@@ -66,7 +66,7 @@ export default function AccountCusDetail({ params }: { params: string }) {
                                             <p className="text-xl font-medium">{shop.username || "Không có gì"}</p>
                                             <p className="text-xl font-medium">{shop.phone || "Không có gì"}</p>
                                             <p className="text-xl font-medium">{shop.birthday || "Không có gì"}</p>
-                                            <p className="text-xl font-medium">{shop.status ? "Active" : "Paused"}</p>
+                                            <p className="text-xl font-medium">{shop.status ? "Paused" : "Active"}</p>
                                         </>
                                     ) : (
                                         <p className="text-xl font-medium">Không có gì</p>
