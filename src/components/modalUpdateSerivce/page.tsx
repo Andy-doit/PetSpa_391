@@ -51,7 +51,7 @@ export default function ModalUpdateServiceProps({ params }: { params: allService
         tags: params.tags,
 
     });
-    console.log(serviceData);
+    // console.log(serviceData);
     const handleInputChange = (fieldName: string, newValue: string | number) => {
         setServiceData(prevData => ({
             ...prevData,

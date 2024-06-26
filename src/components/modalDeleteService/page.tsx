@@ -8,18 +8,30 @@ import getAccessAndRefreshCookie from '@/utilities/authUtils/getCookieForValidat
 import { deleteService } from '@/lib/redux/slice/shopSlice';
 import { ToastContainer, toast } from 'react-toastify';
 import { MdDelete } from 'react-icons/md';
+import 'react-toastify/dist/ReactToastify.css';
 
+export default function ModalDeleteService({ params }: { params: string }) {
 
-const ModalDeleteService = ({ params }: { params: string }) => {
-
-
+    const [userId, setUserId] = useState<string>('');
     const { isOpen, onOpen, onClose } = useDisclosure();
-    const [service, setService] = useState<ServiceInfor | any>();
+    console.log(params)
     const dispatch = useAppDispatch();
-    const [serviceId, setServiceId] = useState<string>('');
+    useEffect(() => {
+        const fetchUid = async () => {
+            try {
+                const { uid } = await getAccessAndRefreshCookie();
+                if (uid) {
+                    setUserId(uid);
+                }
+            } catch (error) {
+                console.error('Error fetching UID:', error);
+            }
+        };
+        fetchUid();
+    }, [userId]);
     const handleDetete = async () => {
         try {
-            if (serviceId) {
+            if (userId) {
                 await dispatch(deleteService({ slug: params })).unwrap();
                 toast.success("Xoá dịch vụ của shop thành công!", {
                     onClose: onClose,
@@ -42,14 +54,20 @@ const ModalDeleteService = ({ params }: { params: string }) => {
 
             <Modal size='md' isOpen={isOpen} onClose={onClose} placement="top-center">
                 <ModalContent>
-                    <ModalHeader className='text-3xl text-orange-600'>Bạn có chắc chắn về quyết định của mình?</ModalHeader>
+                    <ModalHeader
+                        className='text-3xl flex justify-center text-center font-bold bg-gray-300  text-orange-600'
+                    >Bạn có chắc về quyết định của mình hay không?
+
+                    </ModalHeader>
                     <ModalFooter>
-                        <Button color="danger" variant="light" onClick={onClose}>
-                            Close
+
+                        <Button className='w-full' onClick={onClose}>
+                            Đóng
                         </Button>
-                        <Button color="primary" onClick={handleDetete} >
+                        <Button className="bg-gradient-to-tr from-pink-500 to-yellow-500 text-white shadow-lg w-full" onClick={handleDetete} >
                             Xoá
                         </Button>
+
                     </ModalFooter>
                 </ModalContent>
             </Modal>
@@ -58,4 +76,3 @@ const ModalDeleteService = ({ params }: { params: string }) => {
     );
 };
 
-export default ModalDeleteService;

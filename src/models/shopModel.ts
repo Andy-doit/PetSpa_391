@@ -21,6 +21,7 @@ export interface serviceCreateResponseSuccess {
 export interface ServiceInfor {
     slug: string | undefined | null,
     userId: string | undefined | null,
+    id: string,
     serviceName: string | undefined | null,
     serviceDescription: string | undefined | null,
     price: number | undefined | null,
