@@ -9,12 +9,30 @@ import { useEffect, useState } from "react";
 import { useAppDispatch } from "@/lib/redux/store";
 import { fetchShopInforPagination } from "@/lib/redux/slice/shopSlice";
 import { shopInfor } from "@/models/shopModel";
+import AddShop from "@/components/createShop/page";
+import CreateShop from "@/components/createbyShop/page";
+import getAccessAndRefreshCookie from "@/utilities/authUtils/getCookieForValidation";
 
 
 export default function Profile() {
     const dispatch = useAppDispatch();
+    const [userId, setUserId] = useState<string>('');
     const [isEditing, setIsEditing] = useState(false);
     const [items, setItems] = useState<shopInfor>();
+    useEffect(() => {
+        const fetchUid = async () => {
+            try {
+                const { uid } = await getAccessAndRefreshCookie();
+                if (uid) {
+                    setUserId(uid);
+                }
+            } catch (error) {
+                console.error('Error fetching UID:', error);
+            }
+        };
+        fetchUid();
+    }, [userId]);
+
     useEffect(() => {
         const allService = async () => {
             const response = await dispatch(fetchShopInforPagination());
@@ -34,6 +52,14 @@ export default function Profile() {
     };
     return (
         <>
+            <div className="flex justify-between flex-wrap gap-4 items-center">
+
+                <div className="flex flex-row gap-3.5 flex-wrap">
+                    <CreateShop userId={userId} />
+
+                </div>
+
+            </div>
             <div className="container mt-5">
                 <div className="flex justify-around">
                     <Card className="max-w-[600px]">
