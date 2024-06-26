@@ -7,7 +7,8 @@ import { useAppDispatch } from '@/lib/redux/store';
 import { createShopInfor } from '@/lib/redux/slice/shopSlice';
 import { ShopInput } from '@/models/shopModel';
 import { FaPlus } from 'react-icons/fa';
-
+import { TimeInput } from "@nextui-org/react";
+import { Time } from "@internationalized/date";
 export default function CreateShop({ userId }: { userId: string }) {
     const { isOpen, onOpen, onClose } = useDisclosure();
     const [isLoading, setIsLoading] = useState(false);
@@ -44,7 +45,19 @@ export default function CreateShop({ userId }: { userId: string }) {
             [fieldName]: newValue
         }));
     };
+    const handleOpenTimeChange = (time: Time) => {
+        setShopData(prevData => ({
+            ...prevData,
+            openTime: `${time.hour}:${time.minute}`,
+        }));
+    };
 
+    const handleCloseTimeChange = (time: Time) => {
+        setShopData(prevData => ({
+            ...prevData,
+            closeTime: `${time.hour}:${time.minute}`,
+        }));
+    };
     const handleCreate = async () => {
         setIsLoading(true);
         try {
@@ -114,7 +127,7 @@ export default function CreateShop({ userId }: { userId: string }) {
                                         />
                                     </div>
                                 </div>
-                                <div className="flex w-full mb-4">
+                                {/* <div className="flex w-full mb-4">
                                     <div className="mr-4">
                                         <Input
                                             type="text"
@@ -131,12 +144,38 @@ export default function CreateShop({ userId }: { userId: string }) {
                                             className="w-[250px]"
                                         />
                                     </div>
+                                </div> */}
+                                <div className="flex w-full mb-4">
+                                    <div className="mr-4">
+                                        <TimeInput
+                                            label="Giờ mở cửa"
+                                            onChange={handleOpenTimeChange}
+                                            defaultValue={new Time(11, 45)}
+                                            className="w-[250px]"
+                                        />
+                                    </div>
+                                    <div className="ml-4">
+                                        <TimeInput
+                                            label="Giờ đóng cửa"
+                                            onChange={handleCloseTimeChange}
+                                            defaultValue={new Time(18, 0)}
+                                            className="w-[250px]"
+                                        />
+                                    </div>
                                 </div>
                                 <div className="mb-4">
                                     <Input
                                         type="text"
                                         onChange={(e) => handleInputChange('shopTitle', e.target.value)}
                                         label="Tiêu đề"
+                                        className="w-full"
+                                    />
+                                </div>
+                                <div className="mb-4">
+                                    <Input
+                                        type="text"
+                                        onChange={(e) => handleInputChange('shopAddress', e.target.value)}
+                                        label="Địa chỉ"
                                         className="w-full"
                                     />
                                 </div>
