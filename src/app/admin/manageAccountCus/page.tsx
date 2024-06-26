@@ -44,8 +44,8 @@ export default function ManageAccountCus() {
                         placeholder="Tìm kiếm khách hàng"
                     />
 
-                </div>
-                <div className="flex flex-row gap-3.5 flex-wrap">
+                </div> */}
+                {/* <div className="flex flex-row gap-3.5 flex-wrap">
                     <AddShop shopId={shopId} />
                 </div> */}
 

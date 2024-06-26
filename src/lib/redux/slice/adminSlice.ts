@@ -1,7 +1,8 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { AxiosError } from "axios";
 import agent from "@/utilities/agent";
-import { AccountInput, ShopInput, shopCreateResponseSuccess } from "@/models/adminModel";
+import { AccountInput, shopCreateResponseSuccess } from "@/models/adminModel";
+import { ShopInput } from "@/models/shopModel";
 
 const initialState = {
     allShopsPagination: null,
@@ -17,9 +18,9 @@ const initialState = {
 
 export const createShop = createAsyncThunk(
     'admin/createShop',
-    async ({ shopData }: { shopData: ShopInput }) => {
+    async ({ shopData }: { shopData: AccountInput }) => {
         try {
-            const response = (await agent.ShopOnwer.createShopInfor(
+            const response = (await agent.Admin.createShop(
                 shopData,
             )) as shopCreateResponseSuccess;
             return response.message;
