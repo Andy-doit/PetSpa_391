@@ -30,7 +30,27 @@ export interface ServiceInfor {
     nomination: number | undefined | null,
     tags: string | undefined | null
 }
+export interface shopInfor {
+    id: string,
+    shopName: string,
+    shopAddress : string,
+    role: string,
+    firstName: string,
+    lastName: string,
+    shopEmail: string,
+    shopDescription : string,
+    openTime :string,
+    closeTime :String,
+    isAvailable: boolean,
+    totalServices: number,
+    nomination : number,
+    shopTitle : string,
+    shopPhone: string | undefined,
+    profileImageUrl: string | undefined | null,
+    coverImageUrl: string | undefined | null,
+    birthday: string | undefined | null,
 
+}
 export interface allServicePaginationData {
     id: string,
     serviceName: string,
