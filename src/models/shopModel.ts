@@ -33,24 +33,45 @@ export interface ServiceInfor {
 export interface shopInfor {
     id: string,
     shopName: string,
-    shopAddress : string,
+    shopAddress: string,
     role: string,
     firstName: string,
     lastName: string,
     shopEmail: string,
-    shopDescription : string,
-    openTime :string,
-    closeTime :String,
+    shopDescription: string,
+    openTime: string,
+    closeTime: String,
     isAvailable: boolean,
     totalServices: number,
-    nomination : number,
-    shopTitle : string,
+    nomination: number,
+    shopTitle: string,
     shopPhone: string | undefined,
     profileImageUrl: string | undefined | null,
     coverImageUrl: string | undefined | null,
     birthday: string | undefined | null,
 
 }
+export interface ShopInput {
+    userId: string,
+    id: string,
+    shopName: string,
+    shopAddress: string,
+    shopPhone: string,
+    area: string,
+    shopDescription: string,
+    openTime: string,
+    closeTime: string,
+    isAvailable: boolean,
+    shopEmail: string,
+    shopTitle: string,
+
+}
+export interface shopCreateResponseSuccess {
+    status: number;
+    message: string;
+    success: boolean;
+}
+
 export interface allServicePaginationData {
     id: string,
     serviceName: string,

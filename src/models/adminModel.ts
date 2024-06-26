@@ -10,6 +10,7 @@ export interface AccountInput {
 }
 
 
+
 export interface shopCreateResponseSuccess {
     status: number;
     message: string;
@@ -20,12 +21,12 @@ export interface allCusPaginationData {
     email: string,
     username: string,
     phone: string,
-    role : string ,
-    firstName :string,
-    lastName : string,
-    profileImageUrl : string ,
-    coverImageUrl : string,
-    birthday : string,
+    role: string,
+    firstName: string,
+    lastName: string,
+    profileImageUrl: string,
+    coverImageUrl: string,
+    birthday: string,
     status: boolean
 
 }
@@ -45,6 +46,20 @@ export interface ShopInfor {
     email: string | undefined | null,
     username: string | undefined | null,
     phone: string | undefined | null
+    status: boolean
+}
+export interface CusInfor {
+    slug: string | undefined | null,
+    id: string,
+    email: string,
+    username: string,
+    phone: string,
+    role: string,
+    firstName: string,
+    lastName: string,
+    profileImageUrl: string,
+    coverImageUrl: string,
+    birthday: string,
     status: boolean
 }
 
