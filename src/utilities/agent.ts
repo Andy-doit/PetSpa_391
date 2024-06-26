@@ -49,9 +49,9 @@ const ShopOnwer = {
   getServiceInfo: (slug: string) =>
     requests.baseApiGet(`api/v1/service/${slug}`),
   deleteService: (slug: string) =>
-    requests.baseApiDelete(`/api/v1/service${slug}`),
+    requests.baseApiDelete(`api/v1/service/${slug}`),
   updateService: (input: createServiceInput) =>
-    requests.baseApiPut("/api/v1/service", input),
+    requests.baseApiPut("api/v1/service", input),
 }
 
 
@@ -72,7 +72,7 @@ const User = {
   deletePet: (slug: string) =>
     requests.baseApiDelete(`api/v1/pet/${slug}`),
   updatePet: (input: createPetInput) =>
-    requests.baseApiPut("/api/v1/pet", input),
+    requests.baseApiPut("api/v1/pet", input),
 }
 
 //Admin

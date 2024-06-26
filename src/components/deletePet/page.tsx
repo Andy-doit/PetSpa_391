@@ -20,7 +20,7 @@ import getAccessAndRefreshCookie from '@/utilities/authUtils/getCookieForValidat
 
 export default function DeletePet({ params }: { params: string }) {
     const { isOpen, onOpen, onClose } = useDisclosure();
-    const [pet, setPet] = useState<PetInfor | any>();
+
     const dispatch = useAppDispatch();
     const [userId, setUserId] = useState<string>('');
     useEffect(() => {
