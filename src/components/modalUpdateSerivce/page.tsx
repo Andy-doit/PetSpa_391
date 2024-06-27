@@ -76,7 +76,7 @@ export default function ModalUpdateServiceProps({ params }: { params: allService
 
     return (
         <>
-            <Tooltip content="Chỉnh sửa thú cưng">
+            <Tooltip content="Chỉnh sửa dịch vụ">
                 <Button variant="bordered" className='rounded-full' isIconOnly onPress={onOpen}>
                     <MdChangeCircle size={20} color="green" />
                 </Button>
