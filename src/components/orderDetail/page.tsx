@@ -12,7 +12,18 @@ export default function OrderDetail({ params }: { params: string }) {
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
     const [booking, setBooking] = useState<BookingDetail | any>();
     const dispatch = useAppDispatch();
-
+    const getColor = (status: string) => {
+        switch (status) {
+            case 'COMPLETED':
+                return 'success';
+            case 'CANCELLED':
+                return 'danger';
+            case 'SCHEDULED':
+                return 'warning';
+            default:
+                return 'default';
+        }
+    }
 
     useEffect(() => {
         const bookingDetail = async () => {
@@ -25,6 +36,7 @@ export default function OrderDetail({ params }: { params: string }) {
         bookingDetail();
     }, [dispatch, params]);
     // console.log(booking);
+
     return (
         <div className="flex flex-col gap-2">
             <Button radius="sm" className="bg-gradient-to-tr from-pink-500 to-yellow-500 text-white shadow-lg" size="sm" onPress={onOpen}>
@@ -54,7 +66,7 @@ export default function OrderDetail({ params }: { params: string }) {
                                         <p className="text-xl text-white">{booking.startTime} - {booking.endTime} - {booking.localDate}</p>
                                         <p className="text-2xl text-white">{booking.shopName}</p>
                                         <p className="text-xl font-light text-white"> {booking.shopAddress}</p>
-                                        <Chip className="my-2" color="success">{booking.status}</Chip>
+                                        <Chip className="my-2" color={getColor(booking.status)}>{booking.status}</Chip>
 
                                     </div>
                                 </div>
@@ -82,7 +94,7 @@ export default function OrderDetail({ params }: { params: string }) {
                                             </div>
                                         </div>
                                         <div className="flex justify-end items-end">
-                                            <CancelBooking />
+                                            {booking.status === 'SCHEDULED' && <CancelBooking params={params} />}
                                         </div>
                                     </div>
                                 </div>

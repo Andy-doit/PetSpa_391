@@ -1,5 +1,5 @@
 
-import { allBookingPaginationResponse, allPetPaginationResponse, createPetInput, petCreateResponseSuccess } from '@/models/userModels';
+import { CancelBookingInput, allBookingPaginationResponse, allPetPaginationResponse, cancelBookingResponseSuccess, createPetInput, petCreateResponseSuccess } from '@/models/userModels';
 import agent from '@/utilities/agent';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { AxiosError } from 'axios';
@@ -79,6 +79,24 @@ export const fetchOrderBooking = createAsyncThunk(
         try {
             const response = await agent.User.getorderBooking(slug);
             return response;
+        } catch (error) {
+            if (error instanceof AxiosError) {
+                return {
+                    message: error.response?.data.error.message,
+                    status: error.response?.status,
+                };
+            }
+        }
+    },
+);
+export const postCancelBooking = createAsyncThunk(
+    'customer/cancelBooking',
+    async ({ cancelData }: { cancelData: CancelBookingInput }) => {
+        try {
+            const response = (await agent.User.deleteBooking(
+                cancelData,
+            )) as cancelBookingResponseSuccess;
+            return response.message;
         } catch (error) {
             if (error instanceof AxiosError) {
                 return {

@@ -1,5 +1,5 @@
 "use client";
-import { Button, Input, Tooltip } from "@nextui-org/react";
+import { Button, Chip, Input, Tooltip } from "@nextui-org/react";
 import React, { useEffect, useState } from "react";
 import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell } from "@nextui-org/react";
 import CreatePet from "@/components/createPet/page";
@@ -81,6 +81,7 @@ export default function ManagePet() {
                             <TableColumn>Tên thú cưng</TableColumn>
                             <TableColumn>Loại thú cưng</TableColumn>
                             <TableColumn>Giới tính</TableColumn>
+                            <TableColumn>Trạng thái</TableColumn>
                             <TableColumn>Hành động</TableColumn>
                         </TableHeader>
                         <TableBody>
@@ -89,6 +90,21 @@ export default function ManagePet() {
                                     <TableCell>{pet.petName}</TableCell>
                                     <TableCell>{pet.petType === 'DOG' ? 'Chó' : (pet.petType === 'CAT' ? 'Mèo' : '')}</TableCell>
                                     <TableCell>{pet.petGender === 'Male' ? 'Đực' : (pet.petGender === 'Female' ? 'Cái' : '')}</TableCell>
+                                    <TableCell>
+                                        {pet.doHaveUpcomingSchedule == true ? (
+                                            <>
+
+                                                <Chip color="success">  Đã có lịch đặt</Chip>
+                                            </>
+                                        ) : (
+                                            pet.doHaveUpcomingSchedule == false ? (
+                                                <>
+
+                                                    <Chip color="warning">Chưa có lịch đặt</Chip>
+                                                </>
+                                            ) : ''
+                                        )}
+                                    </TableCell>
                                     <TableCell>
                                         <div className="flex items-center gap-4 ">
                                             <div>
