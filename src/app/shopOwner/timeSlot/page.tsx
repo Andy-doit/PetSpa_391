@@ -1,5 +1,5 @@
 'use client'
-import { Button, TimeInput } from "@nextui-org/react";
+import { Button, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow, TimeInput } from "@nextui-org/react";
 import { FaClock } from "react-icons/fa";
 import { Time } from "@internationalized/date";
 import { BiEdit } from "react-icons/bi";
@@ -17,140 +17,43 @@ export default function TimeSlotChange() {
     };
     return (
         <div className="relative">
-            <p className="text-black text-3xl font-semibold">
+            <p className="text-black text-3xl font-semibold mb-2">
                 Thời gian hoạt động
             </p>
-            <div className='flex justify-end '>
-                <div className=' absolute' >
-
-                    {!isEditing && (
-                        <Button onClick={handleEditClick} startContent={<BiEdit className=" h-4 w-4" />}>
-                            Chỉnh sửa
-                        </Button>
-                    )}
-
-                </div>
-            </div>
-            <div className="flex mb-5 mt-10 justify-around">
-                <div className="w-1/2">
-                    <p className="text-orange-500    text-xl  font-medium">
-                        Slot 1
-                    </p>
-                    <div className="flex justify-around">
-                        <TimeInput
-                            isDisabled={!isEditing}
-                            className="w-[300px]"
-                            isRequired
-                            defaultValue={new Time(11, 45)}
-                            label="Bắt đầu"
-                            endContent={(
-                                <FaClock className="text-xl text-default-400 pointer-events-none flex-shrink-0" />
-                            )}
-                        />
-                        <TimeInput
-                            isDisabled={!isEditing}
-                            className="w-[300px]"
-                            defaultValue={new Time(12, 45)}
-                            isRequired
-                            label="Kết thúc"
-                            endContent={(
-                                <FaClock className="text-xl text-default-400 pointer-events-none flex-shrink-0" />
-                            )}
-                        />
-                    </div>
-                </div>
-                <div className="w-1/2">
-                    <p className="text-orange-500 text-xl  font-medium">
-                        Slot 2
-                    </p>
-                    <div className="flex justify-around">
-                        <TimeInput
-                            isDisabled={!isEditing}
-                            className="w-[300px]"
-                            isRequired
-                            defaultValue={new Time(11, 45)}
-                            label="Bắt đầu"
-                            endContent={(
-                                <FaClock className="text-xl text-default-400 pointer-events-none flex-shrink-0" />
-                            )}
-                        />
-                        <TimeInput
-                            isDisabled={!isEditing}
-                            className="w-[300px]"
-                            defaultValue={new Time(12, 45)}
-                            isRequired
-                            label="Kết thúc"
-                            endContent={(
-                                <FaClock className="text-xl text-default-400 pointer-events-none flex-shrink-0" />
-                            )}
-                        />
-                    </div>
-                </div>
-            </div>
-            <div className="flex justify-around">
-                <div className="w-1/2">
-                    <p className="text-orange-500 text-xl  font-medium">
-                        Slot 3
-                    </p>
-                    <div className="flex justify-around">
-                        <TimeInput
-                            isDisabled={!isEditing}
-                            className="w-[300px]"
-                            isRequired
-                            defaultValue={new Time(11, 45)}
-                            label="Bắt đầu"
-                            endContent={(
-                                <FaClock className="text-xl text-default-400 pointer-events-none flex-shrink-0" />
-                            )}
-                        />
-                        <TimeInput
-                            isDisabled={!isEditing}
-                            className="w-[300px]"
-                            defaultValue={new Time(11, 45)}
-                            isRequired
-                            label="Kết thúc"
-                            endContent={(
-                                <FaClock className="text-xl text-default-400 pointer-events-none flex-shrink-0" />
-                            )}
-                        />
-                    </div>
-                </div>
-                <div className="w-1/2">
-                    <p className="text-orange-500 text-xl  font-medium">
-                        Slot 4
-                    </p>
-                    <div className="flex justify-around">
-                        <TimeInput
-                            isDisabled={!isEditing}
-                            className="w-[300px]"
-                            isRequired
-                            defaultValue={new Time(11, 45)}
-                            label="Bắt đầu"
-                            endContent={(
-                                <FaClock className="text-xl text-default-400 pointer-events-none flex-shrink-0" />
-                            )}
-                        />
-                        <TimeInput
-                            isDisabled={!isEditing}
-                            className="w-[300px]"
-                            defaultValue={new Time(12, 45)}
-                            isRequired
-                            label="Kết thúc"
-                            endContent={(
-                                <FaClock className="text-xl text-default-400 pointer-events-none flex-shrink-0" />
-                            )}
-                        />
-
-                    </div>
-                </div>
-
-            </div>
-            {isEditing && (
-                <div className="flex mt-10">
-                    <Button color="success" onClick={handleSaveClick}>Lưu</Button>
-                    <Button className="ml-5" onClick={handleCancelClick}>Huỷ</Button>
-                </div>
-            )}
+            <Table aria-label="Example static collection table ">
+                <TableHeader>
+                    <TableColumn>STT</TableColumn>
+                    <TableColumn>Khung giờ</TableColumn>
+                    <TableColumn>Thời gian bắt đầu</TableColumn>
+                    <TableColumn>Thời gian kết thúc</TableColumn>
+                    <TableColumn>Hành động</TableColumn>
+                </TableHeader>
+                <TableBody>
+                    <TableRow key={1}>
+                        <TableCell>Buddy</TableCell>
+                        <TableCell>Chó</TableCell>
+                        <TableCell>Đực</TableCell>
+                        <TableCell>
+                            Đã có lịch đặt
+                        </TableCell>
+                        <TableCell>
+                            aa
+                        </TableCell>
+                    </TableRow>
+                    <TableRow key={2}>
+                        <TableCell>Whiskers</TableCell>
+                        <TableCell>Mèo</TableCell>
+                        <TableCell>Cái</TableCell>
+                        <TableCell>
+                            sss
+                        </TableCell>
+                        <TableCell>
+                            xxx
+                        </TableCell>
+                    </TableRow>
+                    {/* Add more static pet rows as needed */}
+                </TableBody>
+            </Table>
         </div>
     )
 }

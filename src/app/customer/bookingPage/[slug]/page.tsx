@@ -378,37 +378,38 @@ export default function BookingPage(
                         <div className='flex justify-center'>
                             {pets.length === 0 ? (
                                 <div>Không có thú cưng nào</div>
-
                             ) : (
                                 <div className='mb-2'>
-                                    {pets.map((petinfor) => (
-                                        <div key={petinfor.id} className='mb-1'>
-                                            <Checkbox
-                                                isSelected={selectedPetId === petinfor.id}
-                                                onValueChange={() => handlePetCheckChange(petinfor.id)}
-                                                classNames={{
-                                                    base: `inline-flex w-[400px] max-w-md mt-3 bg-content3 hover:bg-content3 items-center justify-start cursor-pointer rounded-xl gap-2 p-4 border-2 border-transparent mr-10 ${petinfor.petType === 'CAT' ? 'bg-cat-image' : petinfor.petType === 'DOG' ? 'bg-dog-image' : ''}`,
-                                                    label: "w-full",
-                                                }}
-                                            >
-                                                <div className="w-full flex justify-between bg-white bg-opacity-85 p-1 rounded-lg">
-                                                    <div className='flex '>
-                                                        <p className='mr-2 '>Tên thú cưng: </p>
-                                                        <p className='font-bold '>{petinfor.petName}</p>
+                                    {pets
+                                        .filter(petinfor => petinfor.doHaveUpcomingSchedule === false)
+                                        .map((petinfor) => (
+                                            <div key={petinfor.id} className='mb-1'>
+                                                <Checkbox
+                                                    isSelected={selectedPetId === petinfor.id}
+                                                    onValueChange={() => handlePetCheckChange(petinfor.id)}
+                                                    classNames={{
+                                                        base: `inline-flex w-[400px] max-w-md mt-3 bg-content3 hover:bg-content3 items-center justify-start cursor-pointer rounded-xl gap-2 p-4 border-2 border-transparent mr-10 ${petinfor.petType === 'CAT' ? 'bg-cat-image' : petinfor.petType === 'DOG' ? 'bg-dog-image' : ''}`,
+                                                        label: "w-full",
+                                                    }}
+                                                >
+                                                    <div className="w-full flex justify-between bg-white bg-opacity-85 p-1 rounded-lg">
+                                                        <div className='flex '>
+                                                            <p className='mr-2 '>Tên thú cưng: </p>
+                                                            <p className='font-bold '>{petinfor.petName}</p>
+                                                        </div>
+                                                        <div className='flex '>
+                                                            <p className='mr-2'>Loại thú cưng: </p>
+                                                            <p className='font-bold'> {petinfor.petType === 'DOG' ? 'Chó' : (petinfor.petType === 'CAT' ? 'Mèo' : '')}</p>
+                                                        </div>
                                                     </div>
-                                                    <div className='flex '>
-                                                        <p className='mr-2'>Loại thú cưng: </p>
-                                                        <p className='font-bold'> {petinfor.petType === 'DOG' ? 'Chó' : (petinfor.petType === 'CAT' ? 'Mèo' : '')}</p>
-                                                    </div>
-                                                </div>
-                                            </Checkbox>
-                                        </div>
-                                    ))}
+                                                </Checkbox>
+                                            </div>
+                                        ))}
                                 </div>
                             )}
-
                         </div>
                     )}
+
                     {/* Pet */}
                     <div className='mb-2'>
                         <div className=" flex  justify-center">

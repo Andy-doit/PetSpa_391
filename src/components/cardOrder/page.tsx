@@ -19,16 +19,16 @@ export default function CardOrder() {
         allService();
     }, [dispatch]);
     console.log(items)
-    const getColor = (process: any) => {
-        switch (process) {
-
-            case "Thành Công":
-            case "Thành công":
-                return "success";
-            case "Đã huỷ":
-                return "warning";
+    const getColor = (status: string) => {
+        switch (status) {
+            case 'COMPLETED':
+                return 'success';
+            case 'CANCELLED':
+                return 'danger';
+            case 'SCHEDULED':
+                return 'warning';
             default:
-                return "default";
+                return 'default';
         }
     }
 

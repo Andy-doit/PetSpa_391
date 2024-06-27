@@ -3,7 +3,7 @@ import apiJWT from "./api";
 import baseApi from "./baseApi";
 import { createBookingInput } from "@/models/bookingModels";
 import { ShopInput, createServiceInput } from '@/models/shopModel';
-import { createPetInput } from "@/models/userModels";
+import { CancelBookingInput, createPetInput } from "@/models/userModels";
 import { AccountInput, ShopInfor } from "@/models/adminModel";
 
 
@@ -65,6 +65,8 @@ const User = {
     requests.get("/api/v1/booking/auth"),
   getorderBooking: (slug: string) =>
     requests.get(`api/v1/booking/auth/${slug}`),
+  deleteBooking: (input: CancelBookingInput) =>
+    requests.baseApiPost("/api/v1/booking/auth/cancel", input),
   getProfileInfor: () =>
     requests.get("api/v1/user"),
   createPet: (input: createPetInput) =>

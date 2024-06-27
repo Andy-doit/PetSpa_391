@@ -2,7 +2,7 @@ export interface allBookingPaginationData {
     id: string,
     slug: string;
     localDate: string | undefined | null,
-    status: string | undefined | null,
+    status: string,
     serviceName: string | undefined | null,
     shopName: string | undefined | null,
     petName: string | undefined | null,
@@ -88,7 +88,7 @@ export interface allPetPaginationData {
     petPhoto: string,
     ownerId: string,
     ownerName: string,
-    doHaveUpcomingSchedule: boolean
+    doHaveUpcomingSchedule: boolean,
 
 }
 export interface allPetPaginationResponse {
@@ -112,4 +112,14 @@ export interface PetInfor {
     petPhoto: string | undefined | null,
     petNote: string | undefined | null,
 
+}
+export interface CancelBookingInput {
+    bookingId: number,
+    additionalMessage: string,
+
+}
+export interface cancelBookingResponseSuccess {
+    status: number;
+    message: string;
+    success: boolean;
 }
