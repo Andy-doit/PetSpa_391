@@ -6,6 +6,7 @@ import CustomerFeedback from "../customerFeedback/page";
 import { BookingDetail } from "@/models/userModels";
 import { useAppDispatch } from "@/lib/redux/store";
 import { fetchOrderBooking } from "@/lib/redux/slice/userSlice";
+import CancelBooking from "../cancelBooking/page";
 
 export default function OrderDetail({ params }: { params: string }) {
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
@@ -81,7 +82,7 @@ export default function OrderDetail({ params }: { params: string }) {
                                             </div>
                                         </div>
                                         <div className="flex justify-end items-end">
-                                            <Button radius="full" className="bg-gradient-to-tr from-pink-500 to-yellow-500 text-white shadow-lg">Huỷ dịch vụ </Button>
+                                            <CancelBooking />
                                         </div>
                                     </div>
                                 </div>
