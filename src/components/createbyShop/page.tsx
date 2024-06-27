@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, useDisclosure } from '@nextui-org/react';
+import { Button, Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, TimeInputValue, useDisclosure } from '@nextui-org/react';
 import { ClipLoader } from 'react-spinners';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -9,6 +9,7 @@ import { ShopInput } from '@/models/shopModel';
 import { FaPlus } from 'react-icons/fa';
 import { TimeInput } from "@nextui-org/react";
 import { Time } from "@internationalized/date";
+
 export default function CreateShop({ userId }: { userId: string }) {
     const { isOpen, onOpen, onClose } = useDisclosure();
     const [isLoading, setIsLoading] = useState(false);
@@ -36,7 +37,7 @@ export default function CreateShop({ userId }: { userId: string }) {
             }));
         }
     }, [userId]);
-
+    console.log(shopData)
     const dispatch = useAppDispatch();
 
     const handleInputChange = (fieldName: string, newValue: string) => {
@@ -45,17 +46,19 @@ export default function CreateShop({ userId }: { userId: string }) {
             [fieldName]: newValue
         }));
     };
-    const handleOpenTimeChange = (time: Time) => {
+    const handleOpenTimeChange = (time: TimeInputValue) => {
+        const formattedTime = `${String(time.hour).padStart(2, '0')}:${String(time.minute).padStart(2, '0')}`;
         setShopData(prevData => ({
             ...prevData,
-            openTime: `${time.hour}:${time.minute}`,
+            openTime: formattedTime,
         }));
     };
 
-    const handleCloseTimeChange = (time: Time) => {
+    const handleCloseTimeChange = (time: TimeInputValue) => {
+        const formattedTime = `${String(time.hour).padStart(2, '0')}:${String(time.minute).padStart(2, '0')}`;
         setShopData(prevData => ({
             ...prevData,
-            closeTime: `${time.hour}:${time.minute}`,
+            closeTime: formattedTime,
         }));
     };
     const handleCreate = async () => {
@@ -150,7 +153,7 @@ export default function CreateShop({ userId }: { userId: string }) {
                                         <TimeInput
                                             label="Giờ mở cửa"
                                             onChange={handleOpenTimeChange}
-                                            defaultValue={new Time(11, 45)}
+                                            hourCycle={24}
                                             className="w-[250px]"
                                         />
                                     </div>
@@ -158,7 +161,7 @@ export default function CreateShop({ userId }: { userId: string }) {
                                         <TimeInput
                                             label="Giờ đóng cửa"
                                             onChange={handleCloseTimeChange}
-                                            defaultValue={new Time(18, 0)}
+                                            hourCycle={24}
                                             className="w-[250px]"
                                         />
                                     </div>
