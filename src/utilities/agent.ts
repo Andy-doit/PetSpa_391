@@ -3,7 +3,7 @@ import apiJWT from "./api";
 import baseApi from "./baseApi";
 import { createBookingInput } from "@/models/bookingModels";
 import { ShopInput, createServiceInput } from '@/models/shopModel';
-import { CancelBookingInput, createPetInput } from "@/models/userModels";
+import { CancelBookingInput, createFeedbackInput, createPetInput, updateProfileInput } from "@/models/userModels";
 import { AccountInput, ShopInfor } from "@/models/adminModel";
 
 
@@ -46,6 +46,8 @@ const ShopOnwer = {
     requests.get("/api/v1/service/all/auth"),
   postCreateService: (input: createServiceInput) =>
     requests.baseApiPost("api/v1/service", input),
+  getAllOrderBooking: () =>
+    requests.get("api/v1/booking/auth/shop"),
   getServiceInfo: (slug: string) =>
     requests.baseApiGet(`api/v1/service/${slug}`),
   deleteService: (slug: string) =>
@@ -56,6 +58,10 @@ const ShopOnwer = {
     requests.get("api/v1/shop/auth"),
   createShopInfor: (input: ShopInput) =>
     requests.baseApiPost("/api/v1/shop", input),
+  updateShopInfor: (input: ShopInput) =>
+    requests.baseApiPatch("/api/v1/shop/update", input),
+
+
 }
 
 
@@ -79,6 +85,10 @@ const User = {
     requests.baseApiDelete(`api/v1/pet/${slug}`),
   updatePet: (input: createPetInput) =>
     requests.baseApiPut("api/v1/pet", input),
+  updateProfile: (input: updateProfileInput) =>
+    requests.baseApiPatch("api/v1/user", input),
+  createFeedback: (input: createFeedbackInput) =>
+    requests.post("api/v1/feedback/create", input),
 }
 
 //Admin

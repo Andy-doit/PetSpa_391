@@ -10,7 +10,31 @@ export interface createServiceInput {
     tags: string
 
 }
-
+export interface allOrderBookingPaginationData {
+    id: string,
+    status: string,
+    customerFullName: string,
+    localDate: string,
+    timeSlotDto: {
+        startLocalDateTime: string,
+        endLocalDateTime: string,
+    },
+    serviceId: string,
+    serviceName: string,
+    shopId: string,
+    shopName: string,
+    petId: string,
+    petName: string,
+}
+export interface allOrderBookingPaginationResponse {
+    success: boolean;
+    status: number;
+    data: {
+        data: allOrderBookingPaginationData[];
+        totalCount: number;
+        pageCount: number;
+    };
+}
 
 export interface serviceCreateResponseSuccess {
     status: number;
@@ -38,14 +62,15 @@ export interface shopInfor {
     firstName: string,
     lastName: string,
     shopEmail: string,
+    area: string,
     shopDescription: string,
     openTime: string,
-    closeTime: String,
+    closeTime: string,
     isAvailable: boolean,
     totalServices: number,
     nomination: number,
     shopTitle: string,
-    shopPhone: string | undefined,
+    shopPhone: string,
     profileImageUrl: string | undefined | null,
     coverImageUrl: string | undefined | null,
     birthday: string | undefined | null,

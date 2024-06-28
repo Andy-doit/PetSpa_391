@@ -18,7 +18,19 @@ export default function CardOrder() {
         }
         allService();
     }, [dispatch]);
-    console.log(items)
+    // console.log(items)
+    const getStatusLabel = (status: string) => {
+        switch (status) {
+            case 'COMPLETED':
+                return 'Hoàn thành';
+            case 'CANCELLED':
+                return 'Đã Huỷ';
+            case 'SCHEDULED':
+                return 'Đã đặt lịch';
+            default:
+                return 'Không xác định';
+        }
+    }
     const getColor = (status: string) => {
         switch (status) {
             case 'COMPLETED':
@@ -64,7 +76,7 @@ export default function CardOrder() {
                                 <TableCell>{service.petName || "Lỗi"}</TableCell>
                                 <TableCell>{service.shopName || "Lỗi"}</TableCell>
                                 <TableCell>
-                                    <Chip color={getColor(service.status)}>{service.status || "Lỗi"}</Chip>
+                                    <Chip color={getColor(service.status)}>{getStatusLabel(service.status)}</Chip>
                                 </TableCell>
                                 <TableCell>
                                     <OrderDetail params={service.id} />
