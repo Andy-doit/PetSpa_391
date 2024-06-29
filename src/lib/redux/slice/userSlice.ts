@@ -1,5 +1,5 @@
 
-import { CancelBookingInput, allBookingPaginationResponse, allPetPaginationResponse, cancelBookingResponseSuccess, createPetInput, petCreateResponseSuccess } from '@/models/userModels';
+import { CancelBookingInput, allBookingPaginationResponse, allPetPaginationResponse, cancelBookingResponseSuccess, createFeedbackInput, createFeedbackResponseSuccess, createPetInput, petCreateResponseSuccess, updateProfileInput, updateProfileInputResponseSuccess } from '@/models/userModels';
 import agent from '@/utilities/agent';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { AxiosError } from 'axios';
@@ -63,6 +63,24 @@ export const fetchUserInforPagination = createAsyncThunk(
             console.log(response)
             return response;
 
+        } catch (error) {
+            if (error instanceof AxiosError) {
+                return {
+                    message: error.response?.data.error.message,
+                    status: error.response?.status,
+                };
+            }
+        }
+    },
+);
+export const patchUpdateProfile = createAsyncThunk(
+    'customer/patchUpdateProfile',
+    async ({ profileData }: { profileData: updateProfileInput }) => {
+        try {
+            const response = (await agent.User.updateProfile(
+                profileData,
+            )) as updateProfileInputResponseSuccess;
+            return response.message;
         } catch (error) {
             if (error instanceof AxiosError) {
                 return {
@@ -194,7 +212,24 @@ export const deletePet = createAsyncThunk(
         }
     },
 );
-
+export const createFeedback = createAsyncThunk(
+    'customer/createFeedback',
+    async ({ feedbackData }: { feedbackData: createFeedbackInput }) => {
+        try {
+            const response = (await agent.User.createFeedback(
+                feedbackData,
+            )) as createFeedbackResponseSuccess;
+            return response.message;
+        } catch (error) {
+            if (error instanceof AxiosError) {
+                return {
+                    message: error.response?.data.error.message,
+                    status: error.response?.status,
+                };
+            }
+        }
+    },
+);
 
 const userSlice = createSlice({
     name: 'user',

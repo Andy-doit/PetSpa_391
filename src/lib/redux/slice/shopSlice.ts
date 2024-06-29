@@ -1,10 +1,14 @@
 
-import { ShopInput, createServiceInput, serviceCreateResponseSuccess, shopCreateResponseSuccess } from "@/models/shopModel";
+import { ShopInput, allOrderBookingPaginationResponse, createServiceInput, serviceCreateResponseSuccess, shopCreateResponseSuccess } from "@/models/shopModel";
 import agent from "@/utilities/agent";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { AxiosError } from "axios";
 
 export interface ShopState {
+    allOrderBookingPagination: allOrderBookingPaginationResponse | null | undefined;
+    allOrderBookingFetchingStatus: string;
+    allOrderBookingFetchingError: boolean;
+    allOrderBookingFetchingLoading: boolean;
     returnedData: any;
     returnedDataStatus: string;
     returnedDataError: boolean;
@@ -16,6 +20,10 @@ export interface ShopState {
 }
 
 const initialState: ShopState = {
+    allOrderBookingPagination: null,
+    allOrderBookingFetchingStatus: 'idle',
+    allOrderBookingFetchingError: false,
+    allOrderBookingFetchingLoading: false,
     returnedData: null,
     returnedDataStatus: 'idle',
     returnedDataError: false,
@@ -58,6 +66,23 @@ export const fetchAllServicePagination = createAsyncThunk(
         }
     },
 );
+export const fetchAllOrderBookingPagination = createAsyncThunk(
+    'shopOwner/fetchAllOrderBookingPagination',
+    async () => {
+        try {
+            const response = await agent.ShopOnwer.getAllOrderBooking();
+            return response;
+
+        } catch (error) {
+            if (error instanceof AxiosError) {
+                return {
+                    message: error.response?.data.error.message,
+                    status: error.response?.status,
+                };
+            }
+        }
+    },
+);
 export const fetchShopInforPagination = createAsyncThunk(
     'shopOnwer/ShopInfor',
     async () => {
@@ -81,6 +106,20 @@ export const createShopInfor = createAsyncThunk(
     async ({ shopData }: { shopData: ShopInput }) => {
         try {
             const response = await agent.ShopOnwer.createShopInfor(shopData);
+            return response.data as shopCreateResponseSuccess;
+        } catch (error) {
+            if (error instanceof AxiosError) {
+                throw error.response?.data.error.message || "An error occurred";
+            }
+            throw error;
+        }
+    }
+);
+export const updateShopInfor = createAsyncThunk(
+    'shopOnwer/updateShopInfor',
+    async ({ shopData }: { shopData: ShopInput }) => {
+        try {
+            const response = await agent.ShopOnwer.updateShopInfor(shopData);
             return response.data as shopCreateResponseSuccess;
         } catch (error) {
             if (error instanceof AxiosError) {
@@ -149,6 +188,7 @@ const shopSlice = createSlice({
             .addCase(fetchServiceInfo.pending, (state) => {
                 state.returnedDataLoading = true;
                 state.returnedDataStatus = 'loading';
+
             })
             .addCase(fetchServiceInfo.fulfilled, (state, action) => {
                 state.returnedData = action.payload;
@@ -161,6 +201,22 @@ const shopSlice = createSlice({
                 state.returnedDataLoading = false;
                 state.returnedData = action.error.message;
             });
+        builder.addCase(fetchAllOrderBookingPagination.pending, (state) => {
+            state.allOrderBookingFetchingLoading = true;
+            state.allOrderBookingFetchingStatus = 'loading';
+        });
+        builder.addCase(fetchAllOrderBookingPagination.fulfilled, (state, action) => {
+            state.allOrderBookingPagination = action.payload;
+            state.allOrderBookingFetchingLoading = false;
+        });
+        builder
+            .addCase(fetchAllOrderBookingPagination.rejected, (state) => {
+                state.allOrderBookingFetchingStatus = 'failed';
+                state.allOrderBookingFetchingError = true;
+                state.allOrderBookingFetchingLoading = false;
+            });
+
+
     },
 });
 

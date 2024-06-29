@@ -25,6 +25,19 @@ export interface UserInfor {
     birthday: string | undefined | null,
 
 }
+export interface updateProfileInput {
+    id: string,
+    firstName: string | undefined | null,
+    lastName: string | undefined | null,
+    email: string | undefined | null,
+    phone: number | undefined | null,
+
+}
+export interface updateProfileInputResponseSuccess {
+    status: number;
+    message: string;
+    success: boolean;
+}
 export interface allBookingPaginationResponse {
     success: boolean;
     status: number;
@@ -119,6 +132,17 @@ export interface CancelBookingInput {
 
 }
 export interface cancelBookingResponseSuccess {
+    status: number;
+    message: string;
+    success: boolean;
+}
+export interface createFeedbackInput {
+    serviceId: number,
+    shopId: number,
+    content: string | undefined | null,
+
+}
+export interface createFeedbackResponseSuccess {
     status: number;
     message: string;
     success: boolean;

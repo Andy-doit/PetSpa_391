@@ -1,10 +1,14 @@
 "use client"
-import { fetchUserInforPagination } from '@/lib/redux/slice/userSlice';
+import { fetchUserInforPagination, patchUpdateProfile } from '@/lib/redux/slice/userSlice';
 import { useAppDispatch } from '@/lib/redux/store';
-import { UserInfor } from '@/models/userModels';
+import { UserInfor, updateProfileInput } from '@/models/userModels';
+import getAccessAndRefreshCookie from '@/utilities/authUtils/getCookieForValidation';
 import { Avatar, Button, Card, CardBody, CardFooter, CardHeader, Divider, Input, Tab, Tabs } from '@nextui-org/react'
 import React, { useEffect, useState } from 'react'
 import { BiEdit } from 'react-icons/bi'
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 export default function Profile() {
     const dispatch = useAppDispatch();
@@ -17,7 +21,42 @@ export default function Profile() {
         }
         allService();
     }, [dispatch]);
-    console.log(items)
+    const [userId, setUserId] = useState<string>('');
+    useEffect(() => {
+        const fetchUid = async () => {
+            try {
+                const { uid } = await getAccessAndRefreshCookie();
+                if (uid) {
+                    setUserId(uid);
+                }
+            } catch (error) {
+                console.error('Error fetching UID:', error);
+            }
+        };
+        fetchUid();
+    }, [userId]);
+    const [profileData, setProfileData] = useState<updateProfileInput>({
+        id: userId,
+        firstName: items?.firstName,
+        lastName: items?.lastName,
+        email: items?.email,
+        phone: items?.phone,
+
+    });
+    useEffect(() => {
+        if (userId) {
+            setProfileData(prevData => ({
+                ...prevData,
+                id: userId,
+            }));
+        }
+    }, [userId]);
+    const handleInputChange = (fieldName: string, newValue: string | number) => {
+        setProfileData(prevData => ({
+            ...prevData,
+            [fieldName]: newValue
+        }));
+    };
     const [isEditing, setIsEditing] = useState(false);
     const handleEditClick = () => {
         setIsEditing(true);
@@ -28,6 +67,21 @@ export default function Profile() {
     const handleCancelClick = () => {
         setIsEditing(false);
     };
+    const handleUpdate = async () => {
+        try {
+            if (userId) {
+                await dispatch(patchUpdateProfile({ profileData })).unwrap();
+                toast.success("Cập nhật dịch vụ thành công!", {
+                    autoClose: 1500,
+                });
+                setIsEditing(false);
+            }
+        } catch (error) {
+            console.error('Lỗi  cập nhật:', error);
+            toast.error("Đã xảy ra lỗi khi cập nhật dịch vụ. Vui lòng thử lại sau!");
+        }
+    };
+    console.log(profileData)
     return (
 
         <div className='h-screen'>
@@ -47,15 +101,9 @@ export default function Profile() {
                 </div>
 
                 <div className='justify-center flex items-center mt-2'>
-                    {!isEditing && (
-                        <h1 className='text-2xl font-bold uppercase'>{items?.username}</h1>
-                    )}
 
-                    {isEditing && (
-                        <div className='w-fit'>
-                            <Input className="text-center" size='sm' type="name" variant='faded' defaultValue={items?.username} />
-                        </div>
-                    )}
+                    <h1 className='text-2xl font-bold uppercase mr-2'>{items?.firstName}</h1>
+                    <h1 className='text-2xl font-bold uppercase'>{items?.lastName}</h1>
                 </div>
                 <div className='justify-center flex items-center'>
                     {!isEditing && (
@@ -101,24 +149,40 @@ export default function Profile() {
                                 <CardBody className="space-y-2">
                                     <div className="space-y-1">
                                         <p className='text-white'>Tên</p>
-                                        <Input id="firstName" disabled={!isEditing} defaultValue={items?.firstName} />
+                                        <Input id="firstName"
+                                            disabled={!isEditing}
+                                            defaultValue={items?.firstName}
+                                            onChange={(e) => handleInputChange('firstName', e.target.value)}
+                                        />
                                     </div>
                                     <div className="space-y-1">
                                         <p className='text-white'>Họ</p>
-                                        <Input id="lastName" disabled={!isEditing} defaultValue={items?.lastName} />
+                                        <Input id="lastName"
+                                            disabled={!isEditing}
+                                            defaultValue={items?.lastName}
+                                            onChange={(e) => handleInputChange('lastName', e.target.value)}
+                                        />
                                     </div>
                                     <div className="space-y-1">
                                         <p className='text-white'>Email</p>
-                                        <Input id="email" disabled={!isEditing} defaultValue={items?.email} />
+                                        <Input id="email"
+                                            disabled={!isEditing}
+                                            defaultValue={items?.email}
+                                            onChange={(e) => handleInputChange('email', e.target.value)}
+                                        />
                                     </div>
                                     <div className="space-y-1">
                                         <p className='text-white'>Số điện thoại</p>
-                                        <Input id="phone" disabled={!isEditing} defaultValue=".." />
+                                        <Input id="phone"
+                                            disabled={!isEditing}
+                                            defaultValue={items?.phone?.toString()}
+                                            onChange={(e) => handleInputChange('phone', e.target.value)}
+                                        />
                                     </div>
                                 </CardBody>
                                 {isEditing && (
                                     <CardFooter>
-                                        <Button color="success" onClick={handleSaveClick}>Lưu</Button>
+                                        <Button color="success" onClick={handleUpdate}>Lưu</Button>
                                         <Button className="ml-5" onClick={handleCancelClick}>Huỷ</Button>
                                     </CardFooter>
                                 )}
@@ -163,6 +227,7 @@ export default function Profile() {
 
 
             </div>
+            <ToastContainer />
         </div>
     )
 }

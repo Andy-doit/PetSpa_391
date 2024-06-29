@@ -62,7 +62,7 @@ export default function UpdatePet({ params }: { params: allPetPaginationData }) 
         petNote: '',
 
     });
-    console.log(petData)
+    // console.log(petData)
     const dispatch = useAppDispatch();
 
     const handleInputChange = (fieldName: string, newValue: string | number) => {

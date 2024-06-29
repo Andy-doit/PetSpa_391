@@ -7,11 +7,24 @@ import { BookingDetail } from "@/models/userModels";
 import { useAppDispatch } from "@/lib/redux/store";
 import { fetchOrderBooking } from "@/lib/redux/slice/userSlice";
 import CancelBooking from "../cancelBooking/page";
+import CreateFeedback from "../createFeedback/page";
 
 export default function OrderDetail({ params }: { params: string }) {
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
     const [booking, setBooking] = useState<BookingDetail | any>();
     const dispatch = useAppDispatch();
+    const getStatusLabel = (status: string) => {
+        switch (status) {
+            case 'COMPLETED':
+                return 'Hoàn thành';
+            case 'CANCELLED':
+                return 'Đã Huỷ';
+            case 'SCHEDULED':
+                return 'Đã đặt lịch';
+            default:
+                return 'Không xác định';
+        }
+    }
     const getColor = (status: string) => {
         switch (status) {
             case 'COMPLETED':
@@ -66,7 +79,7 @@ export default function OrderDetail({ params }: { params: string }) {
                                         <p className="text-xl text-white">{booking.startTime} - {booking.endTime} - {booking.localDate}</p>
                                         <p className="text-2xl text-white">{booking.shopName}</p>
                                         <p className="text-xl font-light text-white"> {booking.shopAddress}</p>
-                                        <Chip className="my-2" color={getColor(booking.status)}>{booking.status}</Chip>
+                                        <Chip className="my-2" color={getColor(booking.status)}>{getStatusLabel(booking.status)}</Chip>
 
                                     </div>
                                 </div>
@@ -95,6 +108,7 @@ export default function OrderDetail({ params }: { params: string }) {
                                         </div>
                                         <div className="flex justify-end items-end">
                                             {booking.status === 'SCHEDULED' && <CancelBooking params={params} />}
+                                            {booking.status === 'COMPLETED' && <CreateFeedback shopData={booking} />}
                                         </div>
                                     </div>
                                 </div>
