@@ -25,6 +25,16 @@ export interface UserInfor {
     birthday: string | undefined | null,
 
 }
+export interface passwordInfor {
+    id: string,
+    firstName: string,
+    lastName: string,
+    oldPassword: string| undefined | null ,
+    newPassword: string| undefined | null,
+    confirmPassword: string| undefined | null,
+
+
+}
 export interface updateProfileInput {
     id: string,
     firstName: string | undefined | null,
@@ -33,7 +43,20 @@ export interface updateProfileInput {
     phone: number | undefined | null,
 
 }
+export interface updatePasswordInput {
+    id: string,
+    oldPassword: string| undefined | null ,
+    newPassword: string| undefined | null,
+    confirmPassword: string| undefined | null,
+
+}
 export interface updateProfileInputResponseSuccess {
+    status: number;
+    message: string;
+    success: boolean;
+}
+
+export interface updatePasswordInputResponseSuccess {
     status: number;
     message: string;
     success: boolean;

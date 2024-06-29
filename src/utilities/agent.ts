@@ -3,7 +3,7 @@ import apiJWT from "./api";
 import baseApi from "./baseApi";
 import { createBookingInput } from "@/models/bookingModels";
 import { ShopInput, createServiceInput } from '@/models/shopModel';
-import { CancelBookingInput, createFeedbackInput, createPetInput, updateProfileInput } from "@/models/userModels";
+import { CancelBookingInput, createFeedbackInput, createPetInput, updatePasswordInput, updateProfileInput } from "@/models/userModels";
 import { AccountInput, ShopInfor } from "@/models/adminModel";
 
 
@@ -60,7 +60,8 @@ const ShopOnwer = {
     requests.baseApiPost("/api/v1/shop", input),
   updateShopInfor: (input: ShopInput) =>
     requests.baseApiPatch("/api/v1/shop/update", input),
-
+  updatepasswordShopInfor: (input: updatePasswordInput) =>
+    requests.put("/api/v1/user/password", input),
 
 }
 
@@ -87,6 +88,8 @@ const User = {
     requests.baseApiPut("api/v1/pet", input),
   updateProfile: (input: updateProfileInput) =>
     requests.baseApiPatch("api/v1/user", input),
+  updatePassword: (input: updatePasswordInput) =>
+    requests.put("api/v1/user/password", input),
   createFeedback: (input: createFeedbackInput) =>
     requests.post("api/v1/feedback/create", input),
 }

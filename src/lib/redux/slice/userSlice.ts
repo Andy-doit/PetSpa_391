@@ -1,5 +1,5 @@
 
-import { CancelBookingInput, allBookingPaginationResponse, allPetPaginationResponse, cancelBookingResponseSuccess, createFeedbackInput, createFeedbackResponseSuccess, createPetInput, petCreateResponseSuccess, updateProfileInput, updateProfileInputResponseSuccess } from '@/models/userModels';
+import { CancelBookingInput, allBookingPaginationResponse, allPetPaginationResponse, cancelBookingResponseSuccess, createFeedbackInput, createFeedbackResponseSuccess, createPetInput, petCreateResponseSuccess, updatePasswordInput, updatePasswordInputResponseSuccess, updateProfileInput, updateProfileInputResponseSuccess } from '@/models/userModels';
 import agent from '@/utilities/agent';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { AxiosError } from 'axios';
@@ -80,6 +80,24 @@ export const patchUpdateProfile = createAsyncThunk(
             const response = (await agent.User.updateProfile(
                 profileData,
             )) as updateProfileInputResponseSuccess;
+            return response.message;
+        } catch (error) {
+            if (error instanceof AxiosError) {
+                return {
+                    message: error.response?.data.error.message,
+                    status: error.response?.status,
+                };
+            }
+        }
+    },
+);
+export const patchPasswordProfile = createAsyncThunk(
+    'customer/patchUpdatePassword',
+    async ({ profileData }: { profileData: updatePasswordInput }) => {
+        try {
+            const response = (await agent.User.updatePassword(
+                profileData   ,
+            )) as updatePasswordInputResponseSuccess;
             return response.message;
         } catch (error) {
             if (error instanceof AxiosError) {
