@@ -1,7 +1,7 @@
 "use client"
-import { fetchUserInforPagination, patchUpdateProfile } from '@/lib/redux/slice/userSlice';
+import { fetchUserInforPagination, patchPasswordProfile, patchUpdateProfile } from '@/lib/redux/slice/userSlice';
 import { useAppDispatch } from '@/lib/redux/store';
-import { UserInfor, updateProfileInput } from '@/models/userModels';
+import { UserInfor, passwordInfor, updatePasswordInput, updateProfileInput } from '@/models/userModels';
 import getAccessAndRefreshCookie from '@/utilities/authUtils/getCookieForValidation';
 import { Avatar, Button, Card, CardBody, CardFooter, CardHeader, Divider, Input, Tab, Tabs } from '@nextui-org/react'
 import React, { useEffect, useState } from 'react'
@@ -12,7 +12,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 export default function Profile() {
     const dispatch = useAppDispatch();
-    const [items, setItems] = useState<UserInfor>();
+    const [items, setItems] = useState<passwordInfor>();
     useEffect(() => {
         const allService = async () => {
             const response = await dispatch(fetchUserInforPagination());
@@ -35,12 +35,11 @@ export default function Profile() {
         };
         fetchUid();
     }, [userId]);
-    const [profileData, setProfileData] = useState<updateProfileInput>({
+    const [profileData, setProfileData] = useState<updatePasswordInput>({
         id: userId,
-        firstName: items?.firstName,
-        lastName: items?.lastName,
-        email: items?.email,
-        phone: items?.phone,
+        oldPassword: items?.oldPassword,
+        newPassword: items?.newPassword,
+        confirmPassword: items?.confirmPassword
 
     });
     useEffect(() => {
@@ -70,7 +69,7 @@ export default function Profile() {
     const handleUpdate = async () => {
         try {
             if (userId) {
-                await dispatch(patchUpdateProfile({ profileData })).unwrap();
+                await dispatch(patchPasswordProfile({ profileData })).unwrap();
                 toast.success("Cập nhật dịch vụ thành công!", {
                     autoClose: 1500,
                 });
@@ -131,7 +130,8 @@ export default function Profile() {
                 <div className='container mt-4'
                 >
                     <Tabs className="flex justify-center">
-                        <Tab className='flex justify-center' key="account" title="Tài khoản">
+                       
+                        <Tab className='flex justify-center' key="password" title="Mật khẩu">
                             <Card className='w-[550px] p-4'
                                 style={{
                                     backgroundImage: 'url(https://i.pinimg.com/564x/a6/b0/89/a6b0891684b7e9d0ddc6262191ff340c.jpg)',
@@ -142,42 +142,22 @@ export default function Profile() {
                                     <div>
                                         <p className='text-3xl text-white uppercase font-bold'>Tài Khoản</p>
                                         <p className='text-white'>
-                                            Thực hiện thay đổi cho tài khoản của bạn tại đây.
+                                            Thay đổi mật khẩu cho tài khoản của bạn tại đây.
                                         </p>
                                     </div>
                                 </CardHeader>
-                                <CardBody className="space-y-2">
+                                <CardBody className="space-y-2 text-white">
                                     <div className="space-y-1">
-                                        <p className='text-white'>Tên</p>
-                                        <Input id="firstName"
-                                            disabled={!isEditing}
-                                            defaultValue={items?.firstName}
-                                            onChange={(e) => handleInputChange('firstName', e.target.value)}
-                                        />
+                                        <p >Mật khẩu hiện tại</p>
+                                        <Input onChange={(e) => handleInputChange('oldPassword', e.target.value)} disabled={!isEditing} type='password' />
                                     </div>
                                     <div className="space-y-1">
-                                        <p className='text-white'>Họ</p>
-                                        <Input id="lastName"
-                                            disabled={!isEditing}
-                                            defaultValue={items?.lastName}
-                                            onChange={(e) => handleInputChange('lastName', e.target.value)}
-                                        />
+                                        <p >Mật khẩu mới</p>
+                                        <Input  disabled={!isEditing} type='password' onChange={(e) => handleInputChange('newPassword', e.target.value)}/>
                                     </div>
                                     <div className="space-y-1">
-                                        <p className='text-white'>Email</p>
-                                        <Input id="email"
-                                            disabled={!isEditing}
-                                            defaultValue={items?.email}
-                                            onChange={(e) => handleInputChange('email', e.target.value)}
-                                        />
-                                    </div>
-                                    <div className="space-y-1">
-                                        <p className='text-white'>Số điện thoại</p>
-                                        <Input id="phone"
-                                            disabled={!isEditing}
-                                            defaultValue={items?.phone?.toString()}
-                                            onChange={(e) => handleInputChange('phone', e.target.value)}
-                                        />
+                                        <p >Xác nhận mật khẩu</p>
+                                        <Input  disabled={!isEditing} type='password'onChange={(e) => handleInputChange('confirmPassword', e.target.value)} />
                                     </div>
                                 </CardBody>
                                 {isEditing && (
@@ -188,7 +168,6 @@ export default function Profile() {
                                 )}
                             </Card>
                         </Tab>
-                        
 
                     </Tabs>
                 </div>

@@ -1,5 +1,6 @@
 
-import { ShopInput, allOrderBookingPaginationResponse, createServiceInput, serviceCreateResponseSuccess, shopCreateResponseSuccess } from "@/models/shopModel";
+
+import { ShopInput, allOrderBookingPaginationResponse, createServiceInput, serviceCreateResponseSuccess, shopCreateResponseSuccess, updatePasswordInputResponseSuccess, updatePasswordShopInput } from "@/models/shopModel";
 import agent from "@/utilities/agent";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { AxiosError } from "axios";
@@ -129,7 +130,24 @@ export const updateShopInfor = createAsyncThunk(
         }
     }
 );
-
+export const patchPasswordShopProfile = createAsyncThunk(
+    'shopOnwer/patchPasswordShopProfile',
+    async ({ profileData }: { profileData: updatePasswordShopInput }) => {
+        try {
+            const response = (await agent.ShopOnwer.updatepasswordShopInfor(
+                profileData   ,
+            )) as updatePasswordInputResponseSuccess;
+            return response.message;
+        } catch (error) {
+            if (error instanceof AxiosError) {
+                return {
+                    message: error.response?.data.error.message,
+                    status: error.response?.status,
+                };
+            }
+        }
+    },
+);
 
 export const fetchServiceInfo = createAsyncThunk(
     'shopOwner/fetchServiceInfo',

@@ -34,7 +34,7 @@ export default function CardOrderShop() {
         switch (status) {
             case 'COMPLETED':
                 return 'success';
-            case 'CANCELLED':
+            case  'CANCELLED':
                 return 'danger';
             case 'SCHEDULED':
                 return 'warning';
