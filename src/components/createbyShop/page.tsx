@@ -130,24 +130,6 @@ export default function CreateShop({ userId }: { userId: string }) {
                                         />
                                     </div>
                                 </div>
-                                {/* <div className="flex w-full mb-4">
-                                    <div className="mr-4">
-                                        <Input
-                                            type="text"
-                                            onChange={(e) => handleInputChange('openTime', e.target.value)}
-                                            label="Giờ mở cửa"
-                                            className="w-[250px]"
-                                        />
-                                    </div>
-                                    <div className="ml-4">
-                                        <Input
-                                            type="text"
-                                            onChange={(e) => handleInputChange('closeTime', e.target.value)}
-                                            label="Giờ đóng cửa"
-                                            className="w-[250px]"
-                                        />
-                                    </div>
-                                </div> */}
                                 <div className="flex w-full mb-4">
                                     <div className="mr-4">
                                         <TimeInput
