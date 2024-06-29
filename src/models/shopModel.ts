@@ -97,6 +97,28 @@ export interface shopCreateResponseSuccess {
     success: boolean;
 }
 
+export interface updatePasswordInputResponseSuccess {
+    status: number;
+    message: string;
+    success: boolean;
+}
+export interface updatePasswordShopInput {
+    id: string,
+    oldPassword: string| undefined | null ,
+    newPassword: string| undefined | null,
+    confirmPassword: string| undefined | null,
+
+}
+export interface passwordShopInfor {
+    id: string,
+    firstName: string,
+    lastName: string,
+    oldPassword: string| undefined | null ,
+    newPassword: string| undefined | null,
+    confirmPassword: string| undefined | null,
+
+
+}
 export interface allServicePaginationData {
     id: string,
     serviceName: string,
