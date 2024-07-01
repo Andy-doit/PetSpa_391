@@ -19,16 +19,25 @@ import { ClipLoader } from 'react-spinners';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useAppDispatch } from '@/lib/redux/store';
-import { createPetInput } from '@/models/userModels';
-import { createPet } from '@/lib/redux/slice/userSlice';
+import { allPetPaginationData, createPetInput } from '@/models/userModels';
+import { createPet, fetchAllPetPagination } from '@/lib/redux/slice/userSlice';
 import { FaPlus } from 'react-icons/fa';
 import { FcPlus } from 'react-icons/fc';
 
 export default function CreatePet({ userId, refetchPets }: { userId: string, refetchPets: () => void }) {
     const [image, setImage] = useState("")
     const { isOpen, onOpen, onClose } = useDisclosure();
+    const dispatch = useAppDispatch();
     const [isLoading, setIsLoading] = useState(false);
+    const [pets, setPets] = useState<allPetPaginationData[]>([]);
+    const fetchPets = async () => {
+        const response = await dispatch(fetchAllPetPagination());
+        setPets(response.payload || []);
+    };
 
+    useEffect(() => {
+        fetchPets();
+    }, [dispatch]);
     useEffect(() => {
         if (userId) {
             setPetData(prevData => ({
@@ -51,7 +60,7 @@ export default function CreatePet({ userId, refetchPets }: { userId: string, ref
         petNote: '',
     });
 
-    const dispatch = useAppDispatch();
+
 
     const handleInputChange = (fieldName: string, newValue: string | number) => {
         setPetData(prevData => ({

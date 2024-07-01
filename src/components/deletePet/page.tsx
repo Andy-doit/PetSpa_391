@@ -13,16 +13,24 @@ import {
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useAppDispatch } from '@/lib/redux/store';
-import { PetInfor } from '@/models/userModels';
+import { PetInfor, allPetPaginationData } from '@/models/userModels';
 import { MdDelete } from 'react-icons/md';
-import { deletePet } from '@/lib/redux/slice/userSlice';
+import { deletePet, fetchAllPetPagination } from '@/lib/redux/slice/userSlice';
 import getAccessAndRefreshCookie from '@/utilities/authUtils/getCookieForValidation';
 
 export default function DeletePet({ params, refetchPets }: { params: string, refetchPets: () => void }) {
     const { isOpen, onOpen, onClose } = useDisclosure();
-
+    const [pets, setPets] = useState<allPetPaginationData[]>([]);
     const dispatch = useAppDispatch();
     const [userId, setUserId] = useState<string>('');
+    const fetchPets = async () => {
+        const response = await dispatch(fetchAllPetPagination());
+        setPets(response.payload || []);
+    };
+
+    useEffect(() => {
+        fetchPets();
+    }, [dispatch]);
     useEffect(() => {
         const fetchUid = async () => {
             try {

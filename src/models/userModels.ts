@@ -112,6 +112,48 @@ export interface petCreateResponseSuccess {
     message: string;
     success: boolean;
 }
+export interface allShopPaginationData {
+    id: string,
+    slug: string,
+    shopName: string,
+    shopAddress: string,
+    shopPhone: string,
+    shopEmail: string,
+    area: string,
+    shopDescription: string,
+    openTime: string,
+    closeTime: string,
+    isAvailable: boolean,
+    shopTitle: string,
+    nomination: number,
+    totalServices: number,
+}
+export interface detailShopPaginationData {
+    id: string,
+    slug: string,
+    shopName: string,
+    shopAdress: string,
+    shopPhone: string,
+    shopEmail: string,
+    area: string,
+    shopDescription: string,
+    openTime: string,
+    closeTime: string,
+    isAvailable: boolean,
+    shopTitle: string,
+    nomination: number,
+    totalServices: number,
+}
+export interface allServicePaginationData {
+    id: string,
+    slug: string,
+    serviceName: string,
+    price: string,
+    address: string,
+    nomination: number,
+
+
+}
 
 export interface allPetPaginationData {
     id: string,

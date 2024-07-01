@@ -49,6 +49,13 @@ export default function GuestHeader() {
 
                     </Link>
                 </NavbarItem>
+                <NavbarItem>
+                    <Link className="font-medium hover:text-orange-600" color="foreground" href="/listShop">
+                        Shop
+
+
+                    </Link>
+                </NavbarItem>
             </NavbarContent>
             <NavbarBrand className="sm:flex justify-center text-center">
                 <div>

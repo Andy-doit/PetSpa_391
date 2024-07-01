@@ -19,12 +19,13 @@ import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useAppDispatch } from '@/lib/redux/store';
 import { allPetPaginationData, createPetInput } from '@/models/userModels';
-import { updatePet } from '@/lib/redux/slice/userSlice';
+import { fetchAllPetPagination, updatePet } from '@/lib/redux/slice/userSlice';
 import getAccessAndRefreshCookie from '@/utilities/authUtils/getCookieForValidation';
 import { MdChangeCircle } from 'react-icons/md';
 
 export default function UpdatePet({ params, refetchPets }: { params: allPetPaginationData, refetchPets: () => void }) {
     const [userId, setUserId] = useState<string>('');
+    const dispatch = useAppDispatch();
     useEffect(() => {
         const fetchUid = async () => {
             try {
@@ -38,6 +39,16 @@ export default function UpdatePet({ params, refetchPets }: { params: allPetPagin
         };
         fetchUid();
     }, [userId]);
+
+    const [pets, setPets] = useState<allPetPaginationData[]>([]);
+    const fetchPets = async () => {
+        const response = await dispatch(fetchAllPetPagination());
+        setPets(response.payload || []);
+    };
+
+    useEffect(() => {
+        fetchPets();
+    }, [dispatch]);
 
     const { isOpen, onOpen, onClose } = useDisclosure();
     const [isLoading, setIsLoading] = useState(false);
@@ -63,7 +74,7 @@ export default function UpdatePet({ params, refetchPets }: { params: allPetPagin
 
     });
     // console.log(petData)
-    const dispatch = useAppDispatch();
+
 
     const handleInputChange = (fieldName: string, newValue: string | number) => {
         setPetData(prevData => ({
