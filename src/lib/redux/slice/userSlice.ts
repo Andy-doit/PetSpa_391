@@ -114,6 +114,7 @@ export const fetchOrderBooking = createAsyncThunk(
     async ({ slug }: { slug: string }) => {
         try {
             const response = await agent.User.getorderBooking(slug);
+            // console.log(response)
             return response;
         } catch (error) {
             if (error instanceof AxiosError) {
