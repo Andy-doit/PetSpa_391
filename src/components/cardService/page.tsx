@@ -33,11 +33,6 @@ export default function CardService({ service }: { service: allServicesPaginatio
                 </CardBody>
                 <Divider />
                 <CardFooter className="w-full flex justify-center">
-                    {/* <Link href={localStorage.getItem('token') ? `/customer/bookingPage/${service.id}` : '/login'}>
-                        <Button className="bg-gradient-to-tr from-pink-500 to-yellow-500 text-white shadow-lg w-[180px]">
-                            Đặt lịch
-                        </Button>
-                    </Link> */}
                     <div className="w-full">
                         <DetailService params={{ slug: service.id }} />
                     </div>

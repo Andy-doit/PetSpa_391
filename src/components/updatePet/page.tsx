@@ -23,7 +23,7 @@ import { updatePet } from '@/lib/redux/slice/userSlice';
 import getAccessAndRefreshCookie from '@/utilities/authUtils/getCookieForValidation';
 import { MdChangeCircle } from 'react-icons/md';
 
-export default function UpdatePet({ params }: { params: allPetPaginationData }) {
+export default function UpdatePet({ params, refetchPets }: { params: allPetPaginationData, refetchPets: () => void }) {
     const [userId, setUserId] = useState<string>('');
     useEffect(() => {
         const fetchUid = async () => {
@@ -76,7 +76,10 @@ export default function UpdatePet({ params }: { params: allPetPaginationData }) 
             if (userId) {
                 await dispatch(updatePet({ petData })).unwrap();
                 toast.success("Cập nhật thú cưng thành công!", {
-                    onClose: onClose,
+                    onClose: () => {
+                        onClose();
+                        refetchPets();
+                    },
                     autoClose: 1500,
                 });
             }

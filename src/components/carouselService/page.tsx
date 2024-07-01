@@ -7,11 +7,12 @@ import "./carousel.css";
 import { fetchAllServicesPagination } from "@/lib/redux/slice/listAllServiceSlice"; // Giả sử đường dẫn
 import { useAppDispatch } from "@/lib/redux/store";
 import CardService from "../cardService/page";
+import { Spinner } from "@nextui-org/react";
 
 
 export default function CarouselService() {
 
-
+    const [loading, setLoading] = useState(true);
     const [services, setServices] = useState([]);
     const dispatch = useAppDispatch();
 
@@ -19,6 +20,7 @@ export default function CarouselService() {
         const fetchServices = async () => {
             const response = await dispatch(fetchAllServicesPagination());
             setServices(response.payload);
+            setLoading(false);
         };
         fetchServices();
     }, [dispatch]);
@@ -36,15 +38,19 @@ export default function CarouselService() {
 
     return (
         <div className="slider-container">
-            <Slider {...settings} className="my-5">
-
-                {services.map((service, index) => (
-                    <div className="my-5" key={index}>
-                        <CardService service={service} />
-                    </div>
-                ))}
-
-            </Slider>
+            {loading ? (
+                <div className="flex justify-center py-3">
+                    <Spinner />
+                </div>
+            ) : (
+                <Slider {...settings} className="my-5">
+                    {services.map((service, index) => (
+                        <div className="my-5" key={index}>
+                            <CardService service={service} />
+                        </div>
+                    ))}
+                </Slider>
+            )}
         </div>
     );
 }
