@@ -1,7 +1,7 @@
 'use client'
 import { createBooking, fetchServiceDetail } from "@/lib/redux/slice/listAllServiceSlice";
 import { useAppDispatch } from "@/lib/redux/store";
-import { ServiceDetail } from "@/models/bookingModels";
+import confetti from 'canvas-confetti';
 import getAccessAndRefreshCookie from "@/utilities/authUtils/getCookieForValidation";
 import { Button, Card, CardBody, CardFooter, CardHeader } from "@nextui-org/react";
 import { useRouter } from "next/navigation";
@@ -70,15 +70,32 @@ export default function Confirm() {
                 await dispatch(createBooking({ bookingData })).unwrap();
                 sessionStorage.removeItem('bookingValues');
                 sessionStorage.removeItem('service');
+
                 toast.success("Đặt lịch thành công! Bạn sẽ được chuyển về trang chủ trong giây lát...", {
                     onClose: () => {
                         setTimeout(() => {
                             router.push('/');
-                        }, 1500);
+                        }, 1000);
                     },
-                    autoClose: 1500,
+                    autoClose: 1000,
                 });
             }
+            confetti({
+                particleCount: 2,
+                angle: 60,
+                spread: 55,
+                origin: { x: 0 },
+                colors: ['#bb0000', '#ffffff'],
+
+            });
+            confetti({
+                particleCount: 2,
+                angle: 120,
+                spread: 55,
+                origin: { x: 1 },
+                colors: ['#bb0000', '#ffffff']
+            });
+
         } catch (error) {
             console.error('Error creating booking:', error);
             toast.error("Đã xảy ra lỗi khi đặt lịch. Vui lòng thử lại sau!");
