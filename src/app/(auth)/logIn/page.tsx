@@ -58,6 +58,8 @@ export default function Login() {
             });
             const decodeToken = jwtDecode(data.token) as roleJwt;
             console.log(decodeToken)
+            const expirationTime = Math.floor(Date.now() / 1000) + (20 * 60);
+            localStorage.setItem('exp', expirationTime.toString());
             Cookies.set('token', data.token, { expires: 1 });
             Cookies.set('role', decodeToken?.role, { expires: 1 })
             Cookies.set('userId', decodeToken?.userId, { expires: 1 })

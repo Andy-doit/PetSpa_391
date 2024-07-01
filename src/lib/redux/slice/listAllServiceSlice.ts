@@ -33,8 +33,6 @@ export const fetchAllServicesPagination = createAsyncThunk(
     async () => {
         try {
             const response = await agent.ServiceAPI.getServiceList();
-            console.log('asdsadasd')
-            console.log(response)
             return response;
 
         } catch (error) {
@@ -111,21 +109,6 @@ export const createBooking = createAsyncThunk(
     'servie/createBooking',
     async ({ bookingData }: { bookingData: createBookingInput }) => {
         try {
-
-
-            // const formData = new FormData();
-
-            // formData.append('customerId', bookingData.customerId);
-            // formData.append('additionalMessage', bookingData.additionalMessage);
-            // formData.append('serviceId', bookingData.serviceId);
-            // formData.append('localDate', bookingData.localDate);
-            // formData.append('petName', bookingData.petName);
-            // formData.append('petAge', bookingData.petAge.toString());
-            // formData.append('typePet', bookingData.typePet);
-            // formData.append('petWeight', bookingData.petWeight.toString());
-            // formData.append('petId', bookingData.localDate);
-            // formData.append('petGender', bookingData.localDate);
-            // formData.append('timeSlotDto', bookingData.timeSlotDto);
             const response = (await agent.ServiceAPI.createBooking(
                 bookingData,
             )) as bookingCreateResponseSuccess;

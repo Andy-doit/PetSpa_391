@@ -1,5 +1,5 @@
 'use client';
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Modal, ModalContent, Button, useDisclosure, Link } from "@nextui-org/react";
 import { ServiceDetail } from "@/models/bookingModels";
 import { useAppDispatch } from "@/lib/redux/store";
@@ -13,24 +13,21 @@ export default function DetailService({ params }: { params: { slug: string } }) 
     const dispatch = useAppDispatch();
     const { isOpen, onOpen, onClose } = useDisclosure();
 
-    useEffect(() => {
-        const serviceDetail = async () => {
-            const response = await dispatch(fetchServiceDetail(params));
-            if (response.payload) {
-                setService(response.payload);
-            }
-        };
-        serviceDetail();
-    }, [dispatch, params]);
+    const handleOpen = async () => {
+        const response = await dispatch(fetchServiceDetail(params));
+        if (response.payload) {
+            setService(response.payload);
+        }
+        onOpen();
+    };
 
     return (
         <div>
             <Button
                 className="bg-gradient-to-tr from-pink-500 to-yellow-500 text-white shadow-lg w-full"
-                onClick={onOpen}
+                onClick={handleOpen}
             >
                 <FaEye size={20} className="ml-2" />    Xem chi tiết
-
             </Button>
 
             <Modal
