@@ -16,13 +16,22 @@ import 'react-toastify/dist/ReactToastify.css';
 import { FaEye, FaPlus } from 'react-icons/fa';
 
 import { useAppDispatch } from '@/lib/redux/store';
-import { PetInfor } from '@/models/userModels';
-import { fetchPetInfor } from '@/lib/redux/slice/userSlice';
+import { PetInfor, allPetPaginationData } from '@/models/userModels';
+import { fetchAllPetPagination, fetchPetInfor } from '@/lib/redux/slice/userSlice';
 
 export default function PetDetail({ params }: { params: string }) {
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
     const [pet, setPet] = useState<PetInfor | any>();
     const dispatch = useAppDispatch();
+    const [pets, setPets] = useState<allPetPaginationData[]>([]);
+    const fetchPets = async () => {
+        const response = await dispatch(fetchAllPetPagination());
+        setPets(response.payload || []);
+    };
+
+    useEffect(() => {
+        fetchPets();
+    }, [dispatch]);
     useEffect(() => {
         const petDetail = async () => {
             const response = await dispatch(fetchPetInfor({ slug: params }));
