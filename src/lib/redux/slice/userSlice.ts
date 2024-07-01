@@ -96,7 +96,7 @@ export const patchPasswordProfile = createAsyncThunk(
     async ({ profileData }: { profileData: updatePasswordInput }) => {
         try {
             const response = (await agent.User.updatePassword(
-                profileData   ,
+                profileData,
             )) as updatePasswordInputResponseSuccess;
             return response.message;
         } catch (error) {
@@ -114,6 +114,7 @@ export const fetchOrderBooking = createAsyncThunk(
     async ({ slug }: { slug: string }) => {
         try {
             const response = await agent.User.getorderBooking(slug);
+            // console.log(response)
             return response;
         } catch (error) {
             if (error instanceof AxiosError) {

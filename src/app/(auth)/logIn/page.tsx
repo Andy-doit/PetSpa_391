@@ -12,19 +12,26 @@ import { ClipLoader } from 'react-spinners';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { MyInput, MyInputPassword } from '@/components/ui/loginInput';
+import { useAppDispatch } from '@/lib/redux/store';
+import { loginFailure, loginStart } from '@/lib/redux/slice/authSlice';
+import baseApi from '@/utilities/baseApi';
+import { JwtPayload, jwtDecode } from 'jwt-decode';
+import Cookies from 'js-cookie';
+import { ROLE } from '@/utilities/roleUtils/role';
+import { AxiosError } from 'axios';
+import { LoginError } from '@/utilities/authUtils/loginValidation';
+interface roleJwt extends JwtPayload {
+    role: string;
+    userId: string;
 
+}
 export default function Login() {
-    const router = useRouter();
     const [isLoading, setIsLoading] = useState(false);
     const [isShowPassword, setIsShowPassword] = useState(false);
     const initialValues = {
         username: '',
         password: '',
     };
-    const [userData, setUserData] = useState<LoginInput>({
-        username: '',
-        password: '',
-    });
     const validationSchema = Yup.object().shape({
         username: Yup.string()
             .required('Tên người dùng là bắt buộc')
@@ -36,30 +43,52 @@ export default function Login() {
             .max(50, 'Mật khẩu không được vượt quá 50 ký tự'),
     });
 
-    const { state, handleLogin } = useAuth();
+
     const setLoading = (loading: boolean) => {
         setIsLoading(loading);
     };
-    const handleSubmit = async (values: LoginInput) => {
-        setLoading(true);
-
+    const dispatch = useAppDispatch();
+    const router = useRouter();
+    const handleLogin = async (value: LoginInput) => {
+        dispatch(loginStart());
         try {
-            await handleLogin(values);
-            toast.success("Đăng nhập Thành Công! Bạn sẽ chuyển đến trang chủ trong giây lát...", {
-                onClose: () => {
-
-                    setTimeout(() => {
-                        router.replace('/');
-                    }, 3000);
-                },
-                autoClose: 3000,
+            const { data } = await baseApi.post(`api/v1/auth/signin`, {
+                username: value.username,
+                password: value.password,
             });
-
-
+            const decodeToken = jwtDecode(data.token) as roleJwt;
+            console.log(decodeToken)
+            Cookies.set('token', data.token, { expires: 1 });
+            Cookies.set('role', decodeToken?.role, { expires: 1 })
+            Cookies.set('userId', decodeToken?.userId, { expires: 1 })
+            switch (decodeToken?.role) {
+                case ROLE.role1:
+                    console.log('role1')
+                    router.replace(`/`);
+                    break;
+                case ROLE.role2:
+                    router.replace(`/shopOwner`);
+                    break;
+                case ROLE.role3:
+                    router.replace(`/admin`);
+                    break;
+                default:
+                    break;
+            }
+            localStorage.setItem("token", data.token);
         } catch (error) {
-
-            toast.error('Đăng nhập không thành công. Vui lòng kiểm tra lại tên đăng nhập và mật khẩu.');
-            setLoading(false);
+            if (error instanceof AxiosError) {
+                const errorResponse = error?.response?.data?.error?.message;
+                if (errorResponse in LoginError) {
+                    const translatedError =
+                        LoginError[errorResponse as keyof typeof LoginError];
+                    dispatch(loginFailure(translatedError));
+                } else {
+                    dispatch(loginFailure(errorResponse));
+                }
+            } else {
+                dispatch(loginFailure("Đã có lỗi xảy ra"));
+            }
         }
     };
 
@@ -78,7 +107,7 @@ export default function Login() {
                     <Formik
                         initialValues={initialValues}
                         validationSchema={validationSchema}
-                        onSubmit={handleSubmit}>
+                        onSubmit={handleLogin}>
                         <Form>
                             <Card className='mx-auto w-3/5'>
                                 <CardHeader className='space-y-1'>

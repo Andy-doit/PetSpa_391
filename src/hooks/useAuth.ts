@@ -20,47 +20,7 @@ export function useAuth() {
   const dispatch = useAppDispatch();
   const router = useRouter();
 
-  const handleLogin = async (value: LoginInput) => {
-    dispatch(loginStart());
-    try {
-      const { data } = await baseApi.post(`api/v1/auth/signin`, {
-        username: value.username,
-        password: value.password,
-      });
-      Cookies.set('token', data.token, { expires: 1 });
-      const decodeToken = jwtDecode(data.token) as roleJwt;
-      Cookies.set('role', decodeToken?.role, { expires: 1 })
-      Cookies.set('userId', decodeToken?.userId, { expires: 1 })
-      switch (decodeToken?.role) {
-        case ROLE.role1:
-          console.log('role1')  
-          router.replace(`/`);
-          break;
-        case ROLE.role2:
-          router.replace(`/shopOwner`);
-          break;
-        case ROLE.role3:
-          router.replace(`/`);
-          break;
-        default:
-          break;
-      }
-      localStorage.setItem("token", data.token);
-    } catch (error) {
-      if (error instanceof AxiosError) {
-        const errorResponse = error?.response?.data?.error?.message;
-        if (errorResponse in LoginError) {
-          const translatedError =
-            LoginError[errorResponse as keyof typeof LoginError];
-          dispatch(loginFailure(translatedError));
-        } else {
-          dispatch(loginFailure(errorResponse));
-        }
-      } else {
-        dispatch(loginFailure("Đã có lỗi xảy ra"));
-      }
-    }
-  };
+ 
   const handleSignup = async (value: SignupInput) => {
     dispatch(signUpStart());
     try {
@@ -87,5 +47,5 @@ export function useAuth() {
     }
   }
 
-  return { state, handleLogin, handleSignup };
+  return { state, handleSignup };
 }
