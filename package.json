@@ -14,6 +14,7 @@
     "@reduxjs/toolkit": "^2.2.5",
     "apexcharts": "^3.49.1",
     "axios": "^1.7.2",
+    "canvas-confetti": "^1.9.3",
     "embla-carousel-react": "^8.0.4",
     "formik": "^2.4.6",
     "framer-motion": "^11.1.9",
@@ -38,6 +39,7 @@
     "yup": "^1.4.0"
   },
   "devDependencies": {
+    "@types/canvas-confetti": "^1.6.4",
     "@types/js-cookie": "^3.0.6",
     "@types/node": "^20",
     "@types/react": "^18",

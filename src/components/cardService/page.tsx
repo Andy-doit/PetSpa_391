@@ -1,10 +1,9 @@
 import React, { useState } from "react";
 import { Card, CardHeader, CardBody, CardFooter, Divider, Link } from "@nextui-org/react";
-
 import { FaStar } from "react-icons/fa";
 import DetailService from "../serviceDetail/page";
-import { ServiceDetail, allServicesPaginationData } from "@/models/bookingModels";
-import { fetchServiceDetail } from "@/lib/redux/slice/listAllServiceSlice";
+import { allServicesPaginationData } from "@/models/bookingModels";
+
 
 export default function CardService({ service }: { service: allServicesPaginationData }) {
 
