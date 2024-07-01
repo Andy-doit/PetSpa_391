@@ -86,7 +86,7 @@ const User = {
     requests.baseApiGet(`api/v1/pet/${slug}`),
   getShopInfor: (slug: string) =>
     requests.baseApiGet(`/api/v1/shop/${slug}`),
-  getAllServiceInfor: (slug: string) =>
+  getAllServiceByShopId: (slug: string) =>
     requests.baseApiGet(`/api/v1/service/all/${slug}`),
   deletePet: (slug: string) =>
     requests.baseApiDelete(`api/v1/pet/${slug}`),
@@ -98,6 +98,7 @@ const User = {
     requests.put("api/v1/user/password", input),
   createFeedback: (input: createFeedbackInput) =>
     requests.post("api/v1/feedback/create", input),
+
 }
 
 //Admin
@@ -112,7 +113,6 @@ const Admin = {
     requests.baseApiDelete(`api/v1/admin/delete/${slug}`),
   createShop: (input: AccountInput) =>
     requests.baseApiPost("api/v1/admin/manageShopOwner/addShopOwner", input),
-
   deleteAcount: (slug: string) =>
     requests.baseApiDelete(`api/v1/admin/delete/${slug}`),
 }

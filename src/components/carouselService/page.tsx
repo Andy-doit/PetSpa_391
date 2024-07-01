@@ -1,4 +1,4 @@
-'use client'
+'use client';
 import React, { useEffect, useState } from "react";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -9,21 +9,27 @@ import { useAppDispatch } from "@/lib/redux/store";
 import CardService from "../cardService/page";
 import { Spinner } from "@nextui-org/react";
 
-
 export default function CarouselService() {
-
     const [loading, setLoading] = useState(true);
     const [services, setServices] = useState([]);
     const dispatch = useAppDispatch();
 
     useEffect(() => {
         const fetchServices = async () => {
-            const response = await dispatch(fetchAllServicesPagination());
-            setServices(response.payload);
-            setLoading(false);
+            try {
+                const response = await dispatch(fetchAllServicesPagination()).unwrap();
+                setServices(response);
+            } catch (error) {
+                console.error('Failed to fetch services: ', error);
+            } finally {
+                setLoading(false);
+            }
         };
-        fetchServices();
-    }, [dispatch]);
+
+        if (loading) {
+            fetchServices();
+        }
+    }, [dispatch, loading]);
 
     const settings = {
         className: "center",

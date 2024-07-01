@@ -21,7 +21,7 @@ export default function Profile() {
         phone: 0,
     });
     const [isEditing, setIsEditing] = useState(false);
-
+    console.log(items);
     useEffect(() => {
         const fetchUid = async () => {
             try {

@@ -30,6 +30,10 @@ export default function SiderbarAdmin() {
                         <MdWorkHistory className="w-6 h-6" />
                         <Link href="/admin/manageAccountCus" className="text-default-900 text-xl font-medium">Tài khoản khách hàng </Link>
                     </div>
+                    <div className="flex gap-2 w-full min-h-[44px] h-full items-center px-3.5 rounded-xl cursor-pointer transition-all duration-150 active:scale-[0.98]">
+                        <MdWorkHistory className="w-6 h-6" />
+                        <Link href="/admin/manageTimeSlotAdmin" className="text-default-900 text-xl font-medium">Tạo khung giờ </Link>
+                    </div>
 
 
                 </div>
