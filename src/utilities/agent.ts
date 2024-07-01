@@ -80,8 +80,14 @@ const User = {
     requests.baseApiPost("api/v1/pet", input),
   getAllPet: () =>
     requests.get("api/v1/pet/all/auth"),
+  getAllShop: () =>
+    requests.get("/api/v1/shop/all"),
   getPetInfor: (slug: string) =>
     requests.baseApiGet(`api/v1/pet/${slug}`),
+  getShopInfor: (slug: string) =>
+    requests.baseApiGet(`/api/v1/shop/${slug}`),
+  getAllServiceInfor: (slug: string) =>
+    requests.baseApiGet(`/api/v1/service/all/${slug}`),
   deletePet: (slug: string) =>
     requests.baseApiDelete(`api/v1/pet/${slug}`),
   updatePet: (input: createPetInput) =>

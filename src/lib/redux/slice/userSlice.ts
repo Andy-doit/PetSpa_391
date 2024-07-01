@@ -198,6 +198,55 @@ export const fetchAllPetPagination = createAsyncThunk(
         }
     },
 );
+export const fetchAllShopPagination = createAsyncThunk(
+    'customer/fetchAllPetPagination',
+    async () => {
+        try {
+            const response = await agent.User.getAllShop();
+            return response;
+
+        } catch (error) {
+            if (error instanceof AxiosError) {
+                return {
+                    message: error.response?.data.error.message,
+                    status: error.response?.status,
+                };
+            }
+        }
+    },
+);
+export const fetchAllServiceInfo = createAsyncThunk(
+    'shopOwner/fetchServiceInfo',
+    async ({ slug }: { slug: string }) => {
+        try {
+            const response = await agent.User.getAllServiceInfor(slug);
+            return response;
+        } catch (error) {
+            if (error instanceof AxiosError) {
+                return {
+                    message: error.response?.data.error.message,
+                    status: error.response?.status,
+                };
+            }
+        }
+    },
+);
+export const fetchShopInfo = createAsyncThunk(
+    'shopOwner/fetchServiceInfo',
+    async ({ slug }: { slug: string }) => {
+        try {
+            const response = await agent.User.getShopInfor(slug);
+            return response;
+        } catch (error) {
+            if (error instanceof AxiosError) {
+                return {
+                    message: error.response?.data.error.message,
+                    status: error.response?.status,
+                };
+            }
+        }
+    },
+);
 
 export const fetchPetInfor = createAsyncThunk(
     'customer/fetchPetInfor',
