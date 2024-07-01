@@ -2,12 +2,13 @@ import React, { useEffect, useState } from "react";
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, Input, Select, SelectItem, Textarea, useDisclosure } from "@nextui-org/react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { createServiceInput } from "@/models/shopModel";
+import { allServicePaginationData, createServiceInput } from "@/models/shopModel";
 import { useAppDispatch } from "@/lib/redux/store";
-import { createService } from "@/lib/redux/slice/shopSlice";
+import { createService, fetchAllServicePagination } from "@/lib/redux/slice/shopSlice";
 import { ToastContainer, toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import { FaPlus } from "react-icons/fa";
+import { ClipLoader } from "react-spinners";
 
 const validationSchema = Yup.object().shape({
     serviceName: Yup.string()
@@ -30,8 +31,11 @@ const validationSchema = Yup.object().shape({
         .max(500, 'Mô tả dịch vụ không được vượt quá 500 ký tự')
 });
 
-export default function ModalCreateService({ userId }: { userId: string }) {
+export default function ModalCreateService({ userId, refetchPets }: { userId: string, refetchPets: () => void }) {
     const { isOpen, onOpen, onClose } = useDisclosure();
+    const [isLoading, setIsLoading] = useState(false);
+    const dispatch = useAppDispatch();
+    const [service, setService] = useState<allServicePaginationData[]>([]);
     const formik = useFormik({
         initialValues: {
             serviceName: '',
@@ -55,6 +59,13 @@ export default function ModalCreateService({ userId }: { userId: string }) {
         }
     }, [userId]);
 
+    useEffect(() => {
+        fetchPets();
+    }, [dispatch]);
+    const fetchPets = async () => {
+        const response = await dispatch(fetchAllServicePagination());
+        setService(response.payload || []);
+    };
     const [serviceData, setServiceData] = useState<createServiceInput>({
         userId: userId,
         id: '',
@@ -67,19 +78,26 @@ export default function ModalCreateService({ userId }: { userId: string }) {
         tags: '',
 
     });
-    const dispatch = useAppDispatch();
+
     const handleCreate = async () => {
+        setIsLoading(true);
         try {
             if (userId) {
                 await dispatch(createService({ serviceData })).unwrap();
                 toast.success("Tạo dịch thành công!", {
-                    onClose: onClose,
+                    onClose: () => {
+                        onClose();
+                        refetchPets();
+                    },
                     autoClose: 1500,
                 });
             }
         } catch (error) {
             console.error('Error creating service:', error);
             toast.error("Đã xảy ra lỗi khi tạo dịch vụ. Vui lòng thử lại sau!");
+        }
+        finally {
+            setIsLoading(false);
         }
     };
 
@@ -220,7 +238,11 @@ export default function ModalCreateService({ userId }: { userId: string }) {
                                 onClick={handleCreate}
                                 className="bg-blue-500 text-white px-6 py-2 rounded-md hover:bg-blue-600"
                             >
-                                Tạo
+                                {isLoading ? (
+                                    <ClipLoader size={20} color="#ffffff" />
+                                ) : (
+                                    'Tạo mới'
+                                )}
                             </Button>
                         </ModalFooter>
                     </>

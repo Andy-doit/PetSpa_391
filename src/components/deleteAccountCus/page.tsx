@@ -17,10 +17,10 @@ import { PetInfor } from '@/models/userModels';
 import { MdDelete } from 'react-icons/md';
 import { deletePet } from '@/lib/redux/slice/userSlice';
 import getAccessAndRefreshCookie from '@/utilities/authUtils/getCookieForValidation';
-import { CusInfor, ShopInfor } from '@/models/adminModel';
-import { deleteCus, deleteShop } from '@/lib/redux/slice/adminSlice';
+import { CusInfor, ShopInfor, allCusPaginationData } from '@/models/adminModel';
+import { deleteCus, deleteShop, fetchAllCusPagination } from '@/lib/redux/slice/adminSlice';
 
-export default function DeleteCus({ params }: { params: string }) {
+export default function DeleteCus({ params, refetchPets }: { params: string, refetchPets: () => void }) {
     const { isOpen, onOpen, onClose } = useDisclosure();
     const [shop, setShop] = useState<CusInfor | any>();
     const dispatch = useAppDispatch();
@@ -43,7 +43,10 @@ export default function DeleteCus({ params }: { params: string }) {
             if (shopId) {
                 await dispatch(deleteCus({ slug: params })).unwrap();
                 toast.success("Xoá tài khoản shop thành công!", {
-                    onClose: onClose,
+                    onClose: () => {
+                        onClose();
+                        refetchPets();
+                    },
                     autoClose: 1500,
                 });
             }
@@ -52,7 +55,14 @@ export default function DeleteCus({ params }: { params: string }) {
             toast.error("Đã xảy ra lỗi khi xoá tài khoản. Vui lòng thử lại sau!");
         }
     };
-
+    const [service, setService] = useState<allCusPaginationData[]>([]);
+    const fetchPets = async () => {
+        const response = await dispatch(fetchAllCusPagination());
+        setService(response.payload || []);
+    };
+    useEffect(() => {
+        fetchPets();
+    }, [dispatch]);
 
     return (
         <div>

@@ -17,14 +17,23 @@ import { PetInfor } from '@/models/userModels';
 import { MdDelete } from 'react-icons/md';
 import { deletePet } from '@/lib/redux/slice/userSlice';
 import getAccessAndRefreshCookie from '@/utilities/authUtils/getCookieForValidation';
-import { ShopInfor } from '@/models/adminModel';
+import { ShopInfor, allShopPaginationData } from '@/models/adminModel';
 import { deleteShop } from '@/lib/redux/slice/adminSlice';
+import { fetchAllServicePagination } from '@/lib/redux/slice/shopSlice';
 
-export default function DeleteShop({ params }: { params: string }) {
+export default function DeleteShop({ params, refetchPets }: { params: string, refetchPets: () => void }) {
     const { isOpen, onOpen, onClose } = useDisclosure();
     const [shop, setShop] = useState<ShopInfor | any>();
     const dispatch = useAppDispatch();
     const [shopId, setShopId] = useState<string>('');
+    const [shopowner, setShoponwer] = useState<allShopPaginationData[]>([]);
+    const fetchPets = async () => {
+        const response = await dispatch(fetchAllServicePagination());
+        setShoponwer(response.payload || []);
+    };
+    useEffect(() => {
+        fetchPets();
+    }, [dispatch]);
     useEffect(() => {
         const fetchUid = async () => {
             try {
@@ -43,7 +52,10 @@ export default function DeleteShop({ params }: { params: string }) {
             if (shopId) {
                 await dispatch(deleteShop({ slug: params })).unwrap();
                 toast.success("Xoá tài khoản shop thành công!", {
-                    onClose: onClose,
+                    onClose: () => {
+                        onClose();
+                        refetchPets();
+                    },
                     autoClose: 1500,
                 });
             }
