@@ -1,8 +1,7 @@
 'use client'
-import React, { use, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
     Button,
-    Card,
     Checkbox,
     Image,
     Input,
@@ -25,11 +24,11 @@ import { createPet } from '@/lib/redux/slice/userSlice';
 import { FaPlus } from 'react-icons/fa';
 import { FcPlus } from 'react-icons/fc';
 
-export default function CreatePet({ userId }: { userId: string }) {
-    console.log(userId);
+export default function CreatePet({ userId, refetchPets }: { userId: string, refetchPets: () => void }) {
     const [image, setImage] = useState("")
     const { isOpen, onOpen, onClose } = useDisclosure();
     const [isLoading, setIsLoading] = useState(false);
+
     useEffect(() => {
         if (userId) {
             setPetData(prevData => ({
@@ -38,6 +37,7 @@ export default function CreatePet({ userId }: { userId: string }) {
             }));
         }
     }, [userId]);
+
     const [petData, setPetData] = useState<createPetInput>({
         id: '',
         userId: userId,
@@ -49,30 +49,35 @@ export default function CreatePet({ userId }: { userId: string }) {
         petDescription: '',
         petPhoto: '',
         petNote: '',
-
     });
-    const dispatch = useAppDispatch();
-    // const handleUploadImage = (event) => {
 
-    // }
+    const dispatch = useAppDispatch();
+
     const handleInputChange = (fieldName: string, newValue: string | number) => {
         setPetData(prevData => ({
             ...prevData,
             [fieldName]: newValue
         }));
     };
+
     const handleCreate = async () => {
         try {
+            setIsLoading(true);
             if (userId) {
                 await dispatch(createPet({ petData })).unwrap();
                 toast.success("Tạo thú cưng thành công!", {
-                    onClose: onClose,
+                    onClose: () => {
+                        onClose();
+                        refetchPets();
+                    },
                     autoClose: 1500,
                 });
             }
         } catch (error) {
             console.error('Error creating service:', error);
             toast.error("Đã xảy ra lỗi khi tạo thú cưng. Vui lòng thử lại sau!");
+        } finally {
+            setIsLoading(false);
         }
     };
 
@@ -92,8 +97,6 @@ export default function CreatePet({ userId }: { userId: string }) {
                             backgroundImage: 'url("https://i.pinimg.com/736x/b4/38/8d/b4388d3b0601a64cad25d2fe73b2224b.jpg")',
                             backgroundRepeat: 'no-repeat',
                             backgroundSize: "cover",
-
-
                         }}
                     >Tạo mới thú cưng</ModalHeader>
                     <ModalBody
@@ -101,8 +104,6 @@ export default function CreatePet({ userId }: { userId: string }) {
                             backgroundImage: 'url("https://i.pinimg.com/736x/32/9e/2f/329e2f6a54fdb1f53f4126991fcc6143.jpg")',
                             backgroundRepeat: 'no-repeat',
                             backgroundSize: "cover",
-
-
                         }}
                     >
                         <div className="mt-2 flex">
@@ -227,5 +228,3 @@ export default function CreatePet({ userId }: { userId: string }) {
         </div>
     );
 };
-
-

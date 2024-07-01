@@ -1,4 +1,4 @@
-"use client";
+'use client';
 import { Button, Chip, Input, Tooltip } from "@nextui-org/react";
 import React, { useEffect, useState } from "react";
 import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell } from "@nextui-org/react";
@@ -16,15 +16,17 @@ import UpdatePet from "@/components/updatePet/page";
 export default function ManagePet() {
     const dispatch = useAppDispatch();
     const [pets, setPets] = useState<allPetPaginationData[]>([]);
-    useEffect(() => {
-        const allPet = async () => {
-            const response = await dispatch(fetchAllPetPagination());
-            setPets(response.payload || []);
-        }
-        allPet();
-    }, [dispatch]);
-    console.log(pets)
     const [userId, setUserId] = useState<string>('');
+
+    const fetchPets = async () => {
+        const response = await dispatch(fetchAllPetPagination());
+        setPets(response.payload || []);
+    };
+
+    useEffect(() => {
+        fetchPets();
+    }, [dispatch]);
+
     useEffect(() => {
         const fetchUid = async () => {
             try {
@@ -37,11 +39,11 @@ export default function ManagePet() {
             }
         };
         fetchUid();
-    }, [userId]);
+    }, []);
 
     return (
-        <div className="container py-2 pb-10  flex flex-col gap-4">
-            <div >
+        <div className="container py-2 pb-10 flex flex-col gap-4">
+            <div>
                 <div className="py-2">
                     <nav className="flex" aria-label="Breadcrumb">
                         <ol className="inline-flex items-center space-x-1 md:space-x-2 rtl:space-x-reverse">
@@ -66,15 +68,13 @@ export default function ManagePet() {
                 </div>
             </div>
             <div className="flex relative justify-end flex-wrap gap-4 items-center">
-
                 <div className="flex absolute flex-row gap-3.5 flex-wrap">
-                    <CreatePet userId={userId} />
+                    <CreatePet userId={userId} refetchPets={fetchPets} />
                 </div>
             </div>
             <div className="w-[800px] mx-auto ">
                 {pets.length === 0 ? (
                     <div>Không có thú cưng nào</div>
-
                 ) : (
                     <Table aria-label="Example static collection table">
                         <TableHeader>
@@ -91,44 +91,25 @@ export default function ManagePet() {
                                     <TableCell>{pet.petType === 'DOG' ? 'Chó' : (pet.petType === 'CAT' ? 'Mèo' : '')}</TableCell>
                                     <TableCell>{pet.petGender === 'Male' ? 'Đực' : (pet.petGender === 'Female' ? 'Cái' : '')}</TableCell>
                                     <TableCell>
-                                        {pet.doHaveUpcomingSchedule == true ? (
-                                            <>
-
-                                                <Chip color="success">  Đã có lịch đặt</Chip>
-                                            </>
+                                        {pet.doHaveUpcomingSchedule === true ? (
+                                            <Chip color="success">Đã có lịch đặt</Chip>
                                         ) : (
-                                            pet.doHaveUpcomingSchedule == false ? (
-                                                <>
-
-                                                    <Chip color="warning">Chưa có lịch đặt</Chip>
-                                                </>
-                                            ) : ''
+                                            <Chip color="warning">Chưa có lịch đặt</Chip>
                                         )}
                                     </TableCell>
                                     <TableCell>
-                                        <div className="flex items-center gap-4 ">
-                                            <div>
-                                                <PetDetail params={pet.id} />
-                                            </div>
-                                            <div>
-                                                <UpdatePet params={pet} />
-                                            </div>
-                                            <div>
-                                                <DeletePet params={pet.id} />
-                                            </div>
+                                        <div className="flex items-center gap-4">
+                                            <PetDetail params={pet.id} />
+                                            <UpdatePet params={pet} refetchPets={fetchPets} />
+                                            <DeletePet params={pet.id} refetchPets={fetchPets} />
                                         </div>
                                     </TableCell>
                                 </TableRow>
                             ))}
-
-
                         </TableBody>
                     </Table>
-
                 )}
-
             </div>
         </div>
     );
 }
-
