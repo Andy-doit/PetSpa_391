@@ -18,7 +18,7 @@ import { MdDelete } from 'react-icons/md';
 import { deletePet } from '@/lib/redux/slice/userSlice';
 import getAccessAndRefreshCookie from '@/utilities/authUtils/getCookieForValidation';
 
-export default function DeletePet({ params }: { params: string }) {
+export default function DeletePet({ params, refetchPets }: { params: string, refetchPets: () => void }) {
     const { isOpen, onOpen, onClose } = useDisclosure();
 
     const dispatch = useAppDispatch();
@@ -41,7 +41,10 @@ export default function DeletePet({ params }: { params: string }) {
             if (userId) {
                 await dispatch(deletePet({ slug: params })).unwrap();
                 toast.success("xoá thú cưng thành công!", {
-                    onClose: onClose,
+                    onClose: () => {
+                        onClose();
+                        refetchPets();
+                    },
                     autoClose: 1500,
                 });
             }

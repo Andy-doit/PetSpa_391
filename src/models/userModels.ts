@@ -19,7 +19,7 @@ export interface UserInfor {
     firstName: string,
     lastName: string,
     email: string,
-    phone: number | undefined,
+    phone: number,
     profileImageUrl: string | undefined | null,
     coverImageUrl: string | undefined | null,
     birthday: string | undefined | null,
@@ -29,9 +29,9 @@ export interface passwordInfor {
     id: string,
     firstName: string,
     lastName: string,
-    oldPassword: string| undefined | null ,
-    newPassword: string| undefined | null,
-    confirmPassword: string| undefined | null,
+    oldPassword: string | undefined | null,
+    newPassword: string | undefined | null,
+    confirmPassword: string | undefined | null,
 
 
 }
@@ -45,9 +45,9 @@ export interface updateProfileInput {
 }
 export interface updatePasswordInput {
     id: string,
-    oldPassword: string| undefined | null ,
-    newPassword: string| undefined | null,
-    confirmPassword: string| undefined | null,
+    oldPassword: string | undefined | null,
+    newPassword: string | undefined | null,
+    confirmPassword: string | undefined | null,
 
 }
 export interface updateProfileInputResponseSuccess {
