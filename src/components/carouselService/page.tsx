@@ -8,7 +8,10 @@ import { fetchAllServicesPagination } from "@/lib/redux/slice/listAllServiceSlic
 import { useAppDispatch } from "@/lib/redux/store";
 import CardService from "../cardService/page";
 
+
 export default function CarouselService() {
+
+
     const [services, setServices] = useState([]);
     const dispatch = useAppDispatch();
 
@@ -34,15 +37,13 @@ export default function CarouselService() {
     return (
         <div className="slider-container">
             <Slider {...settings} className="my-5">
-                {services && services.length > 0 ? (
-                    services.map((service, index) => (
-                        <div className="my-5" key={index}>
-                            <CardService service={service} />
-                        </div>
-                    ))
-                ) : (
-                    <p>Không có dữ liệu để hiển thị</p>
-                )}
+
+                {services.map((service, index) => (
+                    <div className="my-5" key={index}>
+                        <CardService service={service} />
+                    </div>
+                ))}
+
             </Slider>
         </div>
     );
