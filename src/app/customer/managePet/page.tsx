@@ -1,5 +1,5 @@
 'use client';
-import { Button, Chip, Input, Tooltip } from "@nextui-org/react";
+import { Button, Chip, Input, Spinner, Tooltip } from "@nextui-org/react";
 import React, { useEffect, useState } from "react";
 import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell } from "@nextui-org/react";
 import CreatePet from "@/components/createPet/page";
@@ -14,13 +14,21 @@ import DeletePet from "@/components/deletePet/page";
 import UpdatePet from "@/components/updatePet/page";
 
 export default function ManagePet() {
+    const [loading, setLoading] = useState(true);
     const dispatch = useAppDispatch();
     const [pets, setPets] = useState<allPetPaginationData[]>([]);
     const [userId, setUserId] = useState<string>('');
 
     const fetchPets = async () => {
-        const response = await dispatch(fetchAllPetPagination());
-        setPets(response.payload || []);
+        setLoading(true); // Start loading
+        try {
+            const response = await dispatch(fetchAllPetPagination());
+            setPets(response.payload || []);
+        } catch (error) {
+            console.error('Error fetching pets:', error);
+        } finally {
+            setLoading(false);
+        }
     };
 
     useEffect(() => {
@@ -72,44 +80,53 @@ export default function ManagePet() {
                     <CreatePet userId={userId} refetchPets={fetchPets} />
                 </div>
             </div>
+
             <div className="w-[800px] mx-auto ">
-                {pets.length === 0 ? (
-                    <div>Không có thú cưng nào</div>
+                {loading ? (
+                    <div className="flex justify-center items-center h-40">
+                        <Spinner />
+                    </div>
                 ) : (
-                    <Table aria-label="Example static collection table">
-                        <TableHeader>
-                            <TableColumn>Tên thú cưng</TableColumn>
-                            <TableColumn>Loại thú cưng</TableColumn>
-                            <TableColumn>Giới tính</TableColumn>
-                            <TableColumn>Trạng thái</TableColumn>
-                            <TableColumn>Hành động</TableColumn>
-                        </TableHeader>
-                        <TableBody>
-                            {pets.map((pet) => (
-                                <TableRow key={pet.id}>
-                                    <TableCell>{pet.petName}</TableCell>
-                                    <TableCell>{pet.petType === 'DOG' ? 'Chó' : (pet.petType === 'CAT' ? 'Mèo' : '')}</TableCell>
-                                    <TableCell>{pet.petGender === 'Male' ? 'Đực' : (pet.petGender === 'Female' ? 'Cái' : '')}</TableCell>
-                                    <TableCell>
-                                        {pet.doHaveUpcomingSchedule === true ? (
-                                            <Chip color="success">Đã có lịch đặt</Chip>
-                                        ) : (
-                                            <Chip color="warning">Chưa có lịch đặt</Chip>
-                                        )}
-                                    </TableCell>
-                                    <TableCell>
-                                        <div className="flex items-center gap-4">
-                                            <PetDetail params={pet.id} />
-                                            <UpdatePet params={pet} refetchPets={fetchPets} />
-                                            <DeletePet params={pet.id} refetchPets={fetchPets} />
-                                        </div>
-                                    </TableCell>
-                                </TableRow>
-                            ))}
-                        </TableBody>
-                    </Table>
+                    pets.length === 0 ? (
+                        <div>Không có thú cưng nào</div>
+                    ) : (
+                        <Table aria-label="Example static collection table">
+                            <TableHeader>
+                                <TableColumn>Tên thú cưng</TableColumn>
+                                <TableColumn>Loại thú cưng</TableColumn>
+                                <TableColumn>Giới tính</TableColumn>
+                                <TableColumn>Trạng thái</TableColumn>
+                                <TableColumn>Hành động</TableColumn>
+                            </TableHeader>
+                            <TableBody>
+                                {pets.map((pet) => (
+                                    <TableRow key={pet.id}>
+                                        <TableCell>{pet.petName}</TableCell>
+                                        <TableCell>{pet.petType === 'DOG' ? 'Chó' : (pet.petType === 'CAT' ? 'Mèo' : '')}</TableCell>
+                                        <TableCell>{pet.petGender === 'Male' ? 'Đực' : (pet.petGender === 'Female' ? 'Cái' : '')}</TableCell>
+                                        <TableCell>
+                                            {pet.doHaveUpcomingSchedule === true ? (
+                                                <Chip color="success">Đã có lịch đặt</Chip>
+                                            ) : (
+                                                <Chip color="warning">Chưa có lịch đặt</Chip>
+                                            )}
+                                        </TableCell>
+                                        <TableCell>
+                                            <div className="flex items-center gap-4">
+                                                <PetDetail params={pet.id} />
+                                                <UpdatePet params={pet} refetchPets={fetchPets} />
+                                                <DeletePet params={pet.id} refetchPets={fetchPets} />
+                                            </div>
+                                        </TableCell>
+                                    </TableRow>
+                                ))}
+                            </TableBody>
+                        </Table>
+                    )
                 )}
             </div>
+
+
         </div>
     );
 }

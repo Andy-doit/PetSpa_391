@@ -215,11 +215,11 @@ export const fetchAllShopPagination = createAsyncThunk(
         }
     },
 );
-export const fetchAllServiceInfo = createAsyncThunk(
-    'shopOwner/fetchServiceInfo',
+export const fetchAllServiceInfoByShopId = createAsyncThunk(
+    'test/fetchAllServiceInfoByShopId',
     async ({ slug }: { slug: string }) => {
         try {
-            const response = await agent.User.getAllServiceInfor(slug);
+            const response = await agent.User.getAllServiceByShopId(slug);
             return response;
         } catch (error) {
             if (error instanceof AxiosError) {

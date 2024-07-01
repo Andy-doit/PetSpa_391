@@ -23,15 +23,6 @@ export default function PetDetail({ params }: { params: string }) {
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
     const [pet, setPet] = useState<PetInfor | any>();
     const dispatch = useAppDispatch();
-    const [pets, setPets] = useState<allPetPaginationData[]>([]);
-    const fetchPets = async () => {
-        const response = await dispatch(fetchAllPetPagination());
-        setPets(response.payload || []);
-    };
-
-    useEffect(() => {
-        fetchPets();
-    }, [dispatch]);
     useEffect(() => {
         const petDetail = async () => {
             const response = await dispatch(fetchPetInfor({ slug: params }));

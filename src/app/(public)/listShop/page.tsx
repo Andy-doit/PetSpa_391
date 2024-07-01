@@ -1,50 +1,33 @@
 'use client';
-import { Button, Chip, Input, Tooltip } from "@nextui-org/react";
+import { Button, Spinner } from "@nextui-org/react";
 import React, { useEffect, useState } from "react";
 import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell } from "@nextui-org/react";
-import CreatePet from "@/components/createPet/page";
-import getAccessAndRefreshCookie from "@/utilities/authUtils/getCookieForValidation";
-import { FaEye, FaShoppingCart } from "react-icons/fa";
-import { MdChangeCircle, MdDelete } from "react-icons/md";
+import { FaEye } from "react-icons/fa";
 import { useAppDispatch } from "@/lib/redux/store";
-import { allPetPaginationData, allShopPaginationData } from "@/models/userModels";
-import { fetchAllPetPagination, fetchAllShopPagination, fetchShopInfo } from "@/lib/redux/slice/userSlice";
-import PetDetail from "@/components/petDetails/page";
-import DeletePet from "@/components/deletePet/page";
-import UpdatePet from "@/components/updatePet/page";
+import { allShopPaginationData } from "@/models/userModels";
+import { fetchAllShopPagination } from "@/lib/redux/slice/userSlice";
 import Link from "next/link";
 
-export default function ListAllShop(
-
-    { params }: { params: { slug: string } }
-
-) {
+export default function ListAllShop() {
     const dispatch = useAppDispatch();
-    const [pets, setPets] = useState<allShopPaginationData[]>([]);
-    const [userId, setUserId] = useState<string>('');
+    const [shops, setShops] = useState<allShopPaginationData[]>([]);
+    const [loading, setLoading] = useState(true);
 
-    const fetchPets = async () => {
-        const response = await dispatch(fetchAllShopPagination());
-        setPets(response.payload || []);
+    const fetchShops = async () => {
+        setLoading(true);
+        try {
+            const response = await dispatch(fetchAllShopPagination());
+            setShops(response.payload || []);
+        } catch (error) {
+            console.error('Error fetching shops:', error);
+        } finally {
+            setLoading(false);
+        }
     };
 
     useEffect(() => {
-        fetchPets();
+        fetchShops();
     }, [dispatch]);
-
-    useEffect(() => {
-        const fetchUid = async () => {
-            try {
-                const { uid } = await getAccessAndRefreshCookie();
-                if (uid) {
-                    setUserId(uid);
-                }
-            } catch (error) {
-                console.error('Error fetching UID:', error);
-            }
-        };
-        fetchUid();
-    }, []);
 
     return (
         <div className="container py-4 pb-12 flex flex-col gap-6">
@@ -73,8 +56,12 @@ export default function ListAllShop(
                 </div>
             </div>
 
-            <div className="w-[1200px] mx-auto ">
-                {pets.length === 0 ? (
+            <div className="w-[1200px] mx-auto">
+                {loading ? (
+                    <div className="flex justify-center items-center h-40">
+                        <Spinner />
+                    </div>
+                ) : shops.length === 0 ? (
                     <div>Không có shop nào</div>
                 ) : (
                     <Table aria-label="Example static collection table">
@@ -88,30 +75,23 @@ export default function ListAllShop(
                             <TableColumn>Hành động</TableColumn>
                         </TableHeader>
                         <TableBody>
-                            {pets.map((pet) => (
-                                <TableRow key={pet.id}>
-                                    <TableCell>{pet.shopName}</TableCell>
-                                    <TableCell>{pet.shopAddress}</TableCell>
-                                    <TableCell>{pet.shopPhone}</TableCell>
-                                    <TableCell>{pet.shopEmail}</TableCell>
-                                    <TableCell>{pet.nomination}</TableCell>
-                                    <TableCell>{pet.totalServices}</TableCell>
-
+                            {shops.map((shop) => (
+                                <TableRow key={shop.id}>
+                                    <TableCell>{shop.shopName}</TableCell>
+                                    <TableCell>{shop.shopAddress}</TableCell>
+                                    <TableCell>{shop.shopPhone}</TableCell>
+                                    <TableCell>{shop.shopEmail}</TableCell>
+                                    <TableCell>{shop.nomination}</TableCell>
+                                    <TableCell>{shop.totalServices}</TableCell>
                                     <TableCell>
                                         <div className="flex items-center gap-4">
-                                            {/* <Link className="font-medium hover:text-orange-600" color="foreground" href="/viewprofileShop">
-                                                Xem  chi tiết
-                                            </Link> */}
-                                            <Link href={`/viewprofileShop`}>
-                                                {/* <Link href={`/viewprofileShop/${pet?.id}`}> */}
-                                                <Button className="bg-gradient-to-tr from-pink-500 to-yellow-500 text-white shadow-lg w-[350px]">
+                                            <Link href={`/listShop/${shop.id}`}>
+                                                <Button className="bg-gradient-to-tr from-pink-500 to-yellow-500 text-white shadow-lg">
                                                     <FaEye size={20} className="ml-2" />
                                                     Xem chi tiết
                                                 </Button>
                                             </Link>
                                         </div>
-
-
                                     </TableCell>
                                 </TableRow>
                             ))}
