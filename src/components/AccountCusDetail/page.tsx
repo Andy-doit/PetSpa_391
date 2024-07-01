@@ -43,7 +43,7 @@ export default function AccountCusDetail({ params }: { params: string }) {
 
             <Modal size='lg' isOpen={isOpen} onOpenChange={onOpenChange} placement="top-center">
                 <ModalContent>
-                    <ModalHeader className='text-3xl text-orange-600'>Chi Tiết Tài khoản khách h</ModalHeader>
+                    <ModalHeader className='text-3xl text-orange-600'>Chi Tiết Tài khoản khách hàng</ModalHeader>
                     <ModalBody>
                         <div className="flex justify-between">
                             <div className="flex">

@@ -2,20 +2,29 @@
 
 import { useEffect, useState } from 'react';
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure, Tooltip } from "@nextui-org/react";
-import { ServiceInfor } from '@/models/shopModel';
+import { ServiceInfor, allServicePaginationData } from '@/models/shopModel';
 import { useAppDispatch } from '@/lib/redux/store';
 import getAccessAndRefreshCookie from '@/utilities/authUtils/getCookieForValidation';
-import { deleteService } from '@/lib/redux/slice/shopSlice';
+import { deleteService, fetchAllServicePagination } from '@/lib/redux/slice/shopSlice';
 import { ToastContainer, toast } from 'react-toastify';
 import { MdDelete } from 'react-icons/md';
 import 'react-toastify/dist/ReactToastify.css';
 
-export default function ModalDeleteService({ params }: { params: string }) {
+export default function ModalDeleteService({ params, refetchPets }: { params: string, refetchPets: () => void }) {
 
     const [userId, setUserId] = useState<string>('');
     const { isOpen, onOpen, onClose } = useDisclosure();
     console.log(params)
     const dispatch = useAppDispatch();
+    const [service, setService] = useState<allServicePaginationData[]>([]);
+
+    const fetchPets = async () => {
+        const response = await dispatch(fetchAllServicePagination());
+        setService(response.payload || []);
+    };
+    useEffect(() => {
+        fetchPets();
+    }, [dispatch]);
     useEffect(() => {
         const fetchUid = async () => {
             try {
@@ -34,7 +43,10 @@ export default function ModalDeleteService({ params }: { params: string }) {
             if (userId) {
                 await dispatch(deleteService({ slug: params })).unwrap();
                 toast.success("Xoá dịch vụ của shop thành công!", {
-                    onClose: onClose,
+                    onClose: () => {
+                        onClose();
+                        refetchPets();
+                    },
                     autoClose: 1500,
                 });
             }

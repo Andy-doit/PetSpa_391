@@ -27,7 +27,6 @@ export default function DeletePet({ params, refetchPets }: { params: string, ref
         const response = await dispatch(fetchAllPetPagination());
         setPets(response.payload || []);
     };
-
     useEffect(() => {
         fetchPets();
     }, [dispatch]);
