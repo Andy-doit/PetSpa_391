@@ -4,14 +4,14 @@ import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDi
 import { allServicePaginationData, createServiceInput } from "@/models/shopModel";
 import getAccessAndRefreshCookie from "@/utilities/authUtils/getCookieForValidation";
 import { MdChangeCircle } from "react-icons/md";
-import { updateService } from "@/lib/redux/slice/shopSlice";
+import { fetchAllServicePagination, updateService } from "@/lib/redux/slice/shopSlice";
 import { useAppDispatch } from '@/lib/redux/store';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { ClipLoader } from "react-spinners";
 
 
-export default function ModalUpdateServiceProps({ params }: { params: allServicePaginationData }) {
+export default function ModalUpdateServiceProps({ params, refetchPets }: { params: allServicePaginationData, refetchPets: () => void }) {
     const [userId, setUserId] = useState<string>('');
 
     const dispatch = useAppDispatch();
@@ -30,6 +30,15 @@ export default function ModalUpdateServiceProps({ params }: { params: allService
         };
         fetchUid();
     }, [userId]);
+    const [service, setService] = useState<allServicePaginationData[]>([]);
+    useEffect(() => {
+        fetchPets();
+    }, [dispatch]);
+    const fetchPets = async () => {
+        const response = await dispatch(fetchAllServicePagination());
+        setService(response.payload || []);
+    };
+
     useEffect(() => {
         if (userId) {
             setServiceData(prevData => ({
@@ -63,7 +72,10 @@ export default function ModalUpdateServiceProps({ params }: { params: allService
             if (userId) {
                 await dispatch(updateService({ serviceData })).unwrap();
                 toast.success("Cập nhật dịch vụ thành công!", {
-                    onClose: onClose,
+                    onClose: () => {
+                        onClose();
+                        refetchPets();
+                    },
                     autoClose: 1500,
                 });
             }
@@ -84,7 +96,7 @@ export default function ModalUpdateServiceProps({ params }: { params: allService
             <Modal isOpen={isOpen} onClose={onClose} size="4xl" backdrop="blur">
                 <ModalContent className="bg-white rounded-xl p-8 w-full max-w-4xl">
                     <>
-                        <ModalHeader className="flex flex-col gap-1 text-2xl font-bold text-pink-600 mb-4">
+                        <ModalHeader className='text-3xl flex justify-center font-bold bg-gray-300 text-orange-600'>
                             Xem chi tiết dịch vụ
                         </ModalHeader>
                         <ModalBody className="space-y-6">

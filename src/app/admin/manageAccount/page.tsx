@@ -1,5 +1,5 @@
 "use client";
-import { Button, Input, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow } from "@nextui-org/react";
+import { Button, Input, Spinner, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow } from "@nextui-org/react";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { BiUser } from "react-icons/bi";
@@ -16,17 +16,25 @@ import DeleteShop from "@/components/deleteAccount/page";
 export default function ManageAccount() {
     const [shopId, setShopId] = useState<string>('');
     const dispatch = useAppDispatch();
+    const [loading, setLoading] = useState(true);
     const [shop, setShop] = useState<allShopPaginationData[]>([]);
+
+
     useEffect(() => {
-        const allShop = async () => {
-            const response = await dispatch(fetchAllShopPagination());
-            setShop(response.payload || []);
-        }
-        allShop();
+        fetchServices();
     }, [dispatch]);
 
-
-
+    const fetchServices = async () => {
+        setLoading(true); // Start loading
+        try {
+            const response = await dispatch(fetchAllShopPagination());
+            setShop(response.payload || []);
+        } catch (error) {
+            console.error('Error fetching services:', error);
+        } finally {
+            setLoading(false);
+        }
+    };
 
 
     return (
@@ -50,53 +58,60 @@ export default function ManageAccount() {
             </div>
 
             <div className="max-w-[95rem] mx-auto w-full">
-                {shop.length === 0 ? (
-                    <div>Không có shop nào</div>
 
+
+                {loading ? (
+                    <div className="flex justify-center items-center h-40">
+                        <Spinner />
+                    </div>
                 ) : (
-                    <Table aria-label="Example static collection table">
-                        <TableHeader>
+                    shop.length === 0 ? (
+                        <div>Không có shop nào</div>
 
-                            <TableColumn>Tên Shop</TableColumn>
-                            <TableColumn>Email</TableColumn>
-                            <TableColumn>Số điện thoại</TableColumn>
-                            <TableColumn>Status</TableColumn>
-                            <TableColumn>Hành động</TableColumn>
-                        </TableHeader>
-                        <TableBody>
-                            {shop.map((sp) => (
-                                <TableRow key={sp.id}>
-                                    <TableCell>{sp.username}</TableCell>
-                                    <TableCell>{sp.email}</TableCell>
-                                    <TableCell>{sp.phone}</TableCell>
-                                    <TableCell>
-                                        <span
-                                            className={`px-2 py-1 rounded-full text-xs text-white ${sp.status ? 'bg-red-500' : 'bg-green-500'
-                                                }`}
-                                            style={{ opacity: 0.8 }}
-                                        >
-                                            {sp.status ? 'Paused' : 'Active'}
-                                        </span>
-                                    </TableCell>
+                    ) : (
+                        <Table aria-label="Example static collection table">
+                            <TableHeader>
 
-                                    <TableCell>
-                                        <div className="flex items-center gap-4 ">
-                                            <div>
-                                                <AccountDetail params={sp.id} />
+                                <TableColumn>Tên Shop</TableColumn>
+                                <TableColumn>Email</TableColumn>
+                                <TableColumn>Số điện thoại</TableColumn>
+                                <TableColumn>Status</TableColumn>
+                                <TableColumn>Hành động</TableColumn>
+                            </TableHeader>
+                            <TableBody>
+                                {shop.map((sp) => (
+                                    <TableRow key={sp.id}>
+                                        <TableCell>{sp.username}</TableCell>
+                                        <TableCell>{sp.email}</TableCell>
+                                        <TableCell>{sp.phone}</TableCell>
+                                        <TableCell>
+                                            <span
+                                                className={`px-2 py-1 rounded-full text-xs text-white ${sp.status ? 'bg-red-500' : 'bg-green-500'
+                                                    }`}
+                                                style={{ opacity: 0.8 }}
+                                            >
+                                                {sp.status ? 'Paused' : 'Active'}
+                                            </span>
+                                        </TableCell>
+
+                                        <TableCell>
+                                            <div className="flex items-center gap-4 ">
+                                                <div>
+                                                    <AccountDetail params={sp.id} />
+                                                </div>
+
+                                                <div>
+                                                    <DeleteShop params={sp.id} refetchPets={fetchServices} />
+                                                </div>
                                             </div>
-
-                                            <div>
-                                                <DeleteShop params={sp.id} />
-                                            </div>
-                                        </div>
-                                    </TableCell>
-                                </TableRow>
-                            ))}
+                                        </TableCell>
+                                    </TableRow>
+                                ))}
 
 
-                        </TableBody>
-                    </Table>
-
+                            </TableBody>
+                        </Table>
+                    )
                 )}
 
             </div>

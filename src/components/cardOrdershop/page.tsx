@@ -1,5 +1,5 @@
 'use client'
-import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Pagination, getKeyValue, Dropdown, DropdownTrigger, Button, DropdownMenu, DropdownItem, Chip } from "@nextui-org/react";
+import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Pagination, getKeyValue, Dropdown, DropdownTrigger, Button, DropdownMenu, DropdownItem, Chip, Spinner } from "@nextui-org/react";
 import React, { useEffect, useState } from "react";
 import { PiDotsSixVerticalDuotone } from "react-icons/pi";
 import OrderDetail from "../orderDetail/page";
@@ -20,11 +20,20 @@ const orderService = [
 
 export default function CardOrderShop() {
     const dispatch = useAppDispatch();
+    const [loading, setLoading] = useState(true);
     const [items, setItems] = useState<allOrderBookingPaginationData[]>([]);
     useEffect(() => {
+
         const allService = async () => {
-            const response = await dispatch(fetchAllOrderBookingPagination());
-            setItems(response.payload);
+            try {
+                setLoading(true);
+                const response = await dispatch(fetchAllOrderBookingPagination());
+                setItems(response.payload);
+            } catch (error) {
+                console.error('Error fetching services:', error);
+            } finally {
+                setLoading(false);
+            }
 
         }
         allService();
@@ -34,7 +43,7 @@ export default function CardOrderShop() {
         switch (status) {
             case 'COMPLETED':
                 return 'success';
-            case  'CANCELLED':
+            case 'CANCELLED':
                 return 'danger';
             case 'SCHEDULED':
                 return 'warning';
@@ -45,48 +54,54 @@ export default function CardOrderShop() {
 
     return (
         <div>
-            {items.length === 0 ? (
-                <div>Không có lịch đặt hàng nào</div>
-
+            {loading ? (
+                <div className="flex justify-center items-center h-40">
+                    <Spinner />
+                </div>
             ) : (
-                <Table aria-label="Example static collection table ">
-                    <TableHeader>
-                        <TableColumn>Tên dịch vụ</TableColumn>
-                        <TableColumn>Ngày đặt</TableColumn>
-                        <TableColumn>Khung giờ</TableColumn>
-                        <TableColumn>Tên khách hàng</TableColumn>
-                        <TableColumn>Loại thú cưng</TableColumn>
-                        <TableColumn>Trạng thái</TableColumn>
-                        <TableColumn > <span className="sr-only">Action</span></TableColumn>
-                    </TableHeader>
-                    <TableBody>
+                items.length === 0 ? (
+                    <div>Không có lịch đặt hàng nào</div>
+
+                ) : (
+                    <Table aria-label="Example static collection table ">
+                        <TableHeader>
+                            <TableColumn>Tên dịch vụ</TableColumn>
+                            <TableColumn>Ngày đặt</TableColumn>
+                            <TableColumn>Khung giờ</TableColumn>
+                            <TableColumn>Tên khách hàng</TableColumn>
+                            <TableColumn>Loại thú cưng</TableColumn>
+                            <TableColumn>Trạng thái</TableColumn>
+                            <TableColumn > <span className="sr-only">Action</span></TableColumn>
+                        </TableHeader>
+                        <TableBody>
 
 
-                        {items.map((service) => (
-                            <TableRow key={service.id}>
-                                <TableCell>{service.serviceName || "Lỗi"}</TableCell>
-                                <TableCell>{service.localDate || "Lỗi"}</TableCell>
-                                <TableCell>
-                                    {service.timeSlotDto && service.timeSlotDto.startLocalDateTime && service.timeSlotDto.endLocalDateTime ?
-                                        `${service.timeSlotDto.startLocalDateTime} - ${service.timeSlotDto.endLocalDateTime}` :
-                                        "Lỗi"
-                                    }
-                                </TableCell>
-                                <TableCell>{service.customerFullName || "Lỗi"}</TableCell>
-                                <TableCell>{service.petName || "Lỗi"}</TableCell>
-                                <TableCell>
-                                    <Chip color={getColor(service.status)}>{service.status || "Lỗi"}</Chip>
-                                </TableCell>
-                                <TableCell>
-                                    <OrderDetail params={service.id} />
-                                </TableCell>
-                            </TableRow>
-                        ))}
+                            {items.map((service) => (
+                                <TableRow key={service.id}>
+                                    <TableCell>{service.serviceName || "Lỗi"}</TableCell>
+                                    <TableCell>{service.localDate || "Lỗi"}</TableCell>
+                                    <TableCell>
+                                        {service.timeSlotDto && service.timeSlotDto.startLocalDateTime && service.timeSlotDto.endLocalDateTime ?
+                                            `${service.timeSlotDto.startLocalDateTime} - ${service.timeSlotDto.endLocalDateTime}` :
+                                            "Lỗi"
+                                        }
+                                    </TableCell>
+                                    <TableCell>{service.customerFullName || "Lỗi"}</TableCell>
+                                    <TableCell>{service.petName || "Lỗi"}</TableCell>
+                                    <TableCell>
+                                        <Chip color={getColor(service.status)}>{service.status || "Lỗi"}</Chip>
+                                    </TableCell>
+                                    <TableCell>
+                                        <OrderDetail params={service.id} />
+                                    </TableCell>
+                                </TableRow>
+                            ))}
 
 
 
-                    </TableBody>
-                </Table>
+                        </TableBody>
+                    </Table>
+                )
             )}
         </div>
 
