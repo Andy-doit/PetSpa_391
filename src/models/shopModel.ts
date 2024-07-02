@@ -92,7 +92,7 @@ export interface ShopInput {
 
 }
 export interface AllShopTimeSlotIn4 {
-
+    shopId: string,
     id: string,
     startLocalTime: string,
     endLocalTime: string,
@@ -101,6 +101,16 @@ export interface AllShopTimeSlotIn4 {
     availableSlot: number,
     usedSlot: number,
     status: boolean,
+
+}
+export interface CreateShopTimeSlotInput {
+
+
+    shopId: string,
+    timeSlotId: string,
+    description: string,
+    totalSlot: string,
+
 
 }
 

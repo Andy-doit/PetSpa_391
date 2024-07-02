@@ -23,6 +23,7 @@ export default function ManageAccount() {
         try {
             const response = await dispatch(fetchAllShopPagination());
             setShop(response.payload || []);
+            
         } catch (error) {
             console.error('Error fetching services:', error);
         } finally {

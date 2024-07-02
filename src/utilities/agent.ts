@@ -2,7 +2,7 @@ import { AxiosResponse } from "axios";
 import apiJWT from "./api";
 import baseApi from "./baseApi";
 import { createBookingInput } from "@/models/bookingModels";
-import { ShopInput, createServiceInput } from '@/models/shopModel';
+import { CreateShopTimeSlotInput, ShopInput, createServiceInput } from '@/models/shopModel';
 import { CancelBookingInput, createFeedbackInput, createPetInput, updatePasswordInput, updateProfileInput } from "@/models/userModels";
 import { AccountInput, ShopInfor } from "@/models/adminModel";
 
@@ -46,7 +46,11 @@ const ShopOnwer = {
   getAllService: () =>
     requests.get("/api/v1/service/all/auth"),
   getShopTimeSlot: () =>
-    requests.get("api/v1/shop-timeslot/atuh"),
+    requests.get("/api/v1/shop-timeslot/atuh/all/auth"),
+  postCreateShopTimeSlot: (input: CreateShopTimeSlotInput) =>
+    requests.baseApiPost("api/v1/shop-timeslot/atuh", input),
+  deleteShpTimeSlot: () =>
+    requests.baseApiDelete("api/v1/shop-timeslot/atuh"),
   postCreateService: (input: createServiceInput) =>
     requests.baseApiPost("api/v1/service", input),
   getAllOrderBooking: () =>

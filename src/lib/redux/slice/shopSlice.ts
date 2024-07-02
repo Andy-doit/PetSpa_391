@@ -1,6 +1,6 @@
 
 
-import { AllShopTimeSlotIn4Response, ShopInput, allOrderBookingPaginationResponse, createServiceInput, serviceCreateResponseSuccess, shopCreateResponseSuccess, updatePasswordInputResponseSuccess, updatePasswordShopInput } from "@/models/shopModel";
+import { AllShopTimeSlotIn4Response, CreateShopTimeSlotInput, ShopInput, allOrderBookingPaginationResponse, createServiceInput, serviceCreateResponseSuccess, shopCreateResponseSuccess, updatePasswordInputResponseSuccess, updatePasswordShopInput } from "@/models/shopModel";
 import agent from "@/utilities/agent";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { AxiosError } from "axios";
@@ -221,6 +221,20 @@ export const fetchAllShopTimeSlotPagination = createAsyncThunk(
             }
         }
     },
+);
+export const createShopTimeSlot = createAsyncThunk(
+    'shopOnwer/createShopTimeSlot',
+    async ({ timeSlotData }: { timeSlotData: CreateShopTimeSlotInput }) => {
+        try {
+            const response = await agent.ShopOnwer.postCreateShopTimeSlot(timeSlotData);
+            return response.data as shopCreateResponseSuccess;
+        } catch (error) {
+            if (error instanceof AxiosError) {
+                throw error.response?.data.error.message || "An error occurred";
+            }
+            throw error;
+        }
+    }
 );
 const shopSlice = createSlice({
     name: 'shop',

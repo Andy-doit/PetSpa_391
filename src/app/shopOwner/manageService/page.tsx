@@ -1,5 +1,5 @@
 'use client'
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FcPlus } from "react-icons/fc";
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, Input, Select, SelectItem, Textarea, useDisclosure, Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Spinner } from "@nextui-org/react";
 import { allServicePaginationData } from "@/models/shopModel";
@@ -18,7 +18,7 @@ const ManageService = () => {
     const [service, setService] = useState<allServicePaginationData[]>([]);
 
     const fetchServices = async () => {
-        setLoading(true); // Start loading
+        setLoading(true);
         try {
             const response = await dispatch(fetchAllServicePagination());
             setService(response.payload || []);
@@ -47,7 +47,6 @@ const ManageService = () => {
 
         fetchUid();
     }, []);
-
 
     return (
         <div className="lg:px-6 max-w-[95rem] w-full flex flex-col gap-4">
