@@ -77,7 +77,7 @@ export interface shopInfor {
 
 }
 export interface ShopInput {
-    userId: string,
+
     id: string,
     shopName: string,
     shopAddress: string,
@@ -90,6 +90,28 @@ export interface ShopInput {
     shopEmail: string,
     shopTitle: string,
 
+}
+export interface AllShopTimeSlotIn4 {
+
+    id: string,
+    startLocalTime: string,
+    endLocalTime: string,
+    description: string,
+    totalSlot: number,
+    availableSlot: number,
+    usedSlot: number,
+    status: boolean,
+
+}
+
+export interface AllShopTimeSlotIn4Response {
+    success: boolean;
+    status: number;
+    data: {
+        data: AllShopTimeSlotIn4[];
+        totalCount: number;
+        pageCount: number;
+    };
 }
 export interface shopCreateResponseSuccess {
     status: number;
@@ -104,18 +126,18 @@ export interface updatePasswordInputResponseSuccess {
 }
 export interface updatePasswordShopInput {
     id: string,
-    oldPassword: string| undefined | null ,
-    newPassword: string| undefined | null,
-    confirmPassword: string| undefined | null,
+    oldPassword: string | undefined | null,
+    newPassword: string | undefined | null,
+    confirmPassword: string | undefined | null,
 
 }
 export interface passwordShopInfor {
     id: string,
     firstName: string,
     lastName: string,
-    oldPassword: string| undefined | null ,
-    newPassword: string| undefined | null,
-    confirmPassword: string| undefined | null,
+    oldPassword: string | undefined | null,
+    newPassword: string | undefined | null,
+    confirmPassword: string | undefined | null,
 
 
 }

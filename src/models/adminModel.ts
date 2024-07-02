@@ -41,7 +41,7 @@ export interface allShopPaginationData {
 export interface ShopInfor {
     slug: string | undefined | null,
     id: string | undefined | null,
-    firstname: string | undefined | null,
+    firstName: string | undefined | null,
     lastName: string | undefined | null,
     email: string | undefined | null,
     username: string | undefined | null,

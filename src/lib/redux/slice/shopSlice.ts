@@ -1,6 +1,6 @@
 
 
-import { ShopInput, allOrderBookingPaginationResponse, createServiceInput, serviceCreateResponseSuccess, shopCreateResponseSuccess, updatePasswordInputResponseSuccess, updatePasswordShopInput } from "@/models/shopModel";
+import { AllShopTimeSlotIn4Response, ShopInput, allOrderBookingPaginationResponse, createServiceInput, serviceCreateResponseSuccess, shopCreateResponseSuccess, updatePasswordInputResponseSuccess, updatePasswordShopInput } from "@/models/shopModel";
 import agent from "@/utilities/agent";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { AxiosError } from "axios";
@@ -10,6 +10,10 @@ export interface ShopState {
     allOrderBookingFetchingStatus: string;
     allOrderBookingFetchingError: boolean;
     allOrderBookingFetchingLoading: boolean;
+    allShopTimeSlotPagination: AllShopTimeSlotIn4Response | null | undefined;
+    allShopTimeSlotFetchingStatus: string;
+    allShopTimeSlotFetchingError: boolean;
+    allShopTimeSlotFetchingLoading: boolean;
     returnedData: any;
     returnedDataStatus: string;
     returnedDataError: boolean;
@@ -25,6 +29,10 @@ const initialState: ShopState = {
     allOrderBookingFetchingStatus: 'idle',
     allOrderBookingFetchingError: false,
     allOrderBookingFetchingLoading: false,
+    allShopTimeSlotPagination: null,
+    allShopTimeSlotFetchingStatus: 'idle',
+    allShopTimeSlotFetchingError: false,
+    allShopTimeSlotFetchingLoading: false,
     returnedData: null,
     returnedDataStatus: 'idle',
     returnedDataError: false,
@@ -135,7 +143,7 @@ export const patchPasswordShopProfile = createAsyncThunk(
     async ({ profileData }: { profileData: updatePasswordShopInput }) => {
         try {
             const response = (await agent.ShopOnwer.updatepasswordShopInfor(
-                profileData   ,
+                profileData,
             )) as updatePasswordInputResponseSuccess;
             return response.message;
         } catch (error) {
@@ -197,6 +205,23 @@ export const updateService = createAsyncThunk(
         }
     },
 );
+export const fetchAllShopTimeSlotPagination = createAsyncThunk(
+    'shopOwner/fetchAllShopTimeSlotPagination',
+    async () => {
+        try {
+            const response = await agent.ShopOnwer.getShopTimeSlot();
+            return response;
+
+        } catch (error) {
+            if (error instanceof AxiosError) {
+                return {
+                    message: error.response?.data.error.message,
+                    status: error.response?.status,
+                };
+            }
+        }
+    },
+);
 const shopSlice = createSlice({
     name: 'shop',
     initialState,
@@ -233,7 +258,20 @@ const shopSlice = createSlice({
                 state.allOrderBookingFetchingError = true;
                 state.allOrderBookingFetchingLoading = false;
             });
-
+        builder.addCase(fetchAllShopTimeSlotPagination.pending, (state) => {
+            state.allShopTimeSlotFetchingLoading = true;
+            state.allShopTimeSlotFetchingStatus = 'loading';
+        });
+        builder.addCase(fetchAllShopTimeSlotPagination.fulfilled, (state, action) => {
+            state.allShopTimeSlotPagination = action.payload;
+            state.allShopTimeSlotFetchingLoading = false;
+        });
+        builder
+            .addCase(fetchAllShopTimeSlotPagination.rejected, (state) => {
+                state.allShopTimeSlotFetchingStatus = 'failed';
+                state.allShopTimeSlotFetchingError = true;
+                state.allShopTimeSlotFetchingLoading = false;
+            });
 
     },
 });
