@@ -130,7 +130,7 @@ export default function Profile() {
                 <div className='container mt-4'
                 >
                     <Tabs className="flex justify-center">
-                       
+
                         <Tab className='flex justify-center' key="password" title="Mật khẩu">
                             <Card className='w-[550px] p-4'
                                 style={{
@@ -153,11 +153,11 @@ export default function Profile() {
                                     </div>
                                     <div className="space-y-1">
                                         <p >Mật khẩu mới</p>
-                                        <Input  disabled={!isEditing} type='password' onChange={(e) => handleInputChange('newPassword', e.target.value)}/>
+                                        <Input disabled={!isEditing} type='password' onChange={(e) => handleInputChange('newPassword', e.target.value)} />
                                     </div>
                                     <div className="space-y-1">
                                         <p >Xác nhận mật khẩu</p>
-                                        <Input  disabled={!isEditing} type='password'onChange={(e) => handleInputChange('confirmPassword', e.target.value)} />
+                                        <Input disabled={!isEditing} type='password' onChange={(e) => handleInputChange('confirmPassword', e.target.value)} />
                                     </div>
                                 </CardBody>
                                 {isEditing && (
