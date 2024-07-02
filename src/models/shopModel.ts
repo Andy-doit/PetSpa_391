@@ -77,8 +77,8 @@ export interface shopInfor {
 
 }
 export interface ShopInput {
-
     id: string,
+    userId: string,
     shopName: string,
     shopAddress: string,
     shopPhone: string,
