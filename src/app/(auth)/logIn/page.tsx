@@ -56,6 +56,15 @@ export default function Login() {
                 username: value.username,
                 password: value.password,
             });
+
+            toast.success("Đăng nhập thành công! Bạn sẽ chuyển đến trang chủ trong giây lát...", {
+                onClose: () => {
+                    setTimeout(() => {
+                        router.replace('/logIn');
+                    }, 2000);
+                },
+                autoClose: 1000,
+            });
             const decodeToken = jwtDecode(data.token) as roleJwt;
             console.log(decodeToken)
             const expirationTime = Math.floor(Date.now() / 1000) + (20 * 60);
@@ -79,6 +88,7 @@ export default function Login() {
             }
             localStorage.setItem("token", data.token);
         } catch (error) {
+            toast.error("Đăng ký không thành công. Vui lòng thử lại.");
             if (error instanceof AxiosError) {
                 const errorResponse = error?.response?.data?.error?.message;
                 if (errorResponse in LoginError) {
