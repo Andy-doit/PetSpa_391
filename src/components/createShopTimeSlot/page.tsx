@@ -1,5 +1,17 @@
 import React, { useEffect, useState } from "react";
-import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure, Divider, Select, SelectItem, Input } from "@nextui-org/react";
+import {
+    Modal,
+    ModalContent,
+    ModalHeader,
+    ModalBody,
+    ModalFooter,
+    Button,
+    useDisclosure,
+    Divider,
+    Select,
+    SelectItem,
+    Input
+} from "@nextui-org/react";
 import { FaPlus } from "react-icons/fa";
 import { CreateShopTimeSlotInput } from "@/models/shopModel";
 import { useAppDispatch } from "@/lib/redux/store";
@@ -7,33 +19,34 @@ import { createShopTimeSlot } from "@/lib/redux/slice/shopSlice";
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { ClipLoader } from "react-spinners";
+import Cookies from 'js-cookie'; // Import js-cookie
 
-export default function CreateShopTimeSlot({ shopIds, refetchTimes }: { shopIds: string, refetchTimes: () => void }) {
+export default function CreateShopTimeSlot({ refetchTimes }: { refetchTimes: () => void }) {
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
-    console.log(shopIds);
     const [isLoading, setIsLoading] = useState(false);
     const [timeSlotData, setTimeSlot] = useState<CreateShopTimeSlotInput>({
-
-        shopId: shopIds,
+        shopId: '',
         timeSlotId: '',
         description: '',
         totalSlot: '',
     });
     useEffect(() => {
-        // Update the shopId when the prop changes
-        setTimeSlot(prevData => ({
-            ...prevData,
-            shopId: shopIds
-        }));
-    }, [shopIds]);
+        const shopId = Cookies.get('shopId'); // Get shopId from cookies
+        if (shopId) {
+            setTimeSlot(prevData => ({
+                ...prevData,
+                shopId: shopId,
+            }));
+        }
+    }, []);
     const dispatch = useAppDispatch();
-    console.log(timeSlotData);
     const handleInputChange = (fieldName: string, newValue: string) => {
         setTimeSlot(prevData => ({
             ...prevData,
             [fieldName]: newValue
         }));
     };
+
     const handleCreate = async () => {
         setIsLoading(true);
         try {
@@ -52,6 +65,7 @@ export default function CreateShopTimeSlot({ shopIds, refetchTimes }: { shopIds:
             setIsLoading(false);
         }
     };
+
     return (
         <>
             <Button
@@ -72,7 +86,9 @@ export default function CreateShopTimeSlot({ shopIds, refetchTimes }: { shopIds:
                                     backgroundImage: `url("https://i.pinimg.com/564x/13/2e/53/132e53913e121bd14ee6a51d6b55300d.jpg")`,
                                 }}
                             >
-                                <Select label="Chọn khung giờ" className="w-full"
+                                <Select
+                                    label="Chọn khung giờ"
+                                    className="w-full"
                                     onChange={(e) => handleInputChange('timeSlotId', e.target.value)}
                                 >
                                     <SelectItem key="1">8:00 - 9:30</SelectItem>
@@ -81,12 +97,6 @@ export default function CreateShopTimeSlot({ shopIds, refetchTimes }: { shopIds:
                                     <SelectItem key="4">12:30 - 14:00</SelectItem>
                                     <SelectItem key="5">14:00 - 15:30</SelectItem>
                                     <SelectItem key="6">15:30 - 17:00</SelectItem>
-                                    <SelectItem key="7">9:00 - 10:30</SelectItem>
-                                    <SelectItem key="8">10:30 - 12:00</SelectItem>
-                                    <SelectItem key="9">12:00 - 13:30</SelectItem>
-                                    <SelectItem key="10">13:30 - 15:00</SelectItem>
-                                    <SelectItem key="11">15:00 - 16:30</SelectItem>
-
                                 </Select>
                                 <Input onChange={(e) => handleInputChange('totalSlot', e.target.value)} placeholder="Slot tối đa" type="number" size="lg" />
                                 <Input placeholder="Mô tả" size="lg" onChange={(e) => handleInputChange('description', e.target.value)} />

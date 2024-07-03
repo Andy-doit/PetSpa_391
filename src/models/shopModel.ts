@@ -103,8 +103,6 @@ export interface AllShopTimeSlotIn4 {
 
 }
 export interface CreateShopTimeSlotInput {
-
-
     shopId: string,
     timeSlotId: string,
     description: string,
@@ -153,7 +151,7 @@ export interface passwordShopInfor {
 export interface allServicePaginationData {
     id: string,
     serviceName: string,
-    serviceCategoryId: number,
+    categoryId: number,
     serviceDescription: string,
     price: number,
     minWeight: number,
