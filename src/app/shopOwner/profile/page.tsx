@@ -1,57 +1,52 @@
 'use client'
-import { Avatar, Button, Card, CardBody, CardFooter, CardHeader, Divider, Image, Input, Textarea } from "@nextui-org/react";
-import { FaDoorClosed, FaDoorOpen, FaStar } from "react-icons/fa";
-import { MdClose, MdHomeRepairService, MdMenuOpen, MdOnlinePrediction, MdOpenInNew, MdOpenWith, MdOutlinePerson } from "react-icons/md";
-import { Tabs, Tab } from "@nextui-org/react";
-
-import { BiEdit } from 'react-icons/bi'
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from 'react';
+import {
+    Avatar,
+    Card,
+    CardBody,
+    CardFooter,
+    CardHeader,
+    Divider,
+    Input,
+    Tabs,
+    Tab,
+} from "@nextui-org/react";
 import { useAppDispatch } from "@/lib/redux/store";
 import { fetchShopInforPagination } from "@/lib/redux/slice/shopSlice";
 import { shopInfor } from "@/models/shopModel";
-import AddShop from "@/components/createShop/page";
-import CreateShop from "@/components/createbyShop/page";
 import getAccessAndRefreshCookie from "@/utilities/authUtils/getCookieForValidation";
-import UpadteProfileShop from "@/components/updateProfileShop/page";
-
+import UpdateProfileShop from "@/components/updateProfileShop/page";
+import CreateShop from "@/components/createbyShop/page";
 
 export default function Profile() {
     const dispatch = useAppDispatch();
+    const [loading, setLoading] = useState(true);
     const [userId, setUserId] = useState<string>('');
-    const [isEditing, setIsEditing] = useState(false);
-    const [items, setItems] = useState<shopInfor>();
-    useEffect(() => {
-        const fetchUid = async () => {
-            try {
-                const { uid } = await getAccessAndRefreshCookie();
-                if (uid) {
-                    setUserId(uid);
-                }
-            } catch (error) {
-                console.error('Error fetching UID:', error);
+    const [items, setItems] = useState<shopInfor | null>(null);
+
+    const fetchData = async () => {
+        setLoading(true);
+        try {
+            const { uid } = await getAccessAndRefreshCookie();
+            if (uid) {
+                setUserId(uid);
             }
-        };
-        fetchUid();
-    }, [userId]);
+
+            const response = await dispatch(fetchShopInforPagination());
+            if (response.payload) {
+                setItems(response.payload);
+            }
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        } finally {
+            setLoading(false);
+        }
+    };
 
     useEffect(() => {
-        const allService = async () => {
-            const response = await dispatch(fetchShopInforPagination());
-            setItems(response.payload);
-
-        }
-        allService();
+        fetchData();
     }, [dispatch]);
-    console.log(items);
-    const handleEditClick = () => {
-        setIsEditing(true);
-    };
-    const handleSaveClick = () => {
-        setIsEditing(false);
-    };
-    const handleCancelClick = () => {
-        setIsEditing(false);
-    };
+
     return (
         <>
             <div className="container mt-5">
@@ -106,9 +101,8 @@ export default function Profile() {
                 <div className="relative">
                     <div className='flex justify-end '>
                         <div className=' absolute mt-2' >
-
                             {items ? (
-                                <UpadteProfileShop params={items} />
+                                <UpdateProfileShop params={items} onUpdate={fetchData} />
                             ) : (
                                 <CreateShop userId={userId} />
                             )}
@@ -137,28 +131,19 @@ export default function Profile() {
                                     <CardBody className="space-y-2">
                                         <div className="space-y-1">
                                             <p >Email</p>
-                                            <Input id="email" disabled={!isEditing} defaultValue={items?.shopEmail} />
+                                            <Input id="email" disabled defaultValue={items?.shopEmail} />
                                         </div>
                                         <div className="space-y-1">
                                             <p >Số điện thoại</p>
-                                            <Input id="phone" disabled={!isEditing} defaultValue={items?.shopPhone} />
+                                            <Input id="phone" disabled defaultValue={items?.shopPhone} />
                                         </div>
                                     </CardBody>
-                                    {isEditing && (
-                                        <CardFooter>
-                                            <Button color="success" onClick={handleSaveClick}>Lưu</Button>
-                                            <Button className="ml-5" onClick={handleCancelClick}>Huỷ</Button>
-                                        </CardFooter>
-                                    )}
                                 </Card>
                             </Tab>
-
                         </Tabs>
                     </div>
                 </div>
-
-
             </div>
         </>
-    )
+    );
 }

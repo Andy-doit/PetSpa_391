@@ -1,3 +1,4 @@
+"use client"
 import React, { useEffect, useState } from "react";
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure, Input, TimeInput, Textarea, Divider, TimeInputValue } from "@nextui-org/react";
 import { ShopInput, shopInfor } from "@/models/shopModel";
@@ -7,24 +8,14 @@ import getAccessAndRefreshCookie from "@/utilities/authUtils/getCookieForValidat
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-export default function UpadteProfileShop({ params }: { params: shopInfor }) {
+export default function UpdateProfileShop({ params, onUpdate }: { params: shopInfor, onUpdate: () => void }) {
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
     const [isLoading, setIsLoading] = useState(false);
-    const [shopData, setShopData] = useState<ShopInput>({
-        id: params.id,
-        userId: '',
-        shopName: params.shopName,
-        shopAddress: params.shopAddress,
-        shopPhone: params.shopPhone,
-        area: params.area,
-        shopDescription: params.shopDescription,
-        openTime: params.openTime,
-        closeTime: params.closeTime,
-        isAvailable: params.isAvailable,
-        shopEmail: params.shopEmail,
-        shopTitle: params.shopTitle,
-    });
+    const [isEditing, setIsEditing] = useState(false);
+    const [originalShopData, setOriginalShopData] = useState<ShopInput>(params);
+    const [shopData, setShopData] = useState<ShopInput>(params);
     const [userId, setUserId] = useState<string>('');
+
     useEffect(() => {
         const fetchUid = async () => {
             try {
@@ -37,8 +28,8 @@ export default function UpadteProfileShop({ params }: { params: shopInfor }) {
             }
         };
         fetchUid();
-    }, [userId]);
-    console.log(shopData)
+    }, []);
+
     const dispatch = useAppDispatch();
 
     const handleInputChange = (fieldName: string, newValue: string) => {
@@ -47,6 +38,7 @@ export default function UpadteProfileShop({ params }: { params: shopInfor }) {
             [fieldName]: newValue
         }));
     };
+
     const handleOpenTimeChange = (time: TimeInputValue) => {
         const formattedTime = `${String(time.hour).padStart(2, '0')}:${String(time.minute).padStart(2, '0')}`;
         setShopData(prevData => ({
@@ -62,26 +54,41 @@ export default function UpadteProfileShop({ params }: { params: shopInfor }) {
             closeTime: formattedTime,
         }));
     };
+
+    const handleEditClick = () => {
+        setIsEditing(true);
+    };
+
+    const handleCancelClick = () => {
+        setIsEditing(false);
+        setShopData(originalShopData);
+    };
+
     const handleUpdate = async () => {
         setIsLoading(true);
         try {
             if (userId) {
-                console.log('Sending shopData:', shopData);
                 await dispatch(updateShopInfor({ shopData })).unwrap();
-                toast.success("Tạo shop thành công!", {
+                toast.success("Cập nhật thông tin shop thành công!", {
                     onClose: onOpenChange,
                     autoClose: 1500,
                 });
+                onUpdate(); // Fetch data again after updating
+                setOriginalShopData(shopData); // Update the original data to reflect changes
+                setIsEditing(false);
             }
         } catch (error) {
-            console.error('Error creating shop:', error);
-            toast.error("Đã xảy ra lỗi khi tạo shop. Vui lòng thử lại sau!");
+            console.error('Error updating shop:', error);
+            toast.error("Đã xảy ra lỗi khi cập nhật thông tin shop. Vui lòng thử lại sau!");
+        } finally {
+            setIsLoading(false);
         }
     };
+
     return (
         <>
-            <Button onPress={onOpen} >Chỉnh sửa thông tin</Button>
-            <Modal size="2xl" isOpen={isOpen} onOpenChange={onOpenChange} isDismissable={false} isKeyboardDismissDisabled={true}>
+            <Button onPress={handleEditClick} >Chỉnh sửa thông tin</Button>
+            <Modal size="2xl" isOpen={isEditing} onOpenChange={onOpenChange} isDismissable={false} isKeyboardDismissDisabled={true}>
                 <ModalContent>
                     {(onClose) => (
                         <>
@@ -95,7 +102,7 @@ export default function UpadteProfileShop({ params }: { params: shopInfor }) {
                                             <div className="mr-4">
                                                 <Input
                                                     type="text"
-                                                    defaultValue={params.shopName}
+                                                    defaultValue={shopData.shopName}
                                                     onChange={(e) => handleInputChange('shopName', e.target.value)}
                                                     label="Tên shop"
                                                     className="w-[250px]"
@@ -104,7 +111,7 @@ export default function UpadteProfileShop({ params }: { params: shopInfor }) {
                                             <div className="ml-4">
                                                 <Input
                                                     type="text"
-                                                    defaultValue={params.shopTitle}
+                                                    defaultValue={shopData.shopTitle}
                                                     label="Tiêu đề"
                                                     onChange={(e) => handleInputChange('shopTitle', e.target.value)}
                                                     className="w-[250px]"
@@ -115,7 +122,7 @@ export default function UpadteProfileShop({ params }: { params: shopInfor }) {
                                             <div className="mr-4">
                                                 <Input
                                                     type="text"
-                                                    defaultValue={params.shopTitle}
+                                                    defaultValue={shopData.shopAddress}
                                                     label="Địa chỉ"
                                                     onChange={(e) => handleInputChange('shopAddress', e.target.value)}
                                                     className="w-[250px]"
@@ -124,7 +131,7 @@ export default function UpadteProfileShop({ params }: { params: shopInfor }) {
                                             <div className="ml-4">
                                                 <Input
                                                     type="text"
-                                                    defaultValue={params.area}
+                                                    defaultValue={shopData.area}
                                                     label="Khu vực"
                                                     onChange={(e) => handleInputChange('area', e.target.value)}
                                                     className="w-[250px]"
@@ -135,7 +142,7 @@ export default function UpadteProfileShop({ params }: { params: shopInfor }) {
                                             <div className="mr-4">
                                                 <Input
                                                     type="email"
-                                                    defaultValue={params.shopEmail}
+                                                    defaultValue={shopData.shopEmail}
                                                     onChange={(e) => handleInputChange('shopEmail', e.target.value)}
                                                     label="Email"
                                                     className="w-[250px]"
@@ -144,7 +151,7 @@ export default function UpadteProfileShop({ params }: { params: shopInfor }) {
                                             <div className="ml-4">
                                                 <Input
                                                     type="number"
-                                                    defaultValue={params.shopPhone}
+                                                    defaultValue={shopData.shopPhone}
                                                     onChange={(e) => handleInputChange('shopPhone', e.target.value)}
                                                     label="Số điện thoại"
                                                     className="w-[250px]"
@@ -155,7 +162,6 @@ export default function UpadteProfileShop({ params }: { params: shopInfor }) {
                                             <div className="mr-4">
                                                 <TimeInput
                                                     label="Giờ mở cửa"
-
                                                     onChange={handleOpenTimeChange}
                                                     hourCycle={24}
                                                     className="w-[250px]"
@@ -174,7 +180,7 @@ export default function UpadteProfileShop({ params }: { params: shopInfor }) {
                                             <div className="w-full">
                                                 <Textarea
                                                     type="text"
-                                                    defaultValue={params.shopDescription}
+                                                    defaultValue={shopData.shopDescription}
                                                     onChange={(e) => handleInputChange('shopDescription', e.target.value)}
                                                     label="Mô tả"
                                                     className="w-full"
@@ -187,7 +193,7 @@ export default function UpadteProfileShop({ params }: { params: shopInfor }) {
 
                             <Divider />
                             <ModalFooter className="flex justify-around">
-                                <Button className="w-1/2" onPress={onClose}>
+                                <Button className="w-1/2" onPress={handleCancelClick}>
                                     Huỷ
                                 </Button>
                                 <Button className="w-1/2 bg-gradient-to-tr from-pink-500 to-yellow-500 text-white shadow-lg" radius="lg" onClick={handleUpdate}>

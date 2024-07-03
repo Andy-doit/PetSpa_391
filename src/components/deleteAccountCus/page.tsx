@@ -1,9 +1,8 @@
 'use client'
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import {
     Button,
     Modal,
-    ModalBody,
     ModalContent,
     ModalFooter,
     ModalHeader,
@@ -13,56 +12,28 @@ import {
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useAppDispatch } from '@/lib/redux/store';
-import { PetInfor } from '@/models/userModels';
 import { MdDelete } from 'react-icons/md';
-import { deletePet } from '@/lib/redux/slice/userSlice';
-import getAccessAndRefreshCookie from '@/utilities/authUtils/getCookieForValidation';
-import { CusInfor, ShopInfor, allCusPaginationData } from '@/models/adminModel';
-import { deleteCus, deleteShop, fetchAllCusPagination } from '@/lib/redux/slice/adminSlice';
+import { deleteCus } from '@/lib/redux/slice/adminSlice';
 
-export default function DeleteCus({ params, refetchPets }: { params: string, refetchPets: () => void }) {
+export default function DeleteCus({ params, refetchCustomers }: { params: string, refetchCustomers: () => void }) {
     const { isOpen, onOpen, onClose } = useDisclosure();
-    const [shop, setShop] = useState<CusInfor | any>();
     const dispatch = useAppDispatch();
-    const [shopId, setShopId] = useState<string>('');
-    useEffect(() => {
-        const fetchUid = async () => {
-            try {
-                const { uid } = await getAccessAndRefreshCookie();
-                if (uid) {
-                    setShopId(uid);
-                }
-            } catch (error) {
-                console.error('Error fetching UID:', error);
-            }
-        };
-        fetchUid();
-    }, [shopId]);
-    const handleDetete = async () => {
+
+    const handleDelete = async () => {
         try {
-            if (shopId) {
-                await dispatch(deleteCus({ slug: params })).unwrap();
-                toast.success("Xoá tài khoản shop thành công!", {
-                    onClose: () => {
-                        onClose();
-                        refetchPets();
-                    },
-                    autoClose: 1500,
-                });
-            }
+            await dispatch(deleteCus({ slug: params })).unwrap();
+            toast.success("Xoá tài khoản khách hàng thành công!", {
+                onClose: () => {
+                    onClose();
+                    refetchCustomers();
+                },
+                autoClose: 1500,
+            });
         } catch (error) {
-            console.error('Error creating service:', error);
+            console.error('Error deleting customer:', error);
             toast.error("Đã xảy ra lỗi khi xoá tài khoản. Vui lòng thử lại sau!");
         }
     };
-    const [service, setService] = useState<allCusPaginationData[]>([]);
-    const fetchPets = async () => {
-        const response = await dispatch(fetchAllCusPagination());
-        setService(response.payload || []);
-    };
-    useEffect(() => {
-        fetchPets();
-    }, [dispatch]);
 
     return (
         <div>
@@ -79,7 +50,7 @@ export default function DeleteCus({ params, refetchPets }: { params: string, ref
                         <Button color="danger" variant="light" onClick={onClose}>
                             Close
                         </Button>
-                        <Button color="primary" onClick={handleDetete} >
+                        <Button color="primary" onClick={handleDelete}>
                             Xoá
                         </Button>
                     </ModalFooter>
@@ -87,8 +58,5 @@ export default function DeleteCus({ params, refetchPets }: { params: string, ref
             </Modal>
             <ToastContainer />
         </div>
-
     );
 };
-
-

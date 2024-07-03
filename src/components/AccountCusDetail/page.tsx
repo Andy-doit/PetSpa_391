@@ -1,5 +1,5 @@
 'use client'
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import {
     Button,
     Modal,
@@ -13,7 +13,7 @@ import {
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-import { FaEye, FaPlus } from 'react-icons/fa';
+import { FaEye } from 'react-icons/fa';
 
 import { useAppDispatch } from '@/lib/redux/store';
 import { CusInfor } from '@/models/adminModel';
@@ -21,24 +21,32 @@ import { fetchShopInfor } from '@/lib/redux/slice/adminSlice';
 
 export default function AccountCusDetail({ params }: { params: string }) {
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
-    const [shop, setShop] = useState<CusInfor | any>();
+    const [customer, setCustomer] = useState<CusInfor | null>(null);
     const dispatch = useAppDispatch();
-    useEffect(() => {
-        const petDetail = async () => {
+
+    const fetchCustomerDetails = async () => {
+        try {
             const response = await dispatch(fetchShopInfor({ slug: params }));
             if (response.payload) {
-                setShop(response.payload);
+                setCustomer(response.payload);
             }
-        };
-        petDetail();
-    }, [dispatch, params]);
+        } catch (error) {
+            console.error('Error fetching customer details:', error);
+            toast.error('Failed to fetch customer details.');
+        }
+    };
+
+    const handleOpen = () => {
+        fetchCustomerDetails();
+        onOpen();
+    };
+
     return (
         <div>
             <Tooltip content="Xem chi tiết">
-                <Button color="warning" variant="faded" isIconOnly onPress={onOpen}>
+                <Button color="warning" variant="faded" isIconOnly onPress={handleOpen}>
                     <FaEye size={20} />
                 </Button>
-
             </Tooltip>
 
             <Modal size='lg' isOpen={isOpen} onOpenChange={onOpenChange} placement="top-center">
@@ -53,31 +61,31 @@ export default function AccountCusDetail({ params }: { params: string }) {
                                     <p className="text-xl font-light">Email</p>
                                     <p className="text-xl font-light">Tên người dùng</p>
                                     <p className="text-xl font-light">Số điện thoại</p>
-                                    <p className="text-xl font-light">Ngày  Sinh</p>
+                                    <p className="text-xl font-light">Ngày Sinh</p>
                                     <p className="text-xl font-light">Status</p>
-
                                 </div>
                                 <div className="ml-20">
-                                    {shop ? (
+                                    {customer ? (
                                         <>
-                                            <p className="text-xl font-medium">{shop.firstName || "Không có gì"}</p>
-                                            <p className="text-xl font-medium">{shop.lastName || "Không có gì"}</p>
-                                            <p className="text-xl font-medium">{shop.email || "Không có gì"}</p>
-                                            <p className="text-xl font-medium">{shop.username || "Không có gì"}</p>
-                                            <p className="text-xl font-medium">{shop.phone || "Không có gì"}</p>
-                                            <p className="text-xl font-medium">{shop.birthday || "Không có gì"}</p>
-                                            <p className="text-xl font-medium">{shop.status ? "Paused" : "Active"}</p>
+                                            <p className="text-xl font-medium">{customer.firstName || "Không có gì"}</p>
+                                            <p className="text-xl font-medium">{customer.lastName || "Không có gì"}</p>
+                                            <p className="text-xl font-medium">{customer.email || "Không có gì"}</p>
+                                            <p className="text-xl font-medium">{customer.username || "Không có gì"}</p>
+                                            <p className="text-xl font-medium">{customer.phone || "Không có gì"}</p>
+                                            <p className="text-xl font-medium">{customer.birthday || "Không có gì"}</p>
+                                            <p className="text-xl font-medium">{customer.status ? "Paused" : "Active"}</p>
                                         </>
                                     ) : (
                                         <p className="text-xl font-medium">Không có gì</p>
                                     )}
                                 </div>
                             </div>
-
                         </div>
                     </ModalBody>
                     <ModalFooter>
-
+                        <Button color="danger" variant="light" onClick={onOpenChange}>
+                            Close
+                        </Button>
                     </ModalFooter>
                 </ModalContent>
             </Modal>
@@ -85,5 +93,3 @@ export default function AccountCusDetail({ params }: { params: string }) {
         </div>
     );
 };
-
-

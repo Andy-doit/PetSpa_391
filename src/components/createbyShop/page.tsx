@@ -13,10 +13,8 @@ import { Time } from "@internationalized/date";
 export default function CreateShop({ userId }: { userId: string }) {
     const { isOpen, onOpen, onClose } = useDisclosure();
     const [isLoading, setIsLoading] = useState(false);
-    console.log(userId);
     const [shopData, setShopData] = useState<ShopInput>({
         id: '',
-        userId: userId,
         shopName: '',
         shopAddress: '',
         shopPhone: '',
