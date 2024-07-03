@@ -4,10 +4,10 @@ import { useEffect, useState } from "react";
 import CreateShopTimeSlot from "@/components/createShopTimeSlot/page";
 import { AllShopTimeSlotIn4 } from "@/models/shopModel";
 import { useAppDispatch } from "@/lib/redux/store";
-import { fetchAllShopTimeSlotPagination } from "@/lib/redux/slice/shopSlice";
+import { fetchAllShopTimeSlotPagination, fetchShopInforPagination } from "@/lib/redux/slice/shopSlice";
 
 export default function TimeSlot() {
-    const [shopIds, setShopId] = useState<string>('');
+
     const [timeSlot, setTimeSlot] = useState<AllShopTimeSlotIn4[]>([]);
     const dispatch = useAppDispatch();
     const [loading, setLoading] = useState(true);
@@ -15,15 +15,14 @@ export default function TimeSlot() {
     useEffect(() => {
         fetchTimeSlots();
     }, [dispatch]);
-
     const fetchTimeSlots = async () => {
         setLoading(true);
         try {
             const response = await dispatch(fetchAllShopTimeSlotPagination());
-            const timeSlots = response.payload || [];
-            setTimeSlot(timeSlots);
-            if (timeSlots.length > 0) {
-                setShopId(timeSlots[0].shopId);
+            if (response.payload && Array.isArray(response.payload)) {
+                setTimeSlot(response.payload);
+            } else {
+                console.error('Invalid payload format:', response.payload);
             }
         } catch (error) {
             console.error('Error fetching services:', error);
@@ -32,13 +31,14 @@ export default function TimeSlot() {
         }
     };
 
+
     return (
         <div className="relative">
             <p className="text-black text-3xl font-semibold mb-2">
                 Thời gian hoạt động
             </p>
             <div className='flex justify-end my-2'>
-                <CreateShopTimeSlot shopIds={shopIds} refetchTimes={fetchTimeSlots} />
+                <CreateShopTimeSlot refetchTimes={fetchTimeSlots} />
             </div>
             <div>
                 {loading ? (
@@ -46,15 +46,15 @@ export default function TimeSlot() {
                         <Spinner />
                     </div>
                 ) : timeSlot.length === 0 ? (
-                    <p>Shop chưa tạo khung giờ</p>
+                    <div className="flex justify-center">
+                        <p className="text-2xl font-bold ">Shop chưa tạo khung giờ</p>
+                    </div>
                 ) : (
                     <Table aria-label="Example static collection table">
                         <TableHeader>
                             <TableColumn>Khung giờ</TableColumn>
                             <TableColumn>Thời gian</TableColumn>
                             <TableColumn>Tổng số Slot</TableColumn>
-                            <TableColumn>Slot đã sử dụng</TableColumn>
-                            <TableColumn>Slot còn lại</TableColumn>
                             <TableColumn>Trạng thái</TableColumn>
                             <TableColumn>Hành động</TableColumn>
                         </TableHeader>
@@ -64,8 +64,6 @@ export default function TimeSlot() {
                                     <TableCell>{slot.description}</TableCell>
                                     <TableCell>{slot.startLocalTime} - {slot.endLocalTime}</TableCell>
                                     <TableCell>{slot.totalSlot}</TableCell>
-                                    <TableCell>{slot.usedSlot}</TableCell>
-                                    <TableCell>{slot.availableSlot}</TableCell>
                                     <TableCell>{slot.status ? 'Hoạt động' : 'Không hoạt động'}</TableCell>
                                     <TableCell>
                                         Test

@@ -6,24 +6,12 @@ import OrderDetail from "../orderDetail/page";
 import { useAppDispatch } from "@/lib/redux/store";
 import { allOrderBookingPaginationData } from "@/models/shopModel";
 import { fetchAllOrderBookingPagination } from "@/lib/redux/slice/shopSlice";
-const orderService = [
-    { name: "Dịch vụ tắm rửa", company: "Khoi ", date: "Slot1, 15/05/2024", process: "Đang xử lí" },
-    { name: "Dịch vụ tắm rửa", company: "An ", date: "Slot1, 15/05/2024", process: "Thành Công" },
-    { name: "Dịch vụ cắt tỉa lông", company: "Long ", date: "Slot1, 15/05/2024", process: "Đã huỷ" },
-    { name: "Dịch vụ khách sạn thú cưng", company: "Nam ", date: "Slot1, 15/05/2024", process: "Đang xử lí" },
-    { name: "Dịch vụ mát xa ", company: "Justin ", date: "Slot1, 15/05/2024", process: "Thành công" },
-    { name: "Dịch vụ mát xa ", company: "MCK", date: "Slot1, 15/05/2024", process: "Thành công" },
-    { name: "Dịch vụ mát xa ", company: "Nice", date: "Slot1, 15/05/2024", process: "Thành công" },
-    { name: "Dịch vụ mát xa ", company: "Haha", date: "Slot1, 15/05/2024", process: "Thành công" },
-
-];
 
 export default function CardOrderShop() {
     const dispatch = useAppDispatch();
     const [loading, setLoading] = useState(true);
     const [items, setItems] = useState<allOrderBookingPaginationData[]>([]);
     useEffect(() => {
-
         const allService = async () => {
             try {
                 setLoading(true);
@@ -38,7 +26,6 @@ export default function CardOrderShop() {
         }
         allService();
     }, [dispatch]);
-    // console.log(items)
     const getColor = (status: string) => {
         switch (status) {
             case 'COMPLETED':
@@ -60,7 +47,9 @@ export default function CardOrderShop() {
                 </div>
             ) : (
                 items.length === 0 ? (
-                    <div>Không có lịch đặt hàng nào</div>
+                    <div className="flex justify-center">
+                        <p className="text-2xl font-bold ">Chưa có đơn hàng nào</p>
+                    </div>
 
                 ) : (
                     <Table aria-label="Example static collection table ">

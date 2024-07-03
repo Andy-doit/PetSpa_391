@@ -46,10 +46,10 @@ const ShopOnwer = {
   getAllService: () =>
     requests.get("/api/v1/service/all/auth"),
   getShopTimeSlot: () =>
-    requests.get("/api/v1/shop-timeslot/atuh/all/auth"),
+    requests.get("/api/v1/shop-timeslot/auth/all/auth"),
   postCreateShopTimeSlot: (input: CreateShopTimeSlotInput) =>
-    requests.baseApiPost("api/v1/shop-timeslot/atuh", input),
-  deleteShpTimeSlot: () =>
+    requests.baseApiPost("api/v1/shop-timeslot/auth", input),
+  deleteShopTimeSlot: () =>
     requests.baseApiDelete("api/v1/shop-timeslot/atuh"),
   postCreateService: (input: createServiceInput) =>
     requests.baseApiPost("api/v1/service", input),
@@ -58,7 +58,7 @@ const ShopOnwer = {
   getServiceInfo: (slug: string) =>
     requests.baseApiGet(`api/v1/service/${slug}`),
   deleteService: (slug: string) =>
-    requests.baseApiDelete(`api/v1/service/${slug}`),
+    requests.del(`api/v1/service/${slug}`),
   updateService: (input: createServiceInput) =>
     requests.baseApiPut("api/v1/service", input),
   getShopProfileInfor: () =>

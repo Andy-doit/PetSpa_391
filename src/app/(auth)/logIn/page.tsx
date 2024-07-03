@@ -1,14 +1,11 @@
 'use client';
-import { Button, Card, CardBody, CardFooter, CardHeader, Input } from '@nextui-org/react';
+import { Button, Card, CardBody, CardFooter, CardHeader, Input, Spinner } from '@nextui-org/react';
 import Link from 'next/link';
 import { useState } from 'react';
-import { redirect, useRouter } from 'next/navigation';
-import { VscEye, VscEyeClosed } from 'react-icons/vsc';
+import { useRouter } from 'next/navigation';
 import { LoginInput } from '@/models/authentication';
-import { useAuth } from '@/hooks/useAuth';
 import { Field, Form, Formik } from 'formik';
 import * as Yup from 'yup';
-import { ClipLoader } from 'react-spinners';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { MyInput, MyInputPassword } from '@/components/ui/loginInput';
@@ -20,11 +17,13 @@ import Cookies from 'js-cookie';
 import { ROLE } from '@/utilities/roleUtils/role';
 import { AxiosError } from 'axios';
 import { LoginError } from '@/utilities/authUtils/loginValidation';
+import { FaArrowAltCircleLeft } from 'react-icons/fa';
+
 interface roleJwt extends JwtPayload {
     role: string;
     userId: string;
-
 }
+
 export default function Login() {
     const [isLoading, setIsLoading] = useState(false);
     const [isShowPassword, setIsShowPassword] = useState(false);
@@ -43,13 +42,11 @@ export default function Login() {
             .max(50, 'Mật khẩu không được vượt quá 50 ký tự'),
     });
 
-
-    const setLoading = (loading: boolean) => {
-        setIsLoading(loading);
-    };
     const dispatch = useAppDispatch();
     const router = useRouter();
+
     const handleLogin = async (value: LoginInput) => {
+        setIsLoading(true);
         dispatch(loginStart());
         try {
             const { data } = await baseApi.post(`api/v1/auth/signin`, {
@@ -65,16 +62,16 @@ export default function Login() {
                 },
                 autoClose: 1000,
             });
+
             const decodeToken = jwtDecode(data.token) as roleJwt;
-            console.log(decodeToken)
             const expirationTime = Math.floor(Date.now() / 1000) + (20 * 60);
             localStorage.setItem('exp', expirationTime.toString());
             Cookies.set('token', data.token, { expires: 1 });
-            Cookies.set('role', decodeToken?.role, { expires: 1 })
-            Cookies.set('userId', decodeToken?.userId, { expires: 1 })
+            Cookies.set('role', decodeToken?.role, { expires: 1 });
+            Cookies.set('userId', decodeToken?.userId, { expires: 1 });
+
             switch (decodeToken?.role) {
                 case ROLE.role1:
-                    console.log('role1')
                     router.replace(`/`);
                     break;
                 case ROLE.role2:
@@ -88,12 +85,11 @@ export default function Login() {
             }
             localStorage.setItem("token", data.token);
         } catch (error) {
-            toast.error("Đăng ký không thành công. Vui lòng thử lại.");
+            toast.error("Đăng nhập không thành công! Bạn hãy kiểm tra lại tài khoản và mật khẩu của bạn.");
             if (error instanceof AxiosError) {
                 const errorResponse = error?.response?.data?.error?.message;
                 if (errorResponse in LoginError) {
-                    const translatedError =
-                        LoginError[errorResponse as keyof typeof LoginError];
+                    const translatedError = LoginError[errorResponse as keyof typeof LoginError];
                     dispatch(loginFailure(translatedError));
                 } else {
                     dispatch(loginFailure(errorResponse));
@@ -101,25 +97,27 @@ export default function Login() {
             } else {
                 dispatch(loginFailure("Đã có lỗi xảy ra"));
             }
+        } finally {
+            setIsLoading(false);
         }
     };
-
 
     return (
         <section className='h-screen relative'>
             <Button
-
+                startContent={<FaArrowAltCircleLeft />}
                 onClick={() => router.push('/')}
-                className='absolute top-4 left-4 z-10'
+                className='bg-gradient-to-tr absolute m-5 from-pink-500 to-yellow-500 text-white shadow-lg'
             >
-                Trở về trang chính
+                Trở về trang chủ
             </Button>
             <div className='flex h-full flex-wrap items-center justify-between lg:justify-between'>
                 <div className='mb-12 md:mb-0 md:w-8/12 lg:w-5/12 xl:w-6/12'>
                     <Formik
                         initialValues={initialValues}
                         validationSchema={validationSchema}
-                        onSubmit={handleLogin}>
+                        onSubmit={handleLogin}
+                    >
                         <Form>
                             <Card className='mx-auto w-3/5'>
                                 <CardHeader className='space-y-1'>
@@ -144,13 +142,11 @@ export default function Login() {
                                                 />
                                             </div>
                                         </div>
-
                                         <div className='forgot-password text-right'>
-                                            <Link href='/' className='text-blue-500 hover:text-orange-600'>Quên Mật Khẩu? </Link>
+                                            <Link href='/' className='text-blue-500 hover:text-orange-600'>Quên Mật Khẩu?</Link>
                                         </div>
                                         <Button disabled={isLoading} type='submit' radius='full' className='bg-gradient-to-tr w-full from-pink-500 to-yellow-500 text-white shadow-lg'>
-                                            Đăng nhập
-                                            {isLoading && <ClipLoader size={20} color="#ffffff" />}
+                                            {isLoading ? <Spinner color="default" /> : 'Đăng nhập'}
                                         </Button>
                                     </div>
                                 </CardBody>
@@ -163,8 +159,6 @@ export default function Login() {
                             </Card>
                         </Form>
                     </Formik>
-
-
                 </div>
                 <div className='grow-0 basis-auto md:mb-0 md:w-9/12 md:shrink-0 lg:w-6/12 xl:w-6/12'>
                     <img
