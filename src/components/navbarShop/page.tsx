@@ -29,16 +29,6 @@ export default function NavbarShop({ children }: Props) {
                     }}
                 >
                     <NavbarContent className="w-full max-md:hidden">
-                        <Input
-                            startContent={<IoSearchCircleOutline />}
-                            isClearable
-                            className="w-1/2"
-                            classNames={{
-                                input: "w-full",
-                                mainWrapper: "w-full",
-                            }}
-                            placeholder="Search..."
-                        />
                     </NavbarContent>
                     <NavbarContent
                         justify="end"

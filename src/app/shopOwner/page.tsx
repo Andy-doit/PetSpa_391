@@ -1,8 +1,6 @@
 "use client";
 import React from "react";
 import dynamic from "next/dynamic";
-import { Link } from "@nextui-org/react";
-import NextLink from "next/link";
 import { QuantityFeedBack } from "@/components/quantityFeedBack/page";
 import { QuantityService } from "@/components/quantityService/page";
 import { QuantityBooking } from "@/components/quantityBooking/page";
@@ -36,9 +34,6 @@ export default function Home() {
                     </div>
                 </div>
             </div>
-
-
-
         </div>
     )
 }
