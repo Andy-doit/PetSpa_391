@@ -2,7 +2,7 @@ import { AxiosResponse } from "axios";
 import apiJWT from "./api";
 import baseApi from "./baseApi";
 import { createBookingInput } from "@/models/bookingModels";
-import { ShopInput, createServiceInput } from '@/models/shopModel';
+import { CreateShopTimeSlotInput, ShopInput, createServiceInput } from '@/models/shopModel';
 import { CancelBookingInput, createFeedbackInput, createPetInput, updatePasswordInput, updateProfileInput } from "@/models/userModels";
 import { AccountInput, ShopInfor } from "@/models/adminModel";
 
@@ -13,6 +13,7 @@ const requests = {
     apiJWT.get(url, { params }).then(responseBody),
   post: <T>(url: string, body: T) => apiJWT.post(url, body).then(responseBody),
   put: <T>(url: string, body: T) => apiJWT.put(url, body).then(responseBody),
+  patch: <T>(url: string, body: T) => apiJWT.patch(url, body).then(responseBody),
   del: <T>(url: string, params?: T) =>
     apiJWT.delete(url, { params }).then(responseBody),
   baseApiGet: <T>(url: string, params?: T) =>
@@ -44,6 +45,12 @@ const ServiceAPI = {
 const ShopOnwer = {
   getAllService: () =>
     requests.get("/api/v1/service/all/auth"),
+  getShopTimeSlot: () =>
+    requests.get("/api/v1/shop-timeslot/atuh/all/auth"),
+  postCreateShopTimeSlot: (input: CreateShopTimeSlotInput) =>
+    requests.baseApiPost("api/v1/shop-timeslot/atuh", input),
+  deleteShpTimeSlot: () =>
+    requests.baseApiDelete("api/v1/shop-timeslot/atuh"),
   postCreateService: (input: createServiceInput) =>
     requests.baseApiPost("api/v1/service", input),
   getAllOrderBooking: () =>
@@ -59,7 +66,7 @@ const ShopOnwer = {
   createShopInfor: (input: ShopInput) =>
     requests.baseApiPost("/api/v1/shop", input),
   updateShopInfor: (input: ShopInput) =>
-    requests.baseApiPatch("/api/v1/shop/update", input),
+    requests.patch("/api/v1/shop", input),
   updatepasswordShopInfor: (input: updatePasswordInput) =>
     requests.put("/api/v1/user/password", input),
 

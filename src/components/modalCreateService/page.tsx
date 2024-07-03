@@ -144,7 +144,7 @@ export default function ModalCreateService({ userId, refetchPets }: { userId: st
                                         onChange={(e) => handleInputChange('serviceCategoryId', e.target.value)}
                                     >
                                         <SelectItem key="1" value="1">
-                                            Dịch vụ tắm rứa
+                                            Dịch vụ tắm rửa
                                         </SelectItem>
                                         <SelectItem key="2" value="2">
                                             Dịch vụ làm đẹp

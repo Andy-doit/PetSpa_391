@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure, Divider, Textarea } from "@nextui-org/react";
+import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure, Divider, Textarea, Select, SelectItem } from "@nextui-org/react";
 import { BookingDetail, createFeedbackInput } from "@/models/userModels";
 import { useAppDispatch } from "@/lib/redux/store";
 import getAccessAndRefreshCookie from "@/utilities/authUtils/getCookieForValidation";
@@ -11,7 +11,7 @@ export default function CreateFeedback({ shopData }: { shopData: BookingDetail }
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
     const [feedbackData, setFedbackData] = useState<createFeedbackInput>({
         serviceId: parseInt(shopData.serviceId),
-        shopId: parseInt(shopData.shopId),
+        ratingType: '',
         content: '',
 
     });
@@ -64,7 +64,15 @@ export default function CreateFeedback({ shopData }: { shopData: BookingDetail }
                                     backgroundImage: `url("https://i.pinimg.com/564x/13/2e/53/132e53913e121bd14ee6a51d6b55300d.jpg")`,
                                 }}
                             >
-
+                                <Select label="Đánh giá" className="w-[250px]"
+                                    onChange={(e) => handleInputChange('ratingType', e.target.value)}
+                                >
+                                    <SelectItem key="TOTALLY_BAD">Rất tệ</SelectItem>
+                                    <SelectItem key="PARTIALLY_BAD">Không được ổn</SelectItem>
+                                    <SelectItem key="NORMAL">Nó ổn</SelectItem>
+                                    <SelectItem key="QUITE_GOOD">Rất tuyệt vời</SelectItem>
+                                    <SelectItem key="REALLY_GOOD">Cực kỳ tuyệt vời</SelectItem>
+                                </Select>
                                 <Textarea
                                     placeholder="Nhập đánh giá của bạn"
                                     onChange={(e) => handleInputChange('content', e.target.value)}

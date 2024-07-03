@@ -13,27 +13,23 @@ import {
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useAppDispatch } from '@/lib/redux/store';
-import { PetInfor } from '@/models/userModels';
-import { MdDelete } from 'react-icons/md';
-import { deletePet } from '@/lib/redux/slice/userSlice';
-import getAccessAndRefreshCookie from '@/utilities/authUtils/getCookieForValidation';
-import { ShopInfor, allShopPaginationData } from '@/models/adminModel';
+import { allShopPaginationData } from '@/models/adminModel';
 import { deleteShop } from '@/lib/redux/slice/adminSlice';
+import getAccessAndRefreshCookie from '@/utilities/authUtils/getCookieForValidation';
 import { fetchAllServicePagination } from '@/lib/redux/slice/shopSlice';
+import { MdDelete } from 'react-icons/md';
 
 export default function DeleteShop({ params, refetchPets }: { params: string, refetchPets: () => void }) {
     const { isOpen, onOpen, onClose } = useDisclosure();
-    const [shop, setShop] = useState<ShopInfor | any>();
     const dispatch = useAppDispatch();
     const [shopId, setShopId] = useState<string>('');
-    const [shopowner, setShoponwer] = useState<allShopPaginationData[]>([]);
+    const [shopowner, setShopowner] = useState<allShopPaginationData[]>([]);
+
     const fetchPets = async () => {
         const response = await dispatch(fetchAllServicePagination());
-        setShoponwer(response.payload || []);
+        setShopowner(response.payload || []);
     };
-    useEffect(() => {
-        fetchPets();
-    }, [dispatch]);
+
     useEffect(() => {
         const fetchUid = async () => {
             try {
@@ -46,7 +42,13 @@ export default function DeleteShop({ params, refetchPets }: { params: string, re
             }
         };
         fetchUid();
-    }, [shopId]);
+    }, []);
+
+    const handleFetchAndDelete = async () => {
+        await fetchPets();
+        handleDetete();
+    };
+
     const handleDetete = async () => {
         try {
             if (shopId) {
@@ -60,11 +62,10 @@ export default function DeleteShop({ params, refetchPets }: { params: string, re
                 });
             }
         } catch (error) {
-            console.error('Error creating service:', error);
+            console.error('Error deleting shop:', error);
             toast.error("Đã xảy ra lỗi khi xoá tài khoản. Vui lòng thử lại sau!");
         }
     };
-
 
     return (
         <div>
@@ -81,7 +82,7 @@ export default function DeleteShop({ params, refetchPets }: { params: string, re
                         <Button color="danger" variant="light" onClick={onClose}>
                             Close
                         </Button>
-                        <Button color="primary" onClick={handleDetete} >
+                        <Button color="primary" onClick={handleFetchAndDelete}>
                             Xoá
                         </Button>
                     </ModalFooter>
@@ -89,8 +90,5 @@ export default function DeleteShop({ params, refetchPets }: { params: string, re
             </Modal>
             <ToastContainer />
         </div>
-
     );
-};
-
-
+}
