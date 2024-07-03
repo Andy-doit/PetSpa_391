@@ -32,7 +32,6 @@ const ManageService = () => {
         fetchServices();
     }, [dispatch]);
 
-    console.log(service);
 
     useEffect(() => {
         const fetchUid = async () => {

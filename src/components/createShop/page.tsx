@@ -57,16 +57,25 @@ export default function AddShop({ shopId, refetchShops }: { shopId: string, refe
                 onPress={onOpen}
                 className="bg-gradient-to-tr from-pink-500 to-yellow-500 text-white shadow-lg"
             >
-                Tạo mới shop
+                Tạo tài khoản shop
             </Button>
 
             <Modal size='xl' isOpen={isOpen} onClose={onClose} placement="top-center">
                 <ModalContent>
-                    <ModalHeader className='text-3xl text-orange-600'>Tạo mới Shop</ModalHeader>
+                    <ModalHeader
+                        className='text-3xl flex justify-center font-bold uppercase text-white'
+                        style={{
+                            backgroundImage: 'url("https://i.pinimg.com/736x/b4/38/8d/b4388d3b0601a64cad25d2fe73b2224b.jpg")',
+                            backgroundRepeat: 'no-repeat',
+                            backgroundSize: "cover",
+                        }}
+                    >Tạo tài khoản Shop
+                    </ModalHeader>
                     <ModalBody>
                         <div className="mt-2 flex flex-col space-y-4">
                             <div className="flex w-full space-x-4">
                                 <Input
+                                    size='sm'
                                     type="text"
                                     onChange={(e) => handleInputChange('firstName', e.target.value)}
                                     label="Tên"
@@ -74,6 +83,7 @@ export default function AddShop({ shopId, refetchShops }: { shopId: string, refe
                                 />
                                 <Input
                                     type="text"
+                                    size='sm'
                                     onChange={(e) => handleInputChange('lastName', e.target.value)}
                                     label="Họ"
                                     className="w-full"
@@ -81,6 +91,7 @@ export default function AddShop({ shopId, refetchShops }: { shopId: string, refe
                             </div>
                             <div className="flex w-full space-x-4">
                                 <Input
+                                    size='sm'
                                     type="email"
                                     onChange={(e) => handleInputChange('email', e.target.value)}
                                     label="Email"
@@ -88,6 +99,7 @@ export default function AddShop({ shopId, refetchShops }: { shopId: string, refe
                                 />
                                 <Input
                                     type="text"
+                                    size='sm'
                                     onChange={(e) => handleInputChange('username', e.target.value)}
                                     label="Tên người dùng"
                                     className="w-full"
@@ -95,12 +107,14 @@ export default function AddShop({ shopId, refetchShops }: { shopId: string, refe
                             </div>
                             <div className="flex w-full space-x-4">
                                 <Input
+                                    size='sm'
                                     type="password"
                                     onChange={(e) => handleInputChange('password', e.target.value)}
                                     label="Mật khẩu"
                                     className="w-full"
                                 />
                                 <Input
+                                    size='sm'
                                     type="text"
                                     onChange={(e) => handleInputChange('phone', e.target.value)}
                                     label="Số điện thoại"

@@ -18,7 +18,8 @@ import { ROLE } from '@/utilities/roleUtils/role';
 import { AxiosError } from 'axios';
 import { LoginError } from '@/utilities/authUtils/loginValidation';
 import { FaArrowAltCircleLeft } from 'react-icons/fa';
-
+import loginImg from '../../../../public/assets/img/login.svg';
+import Image from 'next/image';
 interface roleJwt extends JwtPayload {
     role: string;
     userId: string;
@@ -121,7 +122,7 @@ export default function Login() {
                         <Form>
                             <Card className='mx-auto w-3/5'>
                                 <CardHeader className='space-y-1'>
-                                    <p className='text-4xl font-bold'>Đăng nhập</p>
+                                    <p className='text-4xl font-bold  uppercase'>Đăng nhập</p>
                                 </CardHeader>
                                 <CardBody>
                                     <div className='space-y-4'>
@@ -145,7 +146,7 @@ export default function Login() {
                                         <div className='forgot-password text-right'>
                                             <Link href='/' className='text-blue-500 hover:text-orange-600'>Quên Mật Khẩu?</Link>
                                         </div>
-                                        <Button disabled={isLoading} type='submit' radius='full' className='bg-gradient-to-tr w-full from-pink-500 to-yellow-500 text-white shadow-lg'>
+                                        <Button disabled={isLoading} type='submit' className='bg-gradient-to-tr w-full from-pink-500 to-yellow-500 text-white shadow-lg'>
                                             {isLoading ? <Spinner color="default" /> : 'Đăng nhập'}
                                         </Button>
                                     </div>
@@ -153,7 +154,7 @@ export default function Login() {
                                 <CardFooter>
                                     Bạn chưa có tài khoản phải không?
                                     <Link href='/signUp'>
-                                        <span className='text-blue-500 hover:text-orange-600'> Đăng ký ở đây </span>
+                                        <span className='text-default-500 hover:text-orange-600'> Đăng ký ở đây </span>
                                     </Link>
                                 </CardFooter>
                             </Card>
@@ -161,10 +162,11 @@ export default function Login() {
                     </Formik>
                 </div>
                 <div className='grow-0 basis-auto md:mb-0 md:w-9/12 md:shrink-0 lg:w-6/12 xl:w-6/12'>
-                    <img
-                        src='https://i.pinimg.com/564x/54/71/6a/54716a3848c6fbfb5770d4831803532b.jpg'
-                        className='w-full h-screen'
-                        alt='Sample image'
+                    <Image
+                        src={loginImg}
+                        alt='login'
+                        className='w-full h-screen object-cover'
+
                     />
                 </div>
             </div>

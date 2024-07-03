@@ -1,42 +1,28 @@
 'use client'
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import {
     Button,
     Modal,
     ModalBody,
     ModalContent,
-    ModalFooter,
     ModalHeader,
     useDisclosure,
     Tooltip,
 } from '@nextui-org/react';
-import { toast, ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-
-import { FaEye, FaPlus } from 'react-icons/fa';
-
+import { FaEye } from 'react-icons/fa';
 import { useAppDispatch } from '@/lib/redux/store';
 import { PetInfor, allPetPaginationData } from '@/models/userModels';
-import { fetchAllPetPagination, fetchPetInfor } from '@/lib/redux/slice/userSlice';
+import { fetchPetInfor } from '@/lib/redux/slice/userSlice';
 
-export default function PetDetail({ params }: { params: string }) {
+export default function PetDetail({ params }: { params: allPetPaginationData }) {
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
-    const [pet, setPet] = useState<PetInfor | any>();
-    const dispatch = useAppDispatch();
-    useEffect(() => {
-        const petDetail = async () => {
-            const response = await dispatch(fetchPetInfor({ slug: params }));
-            if (response.payload) {
-                setPet(response.payload);
-            }
-        };
-        petDetail();
-    }, [dispatch, params]);
-    console.log(pet)
+    const handleOpen = async () => {
+        onOpen();
+    };
     return (
         <div>
             <Tooltip content="Xem chi tiết">
-                <Button className='rounded-full' variant="bordered" isIconOnly onPress={onOpen}>
+                <Button className='rounded-full' variant="bordered" isIconOnly onPress={handleOpen}>
                     <FaEye size={20} color="warning" />
                 </Button>
             </Tooltip>
@@ -74,15 +60,15 @@ export default function PetDetail({ params }: { params: string }) {
                                     <p className="text-xl font-light">Ghi chú</p>
                                 </div>
                                 <div className="ml-20">
-                                    {pet ? (
+                                    {params ? (
                                         <>
-                                            <p className="text-xl font-bold">{pet.petType === 'DOG' ? 'Chó' : (pet.petType === 'CAT' ? 'Mèo' : 'Không có gì')}</p>
-                                            <p className="text-xl font-bold">{pet.petName || "Không có gì"}</p>
-                                            <p className="text-xl font-bold">{pet.petAge || "Không có gì"}</p>
-                                            <p className="text-xl font-bold">{pet.petWeight || "Không có gì"}</p>
-                                            <p className="text-xl font-bold">{pet.petGender === 'Male' ? 'Đực' : (pet.petGender === 'Female' ? 'Cái' : 'Không có gì')}</p>
-                                            <p className="text-xl font-bold">{pet.petDescription || "Không có gì"}</p>
-                                            <p className="text-xl font-bold">{pet.petNote || "Không có gì"}</p>
+                                            <p className="text-xl font-bold">{params.petType === 'DOG' ? 'Chó' : (params.petType === 'CAT' ? 'Mèo' : 'Không có gì')}</p>
+                                            <p className="text-xl font-bold">{params.petName || "Không có gì"}</p>
+                                            <p className="text-xl font-bold">{params.petAge || "Không có gì"}</p>
+                                            <p className="text-xl font-bold">{params.petWeight || "Không có gì"}</p>
+                                            <p className="text-xl font-bold">{params.petGender === 'Male' ? 'Đực' : (params.petGender === 'Female' ? 'Cái' : 'Không có gì')}</p>
+                                            <p className="text-xl font-bold">{params.petDescription || "Không có gì"}</p>
+                                            <p className="text-xl font-bold">{params.petNote || "Không có gì"}</p>
                                         </>
                                     ) : (
                                         <p className="text-xl font-medium">Không có gì</p>
@@ -94,7 +80,6 @@ export default function PetDetail({ params }: { params: string }) {
                     </ModalBody>
                 </ModalContent>
             </Modal>
-            <ToastContainer />
         </div>
     );
 };

@@ -124,7 +124,7 @@ export default function GuestHeader() {
 
                                         }
                                     >
-                                        <Link color="foreground">Đăng xuất</Link>
+                                        <p className="font-normal" color="foreground">Đăng xuất</p>
                                     </DropdownItem>
 
                                 </DropdownMenu>

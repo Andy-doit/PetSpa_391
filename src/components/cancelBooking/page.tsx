@@ -14,6 +14,7 @@ export default function CancelBooking({ params }: { params: string }) {
         additionalMessage: "",
 
     });
+    console.log(cancelData);
     const [userId, setUserId] = useState<string>('');
     useEffect(() => {
         const fetchUid = async () => {

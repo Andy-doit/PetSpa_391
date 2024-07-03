@@ -49,10 +49,18 @@ export default function AccountDetail({ params }: { params: string }) {
 
             <Modal size='lg' isOpen={isOpen} onOpenChange={onOpenChange} placement="top-center">
                 <ModalContent>
-                    <ModalHeader className='text-3xl text-orange-600'>Chi Tiết Shop</ModalHeader>
+                    <ModalHeader
+                        className='text-3xl flex justify-center font-bold uppercase text-white'
+                        style={{
+                            backgroundImage: 'url("https://i.pinimg.com/736x/b4/38/8d/b4388d3b0601a64cad25d2fe73b2224b.jpg")',
+                            backgroundRepeat: 'no-repeat',
+                            backgroundSize: "cover",
+                        }}
+                    >Thông tin Shop
+                    </ModalHeader>
                     <ModalBody>
-                        <div className="flex justify-between">
-                            <div className="flex">
+                        <div className="flex justify-center">
+                            <div className="flex justify-center">
                                 <div>
                                     <p className="text-xl font-light">Tên</p>
                                     <p className="text-xl font-light">Họ</p>
@@ -63,14 +71,16 @@ export default function AccountDetail({ params }: { params: string }) {
                                 </div>
                                 <div className="ml-20">
                                     {shop ? (
-                                        <>
+
+                                        <div>
                                             <p className="text-xl font-medium">{shop.firstName || "Không có gì"}</p>
                                             <p className="text-xl font-medium">{shop.lastName || "Không có gì"}</p>
                                             <p className="text-xl font-medium">{shop.email || "Không có gì"}</p>
                                             <p className="text-xl font-medium">{shop.username || "Không có gì"}</p>
                                             <p className="text-xl font-medium">{shop.phone || "Không có gì"}</p>
                                             <p className="text-xl font-medium">{shop.status ? "Paused" : "Active"}</p>
-                                        </>
+                                        </div>
+
                                     ) : (
                                         <p className="text-xl font-medium">Không có gì</p>
                                     )}
@@ -78,11 +88,7 @@ export default function AccountDetail({ params }: { params: string }) {
                             </div>
                         </div>
                     </ModalBody>
-                    <ModalFooter>
-                        <Button color="danger" variant="light" onClick={onClose}>
-                            Close
-                        </Button>
-                    </ModalFooter>
+
                 </ModalContent>
             </Modal>
 
