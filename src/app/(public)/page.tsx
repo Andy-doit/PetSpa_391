@@ -15,12 +15,12 @@ export default function Home() {
             </div>
 
             <div className="text-center py-3">
-                <p className="text-5xl font-medium">Dịch vụ nổi bật</p>
+                <p className="text-5xl font-medium uppercase">Dịch vụ nổi bật</p>
             </div>
             <div className="container" >
                 <CarouselService />
             </div>
-            <div className="container" >
+            <div  >
                 <Blog />
             </div>
 

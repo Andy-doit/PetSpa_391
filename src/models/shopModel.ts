@@ -120,6 +120,24 @@ export interface AllShopTimeSlotIn4Response {
         pageCount: number;
     };
 }
+export interface AllFeedbackOfService {
+    id: number,
+    userName: string,
+    content: string,
+    ratingType: string,
+    localDateTime: string,
+    edited: boolean,
+
+}
+export interface AllFeedbackOfServiceResponse {
+    success: boolean;
+    status: number;
+    data: {
+        data: AllFeedbackOfService[];
+        totalCount: number;
+        pageCount: number;
+    };
+}
 export interface shopCreateResponseSuccess {
     status: number;
     message: string;

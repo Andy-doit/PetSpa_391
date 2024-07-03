@@ -81,8 +81,8 @@ export default function ListAllShop() {
                                     <TableCell>{shop.shopAddress}</TableCell>
                                     <TableCell>{shop.shopPhone}</TableCell>
                                     <TableCell>{shop.shopEmail}</TableCell>
-                                    <TableCell>{shop.nomination}</TableCell>
                                     <TableCell>{shop.totalServices}</TableCell>
+                                    <TableCell>{shop.nomination}</TableCell>
                                     <TableCell>
                                         <div className="flex items-center gap-4">
                                             <Link href={`/listShop/${shop.id}`}>

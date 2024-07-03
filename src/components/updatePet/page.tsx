@@ -19,7 +19,7 @@ import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useAppDispatch } from '@/lib/redux/store';
 import { allPetPaginationData, createPetInput } from '@/models/userModels';
-import { fetchAllPetPagination, updatePet } from '@/lib/redux/slice/userSlice';
+import { updatePet } from '@/lib/redux/slice/userSlice';
 import getAccessAndRefreshCookie from '@/utilities/authUtils/getCookieForValidation';
 import { MdChangeCircle } from 'react-icons/md';
 
@@ -38,20 +38,26 @@ export default function UpdatePet({ params, refetchPets }: { params: allPetPagin
             }
         };
         fetchUid();
-    }, [userId]);
-
-    const [pets, setPets] = useState<allPetPaginationData[]>([]);
-    const fetchPets = async () => {
-        const response = await dispatch(fetchAllPetPagination());
-        setPets(response.payload || []);
-    };
-
-    useEffect(() => {
-        fetchPets();
-    }, [dispatch]);
+    }, []);
 
     const { isOpen, onOpen, onClose } = useDisclosure();
     const [isLoading, setIsLoading] = useState(false);
+
+    const initialPetData: createPetInput = {
+        id: params.id.toString(),
+        userId: userId,
+        petName: params.petName,
+        petType: params.petType,
+        petAge: params.petAge,
+        petGender: params.petGender,
+        petWeight: params.petWeight,
+        petDescription: params.petDescription,
+        petPhoto: '',
+        petNote: params.petNote,
+    };
+
+    const [petData, setPetData] = useState<createPetInput>(initialPetData);
+
     useEffect(() => {
         if (userId) {
             setPetData(prevData => ({
@@ -60,21 +66,6 @@ export default function UpdatePet({ params, refetchPets }: { params: allPetPagin
             }));
         }
     }, [userId]);
-    const [petData, setPetData] = useState<createPetInput>({
-        id: params.id.toString(),
-        userId: userId,
-        petName: params.petName,
-        petType: params.petType,
-        petAge: params.petAge,
-        petGender: params.petGender,
-        petWeight: params.petWeight,
-        petDescription: '',
-        petPhoto: '',
-        petNote: '',
-
-    });
-    // console.log(petData)
-
 
     const handleInputChange = (fieldName: string, newValue: string | number) => {
         setPetData(prevData => ({
@@ -82,8 +73,10 @@ export default function UpdatePet({ params, refetchPets }: { params: allPetPagin
             [fieldName]: newValue
         }));
     };
+
     const handleCreate = async () => {
         try {
+            setIsLoading(true);
             if (userId) {
                 await dispatch(updatePet({ petData })).unwrap();
                 toast.success("Cập nhật thú cưng thành công!", {
@@ -95,9 +88,16 @@ export default function UpdatePet({ params, refetchPets }: { params: allPetPagin
                 });
             }
         } catch (error) {
-            console.error('Error creating service:', error);
-            toast.error("Đã xảy ra lỗi khi tạo thú cưng. Vui lòng thử lại sau!");
+            console.error('Error updating pet:', error);
+            toast.error("Đã xảy ra lỗi khi cập nhật thú cưng. Vui lòng thử lại sau!");
+        } finally {
+            setIsLoading(false);
         }
+    };
+
+    const handleClose = () => {
+        setPetData(initialPetData); // Reset form data to initial values
+        onClose(); // Close the modal
     };
 
     return (
@@ -108,7 +108,7 @@ export default function UpdatePet({ params, refetchPets }: { params: allPetPagin
                 </Button>
             </Tooltip>
 
-            <Modal size='xl' isOpen={isOpen} onClose={onClose} placement="top-center">
+            <Modal size='xl' isOpen={isOpen} onClose={handleClose} placement="top-center">
                 <ModalContent>
                     <ModalHeader
                         className='text-3xl flex justify-center font-bold uppercase text-white'
@@ -116,17 +116,15 @@ export default function UpdatePet({ params, refetchPets }: { params: allPetPagin
                             backgroundImage: 'url("https://i.pinimg.com/736x/b4/38/8d/b4388d3b0601a64cad25d2fe73b2224b.jpg")',
                             backgroundRepeat: 'no-repeat',
                             backgroundSize: "cover",
-
-
                         }}
-                    >Chỉnh sửa thú cưng</ModalHeader>
+                    >
+                        Chỉnh sửa thú cưng
+                    </ModalHeader>
                     <ModalBody
                         style={{
                             backgroundImage: 'url("https://i.pinimg.com/736x/32/9e/2f/329e2f6a54fdb1f53f4126991fcc6143.jpg")',
                             backgroundRepeat: 'no-repeat',
                             backgroundSize: "cover",
-
-
                         }}
                     >
                         <div className="mt-2 flex">
@@ -134,7 +132,7 @@ export default function UpdatePet({ params, refetchPets }: { params: allPetPagin
                                 <div className="flex w-full mb-4">
                                     <div className="mr-4">
                                         <Input
-                                            type="Petname"
+                                            type="text"
                                             value={petData.petName}
                                             onChange={(e) => handleInputChange('petName', e.target.value)}
                                             label="Tên thú cưng"
@@ -142,10 +140,11 @@ export default function UpdatePet({ params, refetchPets }: { params: allPetPagin
                                         />
                                     </div>
                                     <div className="ml-4">
-                                        <Select label="Loại thú cưng" className="w-[250px]"
-
-                                            defaultSelectedKeys={[petData.petType]}
-                                            onChange={(e) => handleInputChange('petType', e.target.value)}
+                                        <Select
+                                            label="Loại thú cưng"
+                                            className="w-[250px]"
+                                            selectedKeys={[petData.petType]}
+                                            onChange={(key) => handleInputChange('petType', key.toString())}
                                         >
                                             <SelectItem key="DOG">Chó</SelectItem>
                                             <SelectItem key="CAT">Mèo</SelectItem>
@@ -155,18 +154,20 @@ export default function UpdatePet({ params, refetchPets }: { params: allPetPagin
                                 <div className="flex w-full mb-4">
                                     <div className="mr-4">
                                         <Input
-                                            onChange={(e) => handleInputChange('petAge', e.target.value)}
-                                            type="Petage"
+                                            type="number"
                                             value={petData.petAge.toString()}
+                                            onChange={(e) => handleInputChange('petAge', parseInt(e.target.value))}
                                             label="Tuổi thú cưng"
                                             className="w-[250px]"
                                         />
                                     </div>
                                     <div className="ml-4">
-                                        <Select label="Giới tính"
-                                            defaultSelectedKeys={[petData.petGender]}
-                                            onChange={(e) => handleInputChange('petGender', e.target.value)}
-                                            className="w-[250px]">
+                                        <Select
+                                            label="Giới tính"
+                                            className="w-[250px]"
+                                            selectedKeys={[petData.petGender]}
+                                            onChange={(key) => handleInputChange('petGender', key.toString())}
+                                        >
                                             <SelectItem key="Male">Đực</SelectItem>
                                             <SelectItem key="Female">Cái</SelectItem>
                                         </Select>
@@ -175,19 +176,18 @@ export default function UpdatePet({ params, refetchPets }: { params: allPetPagin
                                 <div className="flex mb-4">
                                     <div className="w-full mr-4">
                                         <Input
+                                            type="number"
                                             value={petData.petWeight.toString()}
-                                            onChange={(e) => handleInputChange('petWeight', e.target.value)}
-                                            type="Petweight"
+                                            onChange={(e) => handleInputChange('petWeight', parseFloat(e.target.value))}
                                             label="Cân nặng"
                                             className="w-full"
                                         />
-
                                     </div>
                                     <div className="w-full ml-4">
                                         <Input
+                                            type="text"
                                             value={petData.petDescription}
                                             onChange={(e) => handleInputChange('petDescription', e.target.value)}
-                                            type="petDescription"
                                             label="Mô tả"
                                             className="w-full"
                                         />
@@ -198,7 +198,6 @@ export default function UpdatePet({ params, refetchPets }: { params: allPetPagin
                                         <Textarea
                                             value={petData.petNote}
                                             onChange={(e) => handleInputChange('petNote', e.target.value)}
-                                            type="petNote"
                                             label="Ghi chú"
                                             className="w-full"
                                         />
@@ -206,10 +205,10 @@ export default function UpdatePet({ params, refetchPets }: { params: allPetPagin
                                 </div>
                             </div>
                         </div>
-                        <div className=" flex w-full justify-end">
+                        <div className="flex w-full justify-end">
                             <Button
-                                className=" mr-3 w-full"
-                                onPress={onClose}
+                                className="mr-3 w-full"
+                                onPress={handleClose}
                             >
                                 Huỷ
                             </Button>
@@ -233,5 +232,3 @@ export default function UpdatePet({ params, refetchPets }: { params: allPetPagin
         </div>
     );
 };
-
-
