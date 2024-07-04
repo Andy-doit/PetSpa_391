@@ -55,18 +55,19 @@ export default function Profile() {
     const validateInput = () => {
         const errors = [];
 
-        if (!profileData.oldPassword || profileData.oldPassword.length < 6) {
-            errors.push('Mật khẩu hiện tại phải có ít nhất 6 ký tự');
+        if (!profileData.oldPassword || profileData.oldPassword.length < 6 || profileData.oldPassword.length > 20) {
+            errors.push('Mật khẩu hiện tại phải có ít nhất 6 ký tự và phải có ít hơn 20 kí tự');
         }
-        if (!profileData.newPassword || profileData.newPassword.length < 6) {
-            errors.push('Mật khẩu mới phải có ít nhất 6 ký tự');
+        if (!profileData.newPassword || profileData.newPassword.length < 6 || profileData.newPassword.length > 20) {
+            errors.push('Mật khẩu mới phải có ít nhất 6 ký tự và phải có ít hơn 20 kí tự');
         }
         if (profileData.newPassword !== profileData.confirmPassword) {
-            errors.push('Xác nhận mật khẩu phải giống mật khẩu mới');
+            errors.push('Xác nhận mật khẩu phải giống mật khẩu mới ');
         }
 
         return errors;
     };
+
     useEffect(() => {
         if (userId) {
             setProfileData(prevData => ({

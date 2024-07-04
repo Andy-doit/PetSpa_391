@@ -65,11 +65,11 @@ export default function ModalCreateService({ userId, refetchPets }: { userId: st
     const validateInput = () => {
         const errors = [];
 
-        if (!serviceData.serviceName || serviceData.serviceName.length > 20) {
-            errors.push('Tên dịch vụ không được để trống và không quá 20 ký tự');
+        if (!serviceData.serviceName || serviceData.serviceName.length > 50 || !/^[a-zA-Z\s]+$/.test(serviceData.serviceName)) {
+            errors.push('Tên dịch vụ không được để trống, không quá 50 ký tự và chỉ chứa chữ cái và khoảng trắng');
         }
         if (!serviceData.serviceCategoryId || serviceData.serviceCategoryId <= 0) {
-            errors.push('Loại category phải chọn ');
+            errors.push('Loại category phải chọn');
         }
         if (!serviceData.serviceDescription || serviceData.serviceDescription.length <= 0 || serviceData.serviceDescription.length > 200) {
             errors.push('Mô tả không được để trống và không quá 200 ký tự');
@@ -86,6 +86,7 @@ export default function ModalCreateService({ userId, refetchPets }: { userId: st
 
         return errors;
     };
+
 
 
     const handleCreate = async () => {

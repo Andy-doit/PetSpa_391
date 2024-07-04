@@ -20,6 +20,7 @@ import { LoginError } from '@/utilities/authUtils/loginValidation';
 import { FaArrowAltCircleLeft } from 'react-icons/fa';
 import loginImg from '../../../../public/assets/img/login.svg';
 import Image from 'next/image';
+
 interface roleJwt extends JwtPayload {
     role: string;
     userId: string;
@@ -27,11 +28,13 @@ interface roleJwt extends JwtPayload {
 
 export default function Login() {
     const [isLoading, setIsLoading] = useState(false);
+    const [validationErrors, setValidationErrors] = useState<string[]>([]);
     const [isShowPassword, setIsShowPassword] = useState(false);
     const initialValues = {
         username: '',
         password: '',
     };
+
     const validationSchema = Yup.object().shape({
         username: Yup.string()
             .required('Tên người dùng là bắt buộc')
@@ -40,13 +43,17 @@ export default function Login() {
         password: Yup.string()
             .required('Mật khẩu là bắt buộc')
             .min(6, 'Mật khẩu phải có ít nhất 6 ký tự')
-            .max(50, 'Mật khẩu không được vượt quá 50 ký tự'),
+            .max(20, 'Mật khẩu không được vượt quá 20 ký tự'),
     });
+
+
 
     const dispatch = useAppDispatch();
     const router = useRouter();
 
     const handleLogin = async (value: LoginInput) => {
+
+
         setIsLoading(true);
         dispatch(loginStart());
         try {
@@ -100,6 +107,7 @@ export default function Login() {
             }
         } finally {
             setIsLoading(false);
+
         }
     };
 
@@ -128,6 +136,8 @@ export default function Login() {
                                     <div className='space-y-4'>
                                         <div className='space-y-2'>
                                             <Field
+
+
                                                 name='username'
                                                 component={MyInput}
                                                 type={isShowPassword ? 'text' : 'password'}
@@ -140,6 +150,8 @@ export default function Login() {
                                                     fullWidth
                                                     component={MyInputPassword}
                                                     placeholder='Password'
+
+
                                                 />
                                             </div>
                                         </div>
