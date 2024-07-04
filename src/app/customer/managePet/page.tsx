@@ -19,6 +19,7 @@ export default function ManagePet() {
     const [pets, setPets] = useState<allPetPaginationData[]>([]);
     const [userId, setUserId] = useState<string>('');
     console.log(pets)
+
     const fetchPets = async () => {
         setLoading(true);
         try {
@@ -32,11 +33,7 @@ export default function ManagePet() {
     };
 
     useEffect(() => {
-        fetchPets();
-    }, [dispatch]);
-
-    useEffect(() => {
-        const fetchUid = async () => {
+        const fetchInitialData = async () => {
             try {
                 const { uid } = await getAccessAndRefreshCookie();
                 if (uid) {
@@ -45,9 +42,12 @@ export default function ManagePet() {
             } catch (error) {
                 console.error('Error fetching UID:', error);
             }
+
+            await fetchPets();
         };
-        fetchUid();
-    }, []);
+
+        fetchInitialData();
+    }, [dispatch]);
 
     return (
         <div className="container py-2 pb-10 flex flex-col gap-4">

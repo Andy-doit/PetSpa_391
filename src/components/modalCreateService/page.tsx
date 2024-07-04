@@ -61,7 +61,7 @@ export default function ModalCreateService({ userId, refetchPets }: { userId: st
         price: 0,
         minWeight: 0,
         maxWeight: 0,
-        tags: '',
+        tags: 'tags1',
 
     });
 
@@ -156,28 +156,8 @@ export default function ModalCreateService({ userId, refetchPets }: { userId: st
                                 </div>
 
                                 <div className="flex w-full mb-4">
-                                    <div className="mr-4">
-                                        <Select
-                                            label="Category"
-                                            className="w-[300px]"
-                                            onChange={(e) => handleInputChange('tags', e.target.value)}
-                                        >
-                                            <SelectItem key="tag1" value="tags1">
-                                                Tag 1
-                                            </SelectItem>
-                                            <SelectItem key="tag2" value="tags2">
-                                                Tag 2
-                                            </SelectItem>
-                                            <SelectItem key="tag3" value="tags3">
-                                                Tag 2
-                                            </SelectItem>
 
-
-                                        </Select>
-
-
-                                    </div>
-                                    <div className="ml-4">
+                                    <div >
                                         <Input
                                             className="w-[300px]"
                                             onChange={(e) => handleInputChange('price', e.target.value)}
