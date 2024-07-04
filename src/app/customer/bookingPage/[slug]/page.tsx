@@ -32,6 +32,7 @@ export default function BookingPage(
         };
         fetchUid();
     }, [userId]);
+    const [validationErrors, setValidationErrors] = useState<string[]>([]);
     const [showNote, setShowNote] = useState(false);
     const [service, setService] = useState<ServiceDetail | any>();
     const dispatch = useAppDispatch();
@@ -75,10 +76,66 @@ export default function BookingPage(
         petId: '',
         petGender: '',
     });
+    const resetForm = () => {
+        setBookingData({
+            customerId: parseInt(userId),
+            additionalMessage: '',
+            serviceId: parseInt(params.slug),
+            localDate: '',
+            timeSlotDto: {
+                startLocalDateTime: '',
+                endLocalDateTime: ''
+            },
+            petName: '',
+            petAge: 0,
+            typePet: 'DOG',
+            petWeight: 0,
+            petId: '',
+            petGender: '',
+        });
+        setValidationErrors([]);
+    };
+
+    const validateInput = () => {
+        const errors = [];
+
+        if (!bookingData.petName || bookingData.petName.length === 0 || bookingData.petName.length > 20) {
+            errors.push('Tên thú cưng không được để trống và không quá 20 ký tự');
+        }
+        if (isNaN(bookingData.petAge) || bookingData.petAge <= 0 || bookingData.petAge > 20) {
+            errors.push('Tuổi thú cưng phải là số và không được quá 20');
+        }
+        if (!bookingData.petGender || bookingData.petGender.length === 0 || bookingData.petGender.length > 20) {
+            errors.push('Giới tính thú cưng không được để trống và không quá 20 ký tự');
+        }
+        if (isNaN(bookingData.petWeight) || bookingData.petWeight <= 0 || bookingData.petWeight > 20) {
+            errors.push('Cân nặng thú cưng phải là số và không được quá 20');
+        }
+        // if (isSelected === 'createPet' && (!bookingData.petType || bookingData.petType.length === 0 || bookingData.petType.length > 20)) {
+        //     errors.push('Loại thú cưng không được để trống và không quá 20 ký tự');
+        // }
+
+        if (!bookingData.localDate || bookingData.localDate.length === 0) {
+            errors.push('Vui lòng chọn ngày đặt lịch');
+        }
+
+        if (!bookingData.timeSlotDto.startLocalDateTime || !bookingData.timeSlotDto.endLocalDateTime) {
+            errors.push('Vui lòng chọn khung giờ đặt lịch');
+        }
+
+        setValidationErrors(errors);
+        return errors;
+    };
+
 
     const router = useRouter();
 
     const handleCreateBooking = async () => {
+        const errors = validateInput();
+        if (errors.length > 0) {
+            setValidationErrors(errors);
+            return;
+        }
         await sessionStorage.setItem('bookingValues', JSON.stringify(bookingData));
         sessionStorage.setItem('service', JSON.stringify(service));
         router.replace('/customer/confirmInfor')
@@ -263,6 +320,10 @@ export default function BookingPage(
                                                 className="w-[300px]"
                                                 onChange={(e) => handleInputChange('petName', e.target.value)}
                                                 type="Petname"
+                                                isInvalid={!!validationErrors.find(err => err.includes('Tên thú cưng'))}
+                                                color={validationErrors.find(err => err.includes('Tên thú cưng')) ? "danger" : "default"}
+                                                errorMessage={validationErrors.find(err => err.includes('Tên thú cưng'))}
+                                                value={bookingData.petName}
                                                 label="Tên thú cưng"
                                             />
 
@@ -277,6 +338,10 @@ export default function BookingPage(
                                                 onChange={(e) => handleInputChange('petWeight', parseFloat(e.target.value))}
                                                 type="Petweight"
                                                 label="Cân nặng"
+                                                value={bookingData.petWeight.toString()}
+                                                isInvalid={!!validationErrors.find(err => err.includes('Cân nặng'))}
+                                                color={validationErrors.find(err => err.includes('Cân nặng')) ? "danger" : "default"}
+                                                errorMessage={validationErrors.find(err => err.includes('Cân nặng'))}
                                             />
                                         </div>
                                     </div>
@@ -293,6 +358,10 @@ export default function BookingPage(
                                                 onChange={(e) => handleInputChange('petAge', parseInt(e.target.value))}
                                                 type="Petage"
                                                 label="Tuổi"
+                                                value={bookingData.petAge.toString()}
+                                                isInvalid={!!validationErrors.find(err => err.includes('Tuổi'))}
+                                                color={validationErrors.find(err => err.includes('Tuổi')) ? "danger" : "default"}
+                                                errorMessage={validationErrors.find(err => err.includes('Tuổi'))}
                                             />
 
 
@@ -304,7 +373,11 @@ export default function BookingPage(
                                             <div className="w-full">
                                                 <Select
                                                     label="Giới tính"
+                                                    value={bookingData.petAge.toString()}
                                                     className="w-[300px]"
+                                                    isInvalid={!!validationErrors.find(err => err.includes('Giới tính'))}
+                                                    color={validationErrors.find(err => err.includes('Giới tính')) ? "danger" : "default"}
+                                                    errorMessage={validationErrors.find(err => err.includes('Giới tính'))}
                                                     onChange={(e) => handleInputChange('petGender', e.target.value)}
                                                 >
                                                     <SelectItem key="Male" value="Male"
@@ -343,6 +416,10 @@ export default function BookingPage(
                                             <p className="text-1xl font-medium mb-2">Loại thú cưng</p>
                                             <div className="w-full">
                                                 <Select label="Loại thú cưng" className="w-[300px]"
+                                                    // value={bookingData.petType}
+                                                    isInvalid={!!validationErrors.find(err => err.includes('Loại thú cưng'))}
+                                                    color={validationErrors.find(err => err.includes('Loại thú cưng')) ? "danger" : "default"}
+                                                    errorMessage={validationErrors.find(err => err.includes('Loại thú cưng'))}
                                                     onChange={(e) => handleInputChange('petType', e.target.value)}
                                                 >
                                                     <SelectItem key="DOG">Chó</SelectItem>
@@ -433,7 +510,11 @@ export default function BookingPage(
                                 <p className="text-1xl font-medium mb-2">Chọn ngày</p>
                                 <DatePicker
                                     label="Chọn ngày"
+
                                     className="w-full"
+                                    isInvalid={!!validationErrors.find(err => err.includes('Ngày'))}
+                                    color={validationErrors.find(err => err.includes('Ngày')) ? "danger" : "default"}
+                                    errorMessage={validationErrors.find(err => err.includes('Ngày'))}
                                     onChange={handleDateChange}
                                     minValue={today(getLocalTimeZone())}
                                     defaultValue={today(getLocalTimeZone())}

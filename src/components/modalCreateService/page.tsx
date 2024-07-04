@@ -10,31 +10,13 @@ import 'react-toastify/dist/ReactToastify.css';
 import { FaPlus } from "react-icons/fa";
 import { ClipLoader } from "react-spinners";
 
-const validationSchema = Yup.object().shape({
-    serviceName: Yup.string()
-        .required('Tên dịch vụ là bắt buộc')
-        .min(3, 'Tên dịch vụ phải có ít nhất 3 ký tự')
-        .max(50, 'Tên dịch vụ không được vượt quá 50 ký tự'),
-    servicePrice: Yup.number()
-        .required('Giá dịch vụ là bắt buộc')
-        .min(1, 'Giá dịch vụ phải lớn hơn 0'),
-    minWeight: Yup.number()
-        .required('Cân nặng nhỏ nhất là bắt buộc phải là số')
-        .min(1, 'Cân nặng vụ phải lớn hơn 0'),
-    maxWeight: Yup.number()
-        .required('Cân nặng lớn nhất là bắt buộc phải là số')
-        .min(1, 'Cân nặng phải lớn hơn 0')
-        .max(500, 'Mô tả dịch vụ không được vượt quá 500 ký tự'),
-    serviceDescription: Yup.string()
-        .required('Mô tả dịch vụ là bắt buộc')
-        .min(10, 'Mô tả dịch vụ phải có ít nhất 10 ký tự')
-        .max(500, 'Mô tả dịch vụ không được vượt quá 500 ký tự')
-});
+
 
 export default function ModalCreateService({ userId, refetchPets }: { userId: string, refetchPets: () => void }) {
     const { isOpen, onOpen, onClose } = useDisclosure();
     const [isLoading, setIsLoading] = useState(false);
     const dispatch = useAppDispatch();
+    const [validationErrors, setValidationErrors] = useState<string[]>([]);
     const [service, setService] = useState<allServicePaginationData[]>([]);
     useEffect(() => {
         if (userId) {
@@ -65,9 +47,56 @@ export default function ModalCreateService({ userId, refetchPets }: { userId: st
 
     });
 
+    const resetForm = () => {
+        setServiceData({
+            userId: userId,
+            id: '',
+            serviceCategoryId: 0,
+            serviceName: '',
+            serviceDescription: '',
+            price: 0,
+            minWeight: 0,
+            maxWeight: 0,
+            tags: 'tags1',
+        });
+        setValidationErrors([]);
+    };
+
+    const validateInput = () => {
+        const errors = [];
+
+        if (!serviceData.serviceName || serviceData.serviceName.length > 20) {
+            errors.push('Tên dịch vụ không được để trống và không quá 20 ký tự');
+        }
+        if (!serviceData.serviceCategoryId || serviceData.serviceCategoryId <= 0) {
+            errors.push('Loại category phải chọn ');
+        }
+        if (!serviceData.serviceDescription || serviceData.serviceDescription.length <= 0 || serviceData.serviceDescription.length > 200) {
+            errors.push('Mô tả không được để trống và không quá 200 ký tự');
+        }
+        if (isNaN(serviceData.price) || serviceData.price <= 0) {
+            errors.push('Giá phải là số và phải lớn hơn 0');
+        }
+        if (isNaN(serviceData.minWeight) || serviceData.minWeight <= 0) {
+            errors.push('Cân nặng tối thiểu phải là số và lớn hơn 0');
+        }
+        if (isNaN(serviceData.maxWeight) || serviceData.maxWeight <= serviceData.minWeight || serviceData.maxWeight > 200) {
+            errors.push('Cân nặng tối đa phải là số, lớn hơn cân nặng tối thiểu và nhỏ hơn hoặc bằng 200');
+        }
+
+        return errors;
+    };
+
+
     const handleCreate = async () => {
-        setIsLoading(true);
+        const errors = validateInput();
+        if (errors.length > 0) {
+            setValidationErrors(errors);
+            return;
+        }
+
         try {
+            setIsLoading(true);
             if (userId) {
                 await dispatch(createService({ serviceData })).unwrap();
                 toast.success("Tạo dịch thành công!", {
@@ -84,6 +113,7 @@ export default function ModalCreateService({ userId, refetchPets }: { userId: st
         }
         finally {
             setIsLoading(false);
+            resetForm();
         }
     };
 
@@ -93,7 +123,10 @@ export default function ModalCreateService({ userId, refetchPets }: { userId: st
             [fieldName]: newValue
         }));
     };
-
+    const handleClose = () => {
+        resetForm();
+        onClose();
+    };
     return (
         <>
             <Button
@@ -103,7 +136,7 @@ export default function ModalCreateService({ userId, refetchPets }: { userId: st
             >
                 Tạo mới dịch vụ
             </Button>
-            <Modal isOpen={isOpen} onClose={onClose} size="2xl" backdrop="blur">
+            <Modal isOpen={isOpen} onClose={handleClose} size="2xl" backdrop="blur">
                 <ModalContent>
                     <ModalHeader
                         className='text-3xl flex justify-center font-bold uppercase text-white'
@@ -123,14 +156,21 @@ export default function ModalCreateService({ userId, refetchPets }: { userId: st
                                         <Input
                                             className="w-[300px]"
                                             onChange={(e) => handleInputChange('serviceName', e.target.value)}
-
+                                            isInvalid={!!validationErrors.find(err => err.includes('Tên dịch vụ'))}
+                                            color={validationErrors.find(err => err.includes('Tên dịch vụ')) ? "danger" : "default"}
+                                            errorMessage={validationErrors.find(err => err.includes('Tên dịch vụ'))}
                                             label="Tên dịch vụ"
+                                            value={serviceData.serviceName}
                                         />
 
                                     </div>
                                     <div className="ml-4">
                                         <Select
                                             label="Category"
+                                            isInvalid={!!validationErrors.find(err => err.includes('Loại'))}
+                                            color={validationErrors.find(err => err.includes('Loại')) ? "danger" : "default"}
+                                            errorMessage={validationErrors.find(err => err.includes('Loại'))}
+                                            value={serviceData.serviceCategoryId}
                                             className="w-[300px]"
                                             onChange={(e) => handleInputChange('serviceCategoryId', e.target.value)}
                                         >
@@ -159,9 +199,14 @@ export default function ModalCreateService({ userId, refetchPets }: { userId: st
 
                                     <div >
                                         <Input
+                                            isInvalid={!!validationErrors.find(err => err.includes('Giá'))}
+                                            color={validationErrors.find(err => err.includes('Giá')) ? "danger" : "default"}
+                                            errorMessage={validationErrors.find(err => err.includes('Giá'))}
+                                            value={serviceData.price.toString()}
                                             className="w-[300px]"
                                             onChange={(e) => handleInputChange('price', e.target.value)}
                                             label="Giá dịch vụ"
+                                            type="number"
                                         />
 
                                     </div>
@@ -170,6 +215,10 @@ export default function ModalCreateService({ userId, refetchPets }: { userId: st
                                     <div className="mr-4">
                                         <Input
                                             className="w-[300px]"
+                                            isInvalid={!!validationErrors.find(err => err.includes('Cân'))}
+                                            color={validationErrors.find(err => err.includes('Cân')) ? "danger" : "default"}
+                                            errorMessage={validationErrors.find(err => err.includes('Cân'))}
+                                            value={serviceData.minWeight.toString()}
                                             onChange={(e) => handleInputChange('minWeight', e.target.value)}
                                             label="Cân nặng nhỏ nhất"
                                         />
@@ -180,6 +229,10 @@ export default function ModalCreateService({ userId, refetchPets }: { userId: st
                                             className="w-[300px]"
                                             onChange={(e) => handleInputChange('maxWeight', e.target.value)}
                                             label="Cân nặng lớn nhất"
+                                            isInvalid={!!validationErrors.find(err => err.includes('Cân'))}
+                                            color={validationErrors.find(err => err.includes('Cân')) ? "danger" : "default"}
+                                            errorMessage={validationErrors.find(err => err.includes('Cân'))}
+                                            value={serviceData.maxWeight.toString()}
                                         />
 
                                     </div>
@@ -189,11 +242,15 @@ export default function ModalCreateService({ userId, refetchPets }: { userId: st
                                         onChange={(e) => handleInputChange('serviceDescription', e.target.value)}
                                         placeholder="Mô tả dịch vụ"
                                         className="w-full"
+                                        isInvalid={!!validationErrors.find(err => err.includes('Mô tả'))}
+                                        color={validationErrors.find(err => err.includes('Mô tả')) ? "danger" : "default"}
+                                        errorMessage={validationErrors.find(err => err.includes('Mô tả'))}
+                                        value={serviceData.serviceDescription}
                                     />
                                 </div>
                                 <div className="flex justify-around">
                                     <Button
-                                        onClick={onClose}
+                                        onClick={handleClose}
                                         className="w-[200px]"
                                     >
                                         Đóng
