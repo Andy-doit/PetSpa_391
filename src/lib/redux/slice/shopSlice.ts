@@ -260,6 +260,20 @@ export const fetchAllFeedback = createAsyncThunk(
         }
     },
 );
+export const deleteAllIn4Shop = createAsyncThunk(
+    'shopOwner/deleteService',
+    async ({ slug }: { slug: string }) => {
+        try {
+            const response = await agent.ShopOnwer.deleteAllIn4Shop(slug);
+            return response;
+        } catch (error) {
+            if (error instanceof AxiosError) {
+                throw error.response?.data.error.message || "An error occurred";
+            }
+            throw error;
+        }
+    },
+);
 const shopSlice = createSlice({
     name: 'shop',
     initialState,
