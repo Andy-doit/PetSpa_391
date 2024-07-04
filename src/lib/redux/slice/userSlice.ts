@@ -27,14 +27,15 @@ export interface UserState {
 }
 
 const initialState: UserState = {
-    allPetPagination: null,
+  
     allBookingPagination: null,
     allBookingFetchingStatus: 'idle',
     allBookingFetchingError: false,
+    allBookingFetchingLoading: false,
+    allPetPagination: null,
     allPetFetchingStatus: 'idle',
     allPetFetchingError: false,
     allPetFetchingLoading: false,
-    allBookingFetchingLoading: false,
     allNominationOfShopPagination: null,
     allNominationOfShopFetchingStatus: 'idle',
     allNominationOfShopFetchingError: false,

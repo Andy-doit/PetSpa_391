@@ -54,7 +54,7 @@ const ShopOnwer = {
   postCreateService: (input: createServiceInput) =>
     requests.baseApiPost("api/v1/service", input),
   getAllOrderBooking: () =>
-    requests.get("api/v1/booking/auth/shop"),
+    requests.get("api/v1/booking/auth"),
   getServiceInfo: (slug: string) =>
     requests.baseApiGet(`api/v1/service/${slug}`),
   deleteService: (slug: string) =>
@@ -70,7 +70,9 @@ const ShopOnwer = {
   updatepasswordShopInfor: (input: updatePasswordInput) =>
     requests.put("/api/v1/user/password", input),
   getAllFeedback: (slug: string) =>
-    requests.baseApiGet(`/api/v1/feedback/latest/${slug}`)
+    requests.baseApiGet(`/api/v1/feedback/latest/${slug}`),
+  deleteAllIn4Shop: (slug: string) =>
+    requests.del(`api/v1/shop/${slug}`),
 
 }
 
@@ -127,6 +129,7 @@ const Admin = {
     requests.baseApiPost("api/v1/admin/manageShopOwner/addShopOwner", input),
   deleteAcount: (slug: string) =>
     requests.baseApiDelete(`api/v1/admin/delete/${slug}`),
+
 }
 
 

@@ -3,22 +3,18 @@ import React, { useEffect, useState } from 'react';
 import {
     Button,
     Modal,
-    ModalBody,
     ModalContent,
     ModalFooter,
     ModalHeader,
     useDisclosure,
-    Tooltip,
 } from '@nextui-org/react';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useAppDispatch } from '@/lib/redux/store';
-import { allPetPaginationData } from '@/models/userModels';
-import { MdDelete } from 'react-icons/md';
-import { deletePet, fetchAllPetPagination } from '@/lib/redux/slice/userSlice';
+import { deleteAllIn4Shop } from '@/lib/redux/slice/shopSlice';
 import getAccessAndRefreshCookie from '@/utilities/authUtils/getCookieForValidation';
 
-export default function DeletePet({ params, refetchPets }: { params: string, refetchPets: () => void }) {
+export default function DeleteAllIn4Shop({ params }: { params: string }) {
     const { isOpen, onOpen, onClose } = useDisclosure();
     const dispatch = useAppDispatch();
     const [userId, setUserId] = useState<string>('');
@@ -35,33 +31,24 @@ export default function DeletePet({ params, refetchPets }: { params: string, ref
         };
         fetchUid();
     }, []);
-
+    console.log(params)
     const handleDelete = async () => {
         try {
             if (userId) {
-                await dispatch(deletePet({ slug: params })).unwrap();
-                toast.success("Xoá thú cưng thành công!", {
-                    onClose: () => {
-                        onClose();
-                        refetchPets();
-                    },
-                    autoClose: 1500,
-                });
+                await dispatch(deleteAllIn4Shop({ slug: params })).unwrap();
+                onClose();
+
             }
         } catch (error) {
-            console.error('Error creating service:', error);
-            toast.error("Đã xảy ra lỗi khi xoá thú cưng. Vui lòng thử lại sau!");
+            console.error('Error deleting shop information:', error);
+            
         }
     };
-
     return (
         <div>
-            <Tooltip content="Xoá thú cưng">
-                <Button variant="bordered" className='rounded-full' isIconOnly onPress={onOpen}>
-                    <MdDelete size={20} color='red' />
-                </Button>
-            </Tooltip>
-
+            <Button className="bg-gradient-to-tr from-pink-500 to-yellow-500 text-white shadow-lg" onPress={onOpen}>
+                Xoá thông tin Shop
+            </Button>
             <Modal size='md' isOpen={isOpen} onClose={onClose} placement="top-center">
                 <ModalContent>
                     <ModalHeader
@@ -78,7 +65,7 @@ export default function DeletePet({ params, refetchPets }: { params: string, ref
                         <Button className='w-full' onClick={onClose}>
                             Không
                         </Button>
-                        <Button className="bg-gradient-to-tr from-pink-500 to-yellow-500 text-white shadow-lg w-full" onClick={handleDelete}>
+                        <Button onClick={handleDelete} className="bg-gradient-to-tr from-pink-500 to-yellow-500 text-white shadow-lg w-full">
                             Có
                         </Button>
                     </ModalFooter>
@@ -87,4 +74,4 @@ export default function DeletePet({ params, refetchPets }: { params: string, ref
             <ToastContainer />
         </div>
     );
-};
+}
