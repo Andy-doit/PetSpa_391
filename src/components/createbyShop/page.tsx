@@ -47,8 +47,8 @@ export default function CreateShop({ userId, onCreate }: { userId: string, onCre
         if (!shopData.shopName || shopData.shopName.length > 20) {
             errors.push('Tên shop không được để trống và không quá 20 ký tự');
         }
-        if (!shopData.shopAddress || shopData.shopAddress.length > 50) {
-            errors.push('Địa chỉ không được để trống và không quá 50 ký tự');
+        if (!shopData.shopAddress || shopData.shopAddress.length > 100) {
+            errors.push('Địa chỉ không được để trống và không quá 100 ký tự');
         }
         if (!shopData.shopEmail || !/\S+@\S+\.\S+/.test(shopData.shopEmail)) {
             errors.push('Email không hợp lệ');
