@@ -15,7 +15,7 @@ export default function AddShop({ shopId, refetchShops }: { shopId: string, refe
     const [validationErrors, setValidationErrors] = useState<string[]>([]);
     const [shopData, setShopData] = useState<AccountInput>({
         id: '',
-        firstname: '',
+        firstName: '',
         lastName: '',
         email: '',
         password: '',
@@ -25,7 +25,7 @@ export default function AddShop({ shopId, refetchShops }: { shopId: string, refe
     const resetForm = () => {
         setShopData({
             id: '',
-            firstname: '',
+            firstName: '',
             lastName: '',
             email: '',
             password: '',
@@ -37,7 +37,7 @@ export default function AddShop({ shopId, refetchShops }: { shopId: string, refe
     const validateInput = () => {
         const errors = [];
 
-        if (!shopData.firstname || shopData.firstname.length > 20) {
+        if (!shopData.firstName || shopData.firstName.length > 20) {
             errors.push('Tên không được để trống và không quá 20 ký tự');
         }
         if (!shopData.lastName || shopData.lastName.length > 20) {
@@ -124,9 +124,9 @@ export default function AddShop({ shopId, refetchShops }: { shopId: string, refe
                                 <Input
                                     size='sm'
                                     type="text"
-                                    onChange={(e) => handleInputChange('firstname', e.target.value)}  // Corrected to 'firstname'
+                                    onChange={(e) => handleInputChange('firstName', e.target.value)}  // Corrected to 'firstname'
                                     label="Tên"
-                                    value={shopData.firstname}
+                                    value={shopData.firstName}
                                     isInvalid={!!validationErrors.find(err => err.includes('Tên'))}
                                     color={validationErrors.find(err => err.includes('Tên')) ? "danger" : "default"}
                                     errorMessage={validationErrors.find(err => err.includes('Tên'))}
