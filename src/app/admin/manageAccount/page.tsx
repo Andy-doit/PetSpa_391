@@ -17,13 +17,13 @@ export default function ManageAccount() {
     useEffect(() => {
         fetchServices();
     }, [dispatch]);
-
+    console.log(shop)
     const fetchServices = async () => {
-        setLoading(true); 
+        setLoading(true);
         try {
             const response = await dispatch(fetchAllShopPagination());
             setShop(response.payload || []);
-            
+
         } catch (error) {
             console.error('Error fetching services:', error);
         } finally {

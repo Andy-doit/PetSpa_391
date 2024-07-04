@@ -1,6 +1,6 @@
 
 
-import { AllShopTimeSlotIn4Response, CreateShopTimeSlotInput, ShopInput, allOrderBookingPaginationResponse, createServiceInput, serviceCreateResponseSuccess, shopCreateResponseSuccess, updatePasswordInputResponseSuccess, updatePasswordShopInput } from "@/models/shopModel";
+import { AllFeedbackOfServiceResponse, AllShopTimeSlotIn4Response, CreateShopTimeSlotInput, ShopInput, allOrderBookingPaginationResponse, createServiceInput, serviceCreateResponseSuccess, shopCreateResponseSuccess, updatePasswordInputResponseSuccess, updatePasswordShopInput } from "@/models/shopModel";
 import agent from "@/utilities/agent";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { AxiosError } from "axios";
@@ -10,6 +10,10 @@ export interface ShopState {
     allOrderBookingFetchingStatus: string;
     allOrderBookingFetchingError: boolean;
     allOrderBookingFetchingLoading: boolean;
+    allFeedbackOfServicePagination: AllFeedbackOfServiceResponse | null | undefined;
+    allFeedbackOfServiceFetchingStatus: string;
+    allFeedbackOfServiceFetchingError: boolean;
+    allFeedbackOfServiceFetchingLoading: boolean;
     allShopTimeSlotPagination: AllShopTimeSlotIn4Response | null | undefined;
     allShopTimeSlotFetchingStatus: string;
     allShopTimeSlotFetchingError: boolean;
@@ -33,6 +37,10 @@ const initialState: ShopState = {
     allShopTimeSlotFetchingStatus: 'idle',
     allShopTimeSlotFetchingError: false,
     allShopTimeSlotFetchingLoading: false,
+    allFeedbackOfServicePagination: null,
+    allFeedbackOfServiceFetchingStatus: 'idle',
+    allFeedbackOfServiceFetchingError: false,
+    allFeedbackOfServiceFetchingLoading: false,
     returnedData: null,
     returnedDataStatus: 'idle',
     returnedDataError: false,
@@ -236,6 +244,22 @@ export const createShopTimeSlot = createAsyncThunk(
         }
     }
 );
+export const fetchAllFeedback = createAsyncThunk(
+    'shopOwner/fetchAllFeedback',
+    async ({ slug }: { slug: string }) => {
+        try {
+            const response = await agent.ShopOnwer.getAllFeedback(slug);
+            return response;
+        } catch (error) {
+            if (error instanceof AxiosError) {
+                return {
+                    message: error.response?.data.error.message,
+                    status: error.response?.status,
+                };
+            }
+        }
+    },
+);
 const shopSlice = createSlice({
     name: 'shop',
     initialState,
@@ -285,6 +309,20 @@ const shopSlice = createSlice({
                 state.allShopTimeSlotFetchingStatus = 'failed';
                 state.allShopTimeSlotFetchingError = true;
                 state.allShopTimeSlotFetchingLoading = false;
+            });
+        builder.addCase(fetchAllFeedback.pending, (state) => {
+            state.allFeedbackOfServiceFetchingLoading = true;
+            state.allFeedbackOfServiceFetchingStatus = 'loading';
+        });
+        builder.addCase(fetchAllFeedback.fulfilled, (state, action) => {
+            state.allFeedbackOfServicePagination = action.payload;
+            state.allFeedbackOfServiceFetchingLoading = false;
+        });
+        builder
+            .addCase(fetchAllFeedback.rejected, (state) => {
+                state.allOrderBookingFetchingStatus = 'failed';
+                state.allOrderBookingFetchingError = true;
+                state.allOrderBookingFetchingLoading = false;
             });
 
     },

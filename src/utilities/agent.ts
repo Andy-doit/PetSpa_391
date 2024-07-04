@@ -3,7 +3,7 @@ import apiJWT from "./api";
 import baseApi from "./baseApi";
 import { createBookingInput } from "@/models/bookingModels";
 import { CreateShopTimeSlotInput, ShopInput, createServiceInput } from '@/models/shopModel';
-import { CancelBookingInput, createFeedbackInput, createPetInput, updatePasswordInput, updateProfileInput } from "@/models/userModels";
+import { CancelBookingInput, createFeedbackInput, createNomiationInput, createPetInput, updatePasswordInput, updateProfileInput } from "@/models/userModels";
 import { AccountInput, ShopInfor } from "@/models/adminModel";
 
 
@@ -69,6 +69,8 @@ const ShopOnwer = {
     requests.patch("/api/v1/shop", input),
   updatepasswordShopInfor: (input: updatePasswordInput) =>
     requests.put("/api/v1/user/password", input),
+  getAllFeedback: (slug: string) =>
+    requests.baseApiGet(`/api/v1/feedback/latest/${slug}`)
 
 }
 
@@ -80,7 +82,7 @@ const User = {
   getorderBooking: (slug: string) =>
     requests.get(`api/v1/booking/auth/${slug}`),
   deleteBooking: (input: CancelBookingInput) =>
-    requests.baseApiPost("/api/v1/booking/auth/cancel", input),
+    requests.post("/api/v1/booking/auth/cancel", input),
   getProfileInfor: () =>
     requests.get("api/v1/user"),
   createPet: (input: createPetInput) =>
@@ -96,7 +98,7 @@ const User = {
   getAllServiceByShopId: (slug: string) =>
     requests.baseApiGet(`/api/v1/service/all/${slug}`),
   deletePet: (slug: string) =>
-    requests.baseApiDelete(`api/v1/pet/${slug}`),
+    requests.del(`api/v1/pet/${slug}`),
   updatePet: (input: createPetInput) =>
     requests.baseApiPut("api/v1/pet", input),
   updateProfile: (input: updateProfileInput) =>
@@ -104,8 +106,11 @@ const User = {
   updatePassword: (input: updatePasswordInput) =>
     requests.put("api/v1/user/password", input),
   createFeedback: (input: createFeedbackInput) =>
-    requests.post("api/v1/feedback/create", input),
-
+    requests.post("api/v1/feedback", input),
+  createNomination: (input: createNomiationInput) =>
+    requests.post("api/v1/nomination", input),
+  getAllNomination: (slug: string) =>
+    requests.get(`api/v1/nomination/all/${slug}`),
 }
 
 //Admin
