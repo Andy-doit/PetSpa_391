@@ -12,6 +12,7 @@ import { FaPlus } from 'react-icons/fa';
 export default function AddShop({ shopId, refetchShops }: { shopId: string, refetchShops: () => void }) {
     const { isOpen, onOpen, onClose } = useDisclosure();
     const [isLoading, setIsLoading] = useState(false);
+    const [validationErrors, setValidationErrors] = useState<string[]>([]);
     const [shopData, setShopData] = useState<AccountInput>({
         id: '',
         firstname: '',
@@ -21,6 +22,42 @@ export default function AddShop({ shopId, refetchShops }: { shopId: string, refe
         username: '',
         phone: ''
     });
+    const resetForm = () => {
+        setShopData({
+            id: '',
+            firstname: '',
+            lastName: '',
+            email: '',
+            password: '',
+            username: '',
+            phone: ''
+        });
+        setValidationErrors([]);
+    };
+    const validateInput = () => {
+        const errors = [];
+
+        if (!shopData.firstname || shopData.firstname.length > 20) {
+            errors.push('Tên không được để trống và không quá 20 ký tự');
+        }
+        if (!shopData.lastName || shopData.lastName.length > 20) {
+            errors.push('Họ không được để trống và không quá 20 ký tự');
+        }
+        if (!shopData.email || !/\S+@\S+\.\S+/.test(shopData.email)) {
+            errors.push('Email không hợp lệ');
+        }
+        if (!shopData.username || shopData.username.length > 20) {
+            errors.push('Tên người dùng không được để trống và không quá 20 ký tự');
+        }
+        if (!shopData.password || shopData.password.length < 6) {
+            errors.push('Mật khẩu phải có ít nhất 6 ký tự');
+        }
+        if (!shopData.phone || !/^\d{10}$/.test(shopData.phone)) {
+            errors.push('Số điện thoại phải đủ 10 số');
+        }
+
+        return errors;
+    };
 
     const dispatch = useAppDispatch();
 
@@ -32,8 +69,14 @@ export default function AddShop({ shopId, refetchShops }: { shopId: string, refe
     };
 
     const handleCreate = async () => {
-        setIsLoading(true);
+        const errors = validateInput();
+        if (errors.length > 0) {
+            setValidationErrors(errors);
+            return;
+        }
+
         try {
+            setIsLoading(true);
             await dispatch(createShop({ shopData })).unwrap();
             toast.success("Tạo shop thành công!", {
                 onClose: () => {
@@ -47,9 +90,13 @@ export default function AddShop({ shopId, refetchShops }: { shopId: string, refe
             toast.error("Đã xảy ra lỗi khi tạo shop. Vui lòng thử lại sau!");
         } finally {
             setIsLoading(false);
+            resetForm();
         }
     };
-
+    const handleClose = () => {
+        resetForm();
+        onClose();
+    };
     return (
         <div>
             <Button
@@ -60,7 +107,7 @@ export default function AddShop({ shopId, refetchShops }: { shopId: string, refe
                 Tạo tài khoản shop
             </Button>
 
-            <Modal size='xl' isOpen={isOpen} onClose={onClose} placement="top-center">
+            <Modal size='xl' isOpen={isOpen} onClose={handleClose} placement="top-center">
                 <ModalContent>
                     <ModalHeader
                         className='text-3xl flex justify-center font-bold uppercase text-white'
@@ -77,15 +124,25 @@ export default function AddShop({ shopId, refetchShops }: { shopId: string, refe
                                 <Input
                                     size='sm'
                                     type="text"
-                                    onChange={(e) => handleInputChange('firstName', e.target.value)}
+                                    onChange={(e) => handleInputChange('firstname', e.target.value)}  // Corrected to 'firstname'
                                     label="Tên"
+                                    value={shopData.firstname}
+                                    isInvalid={!!validationErrors.find(err => err.includes('Tên'))}
+                                    color={validationErrors.find(err => err.includes('Tên')) ? "danger" : "default"}
+                                    errorMessage={validationErrors.find(err => err.includes('Tên'))}
                                     className="w-full"
                                 />
+
+
                                 <Input
                                     type="text"
                                     size='sm'
                                     onChange={(e) => handleInputChange('lastName', e.target.value)}
                                     label="Họ"
+                                    value={shopData.lastName}
+                                    isInvalid={!!validationErrors.find(err => err.includes('Họ'))}
+                                    color={validationErrors.find(err => err.includes('Họ')) ? "danger" : "default"}
+                                    errorMessage={validationErrors.find(err => err.includes('Họ'))}
                                     className="w-full"
                                 />
                             </div>
@@ -95,6 +152,10 @@ export default function AddShop({ shopId, refetchShops }: { shopId: string, refe
                                     type="email"
                                     onChange={(e) => handleInputChange('email', e.target.value)}
                                     label="Email"
+                                    value={shopData.email}
+                                    isInvalid={!!validationErrors.find(err => err.includes('Email'))}
+                                    color={validationErrors.find(err => err.includes('Email')) ? "danger" : "default"}
+                                    errorMessage={validationErrors.find(err => err.includes('Email'))}
                                     className="w-full"
                                 />
                                 <Input
@@ -102,6 +163,10 @@ export default function AddShop({ shopId, refetchShops }: { shopId: string, refe
                                     size='sm'
                                     onChange={(e) => handleInputChange('username', e.target.value)}
                                     label="Tên người dùng"
+                                    value={shopData.username}
+                                    isInvalid={!!validationErrors.find(err => err.includes('Tên'))}
+                                    color={validationErrors.find(err => err.includes('Người')) ? "danger" : "default"}
+                                    errorMessage={validationErrors.find(err => err.includes('Tên Người'))}
                                     className="w-full"
                                 />
                             </div>
@@ -111,6 +176,10 @@ export default function AddShop({ shopId, refetchShops }: { shopId: string, refe
                                     type="password"
                                     onChange={(e) => handleInputChange('password', e.target.value)}
                                     label="Mật khẩu"
+                                    value={shopData.password}
+                                    isInvalid={!!validationErrors.find(err => err.includes('Mật'))}
+                                    color={validationErrors.find(err => err.includes('Mật')) ? "danger" : "default"}
+                                    errorMessage={validationErrors.find(err => err.includes('Mật'))}
                                     className="w-full"
                                 />
                                 <Input
@@ -118,6 +187,10 @@ export default function AddShop({ shopId, refetchShops }: { shopId: string, refe
                                     type="text"
                                     onChange={(e) => handleInputChange('phone', e.target.value)}
                                     label="Số điện thoại"
+                                    value={shopData.phone}
+                                    isInvalid={!!validationErrors.find(err => err.includes('Số'))}
+                                    color={validationErrors.find(err => err.includes('Số')) ? "danger" : "default"}
+                                    errorMessage={validationErrors.find(err => err.includes('Số'))}
                                     className="w-full"
                                 />
                             </div>
@@ -127,7 +200,7 @@ export default function AddShop({ shopId, refetchShops }: { shopId: string, refe
                         <div className="mt-4 flex w-full justify-end space-x-3">
                             <Button
                                 className="w-full"
-                                onPress={onClose}
+                                onPress={handleClose}
                             >
                                 Huỷ
                             </Button>

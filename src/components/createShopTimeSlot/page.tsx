@@ -23,13 +23,39 @@ import Cookies from 'js-cookie'; // Import js-cookie
 
 export default function CreateShopTimeSlot({ refetchTimes }: { refetchTimes: () => void }) {
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
+    const { onClose } = useDisclosure();
     const [isLoading, setIsLoading] = useState(false);
+    const [validationErrors, setValidationErrors] = useState<string[]>([]);
     const [timeSlotData, setTimeSlot] = useState<CreateShopTimeSlotInput>({
         shopId: '',
         timeSlotId: '',
         description: '',
         totalSlot: '',
     });
+    const resetForm = () => {
+        setTimeSlot({
+            shopId: '',
+            timeSlotId: '',
+            description: '',
+            totalSlot: '',
+        });
+        setValidationErrors([]);
+    };
+    const validateInput = () => {
+        const errors: string[] = [];
+
+        if (!timeSlotData.timeSlotId) {
+            errors.push('Khung giờ không được để trống');
+        }
+        if (!timeSlotData.totalSlot || parseInt(timeSlotData.totalSlot) <= 0) {
+            errors.push('Slot tối đa phải lớn hơn 0');
+        }
+        if (!timeSlotData.description || timeSlotData.description.length > 100) {
+            errors.push('Mô tả không được để trống và không quá 100 ký tự');
+        }
+
+        return errors;
+    };
     useEffect(() => {
         const shopId = Cookies.get('shopId'); // Get shopId from cookies
         if (shopId) {
@@ -48,6 +74,12 @@ export default function CreateShopTimeSlot({ refetchTimes }: { refetchTimes: () 
     };
 
     const handleCreate = async () => {
+        const errors = validateInput();
+        if (errors.length > 0) {
+            setValidationErrors(errors);
+            return;
+        }
+
         setIsLoading(true);
         try {
             await dispatch(createShopTimeSlot({ timeSlotData })).unwrap();
@@ -63,7 +95,12 @@ export default function CreateShopTimeSlot({ refetchTimes }: { refetchTimes: () 
             toast.error("Đã xảy ra lỗi khi tạo shop. Vui lòng thử lại sau!");
         } finally {
             setIsLoading(false);
+            resetForm();
         }
+    };
+    const handleClose = () => {
+        resetForm();
+        onClose();
     };
 
     return (
@@ -77,7 +114,7 @@ export default function CreateShopTimeSlot({ refetchTimes }: { refetchTimes: () 
             </Button>
             <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
                 <ModalContent>
-                    {(onClose) => (
+                    {(handleClose) => (
                         <>
                             <ModalHeader className="flex flex-col gap-1 text-center text-3xl text-orange-600 font-bold uppercase bg-black">Tạo mới khung giờ</ModalHeader>
                             <Divider />
@@ -89,20 +126,36 @@ export default function CreateShopTimeSlot({ refetchTimes }: { refetchTimes: () 
                                 <Select
                                     label="Chọn khung giờ"
                                     className="w-full"
+                                    value={timeSlotData.timeSlotId}
+                                    isInvalid={!!validationErrors.find(err => err.includes('Khung giờ'))}
+                                    errorMessage={validationErrors.find(err => err.includes('Khung giờ'))}
                                     onChange={(e) => handleInputChange('timeSlotId', e.target.value)}
                                 >
-                                    <SelectItem key="1">8:00 - 9:30</SelectItem>
-                                    <SelectItem key="2">9:30 - 11:00</SelectItem>
-                                    <SelectItem key="3">11:00 - 12:30</SelectItem>
-                                    <SelectItem key="4">12:30 - 14:00</SelectItem>
-                                    <SelectItem key="5">14:00 - 15:30</SelectItem>
-                                    <SelectItem key="6">15:30 - 17:00</SelectItem>
+                                    <SelectItem key="1" value="1">8:00 - 9:30</SelectItem>
+                                    <SelectItem key="2" value="2">9:30 - 11:00</SelectItem>
+                                    <SelectItem key="3" value="3">11:00 - 12:30</SelectItem>
+                                    <SelectItem key="4" value="4">12:30 - 14:00</SelectItem>
+                                    <SelectItem key="5" value="5">14:00 - 15:30</SelectItem>
+                                    <SelectItem key="6" value="6">15:30 - 17:00</SelectItem>
                                 </Select>
-                                <Input onChange={(e) => handleInputChange('totalSlot', e.target.value)} placeholder="Slot tối đa" type="number" size="lg" />
-                                <Input placeholder="Mô tả" size="lg" onChange={(e) => handleInputChange('description', e.target.value)} />
+                                <Input
+                                    onChange={(e) => handleInputChange('totalSlot', e.target.value)}
+                                    placeholder="Slot tối đa"
+                                    type="number"
+                                    size="lg"
+                                    isInvalid={!!validationErrors.find(err => err.includes('Slot tối đa'))}
+                                    errorMessage={validationErrors.find(err => err.includes('Slot tối đa'))}
+                                />
+                                <Input
+                                    placeholder="Mô tả"
+                                    size="lg"
+                                    onChange={(e) => handleInputChange('description', e.target.value)}
+                                    isInvalid={!!validationErrors.find(err => err.includes('Mô tả'))}
+                                    errorMessage={validationErrors.find(err => err.includes('Mô tả'))}
+                                />
                             </ModalBody>
                             <ModalFooter>
-                                <Button className="w-1/2" onPress={onClose}>
+                                <Button className="w-1/2" onPress={handleClose}>
                                     Huỷ
                                 </Button>
                                 <Button

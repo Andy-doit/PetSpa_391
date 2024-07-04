@@ -207,7 +207,7 @@ export interface cancelBookingResponseSuccess {
 export interface createFeedbackInput {
     serviceId: number,
     ratingType: string,
-    content: string | undefined | null,
+    content: string,
 
 }
 export interface createFeedbackResponseSuccess {

@@ -167,7 +167,7 @@ export default function CreatePet({ userId, refetchPets }: { userId: string, ref
                                             label="Tên thú cưng"
                                             isInvalid={!!validationErrors.find(err => err.includes('Tên thú cưng'))}
                                             color={validationErrors.find(err => err.includes('Tên thú cưng')) ? "danger" : "default"}
-                                            errorMessage="Tên thú cưng không được để trống"
+                                            errorMessage={validationErrors.find(err => err.includes('Tên thú cưng'))}
                                             className="w-[250px]"
                                         />
                                     </div>
@@ -179,7 +179,7 @@ export default function CreatePet({ userId, refetchPets }: { userId: string, ref
                                             className="w-[250px]"
                                             isInvalid={!!validationErrors.find(err => err.includes('Loại thú cưng'))}
                                             color={validationErrors.find(err => err.includes('Loại thú cưng')) ? "danger" : "default"}
-                                            errorMessage="Loại thú cưng không được để trống"
+                                            errorMessage={validationErrors.find(err => err.includes('Loại thú cưng'))}
                                         >
                                             <SelectItem key="DOG" value="DOG">Chó</SelectItem>
                                             <SelectItem key="CAT" value="CAT">Mèo</SelectItem>
@@ -195,7 +195,7 @@ export default function CreatePet({ userId, refetchPets }: { userId: string, ref
                                             label="Tuổi thú cưng"
                                             isInvalid={!!validationErrors.find(err => err.includes('Tuổi'))}
                                             color={validationErrors.find(err => err.includes('Tuổi')) ? "danger" : "default"}
-                                            errorMessage="Tuổi thú cưng phải là số và không được lớn hơn 20"
+                                            errorMessage={validationErrors.find(err => err.includes('Tuổi'))}
                                             className="w-[250px]"
                                         />
                                     </div>
@@ -207,7 +207,7 @@ export default function CreatePet({ userId, refetchPets }: { userId: string, ref
                                             className="w-[250px]"
                                             isInvalid={!!validationErrors.find(err => err.includes('Giới tính'))}
                                             color={validationErrors.find(err => err.includes('Giới tính')) ? "danger" : "default"}
-                                            errorMessage="Giới tính thú cưng không được để trống"
+                                            errorMessage={validationErrors.find(err => err.includes('Giới tính'))}
                                         >
                                             <SelectItem key="Male" value="Male">Đực</SelectItem>
                                             <SelectItem key="Female" value="Female">Cái</SelectItem>
@@ -223,7 +223,7 @@ export default function CreatePet({ userId, refetchPets }: { userId: string, ref
                                             label="Cân nặng"
                                             isInvalid={!!validationErrors.find(err => err.includes('Cân nặng'))}
                                             color={validationErrors.find(err => err.includes('Cân nặng')) ? "danger" : "default"}
-                                            errorMessage="Cân nặng thú cưng phải là số và không được lớn hơn 20"
+                                            errorMessage={validationErrors.find(err => err.includes('Cân nặng'))}
                                             className="w-full"
                                         />
                                     </div>
@@ -237,29 +237,6 @@ export default function CreatePet({ userId, refetchPets }: { userId: string, ref
                                         />
                                     </div>
                                 </div>
-                                {/* <div className="flex items-center mb-4">
-                                    <label htmlFor="upload-file" className="cursor-pointer flex items-center space-x-2">
-                                        <FcPlus className="text-xl" />
-                                        <span className="text-gray-600">Upload file</span>
-                                    </label>
-                                    <input
-                                        id="upload-file"
-                                        type="file"
-                                        // onChange={handleUploadImage}
-                                        hidden
-                                        className="w-full"
-                                    />
-                                </div> */}
-                                {/* <div className="flex mb-4">
-                                    <label className='' htmlFor='Uploadfile' >
-                                        Preview image
-                                        <Image
-                                            width={300}
-                                            alt="NextUI hero Image"
-                                            src="https://nextui-docs-v2.vercel.app/images/hero-card-complete.jpeg"
-                                        />
-                                    </label>
-                                </div> */}
                                 <div className="flex mb-4">
                                     <div className="w-full">
                                         <Textarea

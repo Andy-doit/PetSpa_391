@@ -9,12 +9,34 @@ import 'react-toastify/dist/ReactToastify.css';
 
 export default function CreateFeedback({ shopData }: { shopData: BookingDetail }) {
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
+    const [validationErrors, setValidationErrors] = useState<string[]>([]);
     const [feedbackData, setFedbackData] = useState<createFeedbackInput>({
         serviceId: parseInt(shopData.serviceId),
         ratingType: '',
         content: '',
 
     });
+    const resetForm = () => {
+        setFedbackData({
+            serviceId: parseInt(shopData.serviceId),
+            ratingType: '',
+            content: '',
+        });
+        setValidationErrors([]);
+    };
+
+    const validateInput = () => {
+        const errors: string[] = [];
+
+        if (!feedbackData.ratingType) {
+            errors.push("Vui lòng chọn đánh giá");
+        }
+        if (!feedbackData.content) {
+            errors.push("Vui lòng nhập nội dung đánh giá");
+        }
+
+        return errors;
+    };
     const dispatch = useAppDispatch();
     const handleInputChange = (fieldName: string, newValue: string | number) => {
         setFedbackData(prevData => ({
@@ -37,6 +59,12 @@ export default function CreateFeedback({ shopData }: { shopData: BookingDetail }
         fetchUid();
     }, [userId]);
     const handleCreate = async () => {
+        const errors = validateInput();
+        if (errors.length > 0) {
+            setValidationErrors(errors);
+            return;
+        }
+
         try {
             if (userId) {
                 await dispatch(createFeedback({ feedbackData })).unwrap();
@@ -65,16 +93,24 @@ export default function CreateFeedback({ shopData }: { shopData: BookingDetail }
                                 }}
                             >
                                 <Select label="Đánh giá" className="w-[250px]"
+                                    isInvalid={!!validationErrors.find(err => err.includes('Vui lòng chọn đánh giá'))}
+                                    color={validationErrors.find(err => err.includes('Vui lòng chọn đánh giá')) ? "danger" : "default"}
+                                    errorMessage={validationErrors.find(err => err.includes('Vui lòng chọn đánh giá'))}
+                                    value={feedbackData.ratingType}
                                     onChange={(e) => handleInputChange('ratingType', e.target.value)}
                                 >
-                                    <SelectItem key="TOTALLY_BAD">Rất tệ</SelectItem>
-                                    <SelectItem key="PARTIALLY_BAD">Không được ổn</SelectItem>
-                                    <SelectItem key="NORMAL">Nó ổn</SelectItem>
-                                    <SelectItem key="QUITE_GOOD">Rất tuyệt vời</SelectItem>
-                                    <SelectItem key="REALLY_GOOD">Cực kỳ tuyệt vời</SelectItem>
+                                    <SelectItem key="TOTALLY_BAD" value="TOTALLY_BAD">Rất tệ</SelectItem>
+                                    <SelectItem key="PARTIALLY_BAD" value="PARTIALLY_BAD">Không được ổn</SelectItem>
+                                    <SelectItem key="NORMAL" value="NORMAL">Nó ổn</SelectItem>
+                                    <SelectItem key="QUITE_GOOD" value="QUITE_GOOD">Rất tuyệt vời</SelectItem>
+                                    <SelectItem key="REALLY_GOOD" value="REALLY_GOOD">Cực kỳ tuyệt vời</SelectItem>
                                 </Select>
                                 <Textarea
                                     placeholder="Nhập đánh giá của bạn"
+                                    value={feedbackData.content}
+                                    isInvalid={!!validationErrors.find(err => err.includes('Vui lòng nhập nội dung đánh giá'))}
+                                    color={validationErrors.find(err => err.includes('Vui lòng nhập nội dung đánh giá')) ? "danger" : "default"}
+                                    errorMessage={validationErrors.find(err => err.includes('Vui lòng nhập nội dung đánh giá'))}
                                     onChange={(e) => handleInputChange('content', e.target.value)}
                                 />
                             </ModalBody>
