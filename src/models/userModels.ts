@@ -45,7 +45,6 @@ export interface updateProfileInput {
 }
 export interface updatePasswordInput {
     id: string,
-
     oldPassword: string | undefined | null,
     newPassword: string | undefined | null,
     confirmPassword: string | undefined | null,
