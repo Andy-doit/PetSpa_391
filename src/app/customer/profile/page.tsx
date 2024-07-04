@@ -20,21 +20,22 @@ const ErrorMessage: React.FC<{ message?: string }> = ({ message }) => {
 const Profile: React.FC = () => {
     const validationSchema = Yup.object().shape({
         firstName: Yup.string()
-            .required('Tên là bắt buộc')
-            .min(2, 'Tên phải có ít nhất 2 ký tự')
-            .max(50, 'Tên không được vượt quá 50 ký tự'),
+            .required('Tên Họ là bắt buộc')
+            .min(2, 'Tên Họ phải có ít nhất 2 ký tự')
+            .max(20, 'Tên Họ không được vượt quá 20 ký tự')
+            .matches(/^[a-zA-Z]+$/, 'Tên Họ không được chứa số hoặc kí tự đặc biệt'),
         lastName: Yup.string()
-            .required('Họ là bắt buộc')
-            .min(2, 'Họ phải có ít nhất 2 ký tự')
-            .max(50, 'Họ không được vượt quá 50 ký tự'),
+            .required('Tên Họ là bắt buộc')
+            .min(2, 'Tên của bạn phải có ít nhất 2 ký tự')
+            .max(20, 'Tên của bạn không được vượt quá 20 ký tự')
+            .matches(/^[a-zA-Z]+$/, 'Tên của bạn không được chứa số hoặc kí tự đặc biệt'),
         email: Yup.string()
             .email('Địa chỉ email không hợp lệ')
             .required('Email là bắt buộc'),
         phone: Yup.string()
             .matches(/^[0-9]+$/, 'Số điện thoại không hợp lệ')
-            .min(10, 'Số điện thoại phải có ít nhất 10 số')
-            .max(15, 'Số điện thoại không được vượt quá 15 số')
-            .required('Số điện thoại là bắt buộc'),
+            .required('Số điện thoại là bắt buộc')
+            .matches(/^[0-9]{10}$/, 'Số điện thoại phải có đúng 10 số')
     });
 
     const dispatch = useAppDispatch();
@@ -172,7 +173,7 @@ const Profile: React.FC = () => {
                                 <Form>
                                     <CardBody className="space-y-2">
                                         <div className="space-y-1">
-                                            <p className='text-white'>Tên</p>
+                                            <p className='text-white'>Họ</p>
                                             <Field name="firstName">
                                                 {({ field, form }: { field: FieldInputProps<string>; form: FormikProps<updateProfileInput> }) => (
                                                     <>
@@ -187,7 +188,7 @@ const Profile: React.FC = () => {
                                             </Field>
                                         </div>
                                         <div className="space-y-1">
-                                            <p className='text-white'>Họ</p>
+                                            <p className='text-white'>Tên</p>
                                             <Field name="lastName">
                                                 {({ field, form }: { field: FieldInputProps<string>; form: FormikProps<updateProfileInput> }) => (
                                                     <>

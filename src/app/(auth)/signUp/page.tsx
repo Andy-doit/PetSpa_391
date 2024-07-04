@@ -19,6 +19,7 @@ import { FaArrowAltCircleLeft } from "react-icons/fa";
 export default function SignUp() {
     const router = useRouter();
     const [isLoading, setIsLoading] = useState(false);
+
     const [isShowPassword, setIsShowPassword] = useState(false);
     const initialValues = {
         username: '',
@@ -28,6 +29,8 @@ export default function SignUp() {
         email: '',
     };
 
+
+
     const validationSchema = Yup.object().shape({
         username: Yup.string()
             .required('Tên người dùng là bắt buộc')
@@ -36,24 +39,30 @@ export default function SignUp() {
         password: Yup.string()
             .required('Mật khẩu là bắt buộc')
             .min(6, 'Mật khẩu phải có ít nhất 6 ký tự')
-            .max(50, 'Mật khẩu không được vượt quá 50 ký tự'),
+            .max(20, 'Mật khẩu không được vượt quá 20 ký tự'),
         firstName: Yup.string()
-            .required('Họ là bắt buộc'),
+            .required('Họ là bắt buộc')
+            .min(2, 'Tên Họ phải có ít nhất 2 ký tự')
+            .max(20, 'Tên Họ không được vượt quá 20 ký tự')
+            .matches(/^[a-zA-Z]+$/, 'Tên Họ không được chứa số hoặc kí tự đặc biệt'),
         lastName: Yup.string()
-            .required('Tên là bắt buộc'),
+            .required('Tên là bắt buộc')
+            .min(3, 'Tên của bạn phải có ít nhất 3 ký tự')
+            .max(20, 'Tên của bạn không được vượt quá 20 ký tự')
+            .matches(/^[a-zA-Z]+$/, 'Tên của bạn không được chứa số hoặc kí tự đặc biệt'),
         email: Yup.string()
             .email('Địa chỉ email không hợp lệ')
             .required('Email là bắt buộc'),
     });
 
+
     const { handleSignup } = useAuth();
 
     const handleSubmit = async (values: SignupInput) => {
-        setIsLoading(true); // Start loading
 
         try {
             await handleSignup(values);
-
+            setIsLoading(true); // Start loading
             toast.success("Đăng ký thành công! Bạn sẽ chuyển đến trang đăng nhập trong giây lát...", {
                 onClose: () => {
                     setTimeout(() => {
@@ -65,7 +74,8 @@ export default function SignUp() {
         } catch (error) {
             toast.error("Đăng ký không thành công. Vui lòng thử lại.");
         } finally {
-            setIsLoading(false); // Stop loading
+            setIsLoading(false);
+
         }
     };
 
@@ -98,6 +108,7 @@ export default function SignUp() {
                                             <div className='space-y-2'>
                                                 <Field
                                                     name='firstName'
+
                                                     component={MyInputFirstName}
                                                 />
                                             </div>
@@ -105,12 +116,14 @@ export default function SignUp() {
                                                 <Field
                                                     name='lastName'
                                                     component={MyInputLastName}
+
                                                 />
                                             </div>
                                             <div className='space-y-2'>
                                                 <Field
                                                     name='email'
                                                     component={MyInputEmail}
+
                                                 />
                                             </div>
                                             <div className='space-y-2'>
@@ -118,6 +131,7 @@ export default function SignUp() {
                                                     name='username'
                                                     component={MyInput}
                                                     type={isShowPassword ? 'text' : 'password'}
+
                                                 />
                                             </div>
                                             <div className='space-y-4'>
@@ -127,6 +141,7 @@ export default function SignUp() {
                                                         fullWidth
                                                         component={MyInputPassword}
                                                         placeholder='Password'
+
                                                     />
                                                 </div>
                                             </div>
