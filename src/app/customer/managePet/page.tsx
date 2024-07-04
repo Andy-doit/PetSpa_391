@@ -18,12 +18,13 @@ export default function ManagePet() {
     const dispatch = useAppDispatch();
     const [pets, setPets] = useState<allPetPaginationData[]>([]);
     const [userId, setUserId] = useState<string>('');
+    console.log(pets)
 
     const fetchPets = async () => {
-        setLoading(true); // Start loading
+        setLoading(true);
         try {
-            const response = await dispatch(fetchAllPetPagination());
-            setPets(response.payload || []);
+            const response = await dispatch(fetchAllPetPagination()).unwrap();
+            setPets(response || []);
         } catch (error) {
             console.error('Error fetching pets:', error);
         } finally {
@@ -32,11 +33,7 @@ export default function ManagePet() {
     };
 
     useEffect(() => {
-        fetchPets();
-    }, [dispatch]);
-
-    useEffect(() => {
-        const fetchUid = async () => {
+        const fetchInitialData = async () => {
             try {
                 const { uid } = await getAccessAndRefreshCookie();
                 if (uid) {
@@ -45,9 +42,12 @@ export default function ManagePet() {
             } catch (error) {
                 console.error('Error fetching UID:', error);
             }
+
+            await fetchPets();
         };
-        fetchUid();
-    }, []);
+
+        fetchInitialData();
+    }, [dispatch]);
 
     return (
         <div className="container py-2 pb-10 flex flex-col gap-4">
@@ -105,7 +105,7 @@ export default function ManagePet() {
                                         <TableCell>{pet.petType === 'DOG' ? 'Chó' : (pet.petType === 'CAT' ? 'Mèo' : '')}</TableCell>
                                         <TableCell>{pet.petGender === 'Male' ? 'Đực' : (pet.petGender === 'Female' ? 'Cái' : '')}</TableCell>
                                         <TableCell>
-                                            {pet.doHaveUpcomingSchedule === true ? (
+                                            {pet.doHaveUpcomingSchedule ? (
                                                 <Chip color="success">Đã có lịch đặt</Chip>
                                             ) : (
                                                 <Chip color="warning">Chưa có lịch đặt</Chip>
@@ -113,7 +113,7 @@ export default function ManagePet() {
                                         </TableCell>
                                         <TableCell>
                                             <div className="flex items-center gap-4">
-                                                <PetDetail params={pet.id} />
+                                                <PetDetail params={pet} />
                                                 <UpdatePet params={pet} refetchPets={fetchPets} />
                                                 <DeletePet params={pet.id} refetchPets={fetchPets} />
                                             </div>
@@ -125,8 +125,6 @@ export default function ManagePet() {
                     )
                 )}
             </div>
-
-
         </div>
     );
 }

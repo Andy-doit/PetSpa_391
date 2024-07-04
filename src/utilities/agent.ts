@@ -2,8 +2,8 @@ import { AxiosResponse } from "axios";
 import apiJWT from "./api";
 import baseApi from "./baseApi";
 import { createBookingInput } from "@/models/bookingModels";
-import { ShopInput, createServiceInput } from '@/models/shopModel';
-import { CancelBookingInput, createFeedbackInput, createPetInput, updatePasswordInput, updateProfileInput } from "@/models/userModels";
+import { CreateShopTimeSlotInput, ShopInput, createServiceInput } from '@/models/shopModel';
+import { CancelBookingInput, createFeedbackInput, createNomiationInput, createPetInput, updatePasswordInput, updateProfileInput } from "@/models/userModels";
 import { AccountInput, ShopInfor } from "@/models/adminModel";
 
 
@@ -13,6 +13,7 @@ const requests = {
     apiJWT.get(url, { params }).then(responseBody),
   post: <T>(url: string, body: T) => apiJWT.post(url, body).then(responseBody),
   put: <T>(url: string, body: T) => apiJWT.put(url, body).then(responseBody),
+  patch: <T>(url: string, body: T) => apiJWT.patch(url, body).then(responseBody),
   del: <T>(url: string, params?: T) =>
     apiJWT.delete(url, { params }).then(responseBody),
   baseApiGet: <T>(url: string, params?: T) =>
@@ -44,14 +45,20 @@ const ServiceAPI = {
 const ShopOnwer = {
   getAllService: () =>
     requests.get("/api/v1/service/all/auth"),
+  getShopTimeSlot: () =>
+    requests.get("/api/v1/shop-timeslot/auth/all/auth"),
+  postCreateShopTimeSlot: (input: CreateShopTimeSlotInput) =>
+    requests.baseApiPost("api/v1/shop-timeslot/auth", input),
+  deleteShopTimeSlot: () =>
+    requests.baseApiDelete("api/v1/shop-timeslot/atuh"),
   postCreateService: (input: createServiceInput) =>
     requests.baseApiPost("api/v1/service", input),
   getAllOrderBooking: () =>
-    requests.get("api/v1/booking/auth/shop"),
+    requests.get("api/v1/booking/auth"),
   getServiceInfo: (slug: string) =>
     requests.baseApiGet(`api/v1/service/${slug}`),
   deleteService: (slug: string) =>
-    requests.baseApiDelete(`api/v1/service/${slug}`),
+    requests.del(`api/v1/service/${slug}`),
   updateService: (input: createServiceInput) =>
     requests.baseApiPut("api/v1/service", input),
   getShopProfileInfor: () =>
@@ -59,9 +66,13 @@ const ShopOnwer = {
   createShopInfor: (input: ShopInput) =>
     requests.baseApiPost("/api/v1/shop", input),
   updateShopInfor: (input: ShopInput) =>
-    requests.baseApiPatch("/api/v1/shop/update", input),
+    requests.patch("/api/v1/shop", input),
   updatepasswordShopInfor: (input: updatePasswordInput) =>
     requests.put("/api/v1/user/password", input),
+  getAllFeedback: (slug: string) =>
+    requests.baseApiGet(`/api/v1/feedback/latest/${slug}`),
+  deleteAllIn4Shop: (slug: string) =>
+    requests.del(`api/v1/shop/${slug}`),
 
 }
 
@@ -73,7 +84,7 @@ const User = {
   getorderBooking: (slug: string) =>
     requests.get(`api/v1/booking/auth/${slug}`),
   deleteBooking: (input: CancelBookingInput) =>
-    requests.baseApiPost("/api/v1/booking/auth/cancel", input),
+    requests.post("/api/v1/booking/auth/cancel", input),
   getProfileInfor: () =>
     requests.get("api/v1/user"),
   createPet: (input: createPetInput) =>
@@ -89,7 +100,7 @@ const User = {
   getAllServiceByShopId: (slug: string) =>
     requests.baseApiGet(`/api/v1/service/all/${slug}`),
   deletePet: (slug: string) =>
-    requests.baseApiDelete(`api/v1/pet/${slug}`),
+    requests.del(`api/v1/pet/${slug}`),
   updatePet: (input: createPetInput) =>
     requests.baseApiPut("api/v1/pet", input),
   updateProfile: (input: updateProfileInput) =>
@@ -97,8 +108,11 @@ const User = {
   updatePassword: (input: updatePasswordInput) =>
     requests.put("api/v1/user/password", input),
   createFeedback: (input: createFeedbackInput) =>
-    requests.post("api/v1/feedback/create", input),
-
+    requests.post("api/v1/feedback", input),
+  createNomination: (input: createNomiationInput) =>
+    requests.post("api/v1/nomination", input),
+  getAllNomination: (slug: string) =>
+    requests.get(`api/v1/nomination/all/${slug}`),
 }
 
 //Admin
@@ -115,6 +129,7 @@ const Admin = {
     requests.baseApiPost("api/v1/admin/manageShopOwner/addShopOwner", input),
   deleteAcount: (slug: string) =>
     requests.baseApiDelete(`api/v1/admin/delete/${slug}`),
+
 }
 
 

@@ -13,6 +13,9 @@ import 'react-toastify/dist/ReactToastify.css';
 import { MyInput, MyInputEmail, MyInputFirstName, MyInputLastName, MyInputPassword } from "@/components/ui/loginInput";
 import * as Yup from 'yup';
 import { ClipLoader } from 'react-spinners'; // Import the spinner
+import loginImg from '../../../../public/assets/img/login.svg';
+import Image from 'next/image';
+import { FaArrowAltCircleLeft } from "react-icons/fa";
 export default function SignUp() {
     const router = useRouter();
     const [isLoading, setIsLoading] = useState(false);
@@ -69,10 +72,11 @@ export default function SignUp() {
     return (
         <section className="h-screen">
             <Button
+                startContent={<FaArrowAltCircleLeft />}
                 onClick={() => router.push('/')}
-                className="absolute top-4 left-4 z-10"
+                className='bg-gradient-to-tr absolute m-5 from-pink-500 to-yellow-500 text-white shadow-lg'
             >
-                Trở về trang chính
+                Trở về trang chủ
             </Button>
             <div className="flex h-full flex-wrap items-center justify-between lg:justify-between">
                 <div className="mb-12 md:mb-0 md:w-8/12 lg:w-5/12 xl:w-6/12">
@@ -85,7 +89,9 @@ export default function SignUp() {
                             <Form>
                                 <Card className='mx-auto w-3/5'>
                                     <CardHeader className='space-y-1'>
-                                        <p className='text-4xl font-bold'>Đăng Ký</p>
+                                        <div className="flex justify-center text-center">
+                                            <p className='text-4xl font-bold uppercase'>Đăng Ký</p>
+                                        </div>
                                     </CardHeader>
                                     <CardBody>
                                         <div className='space-y-4'>
@@ -127,7 +133,7 @@ export default function SignUp() {
 
                                             <Button
                                                 type='submit'
-                                                radius='full'
+
                                                 className='bg-gradient-to-tr w-full from-pink-500 to-yellow-500 text-white shadow-lg'
                                                 disabled={isSubmitting}
                                             >
@@ -148,10 +154,11 @@ export default function SignUp() {
                     </Formik>
                 </div>
                 <div className="grow-0 basis-auto md:mb-0 md:w-9/12 md:shrink-0 lg:w-6/12 xl:w-6/12">
-                    <img
-                        src="https://i.pinimg.com/564x/54/71/6a/54716a3848c6fbfb5770d4831803532b.jpg"
-                        className="w-full h-screen"
-                        alt="Sample image"
+                    <Image
+                        src={loginImg}
+                        alt='login'
+                        className='w-full h-screen object-cover'
+
                     />
                 </div>
             </div>

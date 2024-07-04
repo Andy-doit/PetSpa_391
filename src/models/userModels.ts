@@ -163,6 +163,8 @@ export interface allPetPaginationData {
     petAge: number,
     petWeight: number,
     petGender: string,
+    petDescription: string,
+    petNote: string,
     petPhoto: string,
     ownerId: string,
     ownerName: string,
@@ -195,6 +197,7 @@ export interface CancelBookingInput {
     bookingId: number,
     additionalMessage: string,
 
+
 }
 export interface cancelBookingResponseSuccess {
     status: number;
@@ -203,7 +206,7 @@ export interface cancelBookingResponseSuccess {
 }
 export interface createFeedbackInput {
     serviceId: number,
-    shopId: number,
+    ratingType: string,
     content: string | undefined | null,
 
 }
@@ -211,4 +214,24 @@ export interface createFeedbackResponseSuccess {
     status: number;
     message: string;
     success: boolean;
+}
+export interface createNomiationInput {
+    shopId: number,
+    nominationType: string,
+
+
+}
+export interface AllNominationOfShop {
+    id: number,
+    userName: string,
+    nominationType: string,
+}
+export interface AllFeedbackOfServiceResponse {
+    success: boolean;
+    status: number;
+    data: {
+        data: AllNominationOfShop[];
+        totalCount: number;
+        pageCount: number;
+    };
 }

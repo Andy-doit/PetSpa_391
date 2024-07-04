@@ -6,9 +6,9 @@ import Link from 'next/link';
 import bannerImg from "../../../public/assets/img/banner.svg";
 const Blog = () => {
     return (
-        <div className="bg-gray-100 py-16">
+        <div className="bg-gray-100 py-4">
             <div className="container mx-auto px-4">
-                <h1 className="text-4xl font-bold mb-8 text-center">Blog</h1>
+                <h1 className="text-5xl font-medium uppercase mb-4 text-center">Blog</h1>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                     <div className="bg-white rounded-lg shadow-md overflow-hidden">
                         <div className="relative">

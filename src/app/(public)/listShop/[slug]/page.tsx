@@ -1,43 +1,61 @@
 'use client'
-import { Avatar, Card, CardBody, CardFooter, CardHeader, Divider, Image, Spinner } from "@nextui-org/react";
+import { Avatar, Card, CardBody, CardFooter, CardHeader, Divider, Spinner } from "@nextui-org/react";
 import { FaStar } from "react-icons/fa";
 import { Tabs, Tab } from "@nextui-org/react";
 import { useEffect, useState } from "react";
 import { useAppDispatch } from "@/lib/redux/store";
-import { fetchAllServiceInfoByShopId, fetchShopInfo } from "@/lib/redux/slice/userSlice";
+import { fetchAllServiceInfoByShopId, fetchShopInfo, createNomination, fetchAllNominationByShopId } from "@/lib/redux/slice/userSlice";
 import { shopInfor } from "@/models/shopModel";
 import { allServicesPaginationData } from "@/models/bookingModels";
 import DetailService from "@/components/serviceDetail/page";
+import CreateNomiation from "@/components/createNomiation/page";
+import { AllNominationOfShop } from "@/models/userModels";
 
 export default function ProfileShopOwner({ params }: { params: { slug: string } }) {
+
+    const getNominationLabel = (nominationType: string) => {
+        switch (nominationType) {
+            case 'BAD':
+                return 'TỆ';
+            case 'NORMAL':
+                return 'TẠM ỔN';
+            case 'QUITE_GOOD':
+                return 'ỔN';
+            case 'REALLY_GOOD':
+                return 'TUYỆT VỜI';
+            default:
+                return 'Không xác định';
+        }
+    };
     const [shopIn4, setShopIn4] = useState<shopInfor | any>();
+    const [items, setItems] = useState<allServicesPaginationData[]>([]);
+    const [allNomination, setAllNomination] = useState<AllNominationOfShop[]>([]);
+    const [loading, setLoading] = useState(true);
     const dispatch = useAppDispatch();
-    useEffect(() => {
-        const shopIn4 = async () => {
-            const response = await dispatch(fetchShopInfo(params));
-            if (response.payload) {
-                setShopIn4(response.payload)
+    const fetchShopData = async () => {
+        setLoading(true);
+        try {
+            const shopResponse = await dispatch(fetchShopInfo(params));
+            if (shopResponse.payload) {
+                setShopIn4(shopResponse.payload);
             }
+            const serviceResponse = await dispatch(fetchAllServiceInfoByShopId(params));
+            if (serviceResponse.payload) {
+                setItems(serviceResponse.payload);
+            }
+            const nominationResponse = await dispatch(fetchAllNominationByShopId(params));
+            if (nominationResponse.payload) {
+                setAllNomination(nominationResponse.payload);
+            }
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        } finally {
             setLoading(false);
         }
-        shopIn4();
-    }, [dispatch]);
-    console.log(shopIn4);
-    const [items, setItems] = useState<allServicesPaginationData[]>([]);
-    const [loading, setLoading] = useState(true);
+    };
+
     useEffect(() => {
-        const allService = async () => {
-            setLoading(true);
-            try {
-                const response = await dispatch(fetchAllServiceInfoByShopId(params));
-                setItems(response.payload || []);
-            } catch (error) {
-                console.error('Error fetching services:', error);
-            } finally {
-                setLoading(false);
-            }
-        };
-        allService();
+        fetchShopData();
     }, [dispatch, params]);
 
     return (
@@ -46,7 +64,8 @@ export default function ProfileShopOwner({ params }: { params: { slug: string } 
                 {loading ? (
                     <div className="flex justify-center items-center h-40">
                         <Spinner />
-                    </div>) : (
+                    </div>
+                ) : (
                     <div className="flex justify-between">
                         <Card className="w-[500px]">
                             <CardHeader className="flex gap-2 ">
@@ -58,6 +77,7 @@ export default function ProfileShopOwner({ params }: { params: { slug: string } 
                                 <div className="flex flex-col">
                                     <p className="text-4xl font-extrabold text-orange-600 ">{shopIn4?.shopName}</p>
                                     <p className="text-xl text-default-500">{shopIn4?.shopTitle}</p>
+                                    <p className="text-xl text-default-500">{shopIn4?.shopAddress}</p>
                                 </div>
                             </CardHeader>
                             <Divider />
@@ -91,14 +111,14 @@ export default function ProfileShopOwner({ params }: { params: { slug: string } 
                                 </div>
                             </CardBody>
                             <Divider />
-                            <CardFooter></CardFooter>
+                            <CardFooter>
+                                <CreateNomiation shopData={shopIn4?.id} refreshData={fetchShopData} />
+                            </CardFooter>
                         </Card>
                     </div>
-
                 )}
 
                 <div className="relative">
-
                     <div className="flex w-full flex-col mt-5 ">
                         <Tabs color="success" aria-label="Options" className="flex justify-center ">
                             <Tab key="infor" title="Giới thiệu" className="px-12 py-5 text-xl ">
@@ -157,15 +177,37 @@ export default function ProfileShopOwner({ params }: { params: { slug: string } 
                                 </div>
                             </Tab>
                             <Tab key="feedback" title="Đánh giá" className="px-12 py-5 text-xl ">
-                                Feedback
+                                <div className="mb-5">
+                                    <div className="grid grid-cols-3 gap-4 ">
+                                        {loading ? (
+                                            <div className="flex justify-center items-center h-40">
+                                                <Spinner />
+                                            </div>
+                                        ) : allNomination.length === 0 ? (
+                                            <div>Không có đánh giá nào</div>
+                                        ) : (
+                                            allNomination.map((item) => (
+                                                <Card key={item.id} className="w-full mt-4">
+                                                    <CardHeader className="justify-between">
+                                                        <div className="flex gap-5">
+                                                            <Avatar isBordered radius="full" size="md" src="https://nextui.org/avatars/avatar-1.png" />
+                                                            <div className="flex flex-col gap-1 items-start justify-center">
+                                                                <h4 className="text-large font-bold leading-none text-default-600 uppercase">{item.userName}</h4>
+                                                                <p className="font-semibold text-orange-600">{getNominationLabel(item.nominationType)}</p>
+                                                            </div>
+                                                        </div>
+                                                    </CardHeader>
+                                                </Card>
+                                            ))
+                                        )}
+                                    </div>
+                                </div>
                             </Tab>
-
                         </Tabs>
                     </div>
                 </div>
-
-
             </div>
         </>
-    )
+    );
 }
+

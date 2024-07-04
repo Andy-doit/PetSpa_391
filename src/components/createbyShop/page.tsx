@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, TimeInputValue, useDisclosure } from '@nextui-org/react';
-import { ClipLoader } from 'react-spinners';
+import { Button, Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, Spinner, Textarea, TimeInputValue, useDisclosure } from '@nextui-org/react';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useAppDispatch } from '@/lib/redux/store';
@@ -8,15 +7,12 @@ import { createShopInfor } from '@/lib/redux/slice/shopSlice';
 import { ShopInput } from '@/models/shopModel';
 import { FaPlus } from 'react-icons/fa';
 import { TimeInput } from "@nextui-org/react";
-import { Time } from "@internationalized/date";
 
-export default function CreateShop({ userId }: { userId: string }) {
+export default function CreateShop({ userId, onCreate }: { userId: string, onCreate: () => void }) {
     const { isOpen, onOpen, onClose } = useDisclosure();
     const [isLoading, setIsLoading] = useState(false);
-    console.log(userId);
     const [shopData, setShopData] = useState<ShopInput>({
         id: '',
-        userId: userId,
         shopName: '',
         shopAddress: '',
         shopPhone: '',
@@ -37,7 +33,7 @@ export default function CreateShop({ userId }: { userId: string }) {
             }));
         }
     }, [userId]);
-    console.log(shopData)
+
     const dispatch = useAppDispatch();
 
     const handleInputChange = (fieldName: string, newValue: string) => {
@@ -46,6 +42,7 @@ export default function CreateShop({ userId }: { userId: string }) {
             [fieldName]: newValue
         }));
     };
+
     const handleOpenTimeChange = (time: TimeInputValue) => {
         const formattedTime = `${String(time.hour).padStart(2, '0')}:${String(time.minute).padStart(2, '0')}`;
         setShopData(prevData => ({
@@ -61,20 +58,25 @@ export default function CreateShop({ userId }: { userId: string }) {
             closeTime: formattedTime,
         }));
     };
+
     const handleCreate = async () => {
         setIsLoading(true);
         try {
             if (userId) {
-                console.log('Sending shopData:', shopData);
                 await dispatch(createShopInfor({ shopData })).unwrap();
                 toast.success("Tạo shop thành công!", {
-                    onClose: onClose,
+                    onClose: () => {
+                        onClose();
+                        onCreate();
+                    },
                     autoClose: 1500,
                 });
             }
         } catch (error) {
             console.error('Error creating shop:', error);
             toast.error("Đã xảy ra lỗi khi tạo shop. Vui lòng thử lại sau!");
+        } finally {
+            setIsLoading(false);
         }
     };
 
@@ -85,13 +87,27 @@ export default function CreateShop({ userId }: { userId: string }) {
                 onPress={onOpen}
                 className="bg-gradient-to-tr from-pink-500 to-yellow-500 text-white shadow-lg"
             >
-                Tạo mới shop
+                Đăng ký thông tin Shop
             </Button>
 
             <Modal size='xl' isOpen={isOpen} onClose={onClose} placement="top-center">
                 <ModalContent>
-                    <ModalHeader className='text-3xl text-orange-600'>Tạo mới thông tin Shop</ModalHeader>
-                    <ModalBody>
+                    <ModalHeader
+                        className='text-3xl flex justify-center font-bold uppercase text-white'
+                        style={{
+                            backgroundImage: 'url("https://i.pinimg.com/736x/b4/38/8d/b4388d3b0601a64cad25d2fe73b2224b.jpg")',
+                            backgroundRepeat: 'no-repeat',
+                            backgroundSize: "cover",
+                        }}
+                    >Đăng ký thông tin Shop
+                    </ModalHeader>
+                    <ModalBody
+                        style={{
+                            backgroundImage: 'url("https://i.pinimg.com/736x/32/9e/2f/329e2f6a54fdb1f53f4126991fcc6143.jpg")',
+                            backgroundRepeat: 'no-repeat',
+                            backgroundSize: "cover",
+                        }}
+                    >
                         <div className="mt-2 flex">
                             <div>
                                 <div className="flex w-full mb-4">
@@ -165,23 +181,23 @@ export default function CreateShop({ userId }: { userId: string }) {
                                     />
                                 </div>
                                 <div className="mb-4">
-                                    <Input
+                                    <Textarea
                                         type="text"
                                         onChange={(e) => handleInputChange('shopDescription', e.target.value)}
                                         label="Mô tả"
                                         className="w-full"
                                     />
                                 </div>
-
+                                <div className='flex justify-around'>
+                                    <Button className=' w-[200px]' onPress={onClose}>Đóng</Button>
+                                    <Button className="bg-gradient-to-tr from-pink-500 to-yellow-500 text-white shadow-lg w-[200px]" onPress={handleCreate} disabled={isLoading}>
+                                        {isLoading ? <Spinner color="default" /> : "Tạo mới"}
+                                    </Button>
+                                </div>
                             </div>
                         </div>
                     </ModalBody>
-                    <ModalFooter>
-                        <Button color="danger" variant="light" onPress={onClose}>Đóng</Button>
-                        <Button color="primary" variant="flat" onPress={handleCreate} disabled={isLoading}>
-                            {isLoading ? <ClipLoader color="white" size={20} /> : "Tạo mới"}
-                        </Button>
-                    </ModalFooter>
+
                 </ModalContent>
             </Modal>
             <ToastContainer />

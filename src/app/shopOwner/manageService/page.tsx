@@ -1,7 +1,6 @@
 'use client'
-import { useEffect, useState } from "react";
-import { FcPlus } from "react-icons/fc";
-import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, Input, Select, SelectItem, Textarea, useDisclosure, Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Spinner } from "@nextui-org/react";
+import React, { useEffect, useState } from "react";
+import { Input, Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Spinner } from "@nextui-org/react";
 import { allServicePaginationData } from "@/models/shopModel";
 import getAccessAndRefreshCookie from "@/utilities/authUtils/getCookieForValidation";
 import ModalCreateService from "@/components/modalCreateService/page";
@@ -18,7 +17,7 @@ const ManageService = () => {
     const [service, setService] = useState<allServicePaginationData[]>([]);
 
     const fetchServices = async () => {
-        setLoading(true); // Start loading
+        setLoading(true);
         try {
             const response = await dispatch(fetchAllServicePagination());
             setService(response.payload || []);
@@ -32,6 +31,7 @@ const ManageService = () => {
     useEffect(() => {
         fetchServices();
     }, [dispatch]);
+
 
     useEffect(() => {
         const fetchUid = async () => {
@@ -48,10 +48,28 @@ const ManageService = () => {
         fetchUid();
     }, []);
 
+    const getCategoryLabel = (categoryId: string) => {
+        switch (categoryId) {
+            case '1':
+                return 'Dịch vụ tắm rửa';
+            case '2':
+                return 'Dịch vụ làm đẹp';
+            case '3':
+                return 'Dịch vụ mát xa';
+            case '4':
+                return 'Dịch vụ mát xa đặc biệt';
+            case '5':
+                return 'Khách sạn thú cưng';
+            default:
+                return 'Không xác định';
+        }
+    };
 
     return (
-        <div className="lg:px-6 max-w-[95rem] w-full flex flex-col gap-4">
-            <h3 className="text-xl font-semibold">Danh sách dịch vụ</h3>
+        <div className="max-w-[95rem] w-full flex flex-col gap-4">
+            <p className="text-black text-3xl font-semibold mb-2">
+                Danh sách dịch vụ
+            </p>
             <div className="flex justify-between flex-wrap gap-4 items-center">
                 <div className="flex items-center gap-3 flex-wrap md:flex-nowrap">
                     <Input
@@ -74,13 +92,15 @@ const ManageService = () => {
                     </div>
                 ) : (
                     service.length === 0 ? (
-                        <div>Không có dịch vụ nào</div>
+                        <div className="flex justify-center">
+                            <p className="text-2xl font-bold ">Shop chưa tạo dịch vụ</p>
+                        </div>
                     ) : (
                         <Table aria-label="Example static collection table">
                             <TableHeader>
                                 <TableColumn>Tên dịch vụ</TableColumn>
                                 <TableColumn>Giá dịch vụ</TableColumn>
-                                <TableColumn>Tags</TableColumn>
+                                <TableColumn>Loại dịch vụ</TableColumn>
                                 <TableColumn>Nomination</TableColumn>
                                 <TableColumn>Mô tả</TableColumn>
                                 <TableColumn>Hành động</TableColumn>
@@ -90,7 +110,7 @@ const ManageService = () => {
                                     <TableRow key={sp.id}>
                                         <TableCell>{sp.serviceName}</TableCell>
                                         <TableCell>{sp.price}</TableCell>
-                                        <TableCell>{sp.tags}</TableCell>
+                                        <TableCell>{getCategoryLabel(sp.categoryId.toString())}</TableCell>
                                         <TableCell>{sp.nomination}</TableCell>
                                         <TableCell>{sp.serviceDescription}</TableCell>
                                         <TableCell>
