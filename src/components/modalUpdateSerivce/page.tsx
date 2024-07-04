@@ -31,7 +31,7 @@ export default function ModalUpdateServiceProps({ params, refetchPets }: { param
     useEffect(() => {
         fetchUidAndServiceData();
     }, [fetchUidAndServiceData]);
-
+    const [validationErrors, setValidationErrors] = useState<string[]>([]);
     const [serviceData, setServiceData] = useState<createServiceInput>({
         id: params.id,
         userId: userId,
@@ -43,6 +43,44 @@ export default function ModalUpdateServiceProps({ params, refetchPets }: { param
         serviceDescription: params.serviceDescription,
         tags: params.tags,
     });
+    const resetForm = () => {
+        setServiceData({
+            userId: userId,
+            id: '',
+            serviceCategoryId: 0,
+            serviceName: '',
+            serviceDescription: '',
+            price: 0,
+            minWeight: 0,
+            maxWeight: 0,
+            tags: 'tags1',
+        });
+        setValidationErrors([]);
+    };
+    const validateInput = () => {
+        const errors = [];
+
+        if (!serviceData.serviceName || serviceData.serviceName.length > 20) {
+            errors.push('Tên dịch vụ không được để trống và không quá 20 ký tự');
+        }
+        if (!serviceData.serviceCategoryId || serviceData.serviceCategoryId <= 0) {
+            errors.push('Loại category phải chọn ');
+        }
+        if (!serviceData.serviceDescription || serviceData.serviceDescription.length <= 0 || serviceData.serviceDescription.length > 200) {
+            errors.push('Mô tả không được để trống và không quá 200 ký tự');
+        }
+        if (isNaN(serviceData.price) || serviceData.price <= 0) {
+            errors.push('Giá phải là số và phải lớn hơn 0');
+        }
+        if (isNaN(serviceData.minWeight) || serviceData.minWeight <= 0) {
+            errors.push('Cân nặng tối thiểu phải là số và lớn hơn 0');
+        }
+        if (isNaN(serviceData.maxWeight) || serviceData.maxWeight <= serviceData.minWeight || serviceData.maxWeight > 200) {
+            errors.push('Cân nặng tối đa phải là số, lớn hơn cân nặng tối thiểu và nhỏ hơn hoặc bằng 200');
+        }
+
+        return errors;
+    };
     // console.log(serviceData)
     useEffect(() => {
         if (userId) {
@@ -61,6 +99,11 @@ export default function ModalUpdateServiceProps({ params, refetchPets }: { param
     };
 
     const handleCreate = async () => {
+        const errors = validateInput();
+        if (errors.length > 0) {
+            setValidationErrors(errors);
+            return;
+        }
         try {
             setIsLoading(true);
             if (userId) {
@@ -78,9 +121,13 @@ export default function ModalUpdateServiceProps({ params, refetchPets }: { param
             toast.error("Đã xảy ra lỗi khi cập nhật dịch vụ. Vui lòng thử lại sau!");
         } finally {
             setIsLoading(false);
+            resetForm();
         }
     };
-
+    const handleClose = () => {
+        resetForm();
+        onClose();
+    };
     return (
         <>
             <Tooltip content="Chỉnh sửa dịch vụ">
@@ -88,7 +135,7 @@ export default function ModalUpdateServiceProps({ params, refetchPets }: { param
                     <MdChangeCircle size={20} color="green" />
                 </Button>
             </Tooltip>
-            <Modal isOpen={isOpen} onClose={onClose} size="2xl" backdrop="blur">
+            <Modal isOpen={isOpen} onClose={handleClose} size="2xl" backdrop="blur">
                 <ModalContent>
                     <>
                         <ModalHeader
@@ -107,14 +154,20 @@ export default function ModalUpdateServiceProps({ params, refetchPets }: { param
                                         <div className="mr-4">
                                             <Input
                                                 className="w-[300px]"
-                                                label="Tên dịch vụ"
-                                                type="text"
-                                                value={serviceData.serviceName}
                                                 onChange={(e) => handleInputChange('serviceName', e.target.value)}
+                                                isInvalid={!!validationErrors.find(err => err.includes('Tên dịch vụ'))}
+                                                color={validationErrors.find(err => err.includes('Tên dịch vụ')) ? "danger" : "default"}
+                                                errorMessage={validationErrors.find(err => err.includes('Tên dịch vụ'))}
+                                                label="Tên dịch vụ"
+                                                value={serviceData.serviceName}
                                             />
                                         </div>
                                         <div className="ml-4">
                                             <Select
+                                                isInvalid={!!validationErrors.find(err => err.includes('Loại'))}
+                                                color={validationErrors.find(err => err.includes('Loại')) ? "danger" : "default"}
+                                                errorMessage={validationErrors.find(err => err.includes('Loại'))}
+                                                value={serviceData.serviceCategoryId}
                                                 label="Category"
                                                 className="w-[300px]"
                                                 defaultSelectedKeys={[serviceData.serviceCategoryId]}
@@ -129,45 +182,61 @@ export default function ModalUpdateServiceProps({ params, refetchPets }: { param
                                         </div>
                                     </div>
                                     <div className="flex w-full mb-4">
+
+                                        <div >
+                                            <Input
+                                                isInvalid={!!validationErrors.find(err => err.includes('Giá'))}
+                                                color={validationErrors.find(err => err.includes('Giá')) ? "danger" : "default"}
+                                                errorMessage={validationErrors.find(err => err.includes('Giá'))}
+                                                value={serviceData.price.toString()}
+                                                className="w-[300px]"
+                                                onChange={(e) => handleInputChange('price', e.target.value)}
+                                                label="Giá dịch vụ"
+                                                type="number"
+                                            />
+
+                                        </div>
+                                    </div>
+                                    <div className="flex w-full mb-4">
                                         <div className="mr-4">
                                             <Input
-                                                value={serviceData.maxWeight.toString()}
-                                                onChange={(e) => handleInputChange('maxWeight', e.target.value)}
                                                 className="w-[300px]"
-                                                label="Cân nặng lớn nhất"
-                                                type="number"
+                                                isInvalid={!!validationErrors.find(err => err.includes('Cân'))}
+                                                color={validationErrors.find(err => err.includes('Cân')) ? "danger" : "default"}
+                                                errorMessage={validationErrors.find(err => err.includes('Cân'))}
+                                                value={serviceData.minWeight.toString()}
+                                                onChange={(e) => handleInputChange('minWeight', e.target.value)}
+                                                label="Cân nặng nhỏ nhất"
                                             />
 
                                         </div>
                                         <div className="ml-4">
                                             <Input
-                                                value={serviceData.minWeight.toString()}
-                                                onChange={(e) => handleInputChange('minWeight', e.target.value)}
                                                 className="w-[300px]"
-                                                label="Cân nặng nhỏ nhất"
-                                                type="number"
+                                                onChange={(e) => handleInputChange('maxWeight', e.target.value)}
+                                                label="Cân nặng lớn nhất"
+                                                isInvalid={!!validationErrors.find(err => err.includes('Cân'))}
+                                                color={validationErrors.find(err => err.includes('Cân')) ? "danger" : "default"}
+                                                errorMessage={validationErrors.find(err => err.includes('Cân'))}
+                                                value={serviceData.maxWeight.toString()}
                                             />
+
                                         </div>
                                     </div>
-                                    <div className="mb-4">
-                                        <Input
-                                            label="Giá dịch vụ"
-                                            value={serviceData.price.toString()}
-                                            onChange={(e) => handleInputChange('price', e.target.value)}
-                                            type="number"
-                                            className="w-full"
-                                        />
-                                    </div>
+
                                     <div className="mb-4">
                                         <Textarea
-                                            placeholder="Mô tả dịch vụ"
-                                            value={serviceData.serviceDescription}
                                             onChange={(e) => handleInputChange('serviceDescription', e.target.value)}
+                                            placeholder="Mô tả dịch vụ"
                                             className="w-full"
+                                            isInvalid={!!validationErrors.find(err => err.includes('Mô tả'))}
+                                            color={validationErrors.find(err => err.includes('Mô tả')) ? "danger" : "default"}
+                                            errorMessage={validationErrors.find(err => err.includes('Mô tả'))}
+                                            value={serviceData.serviceDescription}
                                         />
                                     </div>
                                     <div className="flex w-full justify-around">
-                                        <Button className="mr-3 w-full" onPress={onClose}>Huỷ</Button>
+                                        <Button className="mr-3 w-full" onPress={handleClose}>Huỷ</Button>
                                         <Button
                                             type="submit"
                                             className="bg-gradient-to-tr from-pink-500 to-yellow-500 text-white shadow-lg w-full"

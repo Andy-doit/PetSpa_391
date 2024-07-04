@@ -12,6 +12,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 export default function Profile() {
     const dispatch = useAppDispatch();
+    const [validationErrors, setValidationErrors] = useState<string[]>([]);
     const [items, setItems] = useState<passwordInfor>();
     useEffect(() => {
         const allService = async () => {
@@ -42,12 +43,37 @@ export default function Profile() {
         confirmPassword: items?.confirmPassword
 
     });
+    const resetForm = () => {
+        setProfileData({
+            id: userId,
+            oldPassword: '',
+            newPassword: '',
+            confirmPassword: ''
+        });
+        setValidationErrors([]);
+    };
+    const validateInput = () => {
+        const errors = [];
+
+        if (!profileData.oldPassword || profileData.oldPassword.length < 6) {
+            errors.push('Mật khẩu hiện tại phải có ít nhất 6 ký tự');
+        }
+        if (!profileData.newPassword || profileData.newPassword.length < 6) {
+            errors.push('Mật khẩu mới phải có ít nhất 6 ký tự');
+        }
+        if (profileData.newPassword !== profileData.confirmPassword) {
+            errors.push('Xác nhận mật khẩu phải giống mật khẩu mới');
+        }
+
+        return errors;
+    };
     useEffect(() => {
         if (userId) {
             setProfileData(prevData => ({
                 ...prevData,
                 id: userId,
             }));
+
         }
     }, [userId]);
     const handleInputChange = (fieldName: string, newValue: string | number) => {
@@ -55,6 +81,13 @@ export default function Profile() {
             ...prevData,
             [fieldName]: newValue
         }));
+        if (fieldName === 'newPassword' || fieldName === 'confirmPassword') {
+            if (profileData.newPassword === profileData.confirmPassword) {
+                setValidationErrors(errors => errors.filter(error => !error.includes('Mật khẩu mới và xác nhận mật khẩu')));
+            } else {
+                setValidationErrors(errors => [...errors.filter(error => !error.includes('Mật khẩu mới và xác nhận mật khẩu')), 'Mật khẩu mới và xác nhận mật khẩu phải giống nhau']);
+            }
+        }
     };
     const [isEditing, setIsEditing] = useState(false);
     const handleEditClick = () => {
@@ -65,8 +98,14 @@ export default function Profile() {
     };
     const handleCancelClick = () => {
         setIsEditing(false);
+        resetForm();
     };
     const handleUpdate = async () => {
+        const errors = validateInput();
+        if (errors.length > 0) {
+            setValidationErrors(errors);
+            return;
+        }
         try {
             if (userId) {
                 await dispatch(patchPasswordProfile({ profileData })).unwrap();
@@ -149,15 +188,34 @@ export default function Profile() {
                                 <CardBody className="space-y-2 text-white">
                                     <div className="space-y-1">
                                         <p >Mật khẩu hiện tại</p>
-                                        <Input onChange={(e) => handleInputChange('oldPassword', e.target.value)} disabled={!isEditing} type='password' />
+                                        <Input
+                                            value={profileData.oldPassword?.toString()}
+                                            isInvalid={!!validationErrors.find(err => err.includes('Mật khẩu hiện tại'))}
+                                            color={validationErrors.find(err => err.includes('Mật khẩu hiện tại')) ? "danger" : "default"}
+                                            errorMessage={validationErrors.find(err => err.includes('Mật khẩu hiện tại'))}
+                                            onChange={(e) => handleInputChange('oldPassword', e.target.value)} disabled={!isEditing} type='password' />
                                     </div>
                                     <div className="space-y-1">
                                         <p >Mật khẩu mới</p>
-                                        <Input disabled={!isEditing} type='password' onChange={(e) => handleInputChange('newPassword', e.target.value)} />
+                                        <Input
+                                            value={profileData.newPassword?.toString()}
+                                            isInvalid={!!validationErrors.find(err => err.includes('Mật khẩu mới'))}
+                                            color={validationErrors.find(err => err.includes('Mật khẩu mới')) ? "danger" : "default"}
+                                            errorMessage={validationErrors.find(err => err.includes('Mật khẩu mới'))}
+                                            disabled={!isEditing} type='password' onChange={(e) => handleInputChange('newPassword', e.target.value)} />
                                     </div>
                                     <div className="space-y-1">
                                         <p >Xác nhận mật khẩu</p>
-                                        <Input disabled={!isEditing} type='password' onChange={(e) => handleInputChange('confirmPassword', e.target.value)} />
+                                        <Input
+                                            value={profileData.confirmPassword?.toString()}
+                                            isInvalid={!!validationErrors.find(err => err.includes('Xác nhận mật khẩu'))}
+                                            color={validationErrors.find(err => err.includes('Xác nhận mật khẩu')) ? "danger" : "default"}
+                                            errorMessage={validationErrors.find(err => err.includes('Xác nhận mật khẩu'))}
+                                            disabled={!isEditing}
+                                            type='password'
+                                            onChange={(e) => handleInputChange('confirmPassword', e.target.value)}
+                                        />
+
                                     </div>
                                 </CardBody>
                                 {isEditing && (
@@ -175,6 +233,6 @@ export default function Profile() {
 
             </div>
             <ToastContainer />
-        </div>
+        </div >
     )
 }

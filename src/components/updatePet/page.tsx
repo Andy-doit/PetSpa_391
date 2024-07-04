@@ -42,8 +42,37 @@ export default function UpdatePet({ params, refetchPets }: { params: allPetPagin
 
     const { isOpen, onOpen, onClose } = useDisclosure();
     const [isLoading, setIsLoading] = useState(false);
+    const [validationErrors, setValidationErrors] = useState<string[]>([]);
+    // const initialPetData: createPetInput = {
+    //     id: params.id.toString(),
+    //     userId: userId,
+    //     petName: params.petName,
+    //     petType: params.petType,
+    //     petAge: params.petAge,
+    //     petGender: params.petGender,
+    //     petWeight: params.petWeight,
+    //     petDescription: params.petDescription,
+    //     petPhoto: '',
+    //     petNote: params.petNote,
+    // };
 
-    const initialPetData: createPetInput = {
+    const resetForm = () => {
+        setPetData({
+            id: '',
+            userId: userId,
+            petName: '',
+            petType: '',
+            petAge: 0,
+            petGender: '',
+            petWeight: 0,
+            petDescription: '',
+            petPhoto: '',
+            petNote: '',
+        });
+        setValidationErrors([]);
+    };
+
+    const [petData, setPetData] = useState<createPetInput>({
         id: params.id.toString(),
         userId: userId,
         petName: params.petName,
@@ -54,9 +83,29 @@ export default function UpdatePet({ params, refetchPets }: { params: allPetPagin
         petDescription: params.petDescription,
         petPhoto: '',
         petNote: params.petNote,
+    });
+    const validateInput = () => {
+        const errors = [];
+
+        if (!petData.petName || petData.petName.length > 20) {
+            errors.push('Tên thú cưng không được để trống và không quá 20 ký tự');
+        }
+        if (!petData.petType || petData.petType.length > 20) {
+            errors.push('Loại thú cưng không được để trống và không quá 20 ký tự');
+        }
+        if (isNaN(petData.petAge) || petData.petAge <= 0 || petData.petAge > 20) {
+            errors.push('Tuổi thú cưng phải là số và không được quá 20');
+        }
+        if (!petData.petGender || petData.petGender.length > 20) {
+            errors.push('Giới tính thú cưng không được để trống và không quá 20 ký tự');
+        }
+        if (isNaN(petData.petWeight) || petData.petWeight <= 0 || petData.petWeight > 20) {
+            errors.push('Cân nặng thú cưng phải là số và không được quá 20');
+        }
+
+        return errors;
     };
 
-    const [petData, setPetData] = useState<createPetInput>(initialPetData);
 
     useEffect(() => {
         if (userId) {
@@ -75,6 +124,11 @@ export default function UpdatePet({ params, refetchPets }: { params: allPetPagin
     };
 
     const handleCreate = async () => {
+        const errors = validateInput();
+        if (errors.length > 0) {
+            setValidationErrors(errors);
+            return;
+        }
         try {
             setIsLoading(true);
             if (userId) {
@@ -92,12 +146,13 @@ export default function UpdatePet({ params, refetchPets }: { params: allPetPagin
             toast.error("Đã xảy ra lỗi khi cập nhật thú cưng. Vui lòng thử lại sau!");
         } finally {
             setIsLoading(false);
+            resetForm();
         }
     };
 
     const handleClose = () => {
-        setPetData(initialPetData); // Reset form data to initial values
-        onClose(); // Close the modal
+        resetForm();
+        onClose();
     };
 
     return (
@@ -136,15 +191,23 @@ export default function UpdatePet({ params, refetchPets }: { params: allPetPagin
                                             value={petData.petName}
                                             onChange={(e) => handleInputChange('petName', e.target.value)}
                                             label="Tên thú cưng"
+                                            isInvalid={!!validationErrors.find(err => err.includes('Tên thú cưng'))}
+                                            color={validationErrors.find(err => err.includes('Tên thú cưng')) ? "danger" : "default"}
+                                            errorMessage={validationErrors.find(err => err.includes('Tên thú cưng'))}
                                             className="w-[250px]"
                                         />
                                     </div>
                                     <div className="ml-4">
                                         <Select
+                                            value={petData.petType}
+
                                             label="Loại thú cưng"
                                             className="w-[250px]"
                                             selectedKeys={[petData.petType]}
                                             onChange={(key) => handleInputChange('petType', key.toString())}
+                                            isInvalid={!!validationErrors.find(err => err.includes('Loại thú cưng'))}
+                                            color={validationErrors.find(err => err.includes('Loại thú cưng')) ? "danger" : "default"}
+                                            errorMessage={validationErrors.find(err => err.includes('Loại thú cưng'))}
                                         >
                                             <SelectItem key="DOG">Chó</SelectItem>
                                             <SelectItem key="CAT">Mèo</SelectItem>
@@ -158,12 +221,19 @@ export default function UpdatePet({ params, refetchPets }: { params: allPetPagin
                                             value={petData.petAge.toString()}
                                             onChange={(e) => handleInputChange('petAge', parseInt(e.target.value))}
                                             label="Tuổi thú cưng"
+                                            isInvalid={!!validationErrors.find(err => err.includes('Tuổi'))}
+                                            color={validationErrors.find(err => err.includes('Tuổi')) ? "danger" : "default"}
+                                            errorMessage={validationErrors.find(err => err.includes('Tuổi'))}
                                             className="w-[250px]"
                                         />
                                     </div>
                                     <div className="ml-4">
                                         <Select
                                             label="Giới tính"
+                                            value={petData.petGender}
+                                            isInvalid={!!validationErrors.find(err => err.includes('Giới tính'))}
+                                            color={validationErrors.find(err => err.includes('Giới tính')) ? "danger" : "default"}
+                                            errorMessage={validationErrors.find(err => err.includes('Giới tính'))}
                                             className="w-[250px]"
                                             selectedKeys={[petData.petGender]}
                                             onChange={(key) => handleInputChange('petGender', key.toString())}
@@ -180,6 +250,9 @@ export default function UpdatePet({ params, refetchPets }: { params: allPetPagin
                                             value={petData.petWeight.toString()}
                                             onChange={(e) => handleInputChange('petWeight', parseFloat(e.target.value))}
                                             label="Cân nặng"
+                                            isInvalid={!!validationErrors.find(err => err.includes('Cân nặng'))}
+                                            color={validationErrors.find(err => err.includes('Cân nặng')) ? "danger" : "default"}
+                                            errorMessage={validationErrors.find(err => err.includes('Cân nặng'))}
                                             className="w-full"
                                         />
                                     </div>
