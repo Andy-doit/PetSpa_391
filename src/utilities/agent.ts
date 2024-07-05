@@ -63,6 +63,8 @@ const ShopOnwer = {
     requests.baseApiPut("api/v1/service", input),
   getShopProfileInfor: () =>
     requests.get("api/v1/shop/auth"),
+  getShoppage: () =>
+    requests.get("/api/v1/shop/shop-detail-home-page"),
   createShopInfor: (input: ShopInput) =>
     requests.baseApiPost("/api/v1/shop", input),
   updateShopInfor: (input: ShopInput) =>
