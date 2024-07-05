@@ -118,6 +118,24 @@ export const fetchShopInforPagination = createAsyncThunk(
         }
     },
 );
+export const fetchShopPagePagination = createAsyncThunk(
+    'shopOnwer/ShopInfor',
+    async () => {
+        try {
+            const response = await agent.ShopOnwer.getShoppage();
+            console.log(response)
+            return response;
+
+        } catch (error) {
+            if (error instanceof AxiosError) {
+                return {
+                    message: error.response?.data.error.message,
+                    status: error.response?.status,
+                };
+            }
+        }
+    },
+);
 export const createShopInfor = createAsyncThunk(
     'shopOnwer/createShop',
     async ({ shopData }: { shopData: ShopInput }) => {
