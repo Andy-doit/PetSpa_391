@@ -102,6 +102,9 @@ export default function BookingPage(
         if (!bookingData.petName || bookingData.petName.length === 0 || bookingData.petName.length > 20) {
             errors.push('Tên thú cưng không được để trống và không quá 20 ký tự');
         }
+        if (!bookingData.additionalMessage || bookingData.additionalMessage.length === 0 || bookingData.additionalMessage.length < 100) {
+            errors.push('Ghi chú thú cưng không được để trống và không quá 100 ký tự');
+        }
         if (isNaN(bookingData.petAge) || bookingData.petAge <= 0 || bookingData.petAge > 20) {
             errors.push('Tuổi thú cưng phải là số và không được quá 20');
         }
@@ -114,7 +117,9 @@ export default function BookingPage(
         // if (isSelected === 'createPet' && (!bookingData.petType || bookingData.petType.length === 0 || bookingData.petType.length > 20)) {
         //     errors.push('Loại thú cưng không được để trống và không quá 20 ký tự');
         // }
-
+        if (!isSelected) {
+            errors.push('Vui lòng chọn trạng thái cho checkbox');
+        }
         if (!bookingData.localDate || bookingData.localDate.length === 0) {
             errors.push('Vui lòng chọn ngày đặt lịch');
         }
@@ -271,6 +276,18 @@ export default function BookingPage(
                     }}
                 >
                     <div className='mb-4 pt-5 flex justify-center'>
+                        {/* <CheckboxGroup
+                            isRequired
+                            description="Chọn thú cưng để chăm sóc"
+                            isInvalid={isInvalid}
+                             isInvalid={!!validationErrors.find(err => err.includes('Thú cưng'))}
+                                                color={validationErrors.find(err => err.includes('Thú cưng')) ? "danger" : "default"}
+                                                errorMessage={validationErrors.find(err => err.includes('Thú cưng'))}
+                            label="Chọn thú cưng"
+                            onValueChange={(value) => {
+                                setIsInvalid(value.length < 1);
+                            }}
+                        > */}
                         <Checkbox
                             classNames={{
                                 base: cn(
@@ -307,6 +324,7 @@ export default function BookingPage(
                                 <p>Tạo thú cưng mới</p>
                             </div>
                         </Checkbox>
+                        {/* </CheckboxGroup> */}
                     </div>
                     {/* Pet */}
                     {isSelected === 'createPet' && (
@@ -406,6 +424,9 @@ export default function BookingPage(
                                                 type="petDescription"
                                                 label="Mô tả"
                                                 className="w-[300px]"
+                                                isInvalid={!!validationErrors.find(err => err.includes('Mô tả'))}
+                                                color={validationErrors.find(err => err.includes('Mô tả')) ? "danger" : "default"}
+                                                errorMessage={validationErrors.find(err => err.includes('Mô tả'))}
                                             />
 
 
@@ -416,7 +437,6 @@ export default function BookingPage(
                                             <p className="text-1xl font-medium mb-2">Loại thú cưng</p>
                                             <div className="w-full">
                                                 <Select label="Loại thú cưng" className="w-[300px]"
-                                                    // value={bookingData.petType}
                                                     isInvalid={!!validationErrors.find(err => err.includes('Loại thú cưng'))}
                                                     color={validationErrors.find(err => err.includes('Loại thú cưng')) ? "danger" : "default"}
                                                     errorMessage={validationErrors.find(err => err.includes('Loại thú cưng'))}
@@ -441,6 +461,9 @@ export default function BookingPage(
                                             <Textarea
                                                 onChange={(e) => handleInputChange('additionalMessage', e.target.value)}
                                                 label="Ghi chú"
+                                                isInvalid={!!validationErrors.find(err => err.includes('Ghi'))}
+                                                color={validationErrors.find(err => err.includes('Ghi chú')) ? "danger" : "default"}
+                                                errorMessage={validationErrors.find(err => err.includes('Ghi chú'))}
                                                 placeholder="Ghi chú về thú cưng của bạn"
                                                 className="w-full"
                                             />
@@ -510,7 +533,6 @@ export default function BookingPage(
                                 <p className="text-1xl font-medium mb-2">Chọn ngày</p>
                                 <DatePicker
                                     label="Chọn ngày"
-
                                     className="w-full"
                                     isInvalid={!!validationErrors.find(err => err.includes('Ngày'))}
                                     color={validationErrors.find(err => err.includes('Ngày')) ? "danger" : "default"}

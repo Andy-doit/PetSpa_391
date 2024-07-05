@@ -9,11 +9,30 @@ import 'react-toastify/dist/ReactToastify.css';
 
 export default function CancelBooking({ params }: { params: string }) {
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
+    const [validationErrors, setValidationErrors] = useState<string[]>([]);
     const [cancelData, setCancelData] = useState<CancelBookingInput>({
         bookingId: parseInt(params),
         additionalMessage: "",
 
     });
+    const resetForm = () => {
+        setCancelData({
+            bookingId: parseInt(params),
+            additionalMessage: "",
+        });
+        setValidationErrors([]);
+    };
+    const validateInput = () => {
+        const errors: string[] = [];
+
+        // Additional Message validation
+        if (!cancelData.additionalMessage || cancelData.additionalMessage.length > 255) {
+            errors.push('Tin nhắn lý do không được để trống và không quá 255 ký tự');
+        }
+
+        return errors;
+    };
+
     console.log(cancelData);
     const [userId, setUserId] = useState<string>('');
     useEffect(() => {
@@ -50,6 +69,11 @@ export default function CancelBooking({ params }: { params: string }) {
     };
     const dispatch = useAppDispatch();
     const handleCancel = async () => {
+        const errors = validateInput();
+        if (errors.length > 0) {
+            setValidationErrors(errors);
+            return;
+        }
         try {
             if (userId) {
                 await dispatch(postCancelBooking({ cancelData })).unwrap();
@@ -99,6 +123,10 @@ export default function CancelBooking({ params }: { params: string }) {
                     <ModalBody>
                         <Textarea
                             className="w-full mt-2"
+                            value={cancelData.additionalMessage}
+                            isInvalid={!!validationErrors.find(err => err.includes('lý do'))}
+                            color={validationErrors.find(err => err.includes('lý do')) ? "danger" : "default"}
+                            errorMessage={validationErrors.find(err => err.includes('lý do'))}
                             placeholder="Vui lòng cho chúng tôi biết lí do bạn huỷ"
                             onChange={(e) => handleInputChange('additionalMessage', e.target.value)}
                         >
