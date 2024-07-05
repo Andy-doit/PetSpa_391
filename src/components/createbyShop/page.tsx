@@ -44,23 +44,49 @@ export default function CreateShop({ userId, onCreate }: { userId: string, onCre
     const validateInput = () => {
         const errors = [];
 
-        if (!shopData.shopName || shopData.shopName.length > 20) {
-            errors.push('Tên shop không được để trống và không quá 20 ký tự');
+        if (!shopData.shopName || shopData.shopName.length > 20 || shopData.shopName.length < 1) {
+            errors.push('Tên shop không được để trống và không quá 20 ký tự và phải lớn hơn 1 ký tự');
+        }
+        if (!shopData.shopTitle || shopData.shopTitle.length > 100) {
+            errors.push('Tiêu đề không được để trống và không quá 100 ký tự');
         }
         if (!shopData.shopAddress || shopData.shopAddress.length > 100) {
             errors.push('Địa chỉ không được để trống và không quá 100 ký tự');
         }
-        if (!shopData.shopEmail || !/\S+@\S+\.\S+/.test(shopData.shopEmail)) {
+        if (!shopData.area || shopData.area.length > 50) {
+            errors.push('Khu vực không được để trống và không quá 50 ký tự');
+        }
+        if (!shopData.shopEmail || !/^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/.test(shopData.shopEmail)) {
             errors.push('Email không hợp lệ');
         }
         if (!shopData.shopPhone || !/^\d{10}$/.test(shopData.shopPhone)) {
-            errors.push('Số điện thoại không hợp lệ, phải có 10 số');
+            errors.push('Số điện thoại phải là số và có đúng 10 chữ số');
         }
-        if (!shopData.area || shopData.area.length > 30) {
-            errors.push('Khu vực không được để trống và không quá 30 ký tự');
+        if (!shopData.openTime) {
+            errors.push('Giờ mở cửa không được để trống');
+        } else {
+            const [openHour, openMinute] = shopData.openTime.split(':').map(Number);
+            if (openHour < 0 || openHour > 23 || openMinute < 0 || openMinute > 59) {
+                errors.push('Giờ mở cửa không hợp lệ');
+            }
         }
-        if (!shopData.shopTitle || shopData.shopTitle.length > 100) {
-            errors.push('Tiêu đề không được để trống và không quá 100 ký tự');
+
+        if (!shopData.closeTime) {
+            errors.push('Giờ đóng cửa không được để trống');
+        } else {
+            const [closeHour, closeMinute] = shopData.closeTime.split(':').map(Number);
+            if (closeHour < 0 || closeHour > 23 || closeMinute < 0 || closeMinute > 59) {
+                errors.push('Giờ đóng cửa không hợp lệ');
+            }
+        }
+
+        if (shopData.openTime && shopData.closeTime) {
+            const [openHour, openMinute] = shopData.openTime.split(':').map(Number);
+            const [closeHour, closeMinute] = shopData.closeTime.split(':').map(Number);
+
+            if (openHour > closeHour || (openHour === closeHour && openMinute >= closeMinute)) {
+                errors.push('Giờ mở cửa phải bé hơn giờ đóng cửa');
+            }
         }
 
         return errors;
@@ -220,6 +246,9 @@ export default function CreateShop({ userId, onCreate }: { userId: string, onCre
                                             onChange={handleOpenTimeChange}
                                             hourCycle={24}
                                             className="w-[250px]"
+                                            isInvalid={!!validationErrors.find(err => err.includes('Giờ mở cửa'))}
+                                            color={validationErrors.find(err => err.includes('Giờ mở cửa')) ? "danger" : "default"}
+                                            errorMessage={validationErrors.find(err => err.includes('Giờ mở cửa'))}
                                         />
                                     </div>
                                     <div className="ml-4">
@@ -228,6 +257,9 @@ export default function CreateShop({ userId, onCreate }: { userId: string, onCre
                                             onChange={handleCloseTimeChange}
                                             hourCycle={24}
                                             className="w-[250px]"
+                                            isInvalid={!!validationErrors.find(err => err.includes('Giờ đóng cửa'))}
+                                            color={validationErrors.find(err => err.includes('Giờ đóng cửa')) ? "danger" : "default"}
+                                            errorMessage={validationErrors.find(err => err.includes('Giờ đóng cửa'))}
                                         />
                                     </div>
                                 </div>

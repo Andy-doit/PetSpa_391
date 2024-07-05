@@ -41,7 +41,7 @@ export default function DeleteAllIn4Shop({ params }: { params: string }) {
             }
         } catch (error) {
             console.error('Error deleting shop information:', error);
-            
+            onClose();
         }
     };
     return (
