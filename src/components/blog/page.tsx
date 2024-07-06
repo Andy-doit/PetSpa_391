@@ -110,7 +110,7 @@ const Blog = () => {
                     >
                         {showAll ? 'Ẩn bớt' : 'Tất cả'}
                     </Button>
-                    {/* Other filter buttons */}
+
                     <Button
                         className={`mx - 2 ${activeFilter === 'Chăm sóc' ? 'bg-green-500 text-white' : 'bg-white text-green-500 hover:bg-green-500 hover:text-white'}`}
                         onClick={() => handleFilterChange('Chăm sóc')}
