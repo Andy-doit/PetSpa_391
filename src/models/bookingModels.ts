@@ -33,6 +33,8 @@ export interface allServicesPaginationData {
     address: string,
     nomination: number,
     shopName: string,
+    categoryId: number,
+    categoryName: string,
     shopOwner: {
         id: number,
         shopId: number;
