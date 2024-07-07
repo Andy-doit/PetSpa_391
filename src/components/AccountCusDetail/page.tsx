@@ -61,7 +61,7 @@ export default function AccountCusDetail({ params }: { params: string }) {
                                     <p className="text-xl font-light">Email</p>
                                     <p className="text-xl font-light">Tên người dùng</p>
                                     <p className="text-xl font-light">Số điện thoại</p>
-                                    <p className="text-xl font-light">Ngày Sinh</p>
+
                                     <p className="text-xl font-light">Status</p>
                                 </div>
                                 <div className="ml-20">
@@ -72,7 +72,7 @@ export default function AccountCusDetail({ params }: { params: string }) {
                                             <p className="text-xl font-medium">{customer.email || "Không có gì"}</p>
                                             <p className="text-xl font-medium">{customer.username || "Không có gì"}</p>
                                             <p className="text-xl font-medium">{customer.phone || "Không có gì"}</p>
-                                            <p className="text-xl font-medium">{customer.birthday || "Không có gì"}</p>
+
                                             <p className="text-xl font-medium">{customer.status ? "Paused" : "Active"}</p>
                                         </>
                                     ) : (

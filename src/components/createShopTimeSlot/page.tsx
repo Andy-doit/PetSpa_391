@@ -15,7 +15,7 @@ import {
 import { FaPlus } from "react-icons/fa";
 import { CreateShopTimeSlotInput } from "@/models/shopModel";
 import { useAppDispatch } from "@/lib/redux/store";
-import { createShopTimeSlot } from "@/lib/redux/slice/shopSlice";
+import { createShopTimeSlot, getShopIdbyTime } from "@/lib/redux/slice/shopSlice";
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { ClipLoader } from "react-spinners";
@@ -56,16 +56,23 @@ export default function CreateShopTimeSlot({ refetchTimes }: { refetchTimes: () 
 
         return errors;
     };
-    useEffect(() => {
-        const shopId = Cookies.get('shopId'); // Get shopId from cookies
-        if (shopId) {
-            setTimeSlot(prevData => ({
-                ...prevData,
-                shopId: shopId,
-            }));
-        }
-    }, []);
     const dispatch = useAppDispatch();
+    const [checkShopId, setShopId] = useState<string>('');
+    useEffect(() => {
+        const fetchShopId = async () => {
+            const response = await dispatch(getShopIdbyTime()).unwrap();
+            setShopId(response || '');
+        }
+        fetchShopId();
+    }, [dispatch]);
+
+    useEffect(() => {
+        setTimeSlot(prevData => ({
+            ...prevData,
+            shopId: checkShopId,
+        }));
+    }, [checkShopId]);
+
     const handleInputChange = (fieldName: string, newValue: string) => {
         setTimeSlot(prevData => ({
             ...prevData,

@@ -34,7 +34,7 @@ export default function CardService({ service }: { service: allServicesPaginatio
                 <Divider />
                 <CardFooter className="w-full flex justify-center">
                     <div className="w-full">
-                        <DetailService params={{ slug: service.id }} />
+                        <DetailService id={service.id} />
                     </div>
                 </CardFooter>
             </Card>

@@ -11,7 +11,7 @@ export default function TimeSlot() {
     const [timeSlot, setTimeSlot] = useState<AllShopTimeSlotIn4[]>([]);
     const dispatch = useAppDispatch();
     const [loading, setLoading] = useState(true);
-
+    console.log(timeSlot)
     useEffect(() => {
         fetchTimeSlots();
     }, [dispatch]);

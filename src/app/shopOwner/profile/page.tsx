@@ -26,7 +26,7 @@ export default function Profile() {
     const [loading, setLoading] = useState(true);
     const [userId, setUserId] = useState<string>('');
     const [items, setItems] = useState<shopInfor | null>(null);
-
+    console.log(userId)
     const fetchData = async () => {
         setLoading(true);
         try {

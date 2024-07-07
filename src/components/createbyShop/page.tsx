@@ -206,6 +206,7 @@ export default function CreateShop({ userId, onCreate }: { userId: string, onCre
                                             type="text"
                                             onChange={(e) => handleInputChange('area', e.target.value)}
                                             label="Khu vực"
+                                            className="w-[250px]"
                                             value={shopData.area}
                                             isInvalid={!!validationErrors.find(err => err.includes('Khu'))}
                                             color={validationErrors.find(err => err.includes('Khu')) ? "danger" : "default"}

@@ -22,10 +22,11 @@ export default function CancelBooking({ params }: { params: string }) {
         });
         setValidationErrors([]);
     };
+
     const validateInput = () => {
         const errors: string[] = [];
 
-        // Additional Message validation
+   
         if (!cancelData.additionalMessage || cancelData.additionalMessage.length > 255) {
             errors.push('Tin nhắn lý do không được để trống và không quá 255 ký tự');
         }
@@ -33,7 +34,7 @@ export default function CancelBooking({ params }: { params: string }) {
         return errors;
     };
 
-    console.log(cancelData);
+
     const [userId, setUserId] = useState<string>('');
     useEffect(() => {
         const fetchUid = async () => {
@@ -79,16 +80,17 @@ export default function CancelBooking({ params }: { params: string }) {
                 await dispatch(postCancelBooking({ cancelData })).unwrap();
                 toast.success("Huỷ đặt lịch thành công!", {
                     onClose: onOpenChange,
+
                     autoClose: 1500,
                 });
-                fetchBookingDetail();
+                resetForm(),
+                    fetchBookingDetail();
             }
         } catch (error) {
             console.error('Error creating service:', error);
             toast.error("Đã xảy ra lỗi khi huỷ đặt lịch!. Vui lòng thử lại sau!");
         }
     };
-    console.log(cancelData);
     return (
         <>
             <Button radius="full" className="bg-gradient-to-tr from-pink-500 to-yellow-500 text-white shadow-lg" onPress={onOpen}>Huỷ dịch vụ </Button>

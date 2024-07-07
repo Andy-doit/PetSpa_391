@@ -68,19 +68,21 @@ export default function CreateFeedback({ shopData }: { shopData: BookingDetail }
         try {
             if (userId) {
                 await dispatch(createFeedback({ feedbackData })).unwrap();
-                toast.success("Tạo thú cưng thành công!", {
+                toast.success("Đánh giá dịch vụ thành công!", {
                     onClose: onOpenChange,
                     autoClose: 1500,
                 });
+                resetForm();
             }
         } catch (error) {
             console.error('Error creating service:', error);
-            toast.error("Đã xảy ra lỗi khi tạo thú cưng. Vui lòng thử lại sau!");
+            toast.error("Đã xảy ra lỗi khi tạo . Vui lòng thử lại sau!");
         }
     };
+    console.log(feedbackData);
     return (
         <>
-            <Button radius="lg" className="bg-gradient-to-tr from-pink-500 to-yellow-500 text-white shadow-lg" onPress={onOpen}>Đánh giá</Button>
+            <Button radius="lg" className="bg-gradient-to-tr from-pink-500 to-yellow-500 text-white shadow-lg" onPress={onOpen}>Đánh giá dịch vụ</Button>
             <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
                 <ModalContent>
                     {(onClose) => (
