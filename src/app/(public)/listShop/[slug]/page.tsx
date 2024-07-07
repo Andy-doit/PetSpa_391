@@ -27,6 +27,7 @@ export default function ProfileShopOwner({ params }: { params: { slug: string } 
                 return 'Không xác định';
         }
     };
+
     const [shopIn4, setShopIn4] = useState<shopInfor | any>();
     const [items, setItems] = useState<allServicesPaginationData[]>([]);
     const [allNomination, setAllNomination] = useState<AllNominationOfShop[]>([]);
@@ -53,7 +54,6 @@ export default function ProfileShopOwner({ params }: { params: { slug: string } 
             setLoading(false);
         }
     };
-
     useEffect(() => {
         fetchShopData();
     }, [dispatch, params]);
@@ -168,7 +168,7 @@ export default function ProfileShopOwner({ params }: { params: { slug: string } 
                                                     </CardBody>
                                                     <Divider />
                                                     <CardFooter className="w-full">
-                                                        <DetailService params={params} />
+                                                        <DetailService id={item.id} />
                                                     </CardFooter>
                                                 </Card>
                                             ))

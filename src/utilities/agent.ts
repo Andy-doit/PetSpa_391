@@ -5,6 +5,7 @@ import { createBookingInput } from "@/models/bookingModels";
 import { CreateShopTimeSlotInput, ShopInput, createServiceInput } from '@/models/shopModel';
 import { CancelBookingInput, createFeedbackInput, createNomiationInput, createPetInput, updatePasswordInput, updateProfileInput } from "@/models/userModels";
 import { AccountInput, ShopInfor } from "@/models/adminModel";
+import { get } from "http";
 
 
 const responseBody = (response: AxiosResponse) => response.data;
@@ -43,6 +44,10 @@ const ServiceAPI = {
 
 //ShopOnwer
 const ShopOnwer = {
+  getAllTimeSlot: () =>
+    requests.get("api/v1/timeslot/all"),
+  getShopId: () =>
+    requests.get("api/v1/shop/shopId"),
   getAllService: () =>
     requests.get("/api/v1/service/all/auth"),
   getShopTimeSlot: () =>
@@ -64,7 +69,7 @@ const ShopOnwer = {
   getShopProfileInfor: () =>
     requests.get("api/v1/shop/auth"),
   getShoppage: () =>
-    requests.get("/api/v1/shop/shop-detail-home-page"),
+    requests.get("api/v1/shop/dashboard/auth"),
   createShopInfor: (input: ShopInput) =>
     requests.baseApiPost("/api/v1/shop", input),
   updateShopInfor: (input: ShopInput) =>
@@ -98,7 +103,7 @@ const User = {
   getPetInfor: (slug: string) =>
     requests.baseApiGet(`api/v1/pet/${slug}`),
   getShopInfor: (slug: string) =>
-    requests.baseApiGet(`/api/v1/shop/${slug}`),
+    requests.baseApiGet(`/api/v1/shop/detail/${slug}`),
   getAllServiceByShopId: (slug: string) =>
     requests.baseApiGet(`/api/v1/service/all/${slug}`),
   deletePet: (slug: string) =>
@@ -111,8 +116,12 @@ const User = {
     requests.put("api/v1/user/password", input),
   createFeedback: (input: createFeedbackInput) =>
     requests.post("api/v1/feedback", input),
+  deleteFeedback: () =>
+    requests.del("api/v1/feedback"),
   createNomination: (input: createNomiationInput) =>
     requests.post("api/v1/nomination", input),
+  deleteNomination: () =>
+    requests.del("api/v1/nomination"),
   getAllNomination: (slug: string) =>
     requests.get(`api/v1/nomination/all/${slug}`),
 }
@@ -126,11 +135,11 @@ const Admin = {
   getShopInfor: (slug: string) =>
     requests.baseApiGet(`api/v1/admin/viewDetail/${slug}`),
   deleteShop: (slug: string) =>
-    requests.baseApiDelete(`api/v1/admin/delete/${slug}`),
+    requests.del(`api/v1/admin/delete/${slug}`),
   createShop: (input: AccountInput) =>
-    requests.baseApiPost("api/v1/admin/manageShopOwner/addShopOwner", input),
+    requests.post("api/v1/admin/manageShopOwner/addShopOwner", input),
   deleteAcount: (slug: string) =>
-    requests.baseApiDelete(`api/v1/admin/delete/${slug}`),
+    requests.del(`api/v1/admin/delete/${slug}`),
 
 }
 

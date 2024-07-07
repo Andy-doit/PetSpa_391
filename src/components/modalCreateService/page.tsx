@@ -65,8 +65,8 @@ export default function ModalCreateService({ userId, refetchPets }: { userId: st
     const validateInput = () => {
         const errors = [];
 
-        if (!serviceData.serviceName || serviceData.serviceName.length > 50 || !/^[a-zA-Z\s]+$/.test(serviceData.serviceName)) {
-            errors.push('Tên dịch vụ không được để trống, không quá 50 ký tự và chỉ chứa chữ cái và khoảng trắng');
+        if (!serviceData.serviceName || serviceData.serviceName.length > 50) {
+            errors.push('Tên dịch vụ không được để trống, không quá 50 ký tự ');
         }
         if (!serviceData.serviceCategoryId || serviceData.serviceCategoryId <= 0) {
             errors.push('Loại category phải chọn');

@@ -42,6 +42,9 @@ export interface serviceCreateResponseSuccess {
     success: boolean;
 }
 
+export interface getShopId {
+    id: string,
+}
 export interface ServiceInfor {
     slug: string | undefined | null,
     userId: string | undefined | null,
@@ -116,6 +119,20 @@ export interface CreateShopTimeSlotInput {
     totalSlot: string,
 
 
+}
+export interface getAllTimeSlot {
+    id: string,
+    startLocalDateTime: string,
+    endLocalDateTime: string,
+}
+export interface getAllTimeSlotResponse {
+    success: boolean;
+    status: number;
+    data: {
+        data: getAllTimeSlot[];
+        totalCount: number;
+        pageCount: number;
+    };
 }
 
 export interface AllShopTimeSlotIn4Response {

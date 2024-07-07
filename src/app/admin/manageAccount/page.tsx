@@ -1,4 +1,4 @@
-"use client";
+'use client';
 import { Input, Spinner, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow } from "@nextui-org/react";
 import React, { useEffect, useState } from "react";
 import AddShop from "@/components/createShop/page";
@@ -9,7 +9,6 @@ import AccountDetail from "@/components/accountDetail/page";
 import DeleteShop from "@/components/deleteAccount/page";
 
 export default function ManageAccount() {
-    const [shopId, setShopId] = useState<string>('');
     const dispatch = useAppDispatch();
     const [loading, setLoading] = useState(true);
     const [shop, setShop] = useState<allShopPaginationData[]>([]);
@@ -17,13 +16,12 @@ export default function ManageAccount() {
     useEffect(() => {
         fetchServices();
     }, [dispatch]);
-    console.log(shop)
+
     const fetchServices = async () => {
         setLoading(true);
         try {
             const response = await dispatch(fetchAllShopPagination());
             setShop(response.payload || []);
-
         } catch (error) {
             console.error('Error fetching services:', error);
         } finally {
@@ -45,7 +43,7 @@ export default function ManageAccount() {
                     />
                 </div>
                 <div className="flex flex-row gap-3.5 flex-wrap">
-                    <AddShop shopId={shopId} refetchShops={fetchServices} />
+                    <AddShop refetchShops={fetchServices} />
                 </div>
             </div>
             <div className="max-w-[95rem] mx-auto w-full">
@@ -82,7 +80,7 @@ export default function ManageAccount() {
                                         <TableCell>
                                             <div className="flex items-center gap-4">
                                                 <AccountDetail params={sp.id} />
-                                                <DeleteShop params={sp.id} refetchPets={fetchServices} />
+                                                <DeleteShop params={sp.id} refetchShops={fetchServices} />
                                             </div>
                                         </TableCell>
                                     </TableRow>

@@ -9,7 +9,7 @@ import { createShop } from '@/lib/redux/slice/adminSlice';
 import { AccountInput } from '@/models/adminModel';
 import { FaPlus } from 'react-icons/fa';
 
-export default function AddShop({ shopId, refetchShops }: { shopId: string, refetchShops: () => void }) {
+export default function AddShop({ refetchShops }: { refetchShops: () => void }) {
     const { isOpen, onOpen, onClose } = useDisclosure();
     const [isLoading, setIsLoading] = useState(false);
     const [validationErrors, setValidationErrors] = useState<string[]>([]);
@@ -106,6 +106,7 @@ export default function AddShop({ shopId, refetchShops }: { shopId: string, refe
         resetForm();
         onClose();
     };
+    console.log(shopData)
     return (
         <div>
             <Button
