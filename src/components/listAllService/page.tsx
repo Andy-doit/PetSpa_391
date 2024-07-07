@@ -1,10 +1,11 @@
+
 'use client'
+import React, { useEffect, useState } from "react";
 import { fetchAllServicesPagination } from "@/lib/redux/slice/listAllServiceSlice";
 import { useAppDispatch } from "@/lib/redux/store";
 import { allServicesPaginationData } from "@/models/bookingModels";
 import { Card, CardHeader, CardBody, CardFooter, Divider, Spinner, Navbar, NavbarContent, NavbarItem, Button, Input } from "@nextui-org/react";
 import { FaStar } from "react-icons/fa";
-import { useEffect, useState } from "react";
 import { Select, SelectItem } from "@nextui-org/select";
 import DetailService from "../serviceDetail/page";
 
@@ -21,14 +22,6 @@ const ListAllService: React.FC<Props> = () => {
     const [sortOption, setSortOption] = useState<string>('');
     const [selectedCategory, setSelectedCategory] = useState<string>('');
     const [showAll, setShowAll] = useState(false);
-    const handleFilterChange = (filter: string) => {
-        setActiveFilter(filter);
-        if (filter === 'all') {
-            setShowAll(!showAll);
-        } else {
-            setShowAll(false);
-        }
-    };
 
     const fetchAllServices = async () => {
         setLoading(true);
@@ -101,9 +94,6 @@ const ListAllService: React.FC<Props> = () => {
                                 </option>
                             ))}
                         </select>
-
-
-
                     </NavbarItem>
                     <NavbarItem className="mr-10">
                         <Select size="sm" label="Giá cả" className="w-52" onChange={(e) => handleSortChange(e.target.value)}>
@@ -165,7 +155,7 @@ const ListAllService: React.FC<Props> = () => {
                                 </CardBody>
                                 <Divider />
                                 <CardFooter className="w-full">
-                                    <DetailService params={item} />
+                                    <DetailService id={item.id} />
                                 </CardFooter>
                             </Card>
                         ))}
@@ -177,5 +167,3 @@ const ListAllService: React.FC<Props> = () => {
 };
 
 export default ListAllService;
-
-

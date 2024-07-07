@@ -1,4 +1,3 @@
-'use client';
 import React, { useState } from "react";
 import { Modal, ModalContent, Button, useDisclosure, Link, Spinner, Card, CardHeader, Avatar, CardBody, Divider, CardFooter } from "@nextui-org/react";
 import { ServiceDetail } from "@/models/bookingModels";
@@ -10,7 +9,7 @@ import { FaEye, FaShoppingCart } from 'react-icons/fa';
 import { AllFeedbackOfService } from "@/models/shopModel";
 import { fetchAllFeedback } from "@/lib/redux/slice/shopSlice";
 
-export default function DetailService({ params }: { params: { slug: string } }) {
+export default function DetailService({ id }: { id: string }) {
     const getRatingTypeLabel = (ratingType: string) => {
         switch (ratingType) {
             case 'TOTALLY_BAD':
@@ -27,6 +26,7 @@ export default function DetailService({ params }: { params: { slug: string } }) 
                 return 'Không xác định';
         }
     };
+
     const formatDateTime = (dateTimeString: string) => {
         const dateTime = new Date(dateTimeString);
         const hours = dateTime.getHours().toString().padStart(2, '0');
@@ -37,14 +37,17 @@ export default function DetailService({ params }: { params: { slug: string } }) 
 
         return `${hours}:${minutes}, ${day}-${month}-${year}`;
     };
+
     const [allFeedback, setAllFeedback] = useState<AllFeedbackOfService[]>([]);
     const [isLoading, setIsLoading] = useState(false);
     const [service, setService] = useState<ServiceDetail | any>();
     const dispatch = useAppDispatch();
     const { isOpen, onOpen, onClose } = useDisclosure();
+
     const handleOpen = async () => {
         onOpen();
-        const response = await dispatch(fetchServiceDetail(params));
+        const response = await dispatch(fetchServiceDetail({ slug: id }));
+        console.log(response);
         if (response.payload) {
             setService(response.payload);
             const feedbackResponse = await dispatch(fetchAllFeedback({ slug: response.payload.id }));
@@ -52,16 +55,15 @@ export default function DetailService({ params }: { params: { slug: string } }) 
                 setAllFeedback(feedbackResponse.payload);
             }
         }
-
     };
-
+    console.log(service);
     return (
         <div>
             <Button
                 className="bg-gradient-to-tr from-pink-500 to-yellow-500 text-white shadow-lg w-full"
                 onClick={handleOpen}
             >
-                <FaEye size={20} className="ml-2" />    Xem chi tiết
+                <FaEye size={20} className="ml-2" /> Xem chi tiết
             </Button>
 
             <Modal

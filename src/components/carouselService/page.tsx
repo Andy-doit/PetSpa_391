@@ -13,7 +13,7 @@ export default function CarouselService() {
     const [loading, setLoading] = useState(true);
     const [services, setServices] = useState([]);
     const dispatch = useAppDispatch();
-
+    // console.log(services)
     useEffect(() => {
         const fetchServices = async () => {
             try {

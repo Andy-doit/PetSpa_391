@@ -27,7 +27,7 @@ export interface UserState {
 }
 
 const initialState: UserState = {
-  
+
     allBookingPagination: null,
     allBookingFetchingStatus: 'idle',
     allBookingFetchingError: false,
@@ -289,6 +289,23 @@ export const deletePet = createAsyncThunk(
         }
     },
 );
+export const deleteNomination = createAsyncThunk(
+    'customer/deleteNomination',
+    async () => {
+        try {
+            const response = await agent.User.deleteNomination();
+            return response;
+        } catch (error) {
+            if (error instanceof AxiosError) {
+                return {
+                    message: error.response?.data.error.message,
+                    status: error.response?.status,
+                };
+            }
+        }
+    },
+);
+
 export const createFeedback = createAsyncThunk(
     'customer/createFeedback',
     async ({ feedbackData }: { feedbackData: createFeedbackInput }) => {

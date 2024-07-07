@@ -19,48 +19,21 @@ import getAccessAndRefreshCookie from '@/utilities/authUtils/getCookieForValidat
 import { fetchAllServicePagination } from '@/lib/redux/slice/shopSlice';
 import { MdDelete } from 'react-icons/md';
 
-export default function DeleteShop({ params, refetchPets }: { params: string, refetchPets: () => void }) {
+export default function DeleteShop({ params, refetchShops }: { params: string, refetchShops: () => void }) {
     const { isOpen, onOpen, onClose } = useDisclosure();
     const dispatch = useAppDispatch();
-    const [shopId, setShopId] = useState<string>('');
-    const [shopowner, setShopowner] = useState<allShopPaginationData[]>([]);
+    const [shopId, setShopId] = useState<string>(params);
 
-    const fetchPets = async () => {
-        const response = await dispatch(fetchAllServicePagination());
-        setShopowner(response.payload || []);
-    };
-
-    useEffect(() => {
-        const fetchUid = async () => {
-            try {
-                const { uid } = await getAccessAndRefreshCookie();
-                if (uid) {
-                    setShopId(uid);
-                }
-            } catch (error) {
-                console.error('Error fetching UID:', error);
-            }
-        };
-        fetchUid();
-    }, []);
-
-    const handleFetchAndDelete = async () => {
-        await fetchPets();
-        handleDetete();
-    };
-
-    const handleDetete = async () => {
+    const handleDelete = async () => {
         try {
-            if (shopId) {
-                await dispatch(deleteShop({ slug: params })).unwrap();
-                toast.success("Xoá tài khoản shop thành công!", {
-                    onClose: () => {
-                        onClose();
-                        refetchPets();
-                    },
-                    autoClose: 1500,
-                });
-            }
+            await dispatch(deleteShop({ slug: shopId })).unwrap();
+            toast.success("Xoá tài khoản shop thành công!", {
+                onClose: () => {
+                    onClose();
+                    refetchShops();
+                },
+                autoClose: 1500,
+            });
         } catch (error) {
             console.error('Error deleting shop:', error);
             toast.error("Đã xảy ra lỗi khi xoá tài khoản. Vui lòng thử lại sau!");
@@ -82,7 +55,7 @@ export default function DeleteShop({ params, refetchPets }: { params: string, re
                         <Button color="danger" variant="light" onClick={onClose}>
                             Close
                         </Button>
-                        <Button color="primary" onClick={handleFetchAndDelete}>
+                        <Button color="primary" onClick={handleDelete}>
                             Xoá
                         </Button>
                     </ModalFooter>
