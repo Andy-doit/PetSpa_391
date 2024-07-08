@@ -2,7 +2,7 @@ import { AxiosResponse } from "axios";
 import apiJWT from "./api";
 import baseApi from "./baseApi";
 import { createBookingInput } from "@/models/bookingModels";
-import { CreateShopTimeSlotInput, ShopInput, createServiceInput } from '@/models/shopModel';
+import { BookingComplete, CreateShopTimeSlotInput, ShopInput, createServiceInput } from '@/models/shopModel';
 import { CancelBookingInput, createFeedbackInput, createNomiationInput, createPetInput, updatePasswordInput, updateProfileInput } from "@/models/userModels";
 import { AccountInput, ShopInfor } from "@/models/adminModel";
 import { get } from "http";
@@ -54,8 +54,8 @@ const ShopOnwer = {
     requests.get("/api/v1/shop-timeslot/auth/all/auth"),
   postCreateShopTimeSlot: (input: CreateShopTimeSlotInput) =>
     requests.baseApiPost("api/v1/shop-timeslot/auth", input),
-  deleteShopTimeSlot: () =>
-    requests.baseApiDelete("api/v1/shop-timeslot/atuh"),
+  deleteShopTimeSlot: (slug: string) =>
+    requests.del(`api/v1/shop-timeslot/auth/${slug}`),
   postCreateService: (input: createServiceInput) =>
     requests.baseApiPost("api/v1/service", input),
   getAllOrderBooking: () =>
@@ -116,14 +116,16 @@ const User = {
     requests.put("api/v1/user/password", input),
   createFeedback: (input: createFeedbackInput) =>
     requests.post("api/v1/feedback", input),
-  deleteFeedback: () =>
-    requests.del("api/v1/feedback"),
+  deleteFeedback: (slug: string) =>
+    requests.del(`api/v1/feedback/${slug}`),
   createNomination: (input: createNomiationInput) =>
     requests.post("api/v1/nomination", input),
-  deleteNomination: () =>
-    requests.del("api/v1/nomination"),
+  deleteNomination: (slug: string) =>
+    requests.del(`api/v1/nomination/${slug}`),
   getAllNomination: (slug: string) =>
     requests.get(`api/v1/nomination/all/${slug}`),
+  completeBooking: (input: BookingComplete) =>
+    requests.post("api/v1/booking/auth/complete", input),
 }
 
 //Admin

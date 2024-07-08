@@ -203,3 +203,6 @@ export interface allServicePaginationData {
 
 
 }
+export interface BookingComplete {
+    bookingId: number,
+}

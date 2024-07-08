@@ -8,6 +8,7 @@ import FeedbackDetail from "../feedbackDetail/page";
 import { FaEye, FaShoppingCart } from 'react-icons/fa';
 import { AllFeedbackOfService } from "@/models/shopModel";
 import { fetchAllFeedback } from "@/lib/redux/slice/shopSlice";
+import DeleteFeedback from "../deleteFeedback/page";
 
 export default function DetailService({ id }: { id: string }) {
     const getRatingTypeLabel = (ratingType: string) => {
@@ -133,6 +134,10 @@ export default function DetailService({ id }: { id: string }) {
                                                         <div className="flex gap-1 items-center">
                                                             <p>{formatDateTime(item.localDateTime)}</p>
                                                         </div>
+                                                    </CardFooter>
+                                                    <Divider />
+                                                    <CardFooter className="gap-3">
+                                                        <DeleteFeedback params={item.id.toString()} />
                                                     </CardFooter>
                                                 </Card>
                                             ))}

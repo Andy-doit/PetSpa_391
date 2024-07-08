@@ -16,26 +16,22 @@ import { useAppDispatch } from '@/lib/redux/store';
 import { allShopPaginationData } from '@/models/adminModel';
 import { deleteShop } from '@/lib/redux/slice/adminSlice';
 import getAccessAndRefreshCookie from '@/utilities/authUtils/getCookieForValidation';
-import { deleteTimeSlotShop, fetchAllServicePagination } from '@/lib/redux/slice/shopSlice';
+import { fetchAllServicePagination } from '@/lib/redux/slice/shopSlice';
 import { MdDelete } from 'react-icons/md';
+import { AllNominationOfShop, createNomiationInput } from '@/models/userModels';
+import { deleteNomination } from '@/lib/redux/slice/userSlice';
 
-export default function DeleteTimeSlot({ params, refetchPets }: { params: string, refetchPets: () => void }) {
+export default function DeleteNomination({ params, refreshData }: { params: string, refreshData: () => void }) {
     const { isOpen, onOpen, onClose } = useDisclosure();
+
     const dispatch = useAppDispatch();
-    const [shopId, setShopId] = useState<string>('');
-    const [shopowner, setShopowner] = useState<allShopPaginationData[]>([]);
-
-    const fetchPets = async () => {
-        const response = await dispatch(fetchAllServicePagination());
-        setShopowner(response.payload || []);
-    };
-
+    const [userId, setUserId] = useState<string>('');
     useEffect(() => {
         const fetchUid = async () => {
             try {
                 const { uid } = await getAccessAndRefreshCookie();
                 if (uid) {
-                    setShopId(uid);
+                    setUserId(uid);
                 }
             } catch (error) {
                 console.error('Error fetching UID:', error);
@@ -43,33 +39,26 @@ export default function DeleteTimeSlot({ params, refetchPets }: { params: string
         };
         fetchUid();
     }, []);
-
-    const handleFetchAndDelete = async () => {
-        await fetchPets();
-        handleDetete();
-    };
-
-    const handleDetete = async () => {
+    const handleDelete = async () => {
         try {
-            if (shopId) {
-                await dispatch(deleteTimeSlotShop({ slug: params })).unwrap();
-                toast.success("Xoá khung giờ thành công!", {
+            if (userId) {
+                await dispatch(deleteNomination({ slug: params })).unwrap();
+                toast.success("Xoá đánh giá thành công!", {
                     onClose: () => {
                         onClose();
-                        refetchPets();
+                        refreshData();
                     },
                     autoClose: 1500,
                 });
             }
         } catch (error) {
-            console.error('Error deleting shop:', error);
-            toast.error("Đã xảy ra lỗi khi xoá khung giờ. Vui lòng thử lại sau!");
+            console.error('Error creating service:', error);
+            toast.error("Đã xảy ra lỗi khi xoá đánh giá. Vui lòng thử lại sau!");
         }
     };
-
     return (
         <div>
-            <Tooltip content="Xoá Tài khoản">
+            <Tooltip content="Xoá đánh giá">
                 <Button color="danger" variant="faded" isIconOnly onPress={onOpen}>
                     <MdDelete size={20} />
                 </Button>
@@ -79,11 +68,11 @@ export default function DeleteTimeSlot({ params, refetchPets }: { params: string
                 <ModalContent>
                     <ModalHeader className='text-3xl text-orange-600'>Bạn có chắc chắn về quyết định của mình?</ModalHeader>
                     <ModalFooter>
-                        <Button color="danger" variant="light" onClick={onClose}>
-                            Close
+                        <Button className='w-full' onClick={onClose}>
+                            Không
                         </Button>
-                        <Button color="primary" onClick={handleFetchAndDelete}>
-                            Xoá
+                        <Button className="bg-gradient-to-tr from-pink-500 to-yellow-500 text-white shadow-lg w-full" onClick={handleDelete}>
+                            Có
                         </Button>
                     </ModalFooter>
                 </ModalContent>

@@ -305,6 +305,20 @@ export const createShopTimeSlot = createAsyncThunk(
         }
     }
 );
+export const deleteTimeSlotShop = createAsyncThunk(
+    'shopOwner/deleteTimeSlotShop',
+    async ({ slug }: { slug: string }) => {
+        try {
+            const response = await agent.ShopOnwer.deleteShopTimeSlot(slug);
+            return response;
+        } catch (error) {
+            if (error instanceof AxiosError) {
+                throw error.response?.data.error.message || "An error occurred";
+            }
+            throw error;
+        }
+    },
+);
 export const fetchAllFeedback = createAsyncThunk(
     'shopOwner/fetchAllFeedback',
     async ({ slug }: { slug: string }) => {

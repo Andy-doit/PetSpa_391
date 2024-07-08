@@ -10,6 +10,7 @@ import { allServicesPaginationData } from "@/models/bookingModels";
 import DetailService from "@/components/serviceDetail/page";
 import CreateNomiation from "@/components/createNomiation/page";
 import { AllNominationOfShop } from "@/models/userModels";
+import DeleteNomination from "@/components/deleteNomination/page";
 
 export default function ProfileShopOwner({ params }: { params: { slug: string } }) {
 
@@ -33,6 +34,7 @@ export default function ProfileShopOwner({ params }: { params: { slug: string } 
     const [allNomination, setAllNomination] = useState<AllNominationOfShop[]>([]);
     const [loading, setLoading] = useState(true);
     const dispatch = useAppDispatch();
+
     const fetchShopData = async () => {
         setLoading(true);
         try {
@@ -113,6 +115,7 @@ export default function ProfileShopOwner({ params }: { params: { slug: string } 
                             <Divider />
                             <CardFooter>
                                 <CreateNomiation shopData={shopIn4?.id} refreshData={fetchShopData} />
+
                             </CardFooter>
                         </Card>
                     </div>
@@ -197,6 +200,11 @@ export default function ProfileShopOwner({ params }: { params: { slug: string } 
                                                             </div>
                                                         </div>
                                                     </CardHeader>
+                                                    <Divider />
+                                                    <CardBody>
+                                                        <DeleteNomination params={item.id.toString()} refreshData={fetchShopData} />
+                                                    </CardBody>
+
                                                 </Card>
                                             ))
                                         )}
