@@ -49,7 +49,6 @@ export default function CancelBooking({ params }: { params: string }) {
         };
         fetchUid();
     }, [userId]);
-    console.log(params);
     const handleInputChange = (fieldName: string, newValue: string | number) => {
         setCancelData(prevData => ({
             ...prevData,

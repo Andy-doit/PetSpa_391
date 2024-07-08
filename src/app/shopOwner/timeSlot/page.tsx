@@ -5,6 +5,7 @@ import CreateShopTimeSlot from "@/components/createShopTimeSlot/page";
 import { AllShopTimeSlotIn4 } from "@/models/shopModel";
 import { useAppDispatch } from "@/lib/redux/store";
 import { fetchAllShopTimeSlotPagination, fetchShopInforPagination } from "@/lib/redux/slice/shopSlice";
+import DeleteTimeSlot from "@/components/deleteTimeSlot/page";
 
 export default function TimeSlot() {
 
@@ -66,7 +67,7 @@ export default function TimeSlot() {
                                     <TableCell>{slot.totalSlot}</TableCell>
                                     <TableCell>{slot.status ? 'Hoạt động' : 'Không hoạt động'}</TableCell>
                                     <TableCell>
-                                        Test
+                                        <DeleteTimeSlot params={slot.id.toString()} refetchPets={fetchTimeSlots} />
                                     </TableCell>
                                 </TableRow>
                             ))}

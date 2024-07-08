@@ -5,6 +5,7 @@ import CreateFeedback from "../createFeedback/page";
 import { BookingDetail } from "@/models/userModels";
 import { useAppDispatch } from "@/lib/redux/store";
 import { fetchOrderBooking } from "@/lib/redux/slice/userSlice";
+import ConfirmBooking from "../confirmBooking/page";
 
 export default function OrderDetail({ params }: { params: string }) {
     const [booking, setBooking] = useState<BookingDetail | null>(null);
@@ -19,6 +20,8 @@ export default function OrderDetail({ params }: { params: string }) {
                 return 'Đã Huỷ';
             case 'SCHEDULED':
                 return 'Đã đặt lịch';
+            case 'NEED_CONFIRM':
+                return 'Cần xác nhận';
             default:
                 return 'Không xác định';
         }
@@ -32,6 +35,8 @@ export default function OrderDetail({ params }: { params: string }) {
                 return 'danger';
             case 'SCHEDULED':
                 return 'warning';
+            case 'NEED_CONFIRM':
+                return 'secondary';
             default:
                 return 'default';
         }
@@ -42,7 +47,7 @@ export default function OrderDetail({ params }: { params: string }) {
             const response = await dispatch(fetchOrderBooking({ slug: params }));
             if (response.payload) {
                 setBooking(response.payload);
-                setIsOpenModal(true); // Mở modal khi đã lấy được dữ liệu
+                setIsOpenModal(true);
             }
         } catch (error) {
             console.error('Error fetching booking detail:', error);
@@ -111,6 +116,8 @@ export default function OrderDetail({ params }: { params: string }) {
                                         </div>
                                         <div className="flex justify-end items-end">
                                             {booking.status === 'SCHEDULED' && <CancelBooking params={params} />}
+                                            {booking.status === 'NEED_CONFIRM' && <ConfirmBooking params={booking.id} />}
+
                                             {booking.status === 'COMPLETED' && <CreateFeedback shopData={booking} />}
                                         </div>
                                     </div>

@@ -1,4 +1,5 @@
 
+import { BookingComplete } from '@/models/shopModel';
 import { AllNominationOfShop, CancelBookingInput, allBookingPaginationResponse, allPetPaginationResponse, cancelBookingResponseSuccess, createFeedbackInput, createFeedbackResponseSuccess, createNomiationInput, createPetInput, petCreateResponseSuccess, updatePasswordInput, updatePasswordInputResponseSuccess, updateProfileInput, updateProfileInputResponseSuccess } from '@/models/userModels';
 import agent from '@/utilities/agent';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
@@ -289,11 +290,11 @@ export const deletePet = createAsyncThunk(
         }
     },
 );
-export const deleteNomination = createAsyncThunk(
-    'customer/deleteNomination',
-    async () => {
+export const deleteFeedback = createAsyncThunk(
+    'customer/deleteFeedback',
+    async ({ slug }: { slug: string }) => {
         try {
-            const response = await agent.User.deleteNomination();
+            const response = await agent.User.deleteFeedback(slug);
             return response;
         } catch (error) {
             if (error instanceof AxiosError) {
@@ -306,12 +307,32 @@ export const deleteNomination = createAsyncThunk(
     },
 );
 
+
+
 export const createFeedback = createAsyncThunk(
     'customer/createFeedback',
     async ({ feedbackData }: { feedbackData: createFeedbackInput }) => {
         try {
             const response = (await agent.User.createFeedback(
                 feedbackData,
+            )) as createFeedbackResponseSuccess;
+            return response.message;
+        } catch (error) {
+            if (error instanceof AxiosError) {
+                return {
+                    message: error.response?.data.error.message,
+                    status: error.response?.status,
+                };
+            }
+        }
+    },
+);
+export const completedBooking = createAsyncThunk(
+    'customer/completedBooking',
+    async ({ completeData }: { completeData: BookingComplete }) => {
+        try {
+            const response = (await agent.User.completeBooking(
+                completeData,
             )) as createFeedbackResponseSuccess;
             return response.message;
         } catch (error) {
@@ -342,6 +363,23 @@ export const createNomination = createAsyncThunk(
         }
     },
 );
+export const deleteNomination = createAsyncThunk(
+    'customer/deleteNomination',
+    async ({ slug }: { slug: string }) => {
+        try {
+            const response = await agent.User.deleteNomination(slug);
+            return response;
+        } catch (error) {
+            if (error instanceof AxiosError) {
+                return {
+                    message: error.response?.data.error.message,
+                    status: error.response?.status,
+                };
+            }
+        }
+    },
+);
+
 export const fetchAllNominationByShopId = createAsyncThunk(
     'test/fetchAllNominationByShopId',
     async ({ slug }: { slug: string }) => {
