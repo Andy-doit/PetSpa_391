@@ -146,6 +146,7 @@ export interface AllShopTimeSlotIn4Response {
 }
 export interface AllFeedbackOfService {
     id: number,
+    userId: string,
     userName: string,
     content: string,
     ratingType: string,

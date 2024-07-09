@@ -11,9 +11,24 @@ import DetailService from "@/components/serviceDetail/page";
 import CreateNomiation from "@/components/createNomiation/page";
 import { AllNominationOfShop } from "@/models/userModels";
 import DeleteNomination from "@/components/deleteNomination/page";
+import getAccessAndRefreshCookie from "@/utilities/authUtils/getCookieForValidation";
 
 export default function ProfileShopOwner({ params }: { params: { slug: string } }) {
-
+    const [IdUser, setUid] = useState<number>(0);
+    useEffect(() => {
+        const fetchUid = async () => {
+            try {
+                const { uid } = await getAccessAndRefreshCookie();
+                console.log('userId:', uid);
+                if (uid) {
+                    setUid(parseInt(uid));
+                }
+            } catch (error) {
+                console.error('Error fetching UID:', error);
+            }
+        };
+        fetchUid();
+    }, []);
     const getNominationLabel = (nominationType: string) => {
         switch (nominationType) {
             case 'BAD':
@@ -201,9 +216,15 @@ export default function ProfileShopOwner({ params }: { params: { slug: string } 
                                                         </div>
                                                     </CardHeader>
                                                     <Divider />
-                                                    <CardBody>
-                                                        <DeleteNomination params={item.id.toString()} refreshData={fetchShopData} />
-                                                    </CardBody>
+                                                    {IdUser === item.userId && ( // Check if IdUser matches the feedback author's ID
+                                                        <>
+
+                                                            <CardBody>
+                                                                <DeleteNomination params={item.id.toString()} refreshData={fetchShopData} />
+                                                            </CardBody>
+
+                                                        </>
+                                                    )}
 
                                                 </Card>
                                             ))
