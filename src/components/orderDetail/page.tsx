@@ -10,6 +10,7 @@ import ConfirmBooking from "../confirmBooking/page";
 export default function OrderDetail({ params }: { params: string }) {
     const [booking, setBooking] = useState<BookingDetail | null>(null);
     const [isOpenModal, setIsOpenModal] = useState(false);
+
     const dispatch = useAppDispatch();
 
     const getStatusLabel = (status: string) => {

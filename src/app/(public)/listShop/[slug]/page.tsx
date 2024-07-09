@@ -4,15 +4,38 @@ import { FaStar } from "react-icons/fa";
 import { Tabs, Tab } from "@nextui-org/react";
 import { useEffect, useState } from "react";
 import { useAppDispatch } from "@/lib/redux/store";
-import { fetchAllServiceInfoByShopId, fetchShopInfo, createNomination, fetchAllNominationByShopId } from "@/lib/redux/slice/userSlice";
+import { fetchAllServiceInfoByShopId, fetchShopInfo, getNominationUser, fetchAllNominationByShopId } from "@/lib/redux/slice/userSlice";
 import { shopInfor } from "@/models/shopModel";
 import { allServicesPaginationData } from "@/models/bookingModels";
 import DetailService from "@/components/serviceDetail/page";
 import CreateNomiation from "@/components/createNomiation/page";
-import { AllNominationOfShop } from "@/models/userModels";
+import { AllNominationOfShop, CheckNomi } from "@/models/userModels";
 import DeleteNomination from "@/components/deleteNomination/page";
+import getAccessAndRefreshCookie from "@/utilities/authUtils/getCookieForValidation";
 
 export default function ProfileShopOwner({ params }: { params: { slug: string } }) {
+    const [IdUser, setUid] = useState<number | null>(null);
+    const [shopIn4, setShopIn4] = useState<shopInfor | any>();
+    const [items, setItems] = useState<allServicesPaginationData[]>([]);
+    const [allNomination, setAllNomination] = useState<AllNominationOfShop[]>([]);
+    const [checkNomi, setcheckNomi] = useState<CheckNomi | any>(null);
+    const [loading, setLoading] = useState(true);
+    const dispatch = useAppDispatch();
+
+    useEffect(() => {
+        const fetchUid = async () => {
+            try {
+                const { uid } = await getAccessAndRefreshCookie();
+                console.log('userId:', uid);
+                if (uid) {
+                    setUid(parseInt(uid));
+                }
+            } catch (error) {
+                console.error('Error fetching UID:', error);
+            }
+        };
+        fetchUid();
+    }, []);
 
     const getNominationLabel = (nominationType: string) => {
         switch (nominationType) {
@@ -29,12 +52,6 @@ export default function ProfileShopOwner({ params }: { params: { slug: string } 
         }
     };
 
-    const [shopIn4, setShopIn4] = useState<shopInfor | any>();
-    const [items, setItems] = useState<allServicesPaginationData[]>([]);
-    const [allNomination, setAllNomination] = useState<AllNominationOfShop[]>([]);
-    const [loading, setLoading] = useState(true);
-    const dispatch = useAppDispatch();
-
     const fetchShopData = async () => {
         setLoading(true);
         try {
@@ -50,15 +67,22 @@ export default function ProfileShopOwner({ params }: { params: { slug: string } 
             if (nominationResponse.payload) {
                 setAllNomination(nominationResponse.payload);
             }
+            if (IdUser !== null) {
+                const checkNomiResponse = await dispatch(getNominationUser(params));
+                if (checkNomiResponse.payload) {
+                    setcheckNomi(checkNomiResponse.payload);
+                }
+            }
         } catch (error) {
             console.error('Error fetching data:', error);
         } finally {
             setLoading(false);
         }
     };
+
     useEffect(() => {
         fetchShopData();
-    }, [dispatch, params]);
+    }, [dispatch, params, IdUser]);
 
     return (
         <>
@@ -113,10 +137,15 @@ export default function ProfileShopOwner({ params }: { params: { slug: string } 
                                 </div>
                             </CardBody>
                             <Divider />
-                            <CardFooter>
-                                <CreateNomiation shopData={shopIn4?.id} refreshData={fetchShopData} />
-
-                            </CardFooter>
+                            {IdUser !== null && (
+                                <CardFooter className="flex justify-center text-center">
+                                    {checkNomi ? (
+                                        <p className="text-xl text-orange-600 font-medium">Bạn đã đánh giá shop này</p>
+                                    ) : (
+                                        <CreateNomiation shopData={shopIn4?.id} refreshData={fetchShopData} />
+                                    )}
+                                </CardFooter>
+                            )}
                         </Card>
                     </div>
                 )}
@@ -201,10 +230,13 @@ export default function ProfileShopOwner({ params }: { params: { slug: string } 
                                                         </div>
                                                     </CardHeader>
                                                     <Divider />
-                                                    <CardBody>
-                                                        <DeleteNomination params={item.id.toString()} refreshData={fetchShopData} />
-                                                    </CardBody>
-
+                                                    {IdUser === item.userId && (
+                                                        <>
+                                                            <CardBody>
+                                                                <DeleteNomination params={item.id.toString()} refreshData={fetchShopData} />
+                                                            </CardBody>
+                                                        </>
+                                                    )}
                                                 </Card>
                                             ))
                                         )}
@@ -218,4 +250,3 @@ export default function ProfileShopOwner({ params }: { params: { slug: string } 
         </>
     );
 }
-

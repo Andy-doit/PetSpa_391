@@ -15,54 +15,56 @@ import getAccessAndRefreshCookie from '@/utilities/authUtils/getCookieForValidat
 import { fetchShopPagePagination } from '@/lib/redux/slice/shopSlice';
 import { ShopPage } from '@/models/shopModel';
 import Cookies from 'js-cookie';
+
 ChartJS.register(
     BarElement,
     CategoryScale,
     LinearScale
 );
 
-
 export const Steam = () => {
-
     const [items, setItems] = useState<ShopPage | null>(null);
     const dispatch = useAppDispatch();
     const [loading, setLoading] = useState(true);
-
     const [userId, setUserId] = useState<string>('');
-    const fetchData = async () => {
-        setLoading(true);
-        try {
-            const { uid } = await getAccessAndRefreshCookie();
-            if (uid) {
-                setUserId(uid);
-            }
 
-            const response = await dispatch(fetchShopPagePagination());
-            if (response.payload) {
-                setItems(response.payload);
-                Cookies.set('shopId', response.payload.id);
-            }
-        } catch (error) {
-            console.error('Error fetching data:', error);
-        } finally {
-            setLoading(false);
-        }
-    };
     useEffect(() => {
-        fetchData();
-    }, [dispatch]);
+        const fetchData = async () => {
+            setLoading(true);
+            try {
+                const { uid } = await getAccessAndRefreshCookie();
+                if (uid) {
+                    setUserId(uid);
+                }
 
-    console.log(' Booking', items?.monthlyBookings)
-    var data = {
+                const response = await dispatch(fetchShopPagePagination());
+                if (response.payload) {
+                    setItems(response.payload);
+                    Cookies.set('shopId', response.payload.id);
+                }
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchData();
+    }, []); // Only run once on component mount
+
+    console.log(' Booking', items?.monthlyBookings);
+
+    const data = {
         labels: items?.monthlyBookings?.map(x => x.month),
         datasets: [{
-            label: `${items?.monthlyBookings} Booking`,
+            label: 'Bookings',
             data: items?.monthlyBookings?.map(y => y.bookings),
             backgroundColor: 'rgba(75, 192, 192, 0.2)',
             borderColor: 'rgba(75, 192, 192, 1)',
             borderWidth: 1
         }]
     };
+
     const options = {
         maintainAspectRatio: false,
         scales: {
@@ -85,7 +87,7 @@ export const Steam = () => {
                 display: true,
                 labels: {
                     font: {
-                        size: 5,
+                        size: 12,
                     },
                 },
             },
@@ -93,16 +95,12 @@ export const Steam = () => {
     };
 
     return (
-        <>
-
-
-            <div>
-                {loading ? (
-                    <p>Loading...</p>
-                ) : (
-                    <Bar data={data} height={400} options={options} />
-                )}
-            </div>
-        </>
+        <div>
+            {loading ? (
+                <p>Loading...</p>
+            ) : (
+                <Bar data={data} height={400} options={options} />
+            )}
+        </div>
     );
 };

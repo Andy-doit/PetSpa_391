@@ -1,14 +1,17 @@
-import React, { useState } from "react";
-import { Modal, ModalContent, Button, useDisclosure, Link, Spinner, Card, CardHeader, Avatar, CardBody, Divider, CardFooter } from "@nextui-org/react";
+import React, { useEffect, useState } from "react";
+import {
+    Modal, ModalContent, Button, useDisclosure, Link, Spinner,
+    Card, CardHeader, Avatar, CardBody, Divider, CardFooter
+} from "@nextui-org/react";
 import { ServiceDetail } from "@/models/bookingModels";
 import { useAppDispatch } from "@/lib/redux/store";
 import { fetchServiceDetail } from "@/lib/redux/slice/listAllServiceSlice";
 import PriceTable from "../priceTable/page";
-import FeedbackDetail from "../feedbackDetail/page";
 import { FaEye, FaShoppingCart } from 'react-icons/fa';
 import { AllFeedbackOfService } from "@/models/shopModel";
 import { fetchAllFeedback } from "@/lib/redux/slice/shopSlice";
 import DeleteFeedback from "../deleteFeedback/page";
+import getAccessAndRefreshCookie from "@/utilities/authUtils/getCookieForValidation";
 
 export default function DetailService({ id }: { id: string }) {
     const getRatingTypeLabel = (ratingType: string) => {
@@ -27,6 +30,22 @@ export default function DetailService({ id }: { id: string }) {
                 return 'Không xác định';
         }
     };
+
+    const [IdUser, setUid] = useState<string>('');
+    useEffect(() => {
+        const fetchUid = async () => {
+            try {
+                const { uid } = await getAccessAndRefreshCookie();
+                console.log('userId:', uid);
+                if (uid) {
+                    setUid(uid);
+                }
+            } catch (error) {
+                console.error('Error fetching UID:', error);
+            }
+        };
+        fetchUid();
+    }, []);
 
     const formatDateTime = (dateTimeString: string) => {
         const dateTime = new Date(dateTimeString);
@@ -57,7 +76,7 @@ export default function DetailService({ id }: { id: string }) {
             }
         }
     };
-    console.log(service);
+    console.log(allFeedback)
     return (
         <div>
             <Button
@@ -136,9 +155,14 @@ export default function DetailService({ id }: { id: string }) {
                                                         </div>
                                                     </CardFooter>
                                                     <Divider />
-                                                    <CardFooter className="gap-3">
-                                                        <DeleteFeedback params={item.id.toString()} />
-                                                    </CardFooter>
+                                                    {IdUser === item.userId && ( // Check if IdUser matches the feedback author's ID
+                                                        <>
+
+                                                            <CardFooter className="gap-3">
+                                                                <DeleteFeedback params={item.id.toString()} />
+                                                            </CardFooter>
+                                                        </>
+                                                    )}
                                                 </Card>
                                             ))}
                                         </div>
