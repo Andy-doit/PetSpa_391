@@ -79,13 +79,19 @@ export interface shopInfor {
     birthday: string | undefined | null,
 
 }
-export interface shopPage {
-    id: string,
-
-    totalServices: number,
-    totalNominations: number,
-    totalBookings: number
+export interface ShopPage {
+    id: string;
+    totalServices: number;
+    totalNominations: number;
+    totalBookings: number;
+    monthlyBookings: MonthlyBookingDto[];
 }
+
+export interface MonthlyBookingDto {
+    month: string;
+    bookings: number;
+}
+
 export interface ShopInput {
     id: string,
     shopName: string,
