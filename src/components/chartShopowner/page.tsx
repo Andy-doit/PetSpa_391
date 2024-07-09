@@ -69,13 +69,13 @@ export const Steam = () => {
             x: {
                 title: {
                     display: true,
-                    text: 'Month',
+                    text: 'Tháng',
                 },
             },
             y: {
                 title: {
                     display: true,
-                    text: 'Bookings',
+                    text: 'Số lần đặt lịch',
                 },
                 beginAtZero: true,
             },
