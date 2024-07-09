@@ -8,6 +8,7 @@ import { MdBookmark, MdRateReview } from "react-icons/md";
 import Cookies from 'js-cookie';
 import { fetchShopInforPagination, fetchShopPagePagination } from "@/lib/redux/slice/shopSlice";
 import { AdminPage } from "@/models/adminModel";
+import { fetchAdminPagePagination } from "@/lib/redux/slice/adminSlice";
 
 export const QuantityAllBooking = () => {
     const [items, setItems] = useState<AdminPage | null>(null);
@@ -22,7 +23,7 @@ export const QuantityAllBooking = () => {
                 setUserId(uid);
             }
 
-            const response = await dispatch(fetchShopPagePagination());
+            const response = await dispatch(fetchAdminPagePagination());
             if (response.payload) {
                 setItems(response.payload);
                 Cookies.set('shopId', response.payload.id);

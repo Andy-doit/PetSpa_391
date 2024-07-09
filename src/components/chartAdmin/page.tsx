@@ -15,6 +15,7 @@ import getAccessAndRefreshCookie from '@/utilities/authUtils/getCookieForValidat
 import { fetchShopPagePagination } from '@/lib/redux/slice/shopSlice';
 import { ShopPage } from '@/models/shopModel';
 import Cookies from 'js-cookie';
+import { fetchAdminPagePagination } from '@/lib/redux/slice/adminSlice';
 ChartJS.register(
     BarElement,
     CategoryScale,
@@ -37,7 +38,7 @@ export const ChartAdmin = () => {
                 setUserId(uid);
             }
 
-            const response = await dispatch(fetchShopPagePagination());
+            const response = await dispatch(fetchAdminPagePagination());
             if (response.payload) {
                 setItems(response.payload);
                 Cookies.set('shopId', response.payload.id);

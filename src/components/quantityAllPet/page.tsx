@@ -9,6 +9,7 @@ import Cookies from 'js-cookie';
 import { fetchShopInforPagination, fetchShopPagePagination } from "@/lib/redux/slice/shopSlice";
 import { AdminPage } from "@/models/adminModel";
 import { PiBookmarkSimpleLight } from "react-icons/pi";
+import { fetchAdminPagePagination } from "@/lib/redux/slice/adminSlice";
 
 export const QuantityAllPet = () => {
     const [items, setItems] = useState<AdminPage | null>(null);
@@ -23,7 +24,7 @@ export const QuantityAllPet = () => {
                 setUserId(uid);
             }
 
-            const response = await dispatch(fetchShopPagePagination());
+            const response = await dispatch(fetchAdminPagePagination());
             if (response.payload) {
                 setItems(response.payload);
                 Cookies.set('shopId', response.payload.id);

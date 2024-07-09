@@ -146,7 +146,8 @@ const Admin = {
     requests.post("api/v1/admin/manageShopOwner/addShopOwner", input),
   deleteAcount: (slug: string) =>
     requests.del(`api/v1/admin/delete/${slug}`),
-
+  getAdminpage: () =>
+    requests.get("api/v1/admin/dashboard"),
 }
 
 
