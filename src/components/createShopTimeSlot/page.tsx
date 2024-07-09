@@ -50,8 +50,11 @@ export default function CreateShopTimeSlot({ refetchTimes }: { refetchTimes: () 
         if (!timeSlotData.totalSlot || parseInt(timeSlotData.totalSlot) <= 0) {
             errors.push('Slot tối đa phải lớn hơn 0');
         }
-        if (!timeSlotData.description || timeSlotData.description.length > 100) {
-            errors.push('Mô tả không được để trống và không quá 100 ký tự');
+        if (!timeSlotData.description) {
+            errors.push('Mô tả không được để trống');
+        }
+        if (timeSlotData.description.length > 100) {
+            errors.push('Mô tả không quá 100 ký tự');
         }
 
         return errors;
