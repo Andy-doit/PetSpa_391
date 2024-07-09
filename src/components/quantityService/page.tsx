@@ -1,6 +1,6 @@
 import { fetchShopInforPagination, fetchShopPagePagination } from "@/lib/redux/slice/shopSlice";
 import { useAppDispatch } from "@/lib/redux/store";
-import { shopInfor, shopPage } from "@/models/shopModel";
+import { shopInfor, ShopPage } from "@/models/shopModel";
 import getAccessAndRefreshCookie from "@/utilities/authUtils/getCookieForValidation";
 import { Card, CardBody } from "@nextui-org/react";
 import React, { useEffect, useState } from "react";
@@ -10,7 +10,7 @@ import Cookies from 'js-cookie';
 
 
 export const QuantityService = () => {
-    const [items, setItems] = useState<shopPage | null>(null);
+    const [items, setItems] = useState<ShopPage | null>(null);
     const dispatch = useAppDispatch();
     const [userId, setUserId] = useState<string>('');
     const [loading, setLoading] = useState(true);
