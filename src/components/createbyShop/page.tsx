@@ -44,8 +44,8 @@ export default function CreateShop({ userId, onCreate }: { userId: string, onCre
     const validateInput = () => {
         const errors = [];
 
-        if (!shopData.shopName || shopData.shopName.length > 20 || shopData.shopName.length < 1) {
-            errors.push('Tên shop không được để trống và không quá 20 ký tự và phải lớn hơn 1 ký tự');
+        if (!shopData.shopName || shopData.shopName.length > 30 || shopData.shopName.length < 1) {
+            errors.push('Tên shop không được để trống và không quá 30 ký tự và phải lớn hơn 1 ký tự');
         }
         if (!shopData.shopTitle || shopData.shopTitle.length > 100) {
             errors.push('Tiêu đề không được để trống và không quá 100 ký tự');
