@@ -81,6 +81,7 @@ const ShopOnwer = {
   deleteAllIn4Shop: (slug: string) =>
     requests.del(`api/v1/shop/${slug}`),
 
+
 }
 
 
@@ -124,8 +125,11 @@ const User = {
     requests.del(`api/v1/nomination/${slug}`),
   getAllNomination: (slug: string) =>
     requests.get(`api/v1/nomination/all/${slug}`),
+  getNominationOfUser: (slug: string) =>
+    requests.get(`api/v1/nomination/${slug}`),
   completeBooking: (input: BookingComplete) =>
     requests.post("api/v1/booking/auth/complete", input),
+
 }
 
 //Admin

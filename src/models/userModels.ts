@@ -224,6 +224,14 @@ export interface createNomiationInput {
 export interface AllNominationOfShop {
     id: number,
     userName: string,
+    userId: number,
+    nominationType: string,
+}
+export interface CheckNomi {
+    id: number,
+    shopid: number,
+    userName: string,
+    userId: number,
     nominationType: string,
 }
 export interface AllFeedbackOfServiceResponse {
