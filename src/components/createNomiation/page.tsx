@@ -8,13 +8,13 @@ import getAccessAndRefreshCookie from "@/utilities/authUtils/getCookieForValidat
 import { createNomination } from "@/lib/redux/slice/userSlice";
 
 export default function CreateNomiation({ shopData, refreshData }: { shopData: string, refreshData: () => void }) {
-    const { isOpen, onOpen, onClose } = useDisclosure(); 
+    const { isOpen, onOpen, onClose } = useDisclosure();
     const [validationErrors, setValidationErrors] = useState<string[]>([]);
     const [nominationData, setNominationData] = useState<createNomiationInput>({
         shopId: parseInt(shopData),
         nominationType: '',
     });
-    
+
     const resetForm = () => {
         setNominationData({
             shopId: parseInt(shopData),

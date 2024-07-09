@@ -4,13 +4,9 @@ import dynamic from "next/dynamic";
 import { QuantityFeedBack } from "@/components/quantityFeedBack/page";
 import { QuantityService } from "@/components/quantityService/page";
 import { QuantityBooking } from "@/components/quantityBooking/page";
+import { Steam } from "../../components/chartShopowner/page";
 
-const Chart = dynamic(
-    () => import("../../components/chartShopowner/page").then((mod) => mod.Steam),
-    {
-        ssr: false,
-    }
-);
+
 
 export default function Home() {
     return (
@@ -29,7 +25,8 @@ export default function Home() {
                     <div className="h-full flex flex-col gap-2">
                         <h3 className="text-xl font-semibold">Thống kê</h3>
                         <div className="w-full bg-default-50 shadow-lg rounded-2xl p-6 ">
-                            <Chart />
+
+                            <Steam />
                         </div>
                     </div>
                 </div>
