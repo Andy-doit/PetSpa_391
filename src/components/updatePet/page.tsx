@@ -87,20 +87,20 @@ export default function UpdatePet({ params, refetchPets }: { params: allPetPagin
     const validateInput = () => {
         const errors = [];
 
-        if (!petData.petName || petData.petName.length > 20) {
-            errors.push('Tên thú cưng không được để trống và không quá 20 ký tự');
+        if (!petData.petName || petData.petName.length > 30) {
+            errors.push('Tên thú cưng không được để trống và không quá 30 ký tự');
         }
-        if (!petData.petType || petData.petType.length > 20) {
-            errors.push('Loại thú cưng không được để trống và không quá 20 ký tự');
+        if (!petData.petType) {
+            errors.push('Loại thú cưng không được để trống ');
         }
-        if (isNaN(petData.petAge) || petData.petAge <= 0 || petData.petAge > 20) {
-            errors.push('Tuổi thú cưng phải là số và không được quá 20');
+        if (isNaN(petData.petAge) || petData.petAge <= 0 || petData.petAge > 100) {
+            errors.push('Tuổi thú cưng phải là số và không được quá 100');
         }
-        if (!petData.petGender || petData.petGender.length > 20) {
-            errors.push('Giới tính thú cưng không được để trống và không quá 20 ký tự');
+        if (!petData.petGender) {
+            errors.push('Giới tính thú cưng không được để trống ');
         }
-        if (isNaN(petData.petWeight) || petData.petWeight <= 0 || petData.petWeight > 20) {
-            errors.push('Cân nặng thú cưng phải là số và không được quá 20');
+        if (isNaN(petData.petWeight) || petData.petWeight <= 0 || petData.petWeight > 200) {
+            errors.push('Cân nặng thú cưng phải là số và không được quá 200');
         }
 
         return errors;

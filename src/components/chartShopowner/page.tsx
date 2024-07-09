@@ -1,84 +1,107 @@
-import React from "react";
+import React, { useState, useEffect } from 'react'
 import Chart, { Props } from "react-apexcharts";
+import {
+    Chart as ChartJS,
 
-const state: Props["series"] = [
+    BarElement,
+    CategoryScale,
+    LinearScale,
 
-    {
-        name: "Series2",
-        data: [11, 32, 45, 32, 34, 52, 41, 58, 89, 125, 1, 12],
-    },
-];
+} from 'chart.js';
 
-const options: Props["options"] = {
-    chart: {
-        type: "area",
-        animations: {
-            easing: "linear",
-            speed: 300,
-        },
-        sparkline: {
-            enabled: false,
-        },
-        brush: {
-            enabled: false,
-        },
-        id: "basic-bar",
-        foreColor: "hsl(var(--nextui-default-800))",
-        stacked: true,
-        toolbar: {
-            show: false,
-        },
-    },
+import { Bar } from 'react-chartjs-2';
+import { useAppDispatch } from '@/lib/redux/store';
+import getAccessAndRefreshCookie from '@/utilities/authUtils/getCookieForValidation';
+import { fetchShopPagePagination } from '@/lib/redux/slice/shopSlice';
+import { ShopPage } from '@/models/shopModel';
+import Cookies from 'js-cookie';
+ChartJS.register(
+    BarElement,
+    CategoryScale,
+    LinearScale
+);
 
-    xaxis: {
-        categories: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
-        labels: {
-            // show: false,
-            style: {
-                colors: "hsl(var(--nextui-default-800))",
-            },
-        },
-        axisBorder: {
-            color: "hsl(var(--nextui-nextui-default-200))",
-        },
-        axisTicks: {
-            color: "hsl(var(--nextui-nextui-default-200))",
-        },
-    },
-    yaxis: {
-        labels: {
-            style: {
-                // hsl(var(--nextui-content1-foreground))
-                colors: "hsl(var(--nextui-default-800))",
-            },
-        },
-    },
-    tooltip: {
-        enabled: false,
-    },
-    grid: {
-        show: true,
-        borderColor: "hsl(var(--nextui-default-200))",
-        strokeDashArray: 0,
-        position: "back",
-    },
-    stroke: {
-        curve: "smooth",
-        fill: {
-            colors: ["red"],
-        },
-    },
-    // @ts-ignore
-    markers: false,
-};
 
 export const Steam = () => {
+
+    const [items, setItems] = useState<ShopPage | null>(null);
+    const dispatch = useAppDispatch();
+    const [loading, setLoading] = useState(true);
+
+    const [userId, setUserId] = useState<string>('');
+    const fetchData = async () => {
+        setLoading(true);
+        try {
+            const { uid } = await getAccessAndRefreshCookie();
+            if (uid) {
+                setUserId(uid);
+            }
+
+            const response = await dispatch(fetchShopPagePagination());
+            if (response.payload) {
+                setItems(response.payload);
+                Cookies.set('shopId', response.payload.id);
+            }
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        } finally {
+            setLoading(false);
+        }
+    };
+    useEffect(() => {
+        fetchData();
+    }, [dispatch]);
+
+    console.log(' Booking', items?.monthlyBookings)
+    var data = {
+        labels: items?.monthlyBookings?.map(x => x.month),
+        datasets: [{
+            label: `${items?.monthlyBookings} Booking`,
+            data: items?.monthlyBookings?.map(y => y.bookings),
+            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+            borderColor: 'rgba(75, 192, 192, 1)',
+            borderWidth: 1
+        }]
+    };
+    const options = {
+        maintainAspectRatio: false,
+        scales: {
+            x: {
+                title: {
+                    display: true,
+                    text: 'Month',
+                },
+            },
+            y: {
+                title: {
+                    display: true,
+                    text: 'Bookings',
+                },
+                beginAtZero: true,
+            },
+        },
+        plugins: {
+            legend: {
+                display: true,
+                labels: {
+                    font: {
+                        size: 5,
+                    },
+                },
+            },
+        },
+    };
+
     return (
         <>
-            <div className="w-full z-20">
-                <div id="chart">
-                    <Chart options={options} series={state} type="area" height={425} />
-                </div>
+
+
+            <div>
+                {loading ? (
+                    <p>Loading...</p>
+                ) : (
+                    <Bar data={data} height={400} options={options} />
+                )}
             </div>
         </>
     );
