@@ -37,25 +37,35 @@ export default function AddShop({ refetchShops }: { refetchShops: () => void }) 
     const validateInput = () => {
         const errors = [];
 
-        if (!shopData.firstName || shopData.firstName.length > 30 || shopData.firstName.length < 1 || /[^a-zA-Z\s]/.test(shopData.firstName)) {
-            errors.push('Tên không được để trống, không quá 30 ký tự  và phải lớn hơn 1 ký tự, và không chứa ký tự đặc biệt');
+        if (!shopData.firstName) {
+            errors.push('Tên của shop không được để trống');
         }
-        if (!shopData.lastName || shopData.lastName.length > 30 || /[^a-zA-Z\s]/.test(shopData.lastName)) {
-            errors.push('Họ không được để trống, không quá 30 ký tự, và không chứa ký tự đặc biệt');
+        if (shopData.firstName.length > 30 || shopData.firstName.length < 2) {
+            errors.push('Tên của shop không quá 30 ký tự  và phải lớn hơn 2 ký tự');
         }
-
+        if (!shopData.lastName) {
+            errors.push('Họ không được để trống');
+        }
+        if (shopData.lastName.length > 30 || shopData.lastName.length < 2) {
+            errors.push('Họ không quá 30 ký tự và phải lớn hơn 2 ký tự');
+        }
         if (!shopData.email || !/\S+@\S+\.\S+/.test(shopData.email)) {
             errors.push('Email không hợp lệ');
         }
 
-        if (!shopData.username || shopData.username.length > 20) {
-            errors.push('Tên người dùng không được để trống và không quá 20 ký tự');
+        if (!shopData.username) {
+            errors.push('Tài khoản không được để trống');
+        }
+        if (shopData.username.length > 20) {
+            errors.push('Tài khoản không quá 20 ký tự');
         }
 
-        if (!shopData.password || shopData.password.length < 6 || shopData.password.length > 20) {
+        if (!shopData.password) {
+            errors.push('Mật khẩu không được để trống');
+        }
+        if (shopData.password.length < 6 || shopData.password.length > 20) {
             errors.push('Mật khẩu phải có ít nhất 6 ký tự và không vượt quá 20 ký tự');
         }
-
 
         if (!shopData.phone || !/^\d{10}$/.test(shopData.phone)) {
             errors.push('Số điện thoại phải đủ 10 số');
@@ -168,11 +178,11 @@ export default function AddShop({ refetchShops }: { refetchShops: () => void }) 
                                     type="text"
                                     size='sm'
                                     onChange={(e) => handleInputChange('username', e.target.value)}
-                                    label="Tên người dùng"
+                                    label="Tên tài khoản"
                                     value={shopData.username}
-                                    isInvalid={!!validationErrors.find(err => err.includes('Tên'))}
-                                    color={validationErrors.find(err => err.includes('Người')) ? "danger" : "default"}
-                                    errorMessage={validationErrors.find(err => err.includes('Tên Người'))}
+                                    isInvalid={!!validationErrors.find(err => err.includes('Tài'))}
+                                    color={validationErrors.find(err => err.includes('Tài')) ? "danger" : "default"}
+                                    errorMessage={validationErrors.find(err => err.includes('Tài'))}
                                     className="w-full"
                                 />
                             </div>

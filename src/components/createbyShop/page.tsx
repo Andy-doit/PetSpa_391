@@ -44,17 +44,29 @@ export default function CreateShop({ userId, onCreate }: { userId: string, onCre
     const validateInput = () => {
         const errors = [];
 
-        if (!shopData.shopName || shopData.shopName.length > 30 || shopData.shopName.length < 1) {
-            errors.push('Tên shop không được để trống và không quá 30 ký tự và phải lớn hơn 1 ký tự');
+        if (!shopData.shopName) {
+            errors.push('Tên shop không được để trống');
         }
-        if (!shopData.shopTitle || shopData.shopTitle.length > 100) {
-            errors.push('Tiêu đề không được để trống và không quá 100 ký tự');
+        if (shopData.shopName.length > 30 || shopData.shopName.length < 2) {
+            errors.push('Tên shop không quá 30 ký tự và phải lớn hơn 2 ký tự');
         }
-        if (!shopData.shopAddress || shopData.shopAddress.length > 100) {
-            errors.push('Địa chỉ không được để trống và không quá 100 ký tự');
+        if (!shopData.shopTitle) {
+            errors.push('Tiêu đề không được để trống');
         }
-        if (!shopData.area || shopData.area.length > 50) {
-            errors.push('Khu vực không được để trống và không quá 50 ký tự');
+        if (shopData.shopTitle.length > 100 || shopData.shopTitle.length < 10) {
+            errors.push('Tiêu đề không quá 100 ký tự và lớn hơn 10 kí tự');
+        }
+        if (!shopData.shopAddress) {
+            errors.push('Địa chỉ không được để trống');
+        }
+        if (shopData.shopAddress.length > 100 || shopData.shopAddress.length < 5) {
+            errors.push('Địa chỉ không quá 100 ký tự và lớn hơn 5 kí tự');
+        }
+        if (!shopData.area) {
+            errors.push('Khu vực không được để trống');
+        }
+        if (shopData.area.length < 5 || shopData.area.length > 50) {
+            errors.push('Khu vực không quá 50 ký tự và lớn hơn 5 kí tự');
         }
         if (!shopData.shopEmail || !/^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/.test(shopData.shopEmail)) {
             errors.push('Email không hợp lệ');

@@ -60,27 +60,35 @@ export default function ModalUpdateServiceProps({ params, refetchPets }: { param
     const validateInput = () => {
         const errors = [];
 
-        if (!serviceData.serviceName || serviceData.serviceName.length > 50) {
-            errors.push('Tên dịch vụ không được để trống, không quá 50 ký tự ');
+        if (!serviceData.serviceName) {
+            errors.push('Tên dịch vụ không được để trống');
+        }
+        if (serviceData.serviceName.length < 2 || serviceData.serviceName.length > 50) {
+            errors.push('Tên dịch vụ phải lớn hơn 2 ký tự, không quá 50 ký tự ');
         }
         if (!serviceData.serviceCategoryId || serviceData.serviceCategoryId <= 0) {
             errors.push('Loại category phải chọn');
         }
-        if (!serviceData.serviceDescription || serviceData.serviceDescription.length <= 0 || serviceData.serviceDescription.length > 200) {
-            errors.push('Mô tả không được để trống và không quá 200 ký tự');
-        }
         if (isNaN(serviceData.price) || serviceData.price <= 0) {
             errors.push('Giá phải là số và phải lớn hơn 0');
         }
-        if (isNaN(serviceData.minWeight) || serviceData.minWeight <= 0) {
-            errors.push('Cân nặng tối thiểu phải là số và lớn hơn 0');
+        if (isNaN(serviceData.minWeight) || !serviceData.minWeight) {
+            errors.push('Cân nặng nhỏ nhất không được để trống và phải là số');
         }
-        if (isNaN(serviceData.maxWeight) || serviceData.maxWeight <= serviceData.minWeight || serviceData.maxWeight > 200) {
-            errors.push('Cân nặng tối đa phải là số, lớn hơn cân nặng tối thiểu và nhỏ hơn hoặc bằng 200');
+        if (!serviceData.maxWeight || isNaN(serviceData.maxWeight)) {
+            errors.push('Cân nặng lớn nhất không được để trống và phải là số');
+        }
+        if (serviceData.minWeight <= 0 || serviceData.minWeight >= 200) {
+            errors.push('Cân nặng nhỏ nhất phải lớn hơn 0 và phải bé hơn 200');
         }
 
+        if (serviceData.maxWeight <= serviceData.minWeight || serviceData.maxWeight > 200) {
+            errors.push('Cân nặng lớn nhất lớn hơn cân nặng nhỏ nhất và nhỏ hơn hoặc bằng 200');
+        }
         return errors;
     };
+
+
 
     // console.log(serviceData)
     useEffect(() => {
@@ -204,7 +212,7 @@ export default function ModalUpdateServiceProps({ params, refetchPets }: { param
                                                 className="w-[300px]"
                                                 isInvalid={!!validationErrors.find(err => err.includes('Cân'))}
                                                 color={validationErrors.find(err => err.includes('Cân')) ? "danger" : "default"}
-                                                errorMessage={validationErrors.find(err => err.includes('Cân'))}
+                                                errorMessage={validationErrors.find(err => err.includes('Cân nặng nhỏ nhất'))}
                                                 value={serviceData.minWeight.toString()}
                                                 onChange={(e) => handleInputChange('minWeight', e.target.value)}
                                                 label="Cân nặng nhỏ nhất"
@@ -216,9 +224,9 @@ export default function ModalUpdateServiceProps({ params, refetchPets }: { param
                                                 className="w-[300px]"
                                                 onChange={(e) => handleInputChange('maxWeight', e.target.value)}
                                                 label="Cân nặng lớn nhất"
-                                                isInvalid={!!validationErrors.find(err => err.includes('Cân'))}
-                                                color={validationErrors.find(err => err.includes('Cân')) ? "danger" : "default"}
-                                                errorMessage={validationErrors.find(err => err.includes('Cân'))}
+                                                isInvalid={!!validationErrors.find(err => err.includes('Cân nặng lớn nhất'))}
+                                                color={validationErrors.find(err => err.includes('Cân nặng lớn nhất')) ? "danger" : "default"}
+                                                errorMessage={validationErrors.find(err => err.includes('Cân nặng lớn nhất'))}
                                                 value={serviceData.maxWeight.toString()}
                                             />
 
