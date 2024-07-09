@@ -7,6 +7,7 @@ import React, { useEffect, useState } from "react";
 import { MdRateReview } from "react-icons/md";
 import Cookies from 'js-cookie';
 import { AdminPage } from "@/models/adminModel";
+import { fetchAdminPagePagination } from "@/lib/redux/slice/adminSlice";
 
 export const QuantityShop = () => {
     const [items, setItems] = useState<AdminPage | null>(null);
@@ -21,7 +22,7 @@ export const QuantityShop = () => {
                 setUserId(uid);
             }
 
-            const response = await dispatch(fetchShopPagePagination());
+            const response = await dispatch(fetchAdminPagePagination());
             if (response.payload) {
                 setItems(response.payload);
                 Cookies.set('shopId', response.payload.id);

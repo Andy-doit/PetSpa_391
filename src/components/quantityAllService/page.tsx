@@ -7,6 +7,7 @@ import { BiHome } from "react-icons/bi";
 import { MdHomeRepairService } from "react-icons/md";
 import Cookies from 'js-cookie';
 import { AdminPage } from "@/models/adminModel";
+import { fetchAdminPagePagination } from "@/lib/redux/slice/adminSlice";
 
 
 export const QuantityAllService = () => {
@@ -22,7 +23,7 @@ export const QuantityAllService = () => {
                 setUserId(uid);
             }
 
-            const response = await dispatch(fetchShopPagePagination());
+            const response = await dispatch(fetchAdminPagePagination());
             if (response.payload) {
                 setItems(response.payload);
                 Cookies.set('shopId', response.payload.id);
