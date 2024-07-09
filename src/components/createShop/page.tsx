@@ -56,8 +56,8 @@ export default function AddShop({ refetchShops }: { refetchShops: () => void }) 
         if (!shopData.username) {
             errors.push('Tài khoản không được để trống');
         }
-        if (shopData.username.length > 20) {
-            errors.push('Tài khoản không quá 20 ký tự');
+        if (shopData.username.length > 20 || shopData.username.length < 3) {
+            errors.push('Tài khoản không quá 20 ký tự và lớn hơn 3 ký tự');
         }
 
         if (!shopData.password) {
