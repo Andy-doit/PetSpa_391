@@ -124,7 +124,24 @@ export const fetchOrderBooking = createAsyncThunk(
     async ({ slug }: { slug: string }) => {
         try {
             const response = await agent.User.getorderBooking(slug);
-            // console.log(response)
+
+            return response;
+        } catch (error) {
+            if (error instanceof AxiosError) {
+                return {
+                    message: error.response?.data.error.message,
+                    status: error.response?.status,
+                };
+            }
+        }
+    },
+);
+export const getNominationUser = createAsyncThunk(
+    'id/getNominationUser',
+    async ({ slug }: { slug: string }) => {
+        try {
+            const response = await agent.User.getNominationOfUser(slug);
+
             return response;
         } catch (error) {
             if (error instanceof AxiosError) {

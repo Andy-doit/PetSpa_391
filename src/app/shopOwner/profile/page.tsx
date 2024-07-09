@@ -38,7 +38,6 @@ export default function Profile() {
             const response = await dispatch(fetchShopInforPagination());
             if (response.payload) {
                 setItems(response.payload);
-                Cookies.set('shopId', response.payload.id);
             }
         } catch (error) {
             console.error('Error fetching data:', error);
@@ -158,7 +157,7 @@ export default function Profile() {
                 </>
             ) : (
                 <div className="flex justify-center items-center">
-                    <CreateShop userId={userId} onCreate={fetchData} />
+                    Bạn chưa đăng ký thông tin shop, hãy quay lại trang chủ để đăng ký thông tin
                 </div>
             )}
         </div>

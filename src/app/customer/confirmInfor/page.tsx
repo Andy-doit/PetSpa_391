@@ -69,32 +69,20 @@ export default function Confirm() {
 
             if (userId) {
                 await dispatch(createBooking({ bookingData })).unwrap();
-                sessionStorage.removeItem('bookingValues');
-                sessionStorage.removeItem('service');
-
+                sessionStorage.clear();
                 toast.success("Đặt lịch thành công! Bạn sẽ được chuyển về trang chủ trong giây lát...", {
                     onClose: () => {
                         setTimeout(() => {
-                            router.push('/');
+                            router.push('/customer/orderHistory');
                         }, 1000);
                     },
                     autoClose: 1000,
                 });
             }
             confetti({
-                particleCount: 2,
-                angle: 60,
-                spread: 55,
-                origin: { x: 0 },
-                colors: ['#bb0000', '#ffffff'],
-
-            });
-            confetti({
-                particleCount: 2,
-                angle: 120,
-                spread: 55,
-                origin: { x: 1 },
-                colors: ['#bb0000', '#ffffff']
+                particleCount: 100,
+                spread: 70,
+                origin: { y: 0.6 }
             });
 
         } catch (error) {
