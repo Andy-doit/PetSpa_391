@@ -71,6 +71,24 @@ export const fetchAllCusPagination = createAsyncThunk(
         }
     },
 );
+export const fetchAdminPagePagination = createAsyncThunk(
+    'shopOnwer/ShopInfor',
+    async () => {
+        try {
+            const response = await agent.Admin.getAdminpage();
+            console.log(response)
+            return response;
+
+        } catch (error) {
+            if (error instanceof AxiosError) {
+                return {
+                    message: error.response?.data.error.message,
+                    status: error.response?.status,
+                };
+            }
+        }
+    },
+);
 export const fetchShopInfor = createAsyncThunk(
     'admin/fetchShopInfor',
     async ({ slug }: { slug: string }) => {
