@@ -27,8 +27,23 @@ export interface allCusPaginationData {
     profileImageUrl: string,
     coverImageUrl: string,
     birthday: string,
-    status: boolean
+    status: boolean,
+    totalAccount: number
 
+}
+export interface AdminPage {
+    id: string;
+    totalServices: number;
+    totalShop: number;
+    totalCustomer: number;
+    totalBookings: number;
+    totalPets: number;
+    monthlyBookings: MonthlyBookingDto[];
+}
+
+export interface MonthlyBookingDto {
+    month: string;
+    bookings: number;
 }
 export interface allShopPaginationData {
     id: string,
@@ -36,7 +51,7 @@ export interface allShopPaginationData {
     username: string,
     phone: string,
     status: boolean
-
+    totalAccount: number
 }
 export interface ShopInfor {
     slug: string | undefined | null,

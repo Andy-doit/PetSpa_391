@@ -87,22 +87,30 @@ export default function UpdatePet({ params, refetchPets }: { params: allPetPagin
     const validateInput = () => {
         const errors = [];
 
-        if (!petData.petName || petData.petName.length > 30) {
-            errors.push('Tên thú cưng không được để trống và không quá 30 ký tự');
+        if (!petData.petName) {
+            errors.push('Tên thú cưng không được để trống');
+        }
+        if (petData.petName.length > 30 || petData.petName.length < 2) {
+            errors.push('Tên thú cưng không quá 30 ký tự và lớn hơn 2');
         }
         if (!petData.petType) {
             errors.push('Loại thú cưng không được để trống ');
         }
-        if (isNaN(petData.petAge) || petData.petAge <= 0 || petData.petAge > 100) {
-            errors.push('Tuổi thú cưng phải là số và không được quá 100');
+        if (isNaN(petData.petAge)) {
+            errors.push('Tuổi thú cưng phải là số và không được để trống ');
+        }
+        if (petData.petAge <= 0 || petData.petAge > 100) {
+            errors.push('Tuổi thú cưng  không được quá 100  và lớn hơn 0');
         }
         if (!petData.petGender) {
             errors.push('Giới tính thú cưng không được để trống ');
         }
-        if (isNaN(petData.petWeight) || petData.petWeight <= 0 || petData.petWeight > 200) {
-            errors.push('Cân nặng thú cưng phải là số và không được quá 200');
+        if (isNaN(petData.petWeight)) {
+            errors.push('Cân nặng thú cưng phải là số và không được trống');
         }
-
+        if (petData.petWeight <= 0 || petData.petWeight > 200) {
+            errors.push('Cân nặng thú cưng không được quá 200  và lớn hơn 0');
+        }
         return errors;
     };
 

@@ -7,6 +7,8 @@ import { allShopPaginationData } from "@/models/adminModel";
 import { fetchAllShopPagination } from "@/lib/redux/slice/adminSlice";
 import AccountDetail from "@/components/accountDetail/page";
 import DeleteShop from "@/components/deleteAccount/page";
+import { QuantityCustomer } from "@/components/quantityCustomer/page";
+import { QuantityShop } from "@/components/quantityShop/page";
 
 export default function ManageAccount() {
     const dispatch = useAppDispatch();
@@ -32,6 +34,11 @@ export default function ManageAccount() {
     return (
         <div className="lg:px-6 max-w-[95rem] mx-auto w-full flex flex-col gap-4">
             <h3 className="text-xl font-semibold">Danh sách tài khoản</h3>
+            {/* <div className="mb-5 mt-5 flex justify-between items-center">
+                <QuantityShop />
+            </div> */}
+
+
             <div className="flex justify-between flex-wrap gap-4 items-center">
                 <div className="flex items-center gap-3 flex-wrap md:flex-nowrap">
                     <Input
@@ -55,38 +62,48 @@ export default function ManageAccount() {
                     shop.length === 0 ? (
                         <div>Không có shop nào</div>
                     ) : (
-                        <Table aria-label="Example static collection table">
-                            <TableHeader>
-                                <TableColumn>Tên Shop</TableColumn>
-                                <TableColumn>Email</TableColumn>
-                                <TableColumn>Số điện thoại</TableColumn>
-                                <TableColumn>Status</TableColumn>
-                                <TableColumn>Hành động</TableColumn>
-                            </TableHeader>
-                            <TableBody>
-                                {shop.map((sp) => (
-                                    <TableRow key={sp.id}>
-                                        <TableCell>{sp.username}</TableCell>
-                                        <TableCell>{sp.email}</TableCell>
-                                        <TableCell>{sp.phone}</TableCell>
-                                        <TableCell>
-                                            <span
-                                                className={`px-2 py-1 rounded-full text-xs text-white ${sp.status ? 'bg-red-500' : 'bg-green-500'}`}
-                                                style={{ opacity: 0.8 }}
-                                            >
-                                                {sp.status ? 'Paused' : 'Active'}
-                                            </span>
-                                        </TableCell>
-                                        <TableCell>
-                                            <div className="flex items-center gap-4">
-                                                <AccountDetail params={sp.id} />
-                                                <DeleteShop params={sp.id} refetchShops={fetchServices} />
-                                            </div>
-                                        </TableCell>
-                                    </TableRow>
-                                ))}
-                            </TableBody>
-                        </Table>
+                        <>
+                            <div className="p-4 mb-4 bg-gray-100 rounded-md">
+                                <span className="font-semibold">Tổng số tài khoản: </span>
+                                <span>{ }</span>
+                            </div>
+
+                            <Table aria-label="Example static collection table" >
+                                <TableHeader>
+                                    <TableColumn>Tên Shop</TableColumn>
+                                    <TableColumn>Email</TableColumn>
+                                    <TableColumn>Số điện thoại</TableColumn>
+                                    <TableColumn>Status</TableColumn>
+                                    <TableColumn>Hành động</TableColumn>
+                                </TableHeader>
+                                <TableBody>
+                                    {shop.map((sp) => (
+                                        <TableRow key={sp.id}>
+                                            <TableCell>{sp.username}</TableCell>
+                                            <TableCell>{sp.email}</TableCell>
+                                            <TableCell>{sp.phone}</TableCell>
+                                            <TableCell>
+                                                <span
+                                                    className={`px-2 py-1 rounded-full text-xs text-white ${sp.status ? 'bg-red-500' : 'bg-green-500'}`}
+                                                    style={{ opacity: 0.8 }}
+                                                >
+                                                    {sp.status ? 'Paused' : 'Active'}
+                                                </span>
+                                            </TableCell>
+                                            <TableCell>
+                                                <div className="flex items-center gap-4">
+                                                    <AccountDetail params={sp.id} />
+                                                    <DeleteShop params={sp.id} refetchShops={fetchServices} />
+                                                </div>
+                                            </TableCell>
+                                        </TableRow>
+                                    ))}
+                                </TableBody>
+                            </Table>
+
+
+
+                        </>
                     )
                 )}
             </div>
