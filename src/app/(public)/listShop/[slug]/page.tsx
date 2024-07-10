@@ -137,15 +137,15 @@ export default function ProfileShopOwner({ params }: { params: { slug: string } 
                                 </div>
                             </CardBody>
                             <Divider />
-                            {IdUser !== null && (
-                                <CardFooter className="flex justify-center text-center">
-                                    {checkNomi ? (
-                                        <p className="text-xl text-orange-600 font-medium">Bạn đã đánh giá shop này</p>
-                                    ) : (
-                                        <CreateNomiation shopData={shopIn4?.id} refreshData={fetchShopData} />
-                                    )}
-                                </CardFooter>
-                            )}
+
+                            <CardFooter className="flex justify-center text-center">
+                                {checkNomi ? (
+                                    <p className="text-xl text-orange-600 font-medium">Bạn đã đánh giá shop này</p>
+                                ) : (
+                                    <CreateNomiation shopData={shopIn4?.id} refreshData={fetchShopData} />
+                                )}
+                            </CardFooter>
+
                         </Card>
                     </div>
                 )}
