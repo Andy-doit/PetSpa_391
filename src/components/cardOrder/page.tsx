@@ -27,6 +27,8 @@ export default function CardOrder() {
                 return 'Đã Huỷ';
             case 'SCHEDULED':
                 return 'Đã đặt lịch';
+            case 'NEED_CONFIRM':
+                return 'Cần xác nhận';
             default:
                 return 'Không xác định';
         }
@@ -39,6 +41,8 @@ export default function CardOrder() {
                 return 'danger';
             case 'SCHEDULED':
                 return 'warning';
+            case 'NEED_CONFIRM':
+                return 'secondary';
             default:
                 return 'default';
         }

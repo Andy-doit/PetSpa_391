@@ -141,12 +141,10 @@ export default function CreateShopTimeSlot({ refetchTimes }: { refetchTimes: () 
                                     errorMessage={validationErrors.find(err => err.includes('Khung giờ'))}
                                     onChange={(e) => handleInputChange('timeSlotId', e.target.value)}
                                 >
-                                    <SelectItem key="1" value="1">8:00 - 9:30</SelectItem>
-                                    <SelectItem key="2" value="2">9:30 - 11:00</SelectItem>
-                                    <SelectItem key="3" value="3">11:00 - 12:30</SelectItem>
-                                    <SelectItem key="4" value="4">12:30 - 14:00</SelectItem>
-                                    <SelectItem key="5" value="5">14:00 - 15:30</SelectItem>
-                                    <SelectItem key="6" value="6">15:30 - 17:00</SelectItem>
+                                    <SelectItem key="1" value="1">09:00 - 10:30</SelectItem>
+                                    <SelectItem key="2" value="2">13:00 - 14:00</SelectItem>
+                                    <SelectItem key="3" value="3">17:00 - 18:00</SelectItem>
+
                                 </Select>
                                 <Input
                                     onChange={(e) => handleInputChange('totalSlot', e.target.value)}
