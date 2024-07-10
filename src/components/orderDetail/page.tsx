@@ -118,6 +118,7 @@ export default function OrderDetail({ params }: { params: string }) {
                                         <div className="flex justify-end items-end">
                                             {booking.status === 'SCHEDULED' && <CancelBooking params={params} />}
                                             {booking.status === 'NEED_CONFIRM' && <ConfirmBooking params={booking.id} />}
+                                            {booking.status === 'NEED_CONFIRM' &&  <CancelBooking params={params} />}
 
                                             {booking.status === 'COMPLETED' && <CreateFeedback shopData={booking} />}
                                         </div>

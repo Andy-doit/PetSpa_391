@@ -2,8 +2,8 @@
 import { Spinner, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow } from "@nextui-org/react";
 import React, { useEffect, useState } from "react";
 import { useAppDispatch } from "@/lib/redux/store";
-import { allCusPaginationData } from "@/models/adminModel";
-import { fetchAllCusPagination } from "@/lib/redux/slice/adminSlice";
+import { allCusPaginationData, allTotalPaginationData } from "@/models/adminModel";
+import { fetchAllCusPagination, fetchTotalCusPagination } from "@/lib/redux/slice/adminSlice";
 import AccountCusDetail from "@/components/AccountCusDetail/page";
 import DeleteCus from "@/components/deleteAccountCus/page";
 import { QuantityCustomer } from "@/components/quantityCustomer/page";
@@ -12,12 +12,15 @@ export default function ManageAccountCus() {
     const dispatch = useAppDispatch();
     const [loading, setLoading] = useState(true);
     const [customers, setCustomers] = useState<allCusPaginationData[]>([]);
+    const [total, setTotal] = useState<allTotalPaginationData | any>();
 
     const fetchCustomers = async () => {
         setLoading(true);
         try {
             const response = await dispatch(fetchAllCusPagination());
             setCustomers(response.payload || []);
+            const response1 = await dispatch(fetchTotalCusPagination());
+            setTotal(response1.payload || []);
         } catch (error) {
             console.error('Error fetching customers:', error);
         } finally {
@@ -27,6 +30,7 @@ export default function ManageAccountCus() {
 
     useEffect(() => {
         fetchCustomers();
+  
     }, [dispatch]);
 
     return (
@@ -47,7 +51,7 @@ export default function ManageAccountCus() {
                         <>
                             <div className="p-4 mb-4 bg-gray-100 rounded-md">
                                 <span className="font-semibold">Tổng số tài khoản: </span>
-                                <span>{ }</span>
+                                <span>{total.totalAccount}</span>
                             </div>
                             <Table aria-label="Example static collection table">
                                 <TableHeader>

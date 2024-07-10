@@ -31,6 +31,11 @@ export interface allCusPaginationData {
     totalAccount: number
 
 }
+export interface allTotalPaginationData {
+    id: string,
+    totalAccount: number
+
+}
 export interface AdminPage {
     id: string;
     totalServices: number;

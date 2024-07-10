@@ -71,6 +71,40 @@ export const fetchAllCusPagination = createAsyncThunk(
         }
     },
 );
+export const fetchTotalCusPagination = createAsyncThunk(
+    'admin/fetchAllCusPagination',
+    async () => {
+        try {
+            const response = await agent.Admin.getTotalCus();
+            return response;
+
+        } catch (error) {
+            if (error instanceof AxiosError) {
+                return {
+                    message: error.response?.data.error.message,
+                    status: error.response?.status,
+                };
+            }
+        }
+    },
+);
+export const fetchTotalShopPagination = createAsyncThunk(
+    'admin/fetchAllCusPagination',
+    async () => {
+        try {
+            const response = await agent.Admin.getTotalShop();
+            return response;
+
+        } catch (error) {
+            if (error instanceof AxiosError) {
+                return {
+                    message: error.response?.data.error.message,
+                    status: error.response?.status,
+                };
+            }
+        }
+    },
+);
 export const fetchAdminPagePagination = createAsyncThunk(
     'shopOnwer/ShopInfor',
     async () => {

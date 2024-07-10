@@ -136,6 +136,10 @@ const User = {
 const Admin = {
   getAllShops: () =>
     requests.get("api/v1/admin/manageShopOwner/viewAll"),
+  getTotalShop: () =>
+    requests.get("api/v1/admin/manageCustomer/viewAll"),
+  getTotalCus: () =>
+    requests.get("api/v1/admin/manageCustomer/viewAll"),
   getAllCus: () =>
     requests.get("api/v1/admin/manageCustomer/viewAll"),
   getShopInfor: (slug: string) =>

@@ -92,7 +92,9 @@ export default function CancelBooking({ params }: { params: string }) {
     };
     return (
         <>
-            <Button radius="full" className="bg-gradient-to-tr from-pink-500 to-yellow-500 text-white shadow-lg" onPress={onOpen}>Huỷ dịch vụ </Button>
+            <Button className="bg-gradient-to-tr from-pink-500 to-red-500 text-white shadow-lg w-full gap-5" onPress={onOpen}>
+               Hủy dịch vụ
+            </Button>
             <Modal
                 backdrop="opaque"
                 isOpen={isOpen}
