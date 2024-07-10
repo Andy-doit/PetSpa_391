@@ -59,8 +59,8 @@ export default function ConfirmBooking({ params }: { params: string }) {
     };
 
     return (
-        <div>
-            <Button className="bg-gradient-to-tr from-pink-500 to-yellow-500 text-white shadow-lg w-full" onPress={onOpen}>
+        <div className=' mr-5'>
+            <Button className="bg-gradient-to-tr from-pink-500 to-yellow-500 text-white shadow-lg w-full gap-5 " onPress={onOpen}>
                 Xác nhận hoàn thành
             </Button>
 

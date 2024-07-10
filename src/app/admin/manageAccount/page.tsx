@@ -3,8 +3,8 @@ import { Input, Spinner, Table, TableBody, TableCell, TableColumn, TableHeader, 
 import React, { useEffect, useState } from "react";
 import AddShop from "@/components/createShop/page";
 import { useAppDispatch } from "@/lib/redux/store";
-import { allShopPaginationData } from "@/models/adminModel";
-import { fetchAllShopPagination } from "@/lib/redux/slice/adminSlice";
+import { allShopPaginationData, allTotalPaginationData } from "@/models/adminModel";
+import { fetchAllShopPagination, fetchTotalShopPagination } from "@/lib/redux/slice/adminSlice";
 import AccountDetail from "@/components/accountDetail/page";
 import DeleteShop from "@/components/deleteAccount/page";
 import { QuantityCustomer } from "@/components/quantityCustomer/page";
@@ -14,6 +14,7 @@ export default function ManageAccount() {
     const dispatch = useAppDispatch();
     const [loading, setLoading] = useState(true);
     const [shop, setShop] = useState<allShopPaginationData[]>([]);
+    const [total, setTotal] = useState<allTotalPaginationData | any>();
 
     useEffect(() => {
         fetchServices();
@@ -24,6 +25,8 @@ export default function ManageAccount() {
         try {
             const response = await dispatch(fetchAllShopPagination());
             setShop(response.payload || []);
+            const response1 = await dispatch(fetchTotalShopPagination());
+            setTotal(response1.payload || []);
         } catch (error) {
             console.error('Error fetching services:', error);
         } finally {
@@ -65,7 +68,7 @@ export default function ManageAccount() {
                         <>
                             <div className="p-4 mb-4 bg-gray-100 rounded-md">
                                 <span className="font-semibold">Tổng số tài khoản: </span>
-                                <span>{ }</span>
+                                <span>{total.totalAccount}</span>
                             </div>
 
                             <Table aria-label="Example static collection table" >
