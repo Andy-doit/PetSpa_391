@@ -61,8 +61,8 @@ export default function UpdateProfileShop({ params, onUpdate }: { params: shopIn
         if (!shopData.shopEmail || !/^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/.test(shopData.shopEmail)) {
             errors.push('Email không hợp lệ');
         }
-        if (!shopData.shopPhone || !/^\d{10}$/.test(shopData.shopPhone)) {
-            errors.push('Số điện thoại phải là số và có đúng 10 chữ số');
+        if (!shopData.shopPhone ||  !/^0\d{9}$/.test(shopData.shopPhone)) {
+            errors.push('Số điện thoại phải là số và có đúng 10 chữ số và bắt đầu bằng số 0');
         }
         if (!shopData.openTime) {
             errors.push('Giờ mở cửa không được để trống');

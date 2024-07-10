@@ -93,7 +93,7 @@ export default function CreateShopTimeSlot({ refetchTimes }: { refetchTimes: () 
         setIsLoading(true);
         try {
             await dispatch(createShopTimeSlot({ timeSlotData })).unwrap();
-            toast.success("Tạo shop thành công!", {
+            toast.success("Tạo khung giờ thành công!", {
                 onClose: () => {
                     onOpenChange();
                     refetchTimes();
@@ -102,7 +102,7 @@ export default function CreateShopTimeSlot({ refetchTimes }: { refetchTimes: () 
             });
         } catch (error) {
             console.error('Error creating shop:', error);
-            toast.error("Đã xảy ra lỗi khi tạo shop. Vui lòng thử lại sau!");
+            toast.error("Đã xảy ra lỗi khi tạo khung giờ. Vui lòng thử lại sau!");
         } finally {
             setIsLoading(false);
             resetForm();

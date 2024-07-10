@@ -68,7 +68,7 @@ export default function ManageAccount() {
                         <>
                             <div className="p-4 mb-4 bg-gray-100 rounded-md">
                                 <span className="font-semibold">Tổng số tài khoản: </span>
-                                <span>{ }</span>
+                                <span>{total.totalAccount}</span>
                             </div>
 
                             <Table aria-label="Example static collection table" >
