@@ -137,9 +137,9 @@ const Admin = {
   getAllShops: () =>
     requests.get("api/v1/admin/manageShopOwner/viewAll"),
   getTotalShop: () =>
-    requests.get("api/v1/admin/manageCustomer/viewAll"),
+    requests.get("api/v1/admin/total/shopOwner"),
   getTotalCus: () =>
-    requests.get("api/v1/admin/manageCustomer/viewAll"),
+    requests.get("api/v1/admin/total/customer"),
   getAllCus: () =>
     requests.get("api/v1/admin/manageCustomer/viewAll"),
   getShopInfor: (slug: string) =>
