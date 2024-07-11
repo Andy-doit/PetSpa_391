@@ -34,8 +34,8 @@ const Profile: React.FC = () => {
             .required('Email là bắt buộc'),
         phone: Yup.string()
             .matches(/^[0-9]+$/, 'Số điện thoại không hợp lệ')
+            .matches(/^(0[0-9]{9})$/, 'Số điện thoại phải bắt đầu bằng số 0 và có đúng 10 số')
             .required('Số điện thoại là bắt buộc')
-            .matches(/^[0-9]{10}$/, 'Số điện thoại phải có đúng 10 số')
     });
 
     const dispatch = useAppDispatch();

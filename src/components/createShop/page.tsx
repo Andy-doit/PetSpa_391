@@ -67,8 +67,8 @@ export default function AddShop({ refetchShops }: { refetchShops: () => void }) 
             errors.push('Mật khẩu phải có ít nhất 6 ký tự và không vượt quá 20 ký tự');
         }
 
-        if (!shopData.phone || !/^\d{10}$/.test(shopData.phone)) {
-            errors.push('Số điện thoại phải đủ 10 số');
+        if (!shopData.phone || !/^0\d{9}$/.test(shopData.phone)) {
+            errors.push('Số điện thoại phải đủ 10 số và phải bắt đầu bằng số 0');
         }
 
         return errors;
