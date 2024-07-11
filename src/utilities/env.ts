@@ -1,5 +1,5 @@
 export const Envs = {
-    apiLocal: "https://swp_pet_spaaaa.railway.internal.com/",
-    apiRemote: "https://swp_pet_spaaaa.railway.internal.com/",
-    apiEnv: "https://swp_pet_spaaaa.railway.internal.com/",
+    apiLocal: "https://swppetspaaaa-production.up.railway.app/",
+    apiRemote: "https://swppetspaaaa-production.up.railway.app/",
+    apiEnv: "https://swppetspaaaa-production.up.railway.app/",
 };
