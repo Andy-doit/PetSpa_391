@@ -8,7 +8,7 @@ import { Field, Form, Formik } from 'formik';
 import * as Yup from 'yup';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { MyInput, MyInputPassword } from '@/components/ui/loginInput';
+import { MyInput, MyInputConfirmPassword, MyInputEmail, MyInputPassword } from '@/components/ui/loginInput';
 import { useAppDispatch } from '@/lib/redux/store';
 import { loginFailure, loginStart } from '@/lib/redux/slice/authSlice';
 import baseApi from '@/utilities/baseApi';
@@ -46,11 +46,19 @@ export default function Login() {
             .max(20, 'Mật khẩu không được vượt quá 20 ký tự'),
     });
 
-
+    const handleSave = () => {
+        // // setIsEditing(false);
+        // router.replace('/logIn');
+        // // resetForm();
+    };
 
     const dispatch = useAppDispatch();
     const router = useRouter();
-
+    const handleCancelClick = () => {
+        // setIsEditing(false);
+        router.replace('/logIn');
+        // resetForm();
+    };
     const handleLogin = async (value: LoginInput) => {
 
 
@@ -130,7 +138,7 @@ export default function Login() {
                         <Form>
                             <Card className='mx-auto w-3/5'>
                                 <CardHeader className='space-y-1'>
-                                    <p className='text-4xl font-bold  uppercase'>Đăng nhập</p>
+                                    <p className='text-4xl font-bold  uppercase'>Đặt lại mật khẩu</p>
                                 </CardHeader>
                                 <CardBody>
                                     <div className='space-y-4'>
@@ -138,36 +146,32 @@ export default function Login() {
                                             <Field
 
 
-                                                name='username'
-                                                component={MyInput}
+                                                name='password'
+                                                component={MyInputPassword}
                                                 type={isShowPassword ? 'text' : 'password'}
                                             />
                                         </div>
                                         <div className='space-y-4'>
-                                            <div className='relative flex flex-col space-y-2'>
-                                                <Field
-                                                    name='password'
-                                                    fullWidth
-                                                    component={MyInputPassword}
-                                                    placeholder='Password'
+                                        <div className='space-y-2'>
+                                            <Field
 
 
-                                                />
-                                            </div>
+                                                name='confirmPassword'
+                                                component={MyInputConfirmPassword}
+                                                type={isShowPassword ? 'text' : 'password'}
+                                            />
                                         </div>
-                                        <div className='forgot-password text-right'>
-                                            <Link href='/forgotPass' className='text-blue-500 hover:text-orange-600'>Quên Mật Khẩu?</Link>
                                         </div>
-                                        <Button disabled={isLoading} type='submit' className='bg-gradient-to-tr w-full from-pink-500 to-yellow-500 text-white shadow-lg'>
-                                            {isLoading ? <Spinner color="default" /> : 'Đăng nhập'}
+                                       
+                                        <Button className=" ml-1 mr-5" onClick={handleCancelClick}> <Link href='/logIn'>Huỷ</Link></Button>
+                                          
+                                        <Button disabled={isLoading} onClick={handleSave} type='submit'  className=" ml-1 mr-5" >
+                                        Lưu
                                         </Button>
                                     </div>
                                 </CardBody>
                                 <CardFooter>
-                                    Bạn chưa có tài khoản phải không?
-                                    <Link href='/signUp'>
-                                        <span className='text-default-500 hover:text-orange-600'> Đăng ký ở đây </span>
-                                    </Link>
+                                 
                                 </CardFooter>
                             </Card>
                         </Form>

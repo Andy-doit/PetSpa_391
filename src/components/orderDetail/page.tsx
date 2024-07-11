@@ -127,7 +127,7 @@ export default function OrderDetail({ params }: { params: string }) {
                             </div>
                         </div>
                     )}
-                </ModalContent>
+                </ModalContent> 
             </Modal>
         </div>
     );
