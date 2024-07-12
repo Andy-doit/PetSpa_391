@@ -2,9 +2,9 @@ import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 
 export interface CurrentUser {
   firstName: string;
- lastName: string;
+  lastName: string;
   password: string;
-    email: string;
+  email: string;
   username: string;
   role: string;
 }
@@ -40,7 +40,7 @@ const authSlice = createSlice({
       state.error = true;
       state.displayError = action.payload;
     },
-     signUpStart: (state) => {
+    signUpStart: (state) => {
       state.isFetching = true;
     },
     signUpSuccess: (state, action: PayloadAction<CurrentUser>) => {
@@ -56,6 +56,6 @@ const authSlice = createSlice({
   },
 });
 
-export const { loginStart, loginSuccess, loginFailure,signUpStart, signUpSuccess,  signUpFailure } = authSlice.actions;
+export const { loginStart, loginSuccess, loginFailure, signUpStart, signUpSuccess, signUpFailure } = authSlice.actions;
 
 export default authSlice.reducer;

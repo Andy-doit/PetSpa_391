@@ -134,7 +134,7 @@ function MyInputConfirmPassword({
                 type={showPassword ? "text" : "password"}
                 value={field.value || ""}
                 onChange={field.onChange}
-                placeholder="Xác nhận mật khẩu    "
+                placeholder="Xác nhận mật khẩu"
                 autoComplete="off"
                 required
 

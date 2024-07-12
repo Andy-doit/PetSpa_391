@@ -55,6 +55,11 @@ export interface updateProfileInputResponseSuccess {
     message: string;
     success: boolean;
 }
+export interface PasswordInputResponseSuccess {
+    status: number;
+    message: string;
+    success: boolean;
+}
 
 export interface updatePasswordInputResponseSuccess {
     status: number;
@@ -111,6 +116,10 @@ export interface petCreateResponseSuccess {
     status: number;
     message: string;
     success: boolean;
+}
+export interface ForgotPasswordInput {
+    email: string
+
 }
 export interface allShopPaginationData {
     id: string,
