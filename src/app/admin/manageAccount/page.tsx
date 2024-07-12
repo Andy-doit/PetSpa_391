@@ -87,10 +87,10 @@ export default function ManageAccount() {
                                             <TableCell>{sp.phone}</TableCell>
                                             <TableCell>
                                                 <span
-                                                    className={`px-2 py-1 rounded-full text-xs text-white ${sp.status ? 'bg-red-500' : 'bg-green-500'}`}
+                                                    className={`px-2 py-1 rounded-full text-xs text-white ${sp.isDeleted ? 'bg-red-500' : 'bg-green-500'}`}
                                                     style={{ opacity: 0.8 }}
                                                 >
-                                                    {sp.status ? 'Paused' : 'Active'}
+                                                    {sp.isDeleted ? 'Đã dừng' : 'Đang hoạt động'}
                                                 </span>
                                             </TableCell>
                                             <TableCell>

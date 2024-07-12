@@ -17,6 +17,7 @@
     "canvas-confetti": "^1.9.3",
     "chart.js": "^4.4.3",
     "embla-carousel-react": "^8.0.4",
+    "firebase": "^10.12.3",
     "formik": "^2.4.6",
     "framer-motion": "^11.1.9",
     "intro.js": "^7.2.0",

@@ -27,7 +27,7 @@ export interface allCusPaginationData {
     profileImageUrl: string,
     coverImageUrl: string,
     birthday: string,
-    status: boolean,
+    isDeleted: boolean,
     totalAccount: number
 
 }
@@ -55,7 +55,7 @@ export interface allShopPaginationData {
     email: string,
     username: string,
     phone: string,
-    status: boolean
+    isDeleted: boolean
     totalAccount: number
 }
 export interface ShopInfor {
@@ -66,7 +66,7 @@ export interface ShopInfor {
     email: string | undefined | null,
     username: string | undefined | null,
     phone: string | undefined | null
-    status: boolean
+    isDeleted: boolean
 }
 export interface CusInfor {
     slug: string | undefined | null,
@@ -80,7 +80,7 @@ export interface CusInfor {
     profileImageUrl: string,
     coverImageUrl: string,
     birthday: string,
-    status: boolean
+    isDeleted: boolean
 }
 
 

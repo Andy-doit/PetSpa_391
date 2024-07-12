@@ -30,7 +30,7 @@ export default function ManageAccountCus() {
 
     useEffect(() => {
         fetchCustomers();
-  
+
     }, [dispatch]);
 
     return (
@@ -69,10 +69,10 @@ export default function ManageAccountCus() {
                                             <TableCell>{customer.phone}</TableCell>
                                             <TableCell>
                                                 <span
-                                                    className={`px-2 py-1 rounded-full text-xs text-white ${customer.status ? 'bg-red-500' : 'bg-green-500'}`}
+                                                    className={`px-2 py-1 rounded-full text-xs text-white ${customer.isDeleted ? 'bg-red-500' : 'bg-green-500'}`}
                                                     style={{ opacity: 0.8 }}
                                                 >
-                                                    {customer.status ? 'Paused' : 'Active'}
+                                                    {customer.isDeleted ? 'Đã dừng' : 'Đang hoạt động'}
                                                 </span>
                                             </TableCell>
                                             <TableCell>

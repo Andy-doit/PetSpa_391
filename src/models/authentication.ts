@@ -30,9 +30,9 @@ export interface LoginReturnedDataGotError {
 
 export interface User {
   firstName: string;
- lastName: string;
+  lastName: string;
   password: string;
-    email: string;
+  email: string;
   username: string;
   role: string;
 }
@@ -46,8 +46,8 @@ export interface SignupInput {
   username: string;
   email: string;
   password: string;
-   firstName: string;
- lastName: string;
+  firstName: string;
+  lastName: string;
 }
 
 export type ErrorResponse = {

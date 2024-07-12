@@ -1,6 +1,6 @@
 
 import { BookingComplete } from '@/models/shopModel';
-import { AllNominationOfShop, CancelBookingInput, allBookingPaginationResponse, allPetPaginationResponse, cancelBookingResponseSuccess, createFeedbackInput, createFeedbackResponseSuccess, createNomiationInput, createPetInput, petCreateResponseSuccess, updatePasswordInput, updatePasswordInputResponseSuccess, updateProfileInput, updateProfileInputResponseSuccess } from '@/models/userModels';
+import { AllNominationOfShop, CancelBookingInput, ForgotPasswordInput, PasswordInputResponseSuccess, allBookingPaginationResponse, allPetPaginationResponse, cancelBookingResponseSuccess, createFeedbackInput, createFeedbackResponseSuccess, createNomiationInput, createPetInput, petCreateResponseSuccess, updatePasswordInput, updatePasswordInputResponseSuccess, updateProfileInput, updateProfileInputResponseSuccess } from '@/models/userModels';
 import agent from '@/utilities/agent';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { AxiosError } from 'axios';
@@ -190,6 +190,26 @@ export const createPet = createAsyncThunk(
     },
 );
 
+export const forrgotPasswordPagination = createAsyncThunk(
+    'customer/forgotPassword',
+
+    async ({ formData }: { formData: ForgotPasswordInput }) => {
+        try {
+            const response = (await agent.User.getForgotPassword(
+                formData,
+            )) as PasswordInputResponseSuccess;
+            return response;
+        } catch (error) {
+            if (error instanceof AxiosError) {
+                return {
+                    message: error.response?.data.error.message,
+                    status: error.response?.status,
+                };
+            }
+            throw error;
+        }
+    }
+);
 export const updatePet = createAsyncThunk(
     'customer/updatePet',
     async ({ petData }: { petData: createPetInput }) => {
