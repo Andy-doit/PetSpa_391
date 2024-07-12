@@ -8,7 +8,6 @@ import { AccountInput, ShopInfor } from "@/models/adminModel";
 import { get } from "http";
 
 
-
 const responseBody = (response: AxiosResponse) => response.data;
 const requests = {
   get: <T>(url: string, params?: T) =>
