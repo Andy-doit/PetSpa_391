@@ -152,26 +152,26 @@ export default function Login() {
                                             />
                                         </div>
                                         <div className='space-y-4'>
-                                        <div className='space-y-2'>
-                                            <Field
+                                            <div className='space-y-2'>
+                                                <Field
 
 
-                                                name='confirmPassword'
-                                                component={MyInputConfirmPassword}
-                                                type={isShowPassword ? 'text' : 'password'}
-                                            />
+                                                    name='confirmPassword'
+                                                    component={MyInputConfirmPassword}
+                                                    type={isShowPassword ? 'text' : 'password'}
+                                                />
+                                            </div>
                                         </div>
-                                        </div>
-                                       
+
                                         <Button className=" ml-1 mr-5" onClick={handleCancelClick}> <Link href='/logIn'>Huỷ</Link></Button>
-                                          
-                                        <Button disabled={isLoading} onClick={handleSave} type='submit'  className=" ml-1 mr-5" >
-                                        Lưu
+
+                                        <Button disabled={isLoading} onClick={handleSave} type='submit' className=" ml-1 mr-5 text-blue-500 hover:text-orange-600" >
+                                            Lưu
                                         </Button>
                                     </div>
                                 </CardBody>
                                 <CardFooter>
-                                 
+
                                 </CardFooter>
                             </Card>
                         </Form>

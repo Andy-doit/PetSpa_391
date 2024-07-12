@@ -23,13 +23,16 @@ import { allPetPaginationData, createPetInput } from '@/models/userModels';
 import { createPet, fetchAllPetPagination } from '@/lib/redux/slice/userSlice';
 import { FaPlus } from 'react-icons/fa';
 import { FcPlus } from 'react-icons/fc';
+import uploadFile from '@/utils/upload';
+
 
 export default function CreatePet({ userId, refetchPets }: { userId: string, refetchPets: () => void }) {
-    const [image, setImage] = useState("");
+    const [previewImage, setPreviewImage] = useState("");
     const { isOpen, onOpen, onClose } = useDisclosure();
     const dispatch = useAppDispatch();
     const [isLoading, setIsLoading] = useState(false);
     const [validationErrors, setValidationErrors] = useState<string[]>([]);
+
     useEffect(() => {
         if (userId) {
             setPetData(prevData => ({
@@ -65,6 +68,7 @@ export default function CreatePet({ userId, refetchPets }: { userId: string, ref
             petPhoto: '',
             petNote: '',
         });
+        setPreviewImage("");
         setValidationErrors([]);
     };
 
@@ -98,11 +102,28 @@ export default function CreatePet({ userId, refetchPets }: { userId: string, ref
         return errors;
     };
 
-    const handleInputChange = (fieldName: string, newValue: string | number) => {
+    const handleInputChange = (fieldName: keyof createPetInput, newValue: string | number) => {
         setPetData(prevData => ({
             ...prevData,
-            [fieldName]: newValue
+            [fieldName]: newValue,
         }));
+    };
+
+    const [image, setImage] = useState<File | null>(null);
+
+    const handleUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+        if (event.target && event.target.files && event.target.files[0]) {
+            const file = event.target.files[0];
+            const fileName = file.name; // Get the file name
+            const fileUrl = await uploadFile(fileName, file); // Upload the file and get URL
+
+            // Update state with the file URL
+            setPetData(prevData => ({
+                ...prevData,
+                petPhoto: fileUrl,
+            }));
+            setPreviewImage(fileUrl)
+        }
     };
 
     const handleCreate = async () => {
@@ -114,6 +135,7 @@ export default function CreatePet({ userId, refetchPets }: { userId: string, ref
 
         try {
             setIsLoading(true);
+            console.log("Creating pet with data:", petData); // Log the data being sent
             if (userId) {
                 await dispatch(createPet({ petData })).unwrap();
                 toast.success("Tạo thú cưng thành công!", {
@@ -132,6 +154,7 @@ export default function CreatePet({ userId, refetchPets }: { userId: string, ref
             resetForm();
         }
     };
+
 
     const handleClose = () => {
         resetForm();
@@ -253,6 +276,21 @@ export default function CreatePet({ userId, refetchPets }: { userId: string, ref
                                             label="Ghi chú"
                                             className="w-full"
                                         />
+                                    </div>
+                                </div>
+                                <div className="flex flex-col mb-4">
+                                    <div className="mb-4">
+                                        <label className="form-label label-upload cursor-pointer inline-flex items-center" htmlFor="label-upload">
+                                            <FcPlus className="mr-2" /> Upload file image
+                                        </label>
+                                        <input type="file" hidden id="label-upload" onChange={(event) => handleUpload(event)} />
+                                    </div>
+                                    <div className="flex justify-center items-center">
+                                        {previewImage ? (
+                                            <img src={previewImage} alt="Preview" className="max-w-full h-auto" />
+                                        ) : (
+                                            <span>preview image</span>
+                                        )}
                                     </div>
                                 </div>
                             </div>

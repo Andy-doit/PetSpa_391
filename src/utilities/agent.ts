@@ -3,7 +3,7 @@ import apiJWT from "./api";
 import baseApi from "./baseApi";
 import { createBookingInput } from "@/models/bookingModels";
 import { BookingComplete, CreateShopTimeSlotInput, ShopInput, createServiceInput } from '@/models/shopModel';
-import { CancelBookingInput, createFeedbackInput, createNomiationInput, createPetInput, updatePasswordInput, updateProfileInput } from "@/models/userModels";
+import { CancelBookingInput, createFeedbackInput, createNomiationInput, createPetInput, ForgotPasswordInput, updatePasswordInput, updateProfileInput } from "@/models/userModels";
 import { AccountInput, ShopInfor } from "@/models/adminModel";
 import { get } from "http";
 
@@ -107,6 +107,8 @@ const User = {
     requests.baseApiGet(`/api/v1/shop/detail/${slug}`),
   getAllServiceByShopId: (slug: string) =>
     requests.baseApiGet(`/api/v1/service/all/${slug}`),
+  getForgotPassword: (input: ForgotPasswordInput) =>
+    requests.baseApiPost("/api/v1/auth/password/forgotPassword", input),
   deletePet: (slug: string) =>
     requests.del(`api/v1/pet/${slug}`),
   updatePet: (input: createPetInput) =>

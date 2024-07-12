@@ -73,7 +73,7 @@ export default function AccountCusDetail({ params }: { params: string }) {
                                             <p className="text-xl font-medium">{customer.username || "Không có gì"}</p>
                                             <p className="text-xl font-medium">{customer.phone || "Không có gì"}</p>
 
-                                            <p className="text-xl font-medium">{customer.status ? "Paused" : "Active"}</p>
+                                            <p className="text-xl font-medium">{customer.isDeleted ? 'Đã dừng' : 'Đang hoạt động'}</p>
                                         </>
                                     ) : (
                                         <p className="text-xl font-medium">Không có gì</p>

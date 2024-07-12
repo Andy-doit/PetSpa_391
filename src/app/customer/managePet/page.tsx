@@ -1,5 +1,5 @@
 'use client';
-import { Button, Chip, Input, Spinner, Tooltip } from "@nextui-org/react";
+import { Avatar, Button, Chip, Input, Spinner, Tooltip } from "@nextui-org/react";
 import React, { useEffect, useState } from "react";
 import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell } from "@nextui-org/react";
 import CreatePet from "@/components/createPet/page";
@@ -92,6 +92,7 @@ export default function ManagePet() {
                     ) : (
                         <Table aria-label="Example static collection table">
                             <TableHeader>
+                                <TableColumn>Ảnh thú cưng</TableColumn>
                                 <TableColumn>Tên thú cưng</TableColumn>
                                 <TableColumn>Loại thú cưng</TableColumn>
                                 <TableColumn>Giới tính</TableColumn>
@@ -101,6 +102,16 @@ export default function ManagePet() {
                             <TableBody>
                                 {pets.map((pet) => (
                                     <TableRow key={pet.id}>
+                                        <TableCell>
+                                            {/* {pet.petPhoto ? (
+                                                <img src={pet.petPhoto} alt={pet.petName} className="w-16 h-16 object-cover rounded-full" />
+                                            ) : (
+                                                <span>Không có ảnh</span>
+                                            )} */}
+                                            <Avatar src={pet.petPhoto} size="lg" />
+
+
+                                        </TableCell>
                                         <TableCell>{pet.petName}</TableCell>
                                         <TableCell>{pet.petType === 'DOG' ? 'Chó' : (pet.petType === 'CAT' ? 'Mèo' : '')}</TableCell>
                                         <TableCell>{pet.petGender === 'Male' ? 'Đực' : (pet.petGender === 'Female' ? 'Cái' : '')}</TableCell>

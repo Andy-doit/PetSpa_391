@@ -7,6 +7,8 @@ import { createShopInfor } from '@/lib/redux/slice/shopSlice';
 import { ShopInput } from '@/models/shopModel';
 import { FaPlus } from 'react-icons/fa';
 import { TimeInput } from "@nextui-org/react";
+import uploadFile from '@/utils/upload';
+import { FcPlus } from 'react-icons/fc';
 
 export default function CreateShop({ userId, onCreate }: { userId: string, onCreate: () => void }) {
     const { isOpen, onOpen, onClose } = useDisclosure();
@@ -71,7 +73,7 @@ export default function CreateShop({ userId, onCreate }: { userId: string, onCre
         if (!shopData.shopEmail || !/^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/.test(shopData.shopEmail)) {
             errors.push('Email không hợp lệ');
         }
-        if (!shopData.shopPhone ||  !/^0\d{9}$/.test(shopData.shopPhone)) {
+        if (!shopData.shopPhone || !/^0\d{9}$/.test(shopData.shopPhone)) {
             errors.push('Số điện thoại phải là số và có đúng 10 chữ số và phải bắt đầu bằng số 0');
         }
         if (!shopData.openTime) {
@@ -114,7 +116,21 @@ export default function CreateShop({ userId, onCreate }: { userId: string, onCre
     }, [userId]);
 
     const dispatch = useAppDispatch();
+    const [previewImage, setPreviewImage] = useState("");
+    const handleUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+        if (event.target && event.target.files && event.target.files[0]) {
+            const file = event.target.files[0];
+            const fileName = file.name; // Get the file name
+            const fileUrl = await uploadFile(fileName, file); // Upload the file and get URL
 
+            // Update state with the file URL
+            setShopData(prevData => ({
+                ...prevData,
+                shopProfileImangeUrl: fileUrl,
+            }));
+            setPreviewImage(fileUrl)
+        }
+    };
     const handleInputChange = (fieldName: string, newValue: string) => {
         setShopData(prevData => ({
             ...prevData,
@@ -311,6 +327,21 @@ export default function CreateShop({ userId, onCreate }: { userId: string, onCre
                                     // color={validationErrors.find(err => err.includes('Mô tả')) ? "danger" : "default"}
                                     // errorMessage={validationErrors.find(err => err.includes('Mô tả'))}
                                     />
+                                </div>
+                                <div className="flex flex-col mb-4">
+                                    <div className="mb-4">
+                                        <label className="form-label label-upload cursor-pointer inline-flex items-center" htmlFor="label-upload">
+                                            <FcPlus className="mr-2" /> Upload file image
+                                        </label>
+                                        <input type="file" hidden id="label-upload" onChange={(event) => handleUpload(event)} />
+                                    </div>
+                                    <div className="flex justify-center items-center">
+                                        {previewImage ? (
+                                            <img src={previewImage} alt="Preview" className="max-w-full h-auto" />
+                                        ) : (
+                                            <span>preview image</span>
+                                        )}
+                                    </div>
                                 </div>
                                 <div className='flex justify-around'>
                                     <Button className=' w-[200px]' onPress={handleClose}>Đóng</Button>

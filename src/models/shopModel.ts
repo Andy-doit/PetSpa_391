@@ -74,7 +74,7 @@ export interface shopInfor {
     nomination: number,
     shopTitle: string,
     shopPhone: string,
-    profileImageUrl: string | undefined | null,
+    shopProfileImangeUrl: string,
     coverImageUrl: string | undefined | null,
     birthday: string | undefined | null,
 
