@@ -30,8 +30,8 @@ const Profile: React.FC = () => {
         lastName: Yup.string()
             .required('Tên Họ là bắt buộc')
             .min(2, 'Tên của bạn phải có ít nhất 2 ký tự')
-            .max(20, 'Tên của bạn không được vượt quá 20 ký tự')
-            .matches(/^[a-zA-Z]+$/, 'Tên của bạn không được chứa số hoặc kí tự đặc biệt'),
+            .max(20, 'Tên của bạn không được vượt quá 20 ký tự'),
+
         email: Yup.string()
             .email('Địa chỉ email không hợp lệ')
             .required('Email là bắt buộc'),

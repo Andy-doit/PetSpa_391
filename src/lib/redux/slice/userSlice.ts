@@ -139,10 +139,10 @@ export const patchPasswordProfile = createAsyncThunk(
 );
 export const updatePasswordHomePage = createAsyncThunk(
     'customer/updatePasswordHomePage',
-    async ({ passWordData, params }: { passWordData: updatePasswordInputHomePage, params: string }) => {
+    async ({ passWordData }: { passWordData: updatePasswordInputHomePage }) => {
         try {
             const response = (await agent.User.changePasswordInHome(
-                passWordData, params
+                passWordData
             )) as updatePasswordInputResponseSuccess;
             return response.message;
         } catch (error) {

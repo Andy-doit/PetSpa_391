@@ -98,6 +98,7 @@ const ManageService = () => {
                     ) : (
                         <Table aria-label="Example static collection table">
                             <TableHeader>
+                                <TableColumn>Hình ảnh dịch vụ</TableColumn>
                                 <TableColumn>Tên dịch vụ</TableColumn>
                                 <TableColumn>Giá dịch vụ</TableColumn>
                                 <TableColumn>Loại dịch vụ</TableColumn>
@@ -108,6 +109,9 @@ const ManageService = () => {
                             <TableBody>
                                 {service.map((sp) => (
                                     <TableRow key={sp.id}>
+                                        <TableCell>
+                                            <img src={sp.servicePhoto} />
+                                        </TableCell>
                                         <TableCell>{sp.serviceName}</TableCell>
                                         <TableCell>{sp.price}</TableCell>
                                         <TableCell>{getCategoryLabel(sp.categoryId.toString())}</TableCell>

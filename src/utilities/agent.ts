@@ -140,8 +140,8 @@ const User = {
     requests.get(`api/v1/nomination/${slug}`),
   completeBooking: (input: BookingComplete) =>
     requests.post("api/v1/booking/auth/complete", input),
-  changePasswordInHome: (input: updatePasswordInputHomePage, slug: string) =>
-    requests.baseApiChangePost(`api/v1/auth/password/changePassword/${slug}`, input),
+  changePasswordInHome: (input: updatePasswordInputHomePage) =>
+    requests.baseApiChangePost(`api/v1/auth/password/changePassword`, input),
 
 }
 
