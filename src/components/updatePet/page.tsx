@@ -22,10 +22,13 @@ import { allPetPaginationData, createPetInput } from '@/models/userModels';
 import { updatePet } from '@/lib/redux/slice/userSlice';
 import getAccessAndRefreshCookie from '@/utilities/authUtils/getCookieForValidation';
 import { MdChangeCircle } from 'react-icons/md';
+import { FcPlus } from 'react-icons/fc';
+import uploadFile from '@/utils/upload';
 
 export default function UpdatePet({ params, refetchPets }: { params: allPetPaginationData, refetchPets: () => void }) {
     const [userId, setUserId] = useState<string>('');
     const dispatch = useAppDispatch();
+    const [previewImage, setPreviewImage] = useState("");
     useEffect(() => {
         const fetchUid = async () => {
             try {
@@ -130,7 +133,20 @@ export default function UpdatePet({ params, refetchPets }: { params: allPetPagin
             [fieldName]: newValue
         }));
     };
+    const handleUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+        if (event.target && event.target.files && event.target.files[0]) {
+            const file = event.target.files[0];
+            const fileName = file.name; // Get the file name
+            const fileUrl = await uploadFile(fileName, file); // Upload the file and get URL
 
+            // Update state with the file URL
+            setPetData(prevData => ({
+                ...prevData,
+                petPhoto: fileUrl,
+            }));
+            setPreviewImage(fileUrl)
+        }
+    };
     const handleCreate = async () => {
         const errors = validateInput();
         if (errors.length > 0) {
@@ -282,6 +298,21 @@ export default function UpdatePet({ params, refetchPets }: { params: allPetPagin
                                             label="Ghi chú"
                                             className="w-full"
                                         />
+                                    </div>
+                                </div>
+                                <div className="flex flex-col mb-4">
+                                    <div className="mb-4">
+                                        <label className="form-label label-upload cursor-pointer inline-flex items-center" htmlFor="label-upload">
+                                            <FcPlus className="mr-2" /> Ảnh thú cưng
+                                        </label>
+                                        <input type="file" hidden id="label-upload" onChange={(event) => handleUpload(event)} />
+                                    </div>
+                                    <div className="flex justify-center items-center">
+                                        {previewImage ? (
+                                            <img src={previewImage} alt="Preview" className="max-w-full h-auto" />
+                                        ) : (
+                                            <span>Ảnh thú cưng </span>
+                                        )}
                                     </div>
                                 </div>
                             </div>

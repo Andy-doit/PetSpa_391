@@ -10,6 +10,9 @@ import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Formik, Form, Field, FormikHelpers, FieldInputProps, FormikProps } from 'formik';
 import * as Yup from 'yup';
+import uploadFile from '@/utils/upload';
+import { FcPlus } from 'react-icons/fc';
+import { MdFlipCameraIos } from 'react-icons/md';
 
 
 
@@ -22,8 +25,8 @@ const Profile: React.FC = () => {
         firstName: Yup.string()
             .required('Tên Họ là bắt buộc')
             .min(2, 'Tên Họ phải có ít nhất 2 ký tự')
-            .max(20, 'Tên Họ không được vượt quá 20 ký tự')
-            .matches(/^[a-zA-Z]+$/, 'Tên Họ không được chứa số hoặc kí tự đặc biệt'),
+            .max(20, 'Tên Họ không được vượt quá 20 ký tự'),
+
         lastName: Yup.string()
             .required('Tên Họ là bắt buộc')
             .min(2, 'Tên của bạn phải có ít nhất 2 ký tự')
@@ -37,6 +40,7 @@ const Profile: React.FC = () => {
             .matches(/^(0[0-9]{9})$/, 'Số điện thoại phải bắt đầu bằng số 0 và có đúng 10 số')
             .required('Số điện thoại là bắt buộc')
     });
+    const [previewImage, setPreviewImage] = useState("");
 
     const dispatch = useAppDispatch();
     const [userId, setUserId] = useState<string>('');
@@ -78,6 +82,12 @@ const Profile: React.FC = () => {
         setIsEditing(true);
         setServerError(null);
     };
+    useEffect(() => {
+        const storedImage = localStorage.getItem('profileImageUrl');
+        if (storedImage) {
+            setPreviewImage(storedImage);
+        }
+    }, []);
 
     const handleUpdate = async (values: updateProfileInput, { setSubmitting }: FormikHelpers<updateProfileInput>) => {
         try {
@@ -88,6 +98,7 @@ const Profile: React.FC = () => {
                     lastName: values.lastName,
                     email: values.email,
                     phone: values.phone,
+                    profileImageUrl: values.profileImageUrl
                 };
 
                 await dispatch(patchUpdateProfile({ profileData: updateData })).unwrap();
@@ -97,12 +108,14 @@ const Profile: React.FC = () => {
                 setIsEditing(false);
                 setItems(prevItems => {
                     if (prevItems === null) return null;
+
                     return {
                         ...prevItems,
                         firstName: updateData.firstName ?? prevItems.firstName,
                         lastName: updateData.lastName ?? prevItems.lastName,
                         email: updateData.email ?? prevItems.email,
                         phone: updateData.phone ?? prevItems.phone,
+                        profileImageUrl: updateData.profileImageUrl ?? prevItems.profileImageUrl
                     };
                 });
             }
@@ -113,7 +126,25 @@ const Profile: React.FC = () => {
             setSubmitting(false);
         }
     };
+    const handleUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+        if (event.target && event.target.files && event.target.files[0]) {
+            const file = event.target.files[0];
+            const fileName = file.name;
+            const fileUrl = await uploadFile(fileName, file);
+            setItems(prevItems => {
+                if (prevItems === null) return null;
 
+                return {
+                    ...prevItems,
+                    profileImageUrl: fileUrl,
+                };
+            });
+
+
+            setPreviewImage(fileUrl)
+            localStorage.setItem('profileImageUrl', fileUrl);
+        }
+    };
     return (
         <div className='h-screen'>
             <div
@@ -126,8 +157,20 @@ const Profile: React.FC = () => {
                 }}>
             </div>
             <div className='container relative'>
-                <div className='justify-center flex items-center'>
-                    <Avatar src="https://i.pravatar.cc/150?u=a04258114e29026302d" size="lg" />
+                <div className="flex justify-center items-center w-full">
+                    <div className='relative w-20 h-20'>
+                        <Avatar
+                            src={previewImage || items?.profileImageUrl}
+                            size="lg"
+                            className="w-full h-full object-cover"
+                            onClick={() => document.getElementById('label-upload')?.click()}
+                        />
+                        <input type="file" hidden id="label-upload" onChange={handleUpload} />
+                        <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 opacity-0 hover:opacity-100 transition-opacity duration-300 cursor-pointer rounded-full"
+                            onClick={() => document.getElementById('label-upload')?.click()}>
+                            <MdFlipCameraIos className="text-white h-6 w-6" />
+                        </div>
+                    </div>
                 </div>
                 <div className='justify-center flex items-center mt-2'>
                     <h1 className='text-2xl font-bold uppercase mr-2'>{items?.firstName || ''}</h1>
@@ -164,6 +207,7 @@ const Profile: React.FC = () => {
                                 lastName: items?.lastName || '',
                                 email: items?.email || '',
                                 phone: items?.phone || 0,
+                                profileImageUrl: items?.profileImageUrl || 's'
                             }}
                             validationSchema={validationSchema}
                             onSubmit={handleUpdate}
@@ -232,6 +276,7 @@ const Profile: React.FC = () => {
                                                 )}
                                             </Field>
                                         </div>
+
                                     </CardBody>
                                     {isEditing && (
                                         <CardFooter>
@@ -250,6 +295,7 @@ const Profile: React.FC = () => {
                                                     setFieldValue('lastName', items?.lastName || '');
                                                     setFieldValue('email', items?.email || '');
                                                     setFieldValue('phone', items?.phone?.toString() || '');
+                                                    setFieldValue('profileImageUrl', items?.profileImageUrl?.toString() || '');
                                                 }}
                                                 disabled={isSubmitting}
                                             >
