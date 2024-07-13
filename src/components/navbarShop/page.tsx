@@ -5,11 +5,19 @@ import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, cn } from "@next
 import { FaUserCircle } from "react-icons/fa";
 import Cookies from 'js-cookie';
 import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { useAppDispatch } from "@/lib/redux/store";
+import { Image } from "@/models/userModels";
+import { fetchImagePagination } from "@/lib/redux/slice/userSlice";
+import { fetchImageShopPagination } from "@/lib/redux/slice/shopSlice";
 interface Props {
     children: React.ReactNode;
 }
 export default function NavbarShop({ children }: Props) {
     const router = useRouter();
+    const [image,setImage] = useState<Image | any>()
+    const [loading, setLoading] = useState(true);
+    const dispatch = useAppDispatch();
     const iconClasses = "text-xl text-default-500 pointer-events-none flex-shrink-0 w-5 h-5";
     const handleLogout = async () => {
         await localStorage.clear();
@@ -18,6 +26,23 @@ export default function NavbarShop({ children }: Props) {
         Cookies.remove('uid');
         router.replace('/logIn');
     };
+    useEffect(() => {
+        fetchServices();
+    }, [dispatch]);
+
+    const fetchServices = async () => {
+        setLoading(true);
+        try {
+            const response = await dispatch(fetchImageShopPagination());
+            setImage(response.payload);
+          
+        } catch (error) {
+            console.error('Error fetching services:', error);
+        } finally {
+            setLoading(false);
+        }
+    };
+    console.log('test image',image)
     return (
         <>
             <div className="relative flex flex-col flex-1 overflow-y-auto overflow-x-hidden">
@@ -36,7 +61,7 @@ export default function NavbarShop({ children }: Props) {
                     >
                         <Dropdown>
                             <DropdownTrigger>
-                                <Avatar src="https://i.pravatar.cc/150?u=a04258114e29026302d" size="md" />
+                                <Avatar src={image?.profileImageUrl} size="md" />
                             </DropdownTrigger>
                             <DropdownMenu>
                                 <DropdownItem
@@ -48,7 +73,18 @@ export default function NavbarShop({ children }: Props) {
 
                                     }
                                 >
-                                    <Link href="/shopOwner/profile" color="foreground">Trang cá nhân</Link>
+                                    <Link href="/shopOwner/profile" color="foreground">Thông tin cửa hàng</Link>
+                                </DropdownItem>
+                                <DropdownItem
+
+                                    startContent={
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className={iconClasses}>
+                                            <path strokeLinecap="round" strokeLinejoin="round" d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                                        </svg>
+
+                                    }
+                                >
+                                    <Link href="/shopOwner/account" color="foreground">Chỉnh sửa tài khoản</Link>
                                 </DropdownItem>
                                 <DropdownItem
                                     startContent={

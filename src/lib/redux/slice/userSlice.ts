@@ -83,6 +83,24 @@ export const fetchUserInforPagination = createAsyncThunk(
         }
     },
 );
+export const fetchImagePagination = createAsyncThunk(
+    'customer/UserInfor',
+    async () => {
+        try {
+            const response = await agent.User.getImage();
+            console.log(response)
+            return response;
+
+        } catch (error) {
+            if (error instanceof AxiosError) {
+                return {
+                    message: error.response?.data.error.message,
+                    status: error.response?.status,
+                };
+            }
+        }
+    },
+);
 export const patchUpdateProfile = createAsyncThunk(
     'customer/patchUpdateProfile',
     async ({ profileData }: { profileData: updateProfileInput }) => {
