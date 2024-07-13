@@ -25,6 +25,9 @@ export interface UserInfor {
     birthday: string | undefined | null,
 
 }
+export interface Image {
+    profileImageUrl : string
+}
 export interface passwordInfor {
     id: string,
     profileImageUrl: string,

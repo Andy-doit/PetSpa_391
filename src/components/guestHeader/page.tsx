@@ -5,17 +5,39 @@ import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, cn } from "@next
 import { NotificationsDropdown } from "../notify/page";
 import { useRouter } from "next/navigation";
 import Cookies from 'js-cookie';
+import { Image } from "@/models/userModels";
+import getAccessAndRefreshCookie from "@/utilities/authUtils/getCookieForValidation";
+import { useAppDispatch } from "@/lib/redux/store";
+import { fetchImagePagination } from "@/lib/redux/slice/userSlice";
 export default function GuestHeader() {
     const router = useRouter()
+    const [image,setImage] = useState<Image | any>()
     const iconClasses = "text-xl text-default-500 pointer-events-none flex-shrink-0 w-5 h-5";
     const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [loading, setLoading] = useState(true);
+    const dispatch = useAppDispatch();
     useEffect(() => {
         const token = localStorage.getItem("token");
         if (token) {
             setIsLoggedIn(true);
         }
     }, []);
+    useEffect(() => {
+        fetchServices();
+    }, [dispatch]);
 
+    const fetchServices = async () => {
+        setLoading(true);
+        try {
+            const response = await dispatch(fetchImagePagination());
+            setImage(response.payload);
+          
+        } catch (error) {
+            console.error('Error fetching services:', error);
+        } finally {
+            setLoading(false);
+        }
+    };
     const handleLogout = async () => {
         await localStorage.clear();
         Cookies.remove('token');
@@ -71,7 +93,7 @@ export default function GuestHeader() {
 
                             <Dropdown>
                                 <DropdownTrigger>
-                                    <Avatar src="https://i.pravatar.cc/150?u=a04258114e29026302d" size="md" />
+                                    <Avatar src={image?.profileImageUrl} size="md" />
                                 </DropdownTrigger>
                                 <DropdownMenu variant="faded" aria-label="Dropdown menu with icons">
                                     <DropdownItem

@@ -2,7 +2,7 @@ import { AxiosResponse } from "axios";
 import apiJWT from "./api";
 import baseApi from "./baseApi";
 import { createBookingInput } from "@/models/bookingModels";
-import { BookingComplete, CreateShopTimeSlotInput, ShopInput, createServiceInput } from '@/models/shopModel';
+import { BookingComplete, CreateShopTimeSlotInput, ShopInput, createServiceInput, updateProfileShopInput } from '@/models/shopModel';
 import { CancelBookingInput, createFeedbackInput, createNomiationInput, createPetInput, ForgotPasswordInput, updatePasswordInput, updatePasswordInputHomePage, updateProfileInput } from "@/models/userModels";
 import { AccountInput, ShopInfor } from "@/models/adminModel";
 import { get } from "http";
@@ -82,15 +82,22 @@ const ShopOnwer = {
     requests.baseApiGet(`/api/v1/feedback/latest/${slug}`),
   deleteAllIn4Shop: (slug: string) =>
     requests.del(`api/v1/shop/${slug}`),
-
-
+  getImageShop: () =>
+    requests.get("api/v1/user/avata/auth"),
+  updateProfileShop: (input: updateProfileShopInput) =>
+    requests.baseApiPatch("api/v1/user", input),
+  getProfileShopInfor: () =>
+    requests.get("api/v1/user"),
 }
+
 
 
 //User
 const User = {
   getallBooking: () =>
     requests.get("/api/v1/booking/auth"),
+  getImage: () =>
+    requests.get("api/v1/user/avata/auth"),
   getorderBooking: (slug: string) =>
     requests.get(`api/v1/booking/auth/${slug}`),
   deleteBooking: (input: CancelBookingInput) =>
