@@ -13,6 +13,7 @@ export interface createBookingInput {
     petWeight: number,
     petId: string,
     petGender: string,
+    petPhoto: string
 }
 export interface getTimeSlot {
     totalSlots: number,

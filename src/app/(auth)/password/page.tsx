@@ -15,15 +15,37 @@ import { useAppDispatch } from '@/lib/redux/store';
 
 export default function ChangePassword({ params }: { params: { slug: string } }) {
     const router = useRouter();
+    const [validationErrors, setValidationErrors] = useState<string[]>([]);
     const dispatch = useAppDispatch();
     const [isLoading, setIsLoading] = useState(false);
     const [passWordData, setPassWordData] = useState<updatePasswordInputHomePage>({
         newPassword: '',
         confirmPassword: '',
-
+        token: ''
     });
-    console.log(params)
-    console.log(passWordData)
+    const resetForm = () => {
+        setPassWordData({
+            newPassword: '',
+            confirmPassword: '',
+            token: ''
+        });
+
+    };
+    const validateInput = () => {
+        const errors = [];
+
+        if (!passWordData.token) {
+            errors.push('Mã OTP không được để trống');
+        }
+        if (!passWordData.newPassword || passWordData.newPassword.length < 6 || passWordData.newPassword.length > 20) {
+            errors.push('Mật khẩu mới phải có ít nhất 6 ký tự và phải có ít hơn 20 kí tự');
+        }
+        if (!passWordData.newPassword || passWordData.confirmPassword !== passWordData.confirmPassword) {
+            errors.push('Xác nhận mật khẩu phải giống mật khẩu mới ');
+        }
+
+        return errors;
+    };
     const handleInputChange = (fieldName: string, newValue: string) => {
         setPassWordData(prevData => ({
             ...prevData,
@@ -33,22 +55,28 @@ export default function ChangePassword({ params }: { params: { slug: string } })
 
     const handleCancelClick = () => {
         router.replace('/logIn');
+        resetForm()
     };
 
     const handleUpdate = async () => {
-        // try {
-        //     setIsLoading(true);
-        //     await dispatch(updatePasswordHomePage({ passWordData })).unwrap();
-        //     toast.success('Gửi thành công, hãy xác nhận Email');
-        //     setTimeout(() => {
-        //         router.replace('/logIn');
-        //     }, 2000);
-        // } catch (error) {
-        //     setIsLoading(false);
-        //     toast.error('Gửi không thành công. Vui lòng thử lại.');
-        // } finally {
-        //     setIsLoading(false);
-        // }
+        const errors = validateInput();
+        if (errors.length > 0) {
+            setValidationErrors(errors);
+            return;
+        }
+        try {
+            setIsLoading(true);
+            await dispatch(updatePasswordHomePage({ passWordData })).unwrap();
+            toast.success('Gửi thành công, hãy xác nhận Email');
+            setTimeout(() => {
+                router.replace('/logIn');
+            }, 2000);
+        } catch (error) {
+            setIsLoading(false);
+            toast.error('Gửi không thành công. Vui lòng thử lại.');
+        } finally {
+            setIsLoading(false);
+        }
     };
 
     return (
@@ -65,25 +93,45 @@ export default function ChangePassword({ params }: { params: { slug: string } })
                     <Card className="mx-auto w-3/5">
                         <CardHeader className="space-y-1">
                             <div className="flex justify-center text-center">
-                                <p className="text-4xl font-bold uppercase">Quên mật khẩu</p>
+                                <p className="text-4xl font-bold uppercase">Đổi mật khẩu</p>
                             </div>
                         </CardHeader>
                         <CardBody>
                             <div className="space-y-4">
                                 <div className="space-y-2">
                                     <Input
-                                        name="password"
-                                        value={passWordData.newPassword}
-                                        onChange={(e) => handleInputChange('newPassword', e.target.value)}
-                                        placeholder="Mật khẩu mới"
+                                        type="text"
+                                        value={passWordData.token}
+                                        onChange={(e) => handleInputChange('token', e.target.value)}
+                                        placeholder="Nhập mã xác nhận"
+                                        isInvalid={!!validationErrors.find(err => err.includes('Mã'))}
+                                        color={validationErrors.find(err => err.includes('Mã')) ? "danger" : "default"}
+                                        errorMessage={validationErrors.find(err => err.includes('Mã'))}
+
                                     />
                                 </div>
                                 <div className="space-y-2">
                                     <Input
                                         name="password"
+                                        type='password'
+                                        value={passWordData.newPassword}
+                                        onChange={(e) => handleInputChange('newPassword', e.target.value)}
+                                        placeholder="Mật khẩu mới"
+                                        isInvalid={!!validationErrors.find(err => err.includes('Mật khẩu mới'))}
+                                        color={validationErrors.find(err => err.includes('Mật khẩu mới')) ? "danger" : "default"}
+                                        errorMessage={validationErrors.find(err => err.includes('Mật khẩu mới'))}
+                                    />
+                                </div>
+                                <div className="space-y-2">
+                                    <Input
+                                        name="password"
+                                        type='password'
                                         value={passWordData.confirmPassword}
                                         onChange={(e) => handleInputChange('confirmPassword', e.target.value)}
                                         placeholder="Xác nhận mật khẩu"
+                                        isInvalid={!!validationErrors.find(err => err.includes('Xác nhận'))}
+                                        color={validationErrors.find(err => err.includes('Xác nhận')) ? "danger" : "default"}
+                                        errorMessage={validationErrors.find(err => err.includes('Xác nhận'))}
                                     />
                                 </div>
                                 <Button className="ml-1 mr-5" onClick={handleCancelClick}>

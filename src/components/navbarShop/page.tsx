@@ -15,7 +15,7 @@ interface Props {
 }
 export default function NavbarShop({ children }: Props) {
     const router = useRouter();
-    const [image,setImage] = useState<Image | any>()
+    const [image, setImage] = useState<Image | any>()
     const [loading, setLoading] = useState(true);
     const dispatch = useAppDispatch();
     const iconClasses = "text-xl text-default-500 pointer-events-none flex-shrink-0 w-5 h-5";
@@ -35,14 +35,14 @@ export default function NavbarShop({ children }: Props) {
         try {
             const response = await dispatch(fetchImageShopPagination());
             setImage(response.payload);
-          
+
         } catch (error) {
             console.error('Error fetching services:', error);
         } finally {
             setLoading(false);
         }
     };
-    console.log('test image',image)
+    console.log('test image', image)
     return (
         <>
             <div className="relative flex flex-col flex-1 overflow-y-auto overflow-x-hidden">

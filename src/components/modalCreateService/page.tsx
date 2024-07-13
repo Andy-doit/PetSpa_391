@@ -9,6 +9,8 @@ import { ToastContainer, toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import { FaPlus } from "react-icons/fa";
 import { ClipLoader } from "react-spinners";
+import { FcPlus } from "react-icons/fc";
+import uploadFile from "@/utils/upload";
 
 
 
@@ -44,6 +46,7 @@ export default function ModalCreateService({ userId, refetchPets }: { userId: st
         minWeight: 0,
         maxWeight: 0,
         tags: 'tags1',
+        servicePhoto: ''
 
     });
 
@@ -58,6 +61,7 @@ export default function ModalCreateService({ userId, refetchPets }: { userId: st
             minWeight: 0,
             maxWeight: 0,
             tags: 'tags1',
+            servicePhoto: ''
         });
         setValidationErrors([]);
     };
@@ -121,6 +125,21 @@ export default function ModalCreateService({ userId, refetchPets }: { userId: st
         finally {
             setIsLoading(false);
             resetForm();
+        }
+    };
+    const [previewImage, setPreviewImage] = useState("");
+    const handleUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+        if (event.target && event.target.files && event.target.files[0]) {
+            const file = event.target.files[0];
+            const fileName = file.name; // Get the file name
+            const fileUrl = await uploadFile(fileName, file); // Upload the file and get URL
+
+            // Update state with the file URL
+            setServiceData(prevData => ({
+                ...prevData,
+                servicePhoto: fileUrl,
+            }));
+            setPreviewImage(fileUrl)
         }
     };
 
@@ -251,6 +270,21 @@ export default function ModalCreateService({ userId, refetchPets }: { userId: st
                                         className="w-full"
 
                                     />
+                                </div>
+                                <div className="flex flex-col mb-4">
+                                    <div className="mb-4">
+                                        <label className="form-label label-upload cursor-pointer inline-flex items-center" htmlFor="label-upload">
+                                            <FcPlus className="mr-2" /> Ảnh thú cưng
+                                        </label>
+                                        <input type="file" hidden id="label-upload" onChange={(event) => handleUpload(event)} />
+                                    </div>
+                                    <div className="flex justify-center items-center">
+                                        {previewImage ? (
+                                            <img src={previewImage} alt="Preview" className="max-w-full h-auto" />
+                                        ) : (
+                                            <span>Ảnh thú cưng</span>
+                                        )}
+                                    </div>
                                 </div>
                                 <div className="flex justify-around">
                                     <Button
