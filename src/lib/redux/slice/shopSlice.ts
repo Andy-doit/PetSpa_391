@@ -1,6 +1,6 @@
 
 
-import { AllFeedbackOfServiceResponse, AllShopTimeSlotIn4Response, CreateShopTimeSlotInput, ShopInput, allOrderBookingPaginationResponse, createServiceInput, getAllTimeSlot, getAllTimeSlotResponse, serviceCreateResponseSuccess, shopCreateResponseSuccess, updatePasswordInputResponseSuccess, updatePasswordShopInput } from "@/models/shopModel";
+import { AllFeedbackOfServiceResponse, AllShopTimeSlotIn4Response, CreateShopTimeSlotInput, ShopInput, allOrderBookingPaginationResponse, createServiceInput, getAllTimeSlot, getAllTimeSlotResponse, serviceCreateResponseSuccess, shopCreateResponseSuccess, updatePasswordInputResponseSuccess, updatePasswordShopInput, updateProfileInputResponseSuccess, updateProfileShopInput } from "@/models/shopModel";
 import agent from "@/utilities/agent";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { AxiosError } from "axios";
@@ -349,6 +349,59 @@ export const deleteAllIn4Shop = createAsyncThunk(
         }
     },
 );
+export const fetchImageShopPagination = createAsyncThunk(
+    'customer/UserInfor',
+    async () => {
+        try {
+            const response = await agent.ShopOnwer.getImageShop();
+            console.log(response)
+            return response;
+
+        } catch (error) {
+            if (error instanceof AxiosError) {
+                return {
+                    message: error.response?.data.error.message,
+                    status: error.response?.status,
+                };
+            }
+        }
+    },)
+    export const ShopInforPagination = createAsyncThunk(
+        'customer/UserInfor',
+        async () => {
+            try {
+                const response = await agent.ShopOnwer.getProfileShopInfor();
+                console.log(response)
+                return response;
+    
+            } catch (error) {
+                if (error instanceof AxiosError) {
+                    return {
+                        message: error.response?.data.error.message,
+                        status: error.response?.status,
+                    };
+                }
+            }
+        },
+    );
+    export const patchUpdateProfileShop = createAsyncThunk(
+        'customer/patchUpdateProfile',
+        async ({ profileData }: { profileData: updateProfileShopInput }) => {
+            try {
+                const response = (await agent.ShopOnwer.updateProfileShop(
+                    profileData,
+                )) as updateProfileInputResponseSuccess;
+                return response.message;
+            } catch (error) {
+                if (error instanceof AxiosError) {
+                    return {
+                        message: error.response?.data.error.message,
+                        status: error.response?.status,
+                    };
+                }
+            }
+        },
+    );
 const shopSlice = createSlice({
     name: 'shop',
     initialState,

@@ -78,6 +78,25 @@ export interface shopInfor {
     coverImageUrl: string | undefined | null,
     birthday: string | undefined | null,
 
+
+}
+export interface ShopAccountInfor {
+    id: string,
+    firstName: string,
+    lastName: string,
+    email: string,
+    username: string,
+    phone: string
+    profileImageUrl: string
+
+}
+export interface updateProfileShopInput {
+    id: string,
+    firstName: string | undefined | null,
+    lastName: string | undefined | null,
+    email: string | undefined | null,
+    phone: string| undefined | null ,
+    profileImageUrl: string
 }
 export interface ShopPage {
     id: string;
@@ -91,7 +110,11 @@ export interface MonthlyBookingDto {
     month: string;
     bookings: number;
 }
-
+export interface updateProfileInputResponseSuccess {
+    status: number;
+    message: string;
+    success: boolean;
+}
 export interface ShopInput {
     id: string,
     shopName: string,
