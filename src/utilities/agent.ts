@@ -3,7 +3,7 @@ import apiJWT from "./api";
 import baseApi from "./baseApi";
 import { createBookingInput } from "@/models/bookingModels";
 import { BookingComplete, CreateShopTimeSlotInput, ShopInput, createServiceInput } from '@/models/shopModel';
-import { CancelBookingInput, createFeedbackInput, createNomiationInput, createPetInput, ForgotPasswordInput, updatePasswordInput, updateProfileInput } from "@/models/userModels";
+import { CancelBookingInput, createFeedbackInput, createNomiationInput, createPetInput, ForgotPasswordInput, updatePasswordInput, updatePasswordInputHomePage, updateProfileInput } from "@/models/userModels";
 import { AccountInput, ShopInfor } from "@/models/adminModel";
 import { get } from "http";
 
@@ -21,6 +21,8 @@ const requests = {
     baseApi.get(url, { params }).then(responseBody),
   baseApiPost: <T>(url: string, body: T) =>
     baseApi.post(url, body).then(responseBody),
+  baseApiChangePost: <T>(url: string, body: T, params?: T) =>
+    baseApi.post(url, body, { params }).then(responseBody),
   baseApiPut: <T>(url: string, body: T) =>
     baseApi.put(url, body).then(responseBody),
   baseApiPatch: <T>(url: string, body: T) =>
@@ -131,6 +133,8 @@ const User = {
     requests.get(`api/v1/nomination/${slug}`),
   completeBooking: (input: BookingComplete) =>
     requests.post("api/v1/booking/auth/complete", input),
+  changePasswordInHome: (input: updatePasswordInputHomePage, slug: string) =>
+    requests.baseApiChangePost(`api/v1/auth/password/changePassword/${slug}`, input),
 
 }
 
