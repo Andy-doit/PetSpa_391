@@ -167,12 +167,17 @@ const ProfileAccount: React.FC = () => {
                             className="w-full h-full object-cover"
                             onClick={() => document.getElementById('label-upload')?.click()}
                         />
+                         {isEditing && (
+                            <div>
                         <input type="file" hidden id="label-upload" onChange={handleUpload} />
                         <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 opacity-0 hover:opacity-100 transition-opacity duration-300 cursor-pointer rounded-full"
                             onClick={() => document.getElementById('label-upload')?.click()}>
                             <MdFlipCameraIos className="text-white h-6 w-6" />
                         </div>
+                        </div>
+                        )}
                     </div>
+                    
                 </div>
                 <div className='justify-center flex items-center mt-2'>
                     <h1 className='text-2xl font-bold uppercase mr-2'>{items?.firstName || ''}</h1>

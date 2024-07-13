@@ -1,6 +1,6 @@
 
 import { BookingComplete } from '@/models/shopModel';
-import { AllNominationOfShop, CancelBookingInput, ForgotPasswordInput, PasswordInputResponseSuccess, allBookingPaginationResponse, allPetPaginationResponse, cancelBookingResponseSuccess, createFeedbackInput, createFeedbackResponseSuccess, createNomiationInput, createPetInput, petCreateResponseSuccess, updatePasswordInput, updatePasswordInputResponseSuccess, updateProfileInput, updateProfileInputResponseSuccess } from '@/models/userModels';
+import { AllNominationOfShop, CancelBookingInput, ForgotPasswordInput, PasswordInputResponseSuccess, allBookingPaginationResponse, allPetPaginationResponse, cancelBookingResponseSuccess, createFeedbackInput, createFeedbackResponseSuccess, createNomiationInput, createPetInput, petCreateResponseSuccess, updatePasswordInput, updatePasswordInputHomePage, updatePasswordInputResponseSuccess, updateProfileInput, updateProfileInputResponseSuccess } from '@/models/userModels';
 import agent from '@/utilities/agent';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { AxiosError } from 'axios';
@@ -125,6 +125,24 @@ export const patchPasswordProfile = createAsyncThunk(
         try {
             const response = (await agent.User.updatePassword(
                 profileData,
+            )) as updatePasswordInputResponseSuccess;
+            return response.message;
+        } catch (error) {
+            if (error instanceof AxiosError) {
+                return {
+                    message: error.response?.data.error.message,
+                    status: error.response?.status,
+                };
+            }
+        }
+    },
+);
+export const updatePasswordHomePage = createAsyncThunk(
+    'customer/updatePasswordHomePage',
+    async ({ passWordData, params }: { passWordData: updatePasswordInputHomePage, params: string }) => {
+        try {
+            const response = (await agent.User.changePasswordInHome(
+                passWordData, params
             )) as updatePasswordInputResponseSuccess;
             return response.message;
         } catch (error) {
