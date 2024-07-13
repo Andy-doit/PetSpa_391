@@ -46,7 +46,7 @@ export default function SignUp() {
             .max(20, 'Tên Họ không được vượt quá 20 ký tự'),
         lastName: Yup.string()
             .required('Tên là bắt buộc')
-            .min(3, 'Tên của bạn phải có ít nhất 3 ký tự')
+            .min(2, 'Tên của bạn phải có ít nhất 2 ký tự')
             .max(20, 'Tên của bạn không được vượt quá 20 ký tự'),
         email: Yup.string()
             .email('Địa chỉ email không hợp lệ')
