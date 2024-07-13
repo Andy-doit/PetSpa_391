@@ -8,7 +8,7 @@ export interface createServiceInput {
     minWeight: number,
     maxWeight: number,
     tags: string
-
+    servicePhoto: string
 }
 export interface allOrderBookingPaginationData {
     id: string,
@@ -95,7 +95,7 @@ export interface updateProfileShopInput {
     firstName: string | undefined | null,
     lastName: string | undefined | null,
     email: string | undefined | null,
-    phone: string| undefined | null ,
+    phone: string | undefined | null,
     profileImageUrl: string
 }
 export interface ShopPage {
@@ -230,7 +230,7 @@ export interface allServicePaginationData {
     maxWeight: number,
     nomination: number,
     tags: string,
-
+    servicePhoto: string
 
 }
 export interface BookingComplete {

@@ -1,6 +1,6 @@
 'use client'
 import 'intro.js/introjs.css';
-import { Card, Image, Button, Checkbox, DatePicker, Input, Textarea, Link, Select, SelectItem, cn, User } from "@nextui-org/react";
+import { Card, Image, Button, Checkbox, DatePicker, Input, Textarea, Link, Select, SelectItem, cn, User, Avatar } from "@nextui-org/react";
 import { useEffect, useState } from "react";
 import { today, getLocalTimeZone, CalendarDate } from "@internationalized/date";
 import { ServiceDetail, createBookingInput, getTimeSlot } from "@/models/bookingModels";
@@ -10,6 +10,8 @@ import getAccessAndRefreshCookie from '@/utilities/authUtils/getCookieForValidat
 import { useRouter } from 'next/navigation';
 import { allPetPaginationData } from '@/models/userModels';
 import { fetchAllPetPagination } from '@/lib/redux/slice/userSlice';
+import { FcPlus } from 'react-icons/fc';
+import uploadFile from '@/utils/upload';
 
 
 
@@ -32,6 +34,7 @@ export default function BookingPage(
         };
         fetchUid();
     }, [userId]);
+    const [previewImage, setPreviewImage] = useState("");
     const [showNote, setShowNote] = useState(false);
     const [service, setService] = useState<ServiceDetail | any>();
     const dispatch = useAppDispatch();
@@ -74,6 +77,7 @@ export default function BookingPage(
         petWeight: 0,
         petId: '',
         petGender: '',
+        petPhoto: ''
     });
 
     const router = useRouter();
@@ -105,6 +109,20 @@ export default function BookingPage(
         }));
         setShowNote(true);
     };
+    const handleUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+        if (event.target && event.target.files && event.target.files[0]) {
+            const file = event.target.files[0];
+            const fileName = file.name; // Get the file name
+            const fileUrl = await uploadFile(fileName, file); // Upload the file and get URL
+
+            // Update state with the file URL
+            setBookingData(prevData => ({
+                ...prevData,
+                petPhoto: fileUrl,
+            }));
+            setPreviewImage(fileUrl)
+        }
+    };
     const [isSelected, setIsSelected] = useState('');
 
     const handleCheckboxChange = (selected: any) => {
@@ -123,6 +141,7 @@ export default function BookingPage(
                 petAge: selectedPet.petAge,
                 petWeight: selectedPet.petWeight,
                 petGender: selectedPet.petGender,
+                petPhoto: selectedPet.petPhoto
             }));
         }
         setSelectedPetId(petId);
@@ -352,8 +371,25 @@ export default function BookingPage(
                                         </div>
 
                                     </div>
-                                </div>
 
+
+                                </div>
+                                <div>
+                                    <div className="mb-4 flex justify-center mt-4">
+                                        <label className="form-label label-upload cursor-pointer inline-flex items-center" htmlFor="label-upload">
+                                            <FcPlus className="mr-2" /> Ảnh thú cưng
+                                        </label>
+                                        <input type="file" hidden id="label-upload" onChange={(event) => handleUpload(event)} />
+                                    </div>
+                                    <div className="flex justify-center items-center">
+                                        {previewImage ? (
+                                            <img src={previewImage} alt="Preview" className="w-24 h-24 object-cover" />
+                                        ) : (
+                                            <span>Ảnh thú cưng</span>
+                                        )}
+                                    </div>
+
+                                </div>
                             </div>
                             <div className='mb-2'>
                                 <div className=" flex  justify-center">
@@ -388,7 +424,11 @@ export default function BookingPage(
                                                     label: "w-full",
                                                 }}
                                             >
-                                                <div className="w-full flex justify-between bg-white bg-opacity-85 p-1 rounded-lg">
+                                                <div className="w-full flex justify-between bg-white bg-opacity-90 p-1 rounded-lg">
+                                                    <div className='flex '>
+
+                                                        <Avatar src={petinfor.petPhoto} size="sm" />
+                                                    </div>
                                                     <div className='flex '>
                                                         <p className='mr-2 '>Tên thú cưng: </p>
                                                         <p className='font-bold '>{petinfor.petName}</p>

@@ -26,7 +26,7 @@ export interface UserInfor {
 
 }
 export interface Image {
-    profileImageUrl : string
+    profileImageUrl: string
 }
 export interface passwordInfor {
     id: string,
@@ -55,6 +55,7 @@ export interface updatePasswordInput {
 
 }
 export interface updatePasswordInputHomePage {
+    token: string,
     newPassword: string,
     confirmPassword: string,
 

@@ -24,6 +24,7 @@ export default function Confirm() {
         petWeight: 0,
         petId: '',
         petGender: '',
+        petPhoto: ''
     });
     console.log(bookingData)
     const [serviceData, setServiceData] = useState({
