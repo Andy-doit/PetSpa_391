@@ -42,6 +42,7 @@ export default function ModalUpdateServiceProps({ params, refetchPets }: { param
         maxWeight: params.maxWeight,
         serviceDescription: params.serviceDescription,
         tags: params.tags,
+        servicePhoto: params.tags
     });
     const resetForm = () => {
         setServiceData({
@@ -54,6 +55,7 @@ export default function ModalUpdateServiceProps({ params, refetchPets }: { param
             minWeight: 0,
             maxWeight: 0,
             tags: 'tags1',
+            servicePhoto: ''
         });
         setValidationErrors([]);
     };
