@@ -104,7 +104,7 @@ export interface ShopInput {
     isAvailable: boolean,
     shopEmail: string,
     shopTitle: string,
-
+    shopProfileImangeUrl: string
 }
 export interface AllShopTimeSlotIn4 {
     shopId: string,

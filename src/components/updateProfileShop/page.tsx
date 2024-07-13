@@ -7,9 +7,11 @@ import { updateShopInfor } from "@/lib/redux/slice/shopSlice";
 import getAccessAndRefreshCookie from "@/utilities/authUtils/getCookieForValidation";
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import uploadFile from "@/utils/upload";
+import { FcPlus } from "react-icons/fc";
 
 export default function UpdateProfileShop({ params, onUpdate }: { params: shopInfor, onUpdate: () => void }) {
-    const { isOpen, onOpen, onOpenChange } = useDisclosure();
+    const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
     const [isLoading, setIsLoading] = useState(false);
     const [isEditing, setIsEditing] = useState(false);
     const [originalShopData, setOriginalShopData] = useState<ShopInput>(params);
@@ -61,7 +63,7 @@ export default function UpdateProfileShop({ params, onUpdate }: { params: shopIn
         if (!shopData.shopEmail || !/^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/.test(shopData.shopEmail)) {
             errors.push('Email không hợp lệ');
         }
-        if (!shopData.shopPhone ||  !/^0\d{9}$/.test(shopData.shopPhone)) {
+        if (!shopData.shopPhone || !/^0\d{9}$/.test(shopData.shopPhone)) {
             errors.push('Số điện thoại phải là số và có đúng 10 chữ số và bắt đầu bằng số 0');
         }
         if (!shopData.openTime) {
@@ -93,8 +95,22 @@ export default function UpdateProfileShop({ params, onUpdate }: { params: shopIn
 
         return errors;
     };
+    const [previewImage, setPreviewImage] = useState("");
     const dispatch = useAppDispatch();
+    const handleUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+        if (event.target && event.target.files && event.target.files[0]) {
+            const file = event.target.files[0];
+            const fileName = file.name; // Get the file name
+            const fileUrl = await uploadFile(fileName, file); // Upload the file and get URL
 
+            // Update state with the file URL
+            setShopData(prevData => ({
+                ...prevData,
+                shopProfileImangeUrl: fileUrl,
+            }));
+            setPreviewImage(fileUrl)
+        }
+    };
     const handleInputChange = (fieldName: string, newValue: string) => {
         setShopData(prevData => ({
             ...prevData,
@@ -126,7 +142,6 @@ export default function UpdateProfileShop({ params, onUpdate }: { params: shopIn
         setIsEditing(false);
         setShopData(originalShopData);
     };
-
     const handleUpdate = async () => {
         const errors = validateInput();
         if (errors.length > 0) {
@@ -156,7 +171,7 @@ export default function UpdateProfileShop({ params, onUpdate }: { params: shopIn
     return (
         <>
             <Button onPress={handleEditClick} >Chỉnh sửa thông tin</Button>
-            <Modal size="2xl" isOpen={isEditing} onOpenChange={onOpenChange} isDismissable={false} isKeyboardDismissDisabled={true}>
+            <Modal size="2xl" isOpen={isEditing} onClose={handleCancelClick} onOpenChange={onOpenChange} isDismissable={false} isKeyboardDismissDisabled={true}>
                 <ModalContent>
                     {(onClose) => (
                         <>
@@ -278,6 +293,21 @@ export default function UpdateProfileShop({ params, onUpdate }: { params: shopIn
                                                     label="Mô tả"
                                                     className="w-full"
                                                 />
+                                            </div>
+                                        </div>
+                                        <div className="flex flex-col mb-4">
+                                            <div className="mb-4">
+                                                <label className="form-label label-upload cursor-pointer inline-flex items-center" htmlFor="label-upload">
+                                                    <FcPlus className="mr-2" /> Ảnh đại diện
+                                                </label>
+                                                <input type="file" hidden id="label-upload" onChange={(event) => handleUpload(event)} />
+                                            </div>
+                                            <div className="flex justify-center items-center">
+                                                {previewImage ? (
+                                                    <img src={previewImage} alt="Preview" className="max-w-full h-auto" />
+                                                ) : (
+                                                    <span>Ảnh đại diện </span>
+                                                )}
                                             </div>
                                         </div>
                                     </div>

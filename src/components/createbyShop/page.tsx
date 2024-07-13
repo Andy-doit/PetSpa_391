@@ -26,6 +26,7 @@ export default function CreateShop({ userId, onCreate }: { userId: string, onCre
         isAvailable: true,
         shopEmail: '',
         shopTitle: '',
+        shopProfileImangeUrl: ''
     });
     const resetForm = () => {
         setShopData({
@@ -40,6 +41,7 @@ export default function CreateShop({ userId, onCreate }: { userId: string, onCre
             isAvailable: true,
             shopEmail: '',
             shopTitle: '',
+            shopProfileImangeUrl: ''
         });
         setValidationErrors([]);
     };
@@ -331,7 +333,7 @@ export default function CreateShop({ userId, onCreate }: { userId: string, onCre
                                 <div className="flex flex-col mb-4">
                                     <div className="mb-4">
                                         <label className="form-label label-upload cursor-pointer inline-flex items-center" htmlFor="label-upload">
-                                            <FcPlus className="mr-2" /> Upload file image
+                                            <FcPlus className="mr-2" /> Ảnh đại diện
                                         </label>
                                         <input type="file" hidden id="label-upload" onChange={(event) => handleUpload(event)} />
                                     </div>
@@ -339,7 +341,7 @@ export default function CreateShop({ userId, onCreate }: { userId: string, onCre
                                         {previewImage ? (
                                             <img src={previewImage} alt="Preview" className="max-w-full h-auto" />
                                         ) : (
-                                            <span>preview image</span>
+                                            <span>Ảnh đại diện </span>
                                         )}
                                     </div>
                                 </div>

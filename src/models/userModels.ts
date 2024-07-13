@@ -20,7 +20,7 @@ export interface UserInfor {
     lastName: string,
     email: string,
     phone: number,
-    profileImageUrl: string | undefined | null,
+    profileImageUrl: string,
     coverImageUrl: string | undefined | null,
     birthday: string | undefined | null,
 
@@ -41,7 +41,7 @@ export interface updateProfileInput {
     lastName: string | undefined | null,
     email: string | undefined | null,
     phone: number | undefined | null,
-
+    profileImageUrl: string
 }
 export interface updatePasswordInput {
     id: string,

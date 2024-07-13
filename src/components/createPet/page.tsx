@@ -281,7 +281,7 @@ export default function CreatePet({ userId, refetchPets }: { userId: string, ref
                                 <div className="flex flex-col mb-4">
                                     <div className="mb-4">
                                         <label className="form-label label-upload cursor-pointer inline-flex items-center" htmlFor="label-upload">
-                                            <FcPlus className="mr-2" /> Upload file image
+                                            <FcPlus className="mr-2" /> Ảnh thú cưng
                                         </label>
                                         <input type="file" hidden id="label-upload" onChange={(event) => handleUpload(event)} />
                                     </div>
@@ -289,7 +289,7 @@ export default function CreatePet({ userId, refetchPets }: { userId: string, ref
                                         {previewImage ? (
                                             <img src={previewImage} alt="Preview" className="max-w-full h-auto" />
                                         ) : (
-                                            <span>preview image</span>
+                                            <span>Ảnh thú cưng</span>
                                         )}
                                     </div>
                                 </div>
