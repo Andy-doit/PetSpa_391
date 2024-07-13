@@ -27,6 +27,7 @@ export interface UserInfor {
 }
 export interface passwordInfor {
     id: string,
+    profileImageUrl :string,
     firstName: string,
     lastName: string,
     oldPassword: string | undefined | null,

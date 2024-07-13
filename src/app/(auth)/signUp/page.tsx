@@ -43,13 +43,11 @@ export default function SignUp() {
         firstName: Yup.string()
             .required('Họ là bắt buộc')
             .min(2, 'Tên Họ phải có ít nhất 2 ký tự')
-            .max(20, 'Tên Họ không được vượt quá 20 ký tự')
-            .matches(/^[a-zA-Z]+$/, 'Tên Họ không được chứa số hoặc kí tự đặc biệt'),
+            .max(20, 'Tên Họ không được vượt quá 20 ký tự'),
         lastName: Yup.string()
             .required('Tên là bắt buộc')
             .min(3, 'Tên của bạn phải có ít nhất 3 ký tự')
-            .max(20, 'Tên của bạn không được vượt quá 20 ký tự')
-            .matches(/^[a-zA-Z]+$/, 'Tên của bạn không được chứa số hoặc kí tự đặc biệt'),
+            .max(20, 'Tên của bạn không được vượt quá 20 ký tự'),
         email: Yup.string()
             .email('Địa chỉ email không hợp lệ')
             .required('Email là bắt buộc'),
