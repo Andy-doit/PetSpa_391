@@ -1,7 +1,6 @@
 'use client'
 import { useState } from 'react';
-import { useRouter } from 'next/router';
-import { useDispatch } from 'react-redux';
+import { useRouter } from 'next/navigation';
 import { Button, Card, CardBody, CardFooter, CardHeader, Input } from '@nextui-org/react';
 import { ClipLoader } from 'react-spinners';
 import { ToastContainer, toast } from 'react-toastify';
@@ -12,10 +11,11 @@ import { FaArrowAltCircleLeft } from 'react-icons/fa';
 import Link from 'next/link';
 import { forrgotPasswordPagination } from '@/lib/redux/slice/userSlice'; // Adjust import path as per your setup
 import { ForgotPasswordInput } from '@/models/userModels'; // Adjust import path as per your setup
+import { useAppDispatch } from '@/lib/redux/store';
 
 export default function Forgot() {
-    // const router = useRouter();
-    const dispatch = useDispatch();
+    const router = useRouter();
+    const dispatch = useAppDispatch();
     const [isLoading, setIsLoading] = useState(false);
     const [formData, setFormData] = useState<ForgotPasswordInput>({
         email: '',
@@ -30,31 +30,30 @@ export default function Forgot() {
     };
 
     const handleCancelClick = () => {
-        // router.replace('/logIn');
+        router.replace('/logIn');
     };
 
     const handleUpdate = async () => {
-        // try {
-        //     setIsLoading(true);
-        //     const actionResult = await dispatch(forrgotPasswordPagination({ formData }));
-        //     const result = actionResult.payload; // Assuming payload contains the response data
-        //     toast.success('Gửi thành công, hãy xác nhận Email');
-        //     setTimeout(() => {
-        //         router.replace('/password');
-        //     }, 2000);
-        // } catch (error) {
-        //     setIsLoading(false);
-        //     toast.error('Gửi không thành công. Vui lòng thử lại.');
-        // } finally {
-        //     setIsLoading(false);
-        // }
+        try {
+            setIsLoading(true);
+            await dispatch(forrgotPasswordPagination({ formData })).unwrap();
+            toast.success('Gửi thành công, hãy xác nhận Email');
+            setTimeout(() => {
+                router.replace('/password');
+            }, 2000);
+        } catch (error) {
+            setIsLoading(false);
+            toast.error('Gửi không thành công. Vui lòng thử lại.');
+        } finally {
+            setIsLoading(false);
+        }
     };
 
     return (
         <section className="h-screen">
             <Button
                 startContent={<FaArrowAltCircleLeft />}
-                // onClick={() => router.push('/')}
+                onClick={() => router.push('/')}
                 className="bg-gradient-to-tr absolute m-5 from-pink-500 to-yellow-500 text-white shadow-lg"
             >
                 Trở về trang chủ
