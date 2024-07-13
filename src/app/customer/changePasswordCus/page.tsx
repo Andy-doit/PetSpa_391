@@ -136,7 +136,7 @@ export default function Profile() {
             </div>
             <div className='container relative'>
                 <div className='justify-center flex items-center'>
-                    <Avatar src="https://i.pravatar.cc/150?u=a04258114e29026302d" size="lg" />
+                    <Avatar src={items?.profileImageUrl} size="lg" />
                 </div>
 
                 <div className='justify-center flex items-center mt-2'>
