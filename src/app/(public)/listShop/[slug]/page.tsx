@@ -98,7 +98,7 @@ export default function ProfileShopOwner({ params }: { params: { slug: string } 
                                 <Avatar
                                     className="w-20 h-20 text-large mr-5"
                                     radius="full"
-                                    src="https://i.pinimg.com/564x/09/05/5b/09055b06494c0fb44e4c68f20123f88a.jpg"
+                                    src={shopIn4?.shopProfileImangeUrl}
                                 />
                                 <div className="flex flex-col">
                                     <p className="text-4xl font-extrabold text-orange-600 ">{shopIn4?.shopName}</p>
