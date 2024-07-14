@@ -67,13 +67,13 @@ export default function ChangePassword({ params }: { params: { slug: string } })
         try {
             setIsLoading(true);
             await dispatch(updatePasswordHomePage({ passWordData })).unwrap();
-            toast.success('Gửi thành công, hãy xác nhận Email');
+            toast.success('Đổi mật khẩu thành công');
             setTimeout(() => {
                 router.replace('/logIn');
             }, 2000);
         } catch (error) {
             setIsLoading(false);
-            toast.error('Gửi không thành công. Vui lòng thử lại.');
+            toast.error('Đôi không thành công. Vui lòng thử lại.');
         } finally {
             setIsLoading(false);
         }
