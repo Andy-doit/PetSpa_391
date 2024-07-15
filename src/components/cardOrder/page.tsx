@@ -1,5 +1,5 @@
 'use client'
-import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Pagination, getKeyValue, Dropdown, DropdownTrigger, Button, DropdownMenu, DropdownItem, Chip } from "@nextui-org/react";
+import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Pagination, getKeyValue, Dropdown, DropdownTrigger, Button, DropdownMenu, DropdownItem, Chip, Avatar } from "@nextui-org/react";
 import React, { useEffect, useState } from "react";
 import OrderDetail from "../orderDetail/page";
 import { allBookingPaginationData } from "@/models/userModels";
@@ -78,8 +78,19 @@ export default function CardOrder() {
                                         "Lỗi"
                                     }
                                 </TableCell>
-                                <TableCell>{service.petName || "Lỗi"}</TableCell>
-                                <TableCell>{service.shopName || "Lỗi"}</TableCell>
+                                <TableCell>
+
+                                    <div className="flex items-center">
+                                        <Avatar src={service.petPhoto} alt="Pet" className="w-10 h-10 rounded-full mr-2" />
+                                        {service.petName || "Lỗi"}
+                                    </div>
+                                </TableCell>
+                                <TableCell>
+
+                                    {service.shopName || "Lỗi"}
+
+                                </TableCell>
+
                                 <TableCell>
                                     <Chip color={getColor(service.status)}>{getStatusLabel(service.status)}</Chip>
                                 </TableCell>

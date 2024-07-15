@@ -25,6 +25,7 @@ export interface allOrderBookingPaginationData {
     shopName: string,
     petId: string,
     petName: string,
+    petPhoto: string
 }
 export interface allOrderBookingPaginationResponse {
     success: boolean;
@@ -56,6 +57,7 @@ export interface ServiceInfor {
     maxWeight: number | undefined | null,
     nomination: number | undefined | null,
     tags: string | undefined | null
+    servicePhoto: string
 }
 export interface shopInfor {
     id: string,
@@ -181,7 +183,7 @@ export interface AllFeedbackOfService {
     ratingType: string,
     localDateTime: string,
     edited: boolean,
-
+    userPhoto: string
 }
 export interface AllFeedbackOfServiceResponse {
     success: boolean;

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Modal, ModalContent, Button, Chip } from "@nextui-org/react";
+import { Modal, ModalContent, Button, Chip, Avatar, Image } from "@nextui-org/react";
 import CancelBooking from "../cancelBooking/page";
 import CreateFeedback from "../createFeedback/page";
 import { BookingDetail } from "@/models/userModels";
@@ -79,6 +79,7 @@ export default function OrderDetail({ params }: { params: string }) {
                                 className="rounded-lg p-6"
                                 style={{
                                     backgroundImage: `url("https://i.pinimg.com/564x/11/e5/bd/11e5bd4736dbf8f404eb90bf306a0562.jpg")`,
+                                    // backgroundImage: `${booking.servicePhoto}`,
                                     backgroundRepeat: 'no-repeat',
                                     backgroundSize: "cover",
                                 }}
@@ -100,25 +101,44 @@ export default function OrderDetail({ params }: { params: string }) {
                                         <div className="flex">
                                             <div>
                                                 <p className="text-xl font-light">Loại thú cưng</p>
-                                                <p className="text-xl font-light">Tên thú cưng</p>
-                                                <p className="text-xl font-light">Cân nặng</p>
-                                                <p className="text-xl font-light">Khung giờ</p>
-                                                <p className="text-xl font-light">Ngày đặt</p>
-                                                <p className="text-xl font-light">Ghi chú</p>
+                                                <p className="text-xl font-light mb-5 mt-5">Tên thú cưng</p>
+                                                <p className="text-xl font-light mt-8">Cân nặng</p>
+                                                <p className="text-xl font-light mt-2">Khung giờ</p>
+                                                <p className="text-xl font-light mt-2">Ngày đặt</p>
+                                                <p className="text-xl font-light mt-2">Ghi chú</p>
+                                                <p className="text-xl font-light mt-5">Hình ảnh dịch vụ</p>
                                             </div>
                                             <div className="ml-6">
                                                 <p className="text-xl font-medium">{booking.typePet === 'DOG' ? 'Chó' : (booking.typePet === 'CAT' ? 'Mèo' : 'Không có gì')}</p>
-                                                <p className="text-xl font-medium">{booking.petName}</p>
+                                                <p className="text-xl font-medium mb-5 flex justify-center mt-5 mr-10"><Avatar className="mr-5" isBordered radius="sm" src={booking.petPhoto} />{booking.petName} </p>
                                                 <p className="text-xl font-medium">{booking.petWeight}</p>
-                                                <p className="text-xl font-medium">{booking.startTime} - {booking.endTime}</p>
-                                                <p className="text-xl font-medium">{booking.localDate}</p>
-                                                <p className="text-xl font-medium">{booking.bookingNote}</p>
+                                                <p className="text-xl font-medium mt-2">{booking.startTime} - {booking.endTime}</p>
+                                                <p className="text-xl font-medium mt-2">{booking.localDate}</p>
+                                                <p className="text-xl font-medium mt-2">{booking.bookingNote}</p>
+                                                <div className="flex items-center justify-center mt-5">
+                                                    <div className="flex items-center justify-center">
+                                                        {booking?.servicePhoto ? (
+                                                            <Image
+                                                                width={200}
+                                                                height={100}
+                                                                src={booking.servicePhoto}
+                                                                fallbackSrc="https://via.placeholder.com/300x200"
+                                                                alt="NextUI Image with fallback"
+                                                            />
+                                                        ) : (
+                                                            <p className="text-center text-xl text-gray-500">Không có ảnh dịch vụ</p>
+                                                        )}
+                                                    </div>
+                                                </div>
+
+
+
                                             </div>
                                         </div>
                                         <div className="flex justify-end items-end">
                                             {booking.status === 'SCHEDULED' && <CancelBooking params={params} />}
                                             {booking.status === 'NEED_CONFIRM' && <ConfirmBooking params={booking.id} />}
-                                            {booking.status === 'NEED_CONFIRM' &&  <CancelBooking params={params} />}
+                                            {booking.status === 'NEED_CONFIRM' && <CancelBooking params={params} />}
 
                                             {booking.status === 'COMPLETED' && <CreateFeedback shopData={booking} />}
                                         </div>
@@ -127,7 +147,7 @@ export default function OrderDetail({ params }: { params: string }) {
                             </div>
                         </div>
                     )}
-                </ModalContent> 
+                </ModalContent>
             </Modal>
         </div>
     );

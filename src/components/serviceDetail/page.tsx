@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import {
     Modal, ModalContent, Button, useDisclosure, Link, Spinner,
-    Card, CardHeader, Avatar, CardBody, Divider, CardFooter
+    Card, CardHeader, Avatar, CardBody, Divider, CardFooter,
+    Image
 } from "@nextui-org/react";
 import { ServiceDetail } from "@/models/bookingModels";
 import { useAppDispatch } from "@/lib/redux/store";
@@ -12,7 +13,6 @@ import { AllFeedbackOfService } from "@/models/shopModel";
 import { fetchAllFeedback } from "@/lib/redux/slice/shopSlice";
 import DeleteFeedback from "../deleteFeedback/page";
 import getAccessAndRefreshCookie from "@/utilities/authUtils/getCookieForValidation";
-
 export default function DetailService({ id }: { id: string }) {
     const getRatingTypeLabel = (ratingType: string) => {
         switch (ratingType) {
@@ -98,6 +98,7 @@ export default function DetailService({ id }: { id: string }) {
                             className="rounded-lg p-6"
                             style={{
                                 backgroundImage: `url("https://i.pinimg.com/564x/11/e5/bd/11e5bd4736dbf8f404eb90bf306a0562.jpg")`,
+                                // backgroundImage: `${service?.servicePhoto}`,
                                 backgroundRepeat: 'no-repeat',
                                 backgroundSize: "cover",
                             }}
@@ -120,7 +121,25 @@ export default function DetailService({ id }: { id: string }) {
                                 </Link>
                             </div>
                             <p className="text-2xl font-medium">Giới thiệu</p>
-                            <p className="text-xl">{service?.serviceDescription}</p>
+                            <p className="text-xl">
+                                {service?.serviceDescription ? service.serviceDescription : "Không có mô tả dịch vụ"}
+                            </p>
+
+                            <p className="text-2xl font-medium">Hình ảnh dịch vụ</p>
+                            <p className="text-xl mt-5 mb-5 flex justify-center">
+                                {service?.servicePhoto ? (
+                                    <Image
+                                        className="object-cover"
+                                        width={400}
+                                        height={300}
+                                        src={service?.servicePhoto}
+                                        alt="NextUI hero Image"
+                                    />
+                                ) : (
+                                    <p className="text-center text-xl text-gray-500">Không có hình ảnh dịch vụ</p>
+                                )}
+                            </p>
+
                             <p className="text-2xl mt-2 font-medium">Bảng giá</p>
                             <div className="mt-3">
                                 <PriceTable />
@@ -138,7 +157,7 @@ export default function DetailService({ id }: { id: string }) {
                                                 <Card key={index} className="w-full mt-4">
                                                     <CardHeader className="justify-between">
                                                         <div className="flex gap-5">
-                                                            <Avatar isBordered radius="full" size="md" src="https://nextui.org/avatars/avatar-1.png" />
+                                                            <Avatar isBordered radius="full" size="md" src={item.userPhoto} />
                                                             <div className="flex flex-col gap-1 items-start justify-center">
                                                                 <h4 className="text-large font-bold leading-none text-default-600 uppercase">{item.userName}</h4>
                                                                 <p className="font-semibold text-orange-600">{getRatingTypeLabel(item.ratingType)}</p>

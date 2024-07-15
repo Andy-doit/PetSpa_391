@@ -1,6 +1,6 @@
 'use client'
 import React, { useEffect, useState } from "react";
-import { Input, Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Spinner } from "@nextui-org/react";
+import { Input, Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Spinner, Image, Avatar } from "@nextui-org/react";
 import { allServicePaginationData } from "@/models/shopModel";
 import getAccessAndRefreshCookie from "@/utilities/authUtils/getCookieForValidation";
 import ModalCreateService from "@/components/modalCreateService/page";
@@ -109,8 +109,12 @@ const ManageService = () => {
                             <TableBody>
                                 {service.map((sp) => (
                                     <TableRow key={sp.id}>
-                                        <TableCell>
-                                            <img src={sp.servicePhoto} />
+                                        <TableCell >
+                                            <div className="flex items-center ml-4">
+                                                <Avatar isBordered radius="sm" src={sp.servicePhoto} />
+                                            </div>
+
+
                                         </TableCell>
                                         <TableCell>{sp.serviceName}</TableCell>
                                         <TableCell>{sp.price}</TableCell>

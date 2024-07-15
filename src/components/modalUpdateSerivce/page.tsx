@@ -7,6 +7,8 @@ import { fetchAllServicePagination, updateService } from "@/lib/redux/slice/shop
 import { useAppDispatch } from '@/lib/redux/store';
 import { toast } from 'react-toastify';
 import { ClipLoader } from "react-spinners";
+import { FcPlus } from "react-icons/fc";
+import uploadFile from "@/utils/upload";
 
 export default function ModalUpdateServiceProps({ params, refetchPets }: { params: allServicePaginationData, refetchPets: () => void }) {
     const [userId, setUserId] = useState<string>('');
@@ -91,7 +93,21 @@ export default function ModalUpdateServiceProps({ params, refetchPets }: { param
     };
 
 
+    const [previewImage, setPreviewImage] = useState("");
+    const handleUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+        if (event.target && event.target.files && event.target.files[0]) {
+            const file = event.target.files[0];
+            const fileName = file.name; // Get the file name
+            const fileUrl = await uploadFile(fileName, file); // Upload the file and get URL
 
+            // Update state with the file URL
+            setServiceData(prevData => ({
+                ...prevData,
+                servicePhoto: fileUrl,
+            }));
+            setPreviewImage(fileUrl)
+        }
+    };
     // console.log(serviceData)
     useEffect(() => {
         if (userId) {
@@ -245,6 +261,21 @@ export default function ModalUpdateServiceProps({ params, refetchPets }: { param
                                             errorMessage={validationErrors.find(err => err.includes('Mô tả'))}
                                             value={serviceData.serviceDescription}
                                         />
+                                    </div>
+                                    <div className="flex flex-col mb-4">
+                                        <div className="mb-4">
+                                            <label className="form-label label-upload cursor-pointer inline-flex items-center" htmlFor="label-upload">
+                                                <FcPlus className="mr-2" /> Chỉnh sửa ảnh dịch vụ
+                                            </label>
+                                            <input type="file" hidden id="label-upload" onChange={(event) => handleUpload(event)} />
+                                        </div>
+                                        <div className="flex justify-center items-center">
+                                            {previewImage ? (
+                                                <img src={previewImage} alt="Preview" className="max-w-full h-auto" />
+                                            ) : (
+                                                <span>Ảnh của dịch vụ </span>
+                                            )}
+                                        </div>
                                     </div>
                                     <div className="flex w-full justify-around">
                                         <Button className="mr-3 w-full" onPress={handleClose}>Huỷ</Button>
