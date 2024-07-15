@@ -61,7 +61,7 @@ export interface ServiceDetail {
     minWeight: number,
     maxWeight: number,
     shopName: string,
-
+    servicePhoto: string
 }
 export interface bookingCreateResponseSuccess {
     status: number;
