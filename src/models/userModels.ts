@@ -10,7 +10,7 @@ export interface allBookingPaginationData {
         startLocalDateTime: string | undefined | null,
         endLocalDateTime: string | undefined | null,
     }
-
+    petPhoto: string
 }
 export interface UserInfor {
     id: string,
@@ -104,10 +104,10 @@ export interface BookingDetail {
     typePet: string,
     petName: string,
     petWeight: number,
-
+    servicePhoto: string
     done: boolean,
     canceled: boolean,
-
+    petPhoto: string
 }
 export interface createPetInput {
     id: string,
@@ -245,6 +245,7 @@ export interface AllNominationOfShop {
     userName: string,
     userId: number,
     nominationType: string,
+    userPhoto: string
 }
 export interface CheckNomi {
     id: number,

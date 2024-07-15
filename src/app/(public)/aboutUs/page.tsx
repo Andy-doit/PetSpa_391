@@ -28,12 +28,16 @@ const AboutPage = () => {
                             isZoomed
 
                             alt="NextUI Fruit Image with Zoom"
-                            src="https://nextui-docs-v2.vercel.app/images/fruit-1.jpeg"
+                            src="https://cdn.dribbble.com/userupload/10217473/file/original-8a82d0536ca4890ead44ce637d29f1a3.png?resize=1200x871"
                         />
                         <h2 className="text-xl font-bold mb-2">Nhiệm Vụ Của Chúng Tôi</h2>
                         <p className="mt-4">
                             Chúng tôi cam kết cung cấp dịch vụ spa và chăm sóc thú cưng chất lượng cao,
                             đảm bảo sức khỏe và hạnh phúc của thú cưng là ưu tiên hàng đầu của chúng tôi.
+                            Với các dịch vụ đa dạng như tắm rửa, cắt tỉa lông, massage thư giãn, và chăm sóc móng,
+                            chúng tôi mang đến cho thú cưng của bạn những trải nghiệm tuyệt vời nhất.
+
+
                         </p>
                     </div>
 
@@ -42,12 +46,16 @@ const AboutPage = () => {
                             isZoomed
 
                             alt="NextUI Fruit Image with Zoom"
-                            src="https://nextui-docs-v2.vercel.app/images/fruit-1.jpeg"
+                            src="https://cdn.dribbble.com/users/8413880/screenshots/16500216/media/6a4c2f18aa816c59b18183bcb4baa975.jpg?resize=840x630&vertical=center"
                         />
                         <h2 className="text-xl font-bold mb-2">Đội Ngũ Của Chúng Tôi</h2>
                         <p className="mt-4">
                             Đội ngũ của chúng tôi bao gồm các chuyên gia về thú cưng được đào tạo chuyên nghiệp,
-                            có kinh nghiệm và tận tâm trong việc chăm sóc thú cưng.
+                            có kinh nghiệm và tận tâm trong việc chăm sóc thú cưng. Chúng tôi tự hào về sự am hiểu sâu rộng về các giống loài,
+                            đặc điểm sinh học, cũng như nhu cầu cụ thể của từng loại thú cưng.
+
+
+
                         </p>
                     </div>
 
@@ -56,7 +64,7 @@ const AboutPage = () => {
                             isZoomed
 
                             alt="NextUI Fruit Image with Zoom"
-                            src="https://nextui-docs-v2.vercel.app/images/fruit-1.jpeg"
+                            src="https://cdn.dribbble.com/users/195330/screenshots/11226373/media/8ee6da89220000c441ea36ad5f5755e1.png?resize=840x630&vertical=center"
                         />
                         <h2 className="text-xl font-bold mb-2">Dịch Vụ Của Chúng Tôi</h2>
                         <p className="mt-4">

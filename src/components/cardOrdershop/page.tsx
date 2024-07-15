@@ -1,5 +1,5 @@
 'use client'
-import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Pagination, getKeyValue, Dropdown, DropdownTrigger, Button, DropdownMenu, DropdownItem, Chip, Spinner } from "@nextui-org/react";
+import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Pagination, getKeyValue, Dropdown, DropdownTrigger, Button, DropdownMenu, DropdownItem, Chip, Spinner, Avatar } from "@nextui-org/react";
 import React, { useEffect, useState } from "react";
 import { PiDotsSixVerticalDuotone } from "react-icons/pi";
 import OrderDetail from "../orderDetail/page";
@@ -58,7 +58,7 @@ export default function CardOrderShop() {
                             <TableColumn>Ngày đặt</TableColumn>
                             <TableColumn>Khung giờ</TableColumn>
                             <TableColumn>Tên khách hàng</TableColumn>
-                            <TableColumn>Loại thú cưng</TableColumn>
+                            <TableColumn>Tên thú cưng</TableColumn>
                             <TableColumn>Trạng thái</TableColumn>
                             <TableColumn > <span className="sr-only">Action</span></TableColumn>
                         </TableHeader>
@@ -76,7 +76,11 @@ export default function CardOrderShop() {
                                         }
                                     </TableCell>
                                     <TableCell>{service.customerFullName || "Lỗi"}</TableCell>
-                                    <TableCell>{service.petName || "Lỗi"}</TableCell>
+                                    <TableCell>
+
+                                        {service.petName || "Lỗi"}
+
+                                    </TableCell>
                                     <TableCell>
                                         <Chip color={getColor(service.status)}>{service.status || "Lỗi"}</Chip>
                                     </TableCell>

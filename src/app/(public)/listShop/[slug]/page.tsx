@@ -12,6 +12,7 @@ import CreateNomiation from "@/components/createNomiation/page";
 import { AllNominationOfShop, CheckNomi } from "@/models/userModels";
 import DeleteNomination from "@/components/deleteNomination/page";
 import getAccessAndRefreshCookie from "@/utilities/authUtils/getCookieForValidation";
+import { IoThermometer } from "react-icons/io5";
 
 export default function ProfileShopOwner({ params }: { params: { slug: string } }) {
     const [IdUser, setUid] = useState<number | null>(null);
@@ -222,7 +223,7 @@ export default function ProfileShopOwner({ params }: { params: { slug: string } 
                                                 <Card key={item.id} className="w-full mt-4">
                                                     <CardHeader className="justify-between">
                                                         <div className="flex gap-5">
-                                                            <Avatar isBordered radius="full" size="md" src="https://nextui.org/avatars/avatar-1.png" />
+                                                            <Avatar isBordered radius="full" size="md" src={item.userPhoto} />
                                                             <div className="flex flex-col gap-1 items-start justify-center">
                                                                 <h4 className="text-large font-bold leading-none text-default-600 uppercase">{item.userName}</h4>
                                                                 <p className="font-semibold text-orange-600">{getNominationLabel(item.nominationType)}</p>

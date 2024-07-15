@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure, Tooltip, Card, CardHeader, Avatar, CardBody, CardFooter, Divider, Spinner } from "@nextui-org/react";
+import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure, Tooltip, Card, CardHeader, Avatar, CardBody, CardFooter, Divider, Spinner, Image } from "@nextui-org/react";
 import { FaEye } from "react-icons/fa";
 import { AllFeedbackOfService, ServiceInfor } from "@/models/shopModel";
 import { useAppDispatch } from "@/lib/redux/store";
@@ -87,6 +87,19 @@ export default function ModalViewServiceProps({ params }: { params: string }) {
                             <div className="text-xl font-medium">{shop?.maxWeight || "Không có"}</div>
                             <div className="text-xl font-light">Mô tả dịch vụ:</div>
                             <div className="text-xl font-medium">{shop?.serviceDescription || "Không có"}</div>
+                            <div className="text-xl font-light">Hình ảnh dịch vụ:</div>
+                            <div className="text-xl font-medium">
+
+                                <Image
+                                    width={300}
+                                    height={200}
+                                    src={shop?.servicePhoto}
+                                    fallbackSrc="https://via.placeholder.com/300x200"
+                                    alt="NextUI Image with fallback"
+                                />
+
+
+                            </div>
                         </div>
                     </ModalBody>
                     <Divider />
@@ -104,7 +117,7 @@ export default function ModalViewServiceProps({ params }: { params: string }) {
                                             <Card key={index} className="w-full mt-4">
                                                 <CardHeader className="justify-between">
                                                     <div className="flex gap-5">
-                                                        <Avatar isBordered radius="full" size="md" src="https://nextui.org/avatars/avatar-1.png" />
+                                                        <Avatar isBordered radius="full" size="md" src={item.userPhoto} />
                                                         <div className="flex flex-col gap-1 items-start justify-center">
                                                             <h4 className="text-large font-bold leading-none text-default-600 uppercase">{item.userName}</h4>
                                                             <p className="font-semibold text-orange-600">{getRatingTypeLabel(item.ratingType)}</p>

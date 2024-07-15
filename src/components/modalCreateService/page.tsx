@@ -274,7 +274,7 @@ export default function ModalCreateService({ userId, refetchPets }: { userId: st
                                 <div className="flex flex-col mb-4">
                                     <div className="mb-4">
                                         <label className="form-label label-upload cursor-pointer inline-flex items-center" htmlFor="label-upload">
-                                            <FcPlus className="mr-2" /> Ảnh thú cưng
+                                            <FcPlus className="mr-2" /> Ảnh dịch vụ
                                         </label>
                                         <input type="file" hidden id="label-upload" onChange={(event) => handleUpload(event)} />
                                     </div>
@@ -282,7 +282,7 @@ export default function ModalCreateService({ userId, refetchPets }: { userId: st
                                         {previewImage ? (
                                             <img src={previewImage} alt="Preview" className="max-w-full h-auto" />
                                         ) : (
-                                            <span>Ảnh thú cưng</span>
+                                            <span>Ảnh dịch vụ</span>
                                         )}
                                     </div>
                                 </div>
