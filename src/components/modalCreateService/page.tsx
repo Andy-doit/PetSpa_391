@@ -280,7 +280,7 @@ export default function ModalCreateService({ userId, refetchPets }: { userId: st
                                     </div>
                                     <div className="flex justify-center items-center">
                                         {previewImage ? (
-                                            <img src={previewImage} alt="Preview" className="max-w-full h-auto" />
+                                            <img src={previewImage} alt="Preview" className="w-[300px] h-[200px]" />
                                         ) : (
                                             <span>Ảnh dịch vụ</span>
                                         )}

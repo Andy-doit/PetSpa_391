@@ -62,7 +62,7 @@ export default function AccountCusDetail({ params }: { params: string }) {
                                     <p className="text-xl font-light">Tên người dùng</p>
                                     <p className="text-xl font-light">Số điện thoại</p>
 
-                                    <p className="text-xl font-light">Status</p>
+
                                 </div>
                                 <div className="ml-20">
                                     {customer ? (
@@ -73,7 +73,7 @@ export default function AccountCusDetail({ params }: { params: string }) {
                                             <p className="text-xl font-medium">{customer.username || "Không có gì"}</p>
                                             <p className="text-xl font-medium">{customer.phone || "Không có gì"}</p>
 
-                                            <p className="text-xl font-medium">{customer.isDeleted ? 'Đã dừng' : 'Đang hoạt động'}</p>
+
                                         </>
                                     ) : (
                                         <p className="text-xl font-medium">Không có gì</p>
@@ -84,7 +84,7 @@ export default function AccountCusDetail({ params }: { params: string }) {
                     </ModalBody>
                     <ModalFooter>
                         <Button color="danger" variant="light" onClick={onOpenChange}>
-                            Close
+                            Đóng
                         </Button>
                     </ModalFooter>
                 </ModalContent>

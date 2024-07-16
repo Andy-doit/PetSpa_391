@@ -133,7 +133,7 @@ export default function ProfileShopOwner({ params }: { params: { slug: string } 
                                     </div>
                                     <div className="flex justify-start items-center">
                                         <p className="text-xl font-light mr-1">Đánh giá: </p>
-                                        <p className="text-xl font-normal">{shopIn4?.nomination} đánh giá</p>
+                                        <p className="text-xl font-normal">{shopIn4?.nomination} điểm</p>
                                     </div>
                                 </div>
                             </CardBody>

@@ -73,10 +73,10 @@ export default function ManageAccount() {
 
                             <Table aria-label="Example static collection table" >
                                 <TableHeader>
-                                    <TableColumn>Tên Shop</TableColumn>
+                                    <TableColumn>Tên tài khoản shop</TableColumn>
                                     <TableColumn>Email</TableColumn>
                                     <TableColumn>Số điện thoại</TableColumn>
-                                    <TableColumn>Status</TableColumn>
+                                    {/* <TableColumn>Trạng thái</TableColumn> */}
                                     <TableColumn>Hành động</TableColumn>
                                 </TableHeader>
                                 <TableBody>
@@ -85,14 +85,14 @@ export default function ManageAccount() {
                                             <TableCell>{sp.username}</TableCell>
                                             <TableCell>{sp.email}</TableCell>
                                             <TableCell>{sp.phone}</TableCell>
-                                            <TableCell>
+                                            {/* <TableCell>
                                                 <span
                                                     className={`px-2 py-1 rounded-full text-xs text-white ${sp.isDeleted ? 'bg-red-500' : 'bg-green-500'}`}
                                                     style={{ opacity: 0.8 }}
                                                 >
                                                     {sp.isDeleted ? 'Đã dừng' : 'Đang hoạt động'}
                                                 </span>
-                                            </TableCell>
+                                            </TableCell> */}
                                             <TableCell>
                                                 <div className="flex items-center gap-4">
                                                     <AccountDetail params={sp.id} />

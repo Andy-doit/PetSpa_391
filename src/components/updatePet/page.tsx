@@ -170,12 +170,12 @@ export default function UpdatePet({ params, refetchPets }: { params: allPetPagin
             toast.error("Đã xảy ra lỗi khi cập nhật thú cưng. Vui lòng thử lại sau!");
         } finally {
             setIsLoading(false);
-            resetForm();
+
         }
     };
 
     const handleClose = () => {
-        resetForm();
+
         onClose();
     };
 
