@@ -58,7 +58,7 @@ export default function ManageAccountCus() {
                                     <TableColumn>Tên Khách hàng</TableColumn>
                                     <TableColumn>Email</TableColumn>
                                     <TableColumn>Số điện thoại</TableColumn>
-                                    <TableColumn>Status</TableColumn>
+
                                     <TableColumn>Hành động</TableColumn>
                                 </TableHeader>
                                 <TableBody>
@@ -67,14 +67,7 @@ export default function ManageAccountCus() {
                                             <TableCell>{customer.username}</TableCell>
                                             <TableCell>{customer.email}</TableCell>
                                             <TableCell>{customer.phone}</TableCell>
-                                            <TableCell>
-                                                <span
-                                                    className={`px-2 py-1 rounded-full text-xs text-white ${customer.isDeleted ? 'bg-red-500' : 'bg-green-500'}`}
-                                                    style={{ opacity: 0.8 }}
-                                                >
-                                                    {customer.isDeleted ? 'Đã dừng' : 'Đang hoạt động'}
-                                                </span>
-                                            </TableCell>
+
                                             <TableCell>
                                                 <div className="flex items-center gap-4">
                                                     <AccountCusDetail params={customer.id} />

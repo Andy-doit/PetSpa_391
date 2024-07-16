@@ -67,7 +67,7 @@ export default function AccountDetail({ params }: { params: string }) {
                                     <p className="text-xl font-light">Email</p>
                                     <p className="text-xl font-light">Tên người dùng</p>
                                     <p className="text-xl font-light">Số điện thoại</p>
-                                    <p className="text-xl font-light">Status</p>
+
                                 </div>
                                 <div className="ml-20">
                                     {shop ? (
@@ -78,7 +78,7 @@ export default function AccountDetail({ params }: { params: string }) {
                                             <p className="text-xl font-medium">{shop.email || "Không có gì"}</p>
                                             <p className="text-xl font-medium">{shop.username || "Không có gì"}</p>
                                             <p className="text-xl font-medium">{shop.phone || "Không có gì"}</p>
-                                            <p className="text-xl font-medium">{shop.isDeleted ? 'Đã dừng' : 'Đang hoạt động'}</p>
+
                                         </div>
 
                                     ) : (

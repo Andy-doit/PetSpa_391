@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, Spinner, Textarea, TimeInputValue, useDisclosure } from '@nextui-org/react';
+import { Button, Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, Select, SelectItem, Spinner, Textarea, TimeInputValue, useDisclosure } from '@nextui-org/react';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useAppDispatch } from '@/lib/redux/store';
@@ -69,9 +69,6 @@ export default function CreateShop({ userId, onCreate }: { userId: string, onCre
         if (!shopData.area) {
             errors.push('Khu vực không được để trống');
         }
-        if (shopData.area.length < 5 || shopData.area.length > 50) {
-            errors.push('Khu vực không quá 50 ký tự và lớn hơn 5 kí tự');
-        }
         if (!shopData.shopEmail || !/^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/.test(shopData.shopEmail)) {
             errors.push('Email không hợp lệ');
         }
@@ -139,17 +136,33 @@ export default function CreateShop({ userId, onCreate }: { userId: string, onCre
             [fieldName]: newValue
         }));
     };
-
+    /// đã thêm mà lỗi
     const handleOpenTimeChange = (time: TimeInputValue) => {
-        const formattedTime = `${String(time.hour).padStart(2, '0')}:${String(time.minute).padStart(2, '0')}`;
+        let hour = time.hour;
+        let period = 'AM';
+        if (hour >= 12) {
+            period = 'PM';
+            if (hour > 12) {
+                hour -= 12;
+            }
+        }
+        const formattedTime = `${String(time.hour).padStart(2, '0')}:${String(time.minute).padStart(2, '0')} ${period}`;
         setShopData(prevData => ({
             ...prevData,
             openTime: formattedTime,
         }));
     };
-
+    /// đã thêm mà lỗi
     const handleCloseTimeChange = (time: TimeInputValue) => {
-        const formattedTime = `${String(time.hour).padStart(2, '0')}:${String(time.minute).padStart(2, '0')}`;
+        let hour = time.hour;
+        let period = 'AM';
+        if (hour >= 12) {
+            period = 'PM';
+            if (hour > 12) {
+                hour -= 12;
+            }
+        }
+        const formattedTime = `${String(time.hour).padStart(2, '0')}:${String(time.minute).padStart(2, '0')} ${period}`;
         setShopData(prevData => ({
             ...prevData,
             closeTime: formattedTime,
@@ -231,8 +244,9 @@ export default function CreateShop({ userId, onCreate }: { userId: string, onCre
                                             errorMessage={validationErrors.find(err => err.includes('Tên'))}
                                         />
                                     </div>
+
                                     <div className="ml-4">
-                                        <Input
+                                        {/* <Input
                                             type="text"
                                             onChange={(e) => handleInputChange('area', e.target.value)}
                                             label="Khu vực"
@@ -241,7 +255,49 @@ export default function CreateShop({ userId, onCreate }: { userId: string, onCre
                                             isInvalid={!!validationErrors.find(err => err.includes('Khu'))}
                                             color={validationErrors.find(err => err.includes('Khu')) ? "danger" : "default"}
                                             errorMessage={validationErrors.find(err => err.includes('Khu vực'))}
-                                        />
+                                        /> */}
+                                        <Select
+                                            isInvalid={!!validationErrors.find(err => err.includes('Khu'))}
+                                            color={validationErrors.find(err => err.includes('Khu')) ? "danger" : "default"}
+                                            errorMessage={validationErrors.find(err => err.includes('Khu vực'))}
+                                            label="Khu vực"
+                                            value={shopData.area}
+                                            className="w-[250px]"
+                                            onChange={(e) => handleInputChange('area', e.target.value)}
+                                        >
+                                            <SelectItem key="Sài gòn" value="area"
+                                            >
+                                                Sài Gòn
+                                            </SelectItem>
+                                            <SelectItem key="Hà nội" value="area"
+                                            >
+                                                Hà Nội
+                                            </SelectItem>
+                                            <SelectItem key=" Hải Phòng" value="area"
+                                            >
+                                                Hải Phòng
+                                            </SelectItem>
+                                            <SelectItem key=" Đà lạt" value="area"
+                                            >
+                                                Đà lạt
+                                            </SelectItem>
+                                            <SelectItem key=" Đà Nẵng" value="area"
+                                            >
+                                                Đà Nẵng
+                                            </SelectItem>
+                                            <SelectItem key="Cần thơ" value="area"
+                                            >
+                                                Cần thơ
+                                            </SelectItem>
+                                            <SelectItem key="Vũng tàu" value="area"
+                                            >
+                                                Vũng tàu
+                                            </SelectItem>
+                                            <SelectItem key="Huế" value="area"
+                                            >
+                                                Huế
+                                            </SelectItem>
+                                        </Select>
                                     </div>
                                 </div>
                                 <div className="flex w-full mb-4">
@@ -339,7 +395,8 @@ export default function CreateShop({ userId, onCreate }: { userId: string, onCre
                                     </div>
                                     <div className="flex justify-center items-center">
                                         {previewImage ? (
-                                            <img src={previewImage} alt="Preview" className="max-w-full h-auto" />
+                                            <img src={previewImage} alt="Preview" className="w-[300px] h-[200px]" />
+
                                         ) : (
                                             <span>Ảnh đại diện </span>
                                         )}
