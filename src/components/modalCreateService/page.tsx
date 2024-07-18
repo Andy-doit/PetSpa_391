@@ -8,11 +8,10 @@ import { createService, fetchAllServicePagination } from "@/lib/redux/slice/shop
 import { ToastContainer, toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import { FaPlus } from "react-icons/fa";
-import { ClipLoader } from "react-spinners";
+import { Code } from "@nextui-org/react";
 import { FcPlus } from "react-icons/fc";
 import uploadFile from "@/utils/upload";
-
-
+import { Image } from "@nextui-org/react";
 
 export default function ModalCreateService({ userId, refetchPets }: { userId: string, refetchPets: () => void }) {
     const { isOpen, onOpen, onClose } = useDisclosure();
@@ -20,6 +19,8 @@ export default function ModalCreateService({ userId, refetchPets }: { userId: st
     const dispatch = useAppDispatch();
     const [validationErrors, setValidationErrors] = useState<string[]>([]);
     const [service, setService] = useState<allServicePaginationData[]>([]);
+    const [previewImage, setPreviewImage] = useState("");
+
     useEffect(() => {
         if (userId) {
             setServiceData(prevData => ({
@@ -32,10 +33,12 @@ export default function ModalCreateService({ userId, refetchPets }: { userId: st
     useEffect(() => {
         fetchPets();
     }, [dispatch]);
+
     const fetchPets = async () => {
         const response = await dispatch(fetchAllServicePagination());
         setService(response.payload || []);
     };
+
     const [serviceData, setServiceData] = useState<createServiceInput>({
         userId: userId,
         id: '',
@@ -47,7 +50,6 @@ export default function ModalCreateService({ userId, refetchPets }: { userId: st
         maxWeight: 0,
         tags: 'tags1',
         servicePhoto: ''
-
     });
 
     const resetForm = () => {
@@ -64,6 +66,7 @@ export default function ModalCreateService({ userId, refetchPets }: { userId: st
             servicePhoto: ''
         });
         setValidationErrors([]);
+        setPreviewImage("");
     };
 
     const validateInput = () => {
@@ -97,8 +100,6 @@ export default function ModalCreateService({ userId, refetchPets }: { userId: st
         return errors;
     };
 
-
-
     const handleCreate = async () => {
         const errors = validateInput();
         if (errors.length > 0) {
@@ -121,13 +122,12 @@ export default function ModalCreateService({ userId, refetchPets }: { userId: st
         } catch (error) {
             console.error('Error creating service:', error);
             toast.error("Đã xảy ra lỗi khi tạo dịch vụ. Vui lòng thử lại sau!");
-        }
-        finally {
+        } finally {
             setIsLoading(false);
             resetForm();
         }
     };
-    const [previewImage, setPreviewImage] = useState("");
+
     const handleUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
         if (event.target && event.target.files && event.target.files[0]) {
             const file = event.target.files[0];
@@ -149,10 +149,12 @@ export default function ModalCreateService({ userId, refetchPets }: { userId: st
             [fieldName]: newValue
         }));
     };
+
     const handleClose = () => {
         resetForm();
         onClose();
     };
+
     return (
         <>
             <Button
@@ -178,7 +180,6 @@ export default function ModalCreateService({ userId, refetchPets }: { userId: st
                             <div>
                                 <div className="flex w-full mb-4">
                                     <div className="mr-4 ">
-
                                         <Input
                                             className="w-[300px]"
                                             onChange={(e) => handleInputChange('serviceName', e.target.value)}
@@ -188,7 +189,6 @@ export default function ModalCreateService({ userId, refetchPets }: { userId: st
                                             label="Tên dịch vụ"
                                             value={serviceData.serviceName}
                                         />
-
                                     </div>
                                     <div className="ml-4">
                                         <Select
@@ -215,14 +215,11 @@ export default function ModalCreateService({ userId, refetchPets }: { userId: st
                                             <SelectItem key="5" value="5">
                                                 Khách sạn thú cưng
                                             </SelectItem>
-
                                         </Select>
-
                                     </div>
                                 </div>
 
                                 <div className="flex w-full mb-4">
-
                                     <div >
                                         <Input
                                             isInvalid={!!validationErrors.find(err => err.includes('Giá'))}
@@ -234,9 +231,9 @@ export default function ModalCreateService({ userId, refetchPets }: { userId: st
                                             label="Giá dịch vụ"
                                             type="number"
                                         />
-
                                     </div>
                                 </div>
+
                                 <div className="flex w-full mb-4">
                                     <div className="mr-4">
                                         <Input
@@ -248,7 +245,6 @@ export default function ModalCreateService({ userId, refetchPets }: { userId: st
                                             onChange={(e) => handleInputChange('minWeight', e.target.value)}
                                             label="Cân nặng nhỏ nhất"
                                         />
-
                                     </div>
                                     <div className="ml-4">
                                         <Input
@@ -260,17 +256,17 @@ export default function ModalCreateService({ userId, refetchPets }: { userId: st
                                             errorMessage={validationErrors.find(err => err.includes('Cân nặng lớn nhất'))}
                                             value={serviceData.maxWeight.toString()}
                                         />
-
                                     </div>
                                 </div>
+
                                 <div className="mb-4">
                                     <Textarea
                                         onChange={(e) => handleInputChange('serviceDescription', e.target.value)}
                                         placeholder="Mô tả dịch vụ"
                                         className="w-full"
-
                                     />
                                 </div>
+
                                 <div className="flex flex-col mb-4">
                                     <div className="mb-4">
                                         <label className="form-label label-upload cursor-pointer inline-flex items-center" htmlFor="label-upload">
@@ -280,12 +276,13 @@ export default function ModalCreateService({ userId, refetchPets }: { userId: st
                                     </div>
                                     <div className="flex justify-center items-center">
                                         {previewImage ? (
-                                            <img src={previewImage} alt="Preview" className="w-[300px] h-[200px]" />
+                                            <Image src={previewImage} alt="Preview" width={200} />
                                         ) : (
-                                            <span>Ảnh dịch vụ</span>
+                                            <Code>Ảnh dịch vụ</Code>
                                         )}
                                     </div>
                                 </div>
+
                                 <div className="flex justify-around">
                                     <Button
                                         onClick={handleClose}

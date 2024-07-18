@@ -1,6 +1,6 @@
 
 import { BookingComplete } from '@/models/shopModel';
-import { AllNominationOfShop, CancelBookingInput, ForgotPasswordInput, PasswordInputResponseSuccess, allBookingPaginationResponse, allPetPaginationResponse, cancelBookingResponseSuccess, createFeedbackInput, createFeedbackResponseSuccess, createNomiationInput, createPetInput, petCreateResponseSuccess, updatePasswordInput, updatePasswordInputHomePage, updatePasswordInputResponseSuccess, updateProfileInput, updateProfileInputResponseSuccess } from '@/models/userModels';
+import { AllNominationOfShop, AllNotificationResponse, CancelBookingInput, ForgotPasswordInput, PasswordInputResponseSuccess, allBookingPaginationResponse, allPetPaginationResponse, cancelBookingResponseSuccess, createFeedbackInput, createFeedbackResponseSuccess, createNomiationInput, createPetInput, petCreateResponseSuccess, updatePasswordInput, updatePasswordInputHomePage, updatePasswordInputResponseSuccess, updateProfileInput, updateProfileInputResponseSuccess } from '@/models/userModels';
 import agent from '@/utilities/agent';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { AxiosError } from 'axios';
@@ -11,6 +11,10 @@ export interface UserState {
     allBookingFetchingStatus: string;
     allBookingFetchingError: boolean;
     allBookingFetchingLoading: boolean;
+    allNotificationPagination: AllNotificationResponse | null | undefined;
+    allNotificationFetchingStatus: string;
+    allNotificationFetchingError: boolean;
+    allNotificationFetchingLoading: boolean;
     allNominationOfShopPagination: AllNominationOfShop | null | undefined;
     allNominationOfShopFetchingStatus: string;
     allNominationOfShopFetchingError: boolean;
@@ -28,7 +32,10 @@ export interface UserState {
 }
 
 const initialState: UserState = {
-
+    allNotificationPagination: null,
+    allNotificationFetchingStatus: 'idle',
+    allNotificationFetchingError: false,
+    allNotificationFetchingLoading: false,
     allBookingPagination: null,
     allBookingFetchingStatus: 'idle',
     allBookingFetchingError: false,
@@ -47,6 +54,42 @@ const initialState: UserState = {
     returnedDataLoading: false,
 };
 
+export const fetchAllNotificationPagination = createAsyncThunk(
+    'customer/fetchAllNotificationPagination',
+    async () => {
+        try {
+            const response = await agent.User.getNotification();
+            console.log(response)
+            return response;
+
+        } catch (error) {
+            if (error instanceof AxiosError) {
+                return {
+                    message: error.response?.data.error.message,
+                    status: error.response?.status,
+                };
+            }
+        }
+    },
+);
+export const fetchAllUnreadNotificationPagination = createAsyncThunk(
+    'customer/ fetchAllUnreadNotificationPagination',
+    async () => {
+        try {
+            const response = await agent.User.getUnreadNotification();
+            console.log(response)
+            return response;
+
+        } catch (error) {
+            if (error instanceof AxiosError) {
+                return {
+                    message: error.response?.data.error.message,
+                    status: error.response?.status,
+                };
+            }
+        }
+    },
+);
 export const fetchAllBookingPagination = createAsyncThunk(
     'customer/fetchAllBookingPagination',
     async () => {
@@ -55,6 +98,38 @@ export const fetchAllBookingPagination = createAsyncThunk(
             console.log(response)
             return response;
 
+        } catch (error) {
+            if (error instanceof AxiosError) {
+                return {
+                    message: error.response?.data.error.message,
+                    status: error.response?.status,
+                };
+            }
+        }
+    },
+);
+export const fetchUpdateNoti = createAsyncThunk(
+    'customer/fetchUpdateNoti',
+    async ({ id }: { id: string }) => {
+        try {
+            const response = await agent.User.updateNotification(id);
+            return response;
+        } catch (error) {
+            if (error instanceof AxiosError) {
+                return {
+                    message: error.response?.data.error.message,
+                    status: error.response?.status,
+                };
+            }
+        }
+    },
+);
+export const fetchUnreadNoti = createAsyncThunk(
+    'shopOwner/fetchUnreadNoti',
+    async () => {
+        try {
+            const response = await agent.User.getUnreadNotification();
+            return response;
         } catch (error) {
             if (error instanceof AxiosError) {
                 return {
@@ -517,8 +592,21 @@ const userSlice = createSlice({
                 state.allNominationOfShopFetchingStatus = 'failed';
                 state.allNominationOfShopFetchingError = true;
                 state.allNominationOfShopFetchingLoading = false;
-            }); fetchAllNominationByShopId
-
+            });
+        builder.addCase(fetchAllNotificationPagination.pending, (state) => {
+            state.allNotificationFetchingLoading = true;
+            state.allNotificationFetchingStatus = 'loading';
+        });
+        builder.addCase(fetchAllNotificationPagination.fulfilled, (state, action) => {
+            state.allNotificationPagination = action.payload;
+            state.allNotificationFetchingLoading = false;
+        });
+        builder
+            .addCase(fetchAllNotificationPagination.rejected, (state) => {
+                state.allNotificationFetchingStatus = 'failed';
+                state.allNotificationFetchingError = true;
+                state.allNotificationFetchingLoading = false;
+            });
 
     },
 });

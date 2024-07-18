@@ -13,6 +13,7 @@ const requests = {
   get: <T>(url: string, params?: T) =>
     apiJWT.get(url, { params }).then(responseBody),
   post: <T>(url: string, body: T) => apiJWT.post(url, body).then(responseBody),
+  post1: <T>(url: string, params?: T) => apiJWT.post(url, { params }).then(responseBody),
   put: <T>(url: string, body: T) => apiJWT.put(url, body).then(responseBody),
   patch: <T>(url: string, body: T) => apiJWT.patch(url, body).then(responseBody),
   del: <T>(url: string, params?: T) =>
@@ -142,7 +143,12 @@ const User = {
     requests.post("api/v1/booking/auth/complete", input),
   changePasswordInHome: (input: updatePasswordInputHomePage) =>
     requests.baseApiChangePost(`api/v1/auth/password/changePassword`, input),
-
+  getNotification: () =>
+    requests.get(`api/v1/notification/all`),
+  getUnreadNotification: () =>
+    requests.get("api/v1/notification/total"),
+  updateNotification: (id: string) =>
+    requests.post1(`api/v1/notification/onclick/${id}`)
 }
 
 //Admin

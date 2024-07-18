@@ -8,7 +8,7 @@ import { ShopInput } from '@/models/shopModel';
 import { FaPlus } from 'react-icons/fa';
 import { TimeInput } from "@nextui-org/react";
 import uploadFile from '@/utils/upload';
-import { FcPlus } from 'react-icons/fc';
+import { FcCameraIdentification, FcPlus } from 'react-icons/fc';
 
 export default function CreateShop({ userId, onCreate }: { userId: string, onCreate: () => void }) {
     const { isOpen, onOpen, onClose } = useDisclosure();
@@ -136,33 +136,16 @@ export default function CreateShop({ userId, onCreate }: { userId: string, onCre
             [fieldName]: newValue
         }));
     };
-    /// đã thêm mà lỗi
+
     const handleOpenTimeChange = (time: TimeInputValue) => {
-        let hour = time.hour;
-        let period = 'AM';
-        if (hour >= 12) {
-            period = 'PM';
-            if (hour > 12) {
-                hour -= 12;
-            }
-        }
-        const formattedTime = `${String(time.hour).padStart(2, '0')}:${String(time.minute).padStart(2, '0')} ${period}`;
+        const formattedTime = `${String(time.hour).padStart(2, '0')}:${String(time.minute).padStart(2, '0')} `;
         setShopData(prevData => ({
             ...prevData,
             openTime: formattedTime,
         }));
     };
-    /// đã thêm mà lỗi
     const handleCloseTimeChange = (time: TimeInputValue) => {
-        let hour = time.hour;
-        let period = 'AM';
-        if (hour >= 12) {
-            period = 'PM';
-            if (hour > 12) {
-                hour -= 12;
-            }
-        }
-        const formattedTime = `${String(time.hour).padStart(2, '0')}:${String(time.minute).padStart(2, '0')} ${period}`;
+        const formattedTime = `${String(time.hour).padStart(2, '0')}:${String(time.minute).padStart(2, '0')}`;
         setShopData(prevData => ({
             ...prevData,
             closeTime: formattedTime,
@@ -246,7 +229,7 @@ export default function CreateShop({ userId, onCreate }: { userId: string, onCre
                                     </div>
 
                                     <div className="ml-4">
-                                        {/* <Input
+                                        <Input
                                             type="text"
                                             onChange={(e) => handleInputChange('area', e.target.value)}
                                             label="Khu vực"
@@ -255,49 +238,8 @@ export default function CreateShop({ userId, onCreate }: { userId: string, onCre
                                             isInvalid={!!validationErrors.find(err => err.includes('Khu'))}
                                             color={validationErrors.find(err => err.includes('Khu')) ? "danger" : "default"}
                                             errorMessage={validationErrors.find(err => err.includes('Khu vực'))}
-                                        /> */}
-                                        <Select
-                                            isInvalid={!!validationErrors.find(err => err.includes('Khu'))}
-                                            color={validationErrors.find(err => err.includes('Khu')) ? "danger" : "default"}
-                                            errorMessage={validationErrors.find(err => err.includes('Khu vực'))}
-                                            label="Khu vực"
-                                            value={shopData.area}
-                                            className="w-[250px]"
-                                            onChange={(e) => handleInputChange('area', e.target.value)}
-                                        >
-                                            <SelectItem key="Sài gòn" value="area"
-                                            >
-                                                Sài Gòn
-                                            </SelectItem>
-                                            <SelectItem key="Hà nội" value="area"
-                                            >
-                                                Hà Nội
-                                            </SelectItem>
-                                            <SelectItem key=" Hải Phòng" value="area"
-                                            >
-                                                Hải Phòng
-                                            </SelectItem>
-                                            <SelectItem key=" Đà lạt" value="area"
-                                            >
-                                                Đà lạt
-                                            </SelectItem>
-                                            <SelectItem key=" Đà Nẵng" value="area"
-                                            >
-                                                Đà Nẵng
-                                            </SelectItem>
-                                            <SelectItem key="Cần thơ" value="area"
-                                            >
-                                                Cần thơ
-                                            </SelectItem>
-                                            <SelectItem key="Vũng tàu" value="area"
-                                            >
-                                                Vũng tàu
-                                            </SelectItem>
-                                            <SelectItem key="Huế" value="area"
-                                            >
-                                                Huế
-                                            </SelectItem>
-                                        </Select>
+                                        />
+
                                     </div>
                                 </div>
                                 <div className="flex w-full mb-4">
@@ -331,7 +273,7 @@ export default function CreateShop({ userId, onCreate }: { userId: string, onCre
                                         <TimeInput
                                             label="Giờ mở cửa"
                                             onChange={handleOpenTimeChange}
-                                            hourCycle={24}
+                                            hourCycle={12}
                                             className="w-[250px]"
                                             isInvalid={!!validationErrors.find(err => err.includes('Giờ mở cửa'))}
                                             color={validationErrors.find(err => err.includes('Giờ mở cửa')) ? "danger" : "default"}
@@ -342,7 +284,7 @@ export default function CreateShop({ userId, onCreate }: { userId: string, onCre
                                         <TimeInput
                                             label="Giờ đóng cửa"
                                             onChange={handleCloseTimeChange}
-                                            hourCycle={24}
+                                            hourCycle={12}
                                             className="w-[250px]"
                                             isInvalid={!!validationErrors.find(err => err.includes('Giờ đóng cửa'))}
                                             color={validationErrors.find(err => err.includes('Giờ đóng cửa')) ? "danger" : "default"}
@@ -381,13 +323,12 @@ export default function CreateShop({ userId, onCreate }: { userId: string, onCre
                                         label="Mô tả"
                                         className="w-full"
                                         value={shopData.shopDescription}
-                                    // isInvalid={!!validationErrors.find(err => err.includes('Mô tả'))}
-                                    // color={validationErrors.find(err => err.includes('Mô tả')) ? "danger" : "default"}
-                                    // errorMessage={validationErrors.find(err => err.includes('Mô tả'))}
+
                                     />
                                 </div>
                                 <div className="flex flex-col mb-4">
                                     <div className="mb-4">
+
                                         <label className="form-label label-upload cursor-pointer inline-flex items-center" htmlFor="label-upload">
                                             <FcPlus className="mr-2" /> Ảnh đại diện
                                         </label>

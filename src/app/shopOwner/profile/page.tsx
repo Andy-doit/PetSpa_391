@@ -17,10 +17,6 @@ import { fetchShopInforPagination } from "@/lib/redux/slice/shopSlice";
 import { shopInfor } from "@/models/shopModel";
 import getAccessAndRefreshCookie from "@/utilities/authUtils/getCookieForValidation";
 import UpdateProfileShop from "@/components/updateProfileShop/page";
-import CreateShop from "@/components/createbyShop/page";
-import Cookies from 'js-cookie';
-import DeleteAllIn4Shop from '@/components/deleteAllIn4Shop/page';
-
 export default function Profile() {
     const dispatch = useAppDispatch();
     const [loading, setLoading] = useState(true);
@@ -45,7 +41,7 @@ export default function Profile() {
             setLoading(false);
         }
     };
-
+    console.log(items)
     useEffect(() => {
         fetchData();
     }, [dispatch]);
@@ -113,9 +109,7 @@ export default function Profile() {
                             <div className='absolute mt-2'>
                                 <div className='flex'>
                                     <UpdateProfileShop params={items} onUpdate={fetchData} />
-                                    <div className='ml-2'>
-                                        <DeleteAllIn4Shop params={items.id} />
-                                    </div>
+
                                 </div>
                             </div>
                         </div>

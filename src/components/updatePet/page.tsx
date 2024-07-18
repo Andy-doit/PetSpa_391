@@ -46,35 +46,6 @@ export default function UpdatePet({ params, refetchPets }: { params: allPetPagin
     const { isOpen, onOpen, onClose } = useDisclosure();
     const [isLoading, setIsLoading] = useState(false);
     const [validationErrors, setValidationErrors] = useState<string[]>([]);
-    // const initialPetData: createPetInput = {
-    //     id: params.id.toString(),
-    //     userId: userId,
-    //     petName: params.petName,
-    //     petType: params.petType,
-    //     petAge: params.petAge,
-    //     petGender: params.petGender,
-    //     petWeight: params.petWeight,
-    //     petDescription: params.petDescription,
-    //     petPhoto: '',
-    //     petNote: params.petNote,
-    // };
-
-    const resetForm = () => {
-        setPetData({
-            id: '',
-            userId: userId,
-            petName: '',
-            petType: '',
-            petAge: 0,
-            petGender: '',
-            petWeight: 0,
-            petDescription: '',
-            petPhoto: '',
-            petNote: '',
-        });
-        setValidationErrors([]);
-    };
-
     const [petData, setPetData] = useState<createPetInput>({
         id: params.id.toString(),
         userId: userId,
@@ -224,11 +195,10 @@ export default function UpdatePet({ params, refetchPets }: { params: allPetPagin
                                     <div className="ml-4">
                                         <Select
                                             value={petData.petType}
-
                                             label="Loại thú cưng"
                                             className="w-[250px]"
                                             selectedKeys={[petData.petType]}
-                                            onChange={(key) => handleInputChange('petType', key.toString())}
+                                            onChange={(e) => handleInputChange('petType', e.target.value)}
                                             isInvalid={!!validationErrors.find(err => err.includes('Loại thú cưng'))}
                                             color={validationErrors.find(err => err.includes('Loại thú cưng')) ? "danger" : "default"}
                                             errorMessage={validationErrors.find(err => err.includes('Loại thú cưng'))}
@@ -236,6 +206,7 @@ export default function UpdatePet({ params, refetchPets }: { params: allPetPagin
                                             <SelectItem key="DOG">Chó</SelectItem>
                                             <SelectItem key="CAT">Mèo</SelectItem>
                                         </Select>
+
                                     </div>
                                 </div>
                                 <div className="flex w-full mb-4">
@@ -260,7 +231,7 @@ export default function UpdatePet({ params, refetchPets }: { params: allPetPagin
                                             errorMessage={validationErrors.find(err => err.includes('Giới tính'))}
                                             className="w-[250px]"
                                             selectedKeys={[petData.petGender]}
-                                            onChange={(key) => handleInputChange('petGender', key.toString())}
+                                            onChange={(e) => handleInputChange('petGender', e.target.value)}
                                         >
                                             <SelectItem key="Male">Đực</SelectItem>
                                             <SelectItem key="Female">Cái</SelectItem>
