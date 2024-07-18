@@ -1,6 +1,6 @@
 "use client"
 import React, { useEffect, useState } from "react";
-import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure, Input, TimeInput, Textarea, Divider, TimeInputValue } from "@nextui-org/react";
+import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure, Input, TimeInput, Textarea, Divider, TimeInputValue, Avatar } from "@nextui-org/react";
 import { ShopInput, shopInfor } from "@/models/shopModel";
 import { useAppDispatch } from "@/lib/redux/store";
 import { updateShopInfor } from "@/lib/redux/slice/shopSlice";
@@ -9,6 +9,7 @@ import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import uploadFile from "@/utils/upload";
 import { FcPlus } from "react-icons/fc";
+import { TimeField, TimeFields } from "@internationalized/date";
 
 export default function UpdateProfileShop({ params, onUpdate }: { params: shopInfor, onUpdate: () => void }) {
     const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
@@ -117,6 +118,10 @@ export default function UpdateProfileShop({ params, onUpdate }: { params: shopIn
             [fieldName]: newValue
         }));
     };
+    const parseTime = (time: string) => {
+        const [hour, minute] = time.split(":").map(Number);
+        return { hour, minute } as TimeInputValue;
+    }
 
     const handleOpenTimeChange = (time: TimeInputValue) => {
         const formattedTime = `${String(time.hour).padStart(2, '0')}:${String(time.minute).padStart(2, '0')}`;
@@ -181,6 +186,22 @@ export default function UpdateProfileShop({ params, onUpdate }: { params: shopIn
                             <ModalBody className="flex justify-center">
                                 <div className="my-2 flex justify-center">
                                     <div>
+                                        <div className="flex flex-col mb-4">
+
+                                            <div className="flex justify-center items-center">
+                                                {previewImage ? (
+                                                    <Avatar className="w-20 h-20 text-large" src={previewImage} alt="Preview" />
+                                                ) : (
+                                                    <Avatar className="w-20 h-20 text-large" src={shopData.shopProfileImangeUrl} alt="Preview" />
+                                                )}
+                                            </div>
+                                            <div className="mb-4 flex justify-center">
+                                                <label className="form-label label-upload cursor-pointer inline-flex items-center" htmlFor="label-upload">
+                                                    <FcPlus className="mr-2" /> Ảnh đại diện
+                                                </label>
+                                                <input type="file" hidden id="label-upload" onChange={(event) => handleUpload(event)} />
+                                            </div>
+                                        </div>
                                         <div className="flex w-full mb-4">
                                             <div className="mr-4">
                                                 <Input
@@ -264,8 +285,8 @@ export default function UpdateProfileShop({ params, onUpdate }: { params: shopIn
                                                 <TimeInput
                                                     label="Giờ mở cửa"
                                                     onChange={handleOpenTimeChange}
-                                                    hourCycle={24}
-                                                    // defaultValue={shopData?.openTime}
+                                                    hourCycle={12}
+                                                    defaultValue={parseTime(shopData.openTime)}
                                                     className="w-[250px]"
                                                     isInvalid={!!validationErrors.find(err => err.includes('Giờ mở cửa'))}
                                                     color={validationErrors.find(err => err.includes('Giờ mở cửa')) ? "danger" : "default"}
@@ -276,7 +297,8 @@ export default function UpdateProfileShop({ params, onUpdate }: { params: shopIn
                                                 <TimeInput
                                                     label="Giờ đóng cửa"
                                                     onChange={handleCloseTimeChange}
-                                                    hourCycle={24}
+                                                    hourCycle={12}
+                                                    defaultValue={parseTime(shopData.closeTime)}
                                                     className="w-[250px]"
                                                     isInvalid={!!validationErrors.find(err => err.includes('Giờ đóng cửa'))}
                                                     color={validationErrors.find(err => err.includes('Giờ đóng cửa')) ? "danger" : "default"}
@@ -295,21 +317,7 @@ export default function UpdateProfileShop({ params, onUpdate }: { params: shopIn
                                                 />
                                             </div>
                                         </div>
-                                        <div className="flex flex-col mb-4">
-                                            <div className="mb-4">
-                                                <label className="form-label label-upload cursor-pointer inline-flex items-center" htmlFor="label-upload">
-                                                    <FcPlus className="mr-2" /> Ảnh đại diện
-                                                </label>
-                                                <input type="file" hidden id="label-upload" onChange={(event) => handleUpload(event)} />
-                                            </div>
-                                            <div className="flex justify-center items-center">
-                                                {previewImage ? (
-                                                    <img src={previewImage} alt="Preview" className="max-w-full h-auto" />
-                                                ) : (
-                                                    <span>Ảnh đại diện </span>
-                                                )}
-                                            </div>
-                                        </div>
+
                                     </div>
                                 </div>
                             </ModalBody>

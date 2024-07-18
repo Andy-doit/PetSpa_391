@@ -19,8 +19,8 @@ import { ClipLoader } from 'react-spinners';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useAppDispatch } from '@/lib/redux/store';
-import { allPetPaginationData, createPetInput } from '@/models/userModels';
-import { createPet, fetchAllPetPagination } from '@/lib/redux/slice/userSlice';
+import { createPetInput } from '@/models/userModels';
+import { createPet} from '@/lib/redux/slice/userSlice';
 import { FaPlus } from 'react-icons/fa';
 import { FcPlus } from 'react-icons/fc';
 import uploadFile from '@/utils/upload';
@@ -109,15 +109,14 @@ export default function CreatePet({ userId, refetchPets }: { userId: string, ref
         }));
     };
 
-    const [image, setImage] = useState<File | null>(null);
 
     const handleUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
         if (event.target && event.target.files && event.target.files[0]) {
             const file = event.target.files[0];
-            const fileName = file.name; // Get the file name
-            const fileUrl = await uploadFile(fileName, file); // Upload the file and get URL
+            const fileName = file.name; 
+            const fileUrl = await uploadFile(fileName, file); 
 
-            // Update state with the file URL
+          
             setPetData(prevData => ({
                 ...prevData,
                 petPhoto: fileUrl,
@@ -135,7 +134,7 @@ export default function CreatePet({ userId, refetchPets }: { userId: string, ref
 
         try {
             setIsLoading(true);
-            console.log("Creating pet with data:", petData); // Log the data being sent
+            console.log("Creating pet with data:", petData); 
             if (userId) {
                 await dispatch(createPet({ petData })).unwrap();
                 toast.success("Tạo thú cưng thành công!", {

@@ -3,26 +3,27 @@ import { fetchUserInforPagination, patchPasswordProfile, patchUpdateProfile } fr
 import { useAppDispatch } from '@/lib/redux/store';
 import { UserInfor, passwordInfor, updatePasswordInput, updateProfileInput } from '@/models/userModels';
 import getAccessAndRefreshCookie from '@/utilities/authUtils/getCookieForValidation';
-import { Avatar, Button, Card, CardBody, CardFooter, CardHeader, Divider, Input, Tab, Tabs } from '@nextui-org/react'
-import React, { useEffect, useState } from 'react'
-import { BiEdit } from 'react-icons/bi'
+import { Avatar, Button, Card, CardBody, CardFooter, CardHeader, Divider, Input, Tab, Tabs } from '@nextui-org/react';
+import React, { useEffect, useState } from 'react';
+import { BiEdit } from 'react-icons/bi';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
 
 export default function Profile() {
     const dispatch = useAppDispatch();
     const [validationErrors, setValidationErrors] = useState<string[]>([]);
     const [items, setItems] = useState<passwordInfor>();
+
     useEffect(() => {
         const allService = async () => {
             const response = await dispatch(fetchUserInforPagination());
             setItems(response.payload);
-
         }
         allService();
     }, [dispatch]);
+
     const [userId, setUserId] = useState<string>('');
+
     useEffect(() => {
         const fetchUid = async () => {
             try {
@@ -36,13 +37,14 @@ export default function Profile() {
         };
         fetchUid();
     }, [userId]);
+
     const [profileData, setProfileData] = useState<updatePasswordInput>({
         id: userId,
         oldPassword: items?.oldPassword,
         newPassword: items?.newPassword,
         confirmPassword: items?.confirmPassword
-
     });
+
     const resetForm = () => {
         setProfileData({
             id: userId,
@@ -52,6 +54,7 @@ export default function Profile() {
         });
         setValidationErrors([]);
     };
+
     const validateInput = () => {
         const errors = [];
 
@@ -74,9 +77,9 @@ export default function Profile() {
                 ...prevData,
                 id: userId,
             }));
-
         }
     }, [userId]);
+
     const handleInputChange = (fieldName: string, newValue: string | number) => {
         setProfileData(prevData => ({
             ...prevData,
@@ -90,6 +93,7 @@ export default function Profile() {
             }
         }
     };
+
     const [isEditing, setIsEditing] = useState(false);
     const handleEditClick = () => {
         setIsEditing(true);
@@ -101,6 +105,7 @@ export default function Profile() {
         setIsEditing(false);
         resetForm();
     };
+
     const handleUpdate = async () => {
         const errors = validateInput();
         if (errors.length > 0) {
@@ -120,11 +125,9 @@ export default function Profile() {
             toast.error("Đã xảy ra lỗi khi cập nhật dịch vụ. Vui lòng thử lại sau!");
         }
     };
-    console.log(profileData)
+
     return (
-
         <div className='h-screen'>
-
             <div
                 style={{
                     backgroundImage: 'url(https://i.pinimg.com/originals/5b/15/2a/5b152a7d4faa4b8ffb158eaa95fde428.jpg)',
@@ -138,9 +141,7 @@ export default function Profile() {
                 <div className='justify-center flex items-center'>
                     <Avatar src={items?.profileImageUrl} size="lg" />
                 </div>
-
                 <div className='justify-center flex items-center mt-2'>
-
                     <h1 className='text-2xl font-bold uppercase mr-2'>{items?.firstName}</h1>
                     <h1 className='text-2xl font-bold uppercase'>{items?.lastName}</h1>
                 </div>
@@ -148,13 +149,11 @@ export default function Profile() {
                     {!isEditing && (
                         <h1 className='text-1xl font-light '>A funny man</h1>
                     )}
-
                     {isEditing && (
                         <div className='w-fit my-2'>
                             <Input className="text-center" size='sm' type="name" variant='faded' defaultValue='A funny man' />
                         </div>
                     )}
-
                 </div>
                 <div className='flex justify-end '>
                     <div className=' absolute mt-2' >
@@ -165,12 +164,9 @@ export default function Profile() {
                         )}
                     </div>
                 </div>
-
                 <Divider />
-                <div className='container mt-4'
-                >
+                <div className='container mt-4'>
                     <Tabs className="flex justify-center">
-
                         <Tab className='flex justify-center' key="password" title="Mật khẩu">
                             <Card className='w-[550px] p-4'
                                 style={{
@@ -188,7 +184,7 @@ export default function Profile() {
                                 </CardHeader>
                                 <CardBody className="space-y-2 text-white">
                                     <div className="space-y-1">
-                                        <p >Mật khẩu hiện tại</p>
+                                        <p>Mật khẩu hiện tại</p>
                                         <Input
                                             value={profileData.oldPassword?.toString()}
                                             isInvalid={!!validationErrors.find(err => err.includes('Mật khẩu hiện tại'))}
@@ -197,7 +193,7 @@ export default function Profile() {
                                             onChange={(e) => handleInputChange('oldPassword', e.target.value)} disabled={!isEditing} type='password' />
                                     </div>
                                     <div className="space-y-1">
-                                        <p >Mật khẩu mới</p>
+                                        <p>Mật khẩu mới</p>
                                         <Input
                                             value={profileData.newPassword?.toString()}
                                             isInvalid={!!validationErrors.find(err => err.includes('Mật khẩu mới'))}
@@ -206,7 +202,7 @@ export default function Profile() {
                                             disabled={!isEditing} type='password' onChange={(e) => handleInputChange('newPassword', e.target.value)} />
                                     </div>
                                     <div className="space-y-1">
-                                        <p >Xác nhận mật khẩu</p>
+                                        <p>Xác nhận mật khẩu</p>
                                         <Input
                                             value={profileData.confirmPassword?.toString()}
                                             isInvalid={!!validationErrors.find(err => err.includes('Xác nhận mật khẩu'))}
@@ -216,7 +212,6 @@ export default function Profile() {
                                             type='password'
                                             onChange={(e) => handleInputChange('confirmPassword', e.target.value)}
                                         />
-
                                     </div>
                                 </CardBody>
                                 {isEditing && (
@@ -227,13 +222,10 @@ export default function Profile() {
                                 )}
                             </Card>
                         </Tab>
-
                     </Tabs>
                 </div>
-
-
             </div>
             <ToastContainer />
-        </div >
+        </div>
     )
 }
