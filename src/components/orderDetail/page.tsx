@@ -6,12 +6,19 @@ import { BookingDetail } from "@/models/userModels";
 import { useAppDispatch } from "@/lib/redux/store";
 import { fetchOrderBooking } from "@/lib/redux/slice/userSlice";
 import ConfirmBooking from "../confirmBooking/page";
+import { getShopIdbyTime } from "@/lib/redux/slice/shopSlice";
+import Cookies from "js-cookie";
 
 export default function OrderDetail({ params }: { params: string }) {
     const [booking, setBooking] = useState<BookingDetail | null>(null);
     const [isOpenModal, setIsOpenModal] = useState(false);
-
     const dispatch = useAppDispatch();
+    const [role, setRole] = useState<string | null>(null);
+
+    useEffect(() => {
+        const userRole = Cookies.get("role") ?? null;
+        setRole(userRole);
+    }, []);
 
     const getStatusLabel = (status: string) => {
         switch (status) {
@@ -79,7 +86,6 @@ export default function OrderDetail({ params }: { params: string }) {
                                 className="rounded-lg p-6"
                                 style={{
                                     backgroundImage: `url("https://i.pinimg.com/564x/11/e5/bd/11e5bd4736dbf8f404eb90bf306a0562.jpg")`,
-                                    // backgroundImage: `${booking.servicePhoto}`,
                                     backgroundRepeat: 'no-repeat',
                                     backgroundSize: "cover",
                                 }}
@@ -130,17 +136,13 @@ export default function OrderDetail({ params }: { params: string }) {
                                                         )}
                                                     </div>
                                                 </div>
-
-
-
                                             </div>
                                         </div>
                                         <div className="flex justify-end items-end">
                                             {booking.status === 'SCHEDULED' && <CancelBooking params={params} />}
                                             {booking.status === 'NEED_CONFIRM' && <ConfirmBooking params={booking.id} />}
                                             {booking.status === 'NEED_CONFIRM' && <CancelBooking params={params} />}
-
-                                            {booking.status === 'COMPLETED' && <CreateFeedback shopData={booking} />}
+                                            {booking.status === 'COMPLETED' && role === 'CUSTOMER' && <CreateFeedback shopData={booking} />}
                                         </div>
                                     </div>
                                 </div>

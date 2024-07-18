@@ -263,3 +263,23 @@ export interface AllFeedbackOfServiceResponse {
         pageCount: number;
     };
 }
+export interface AllNotification {
+    id: number,
+    content: string,
+    bookingId: number,
+
+}
+export interface TotalUnread {
+    totalUnreadNotification: number,
+
+
+}
+export interface AllNotificationResponse {
+    success: boolean;
+    status: number;
+    data: {
+        data: AllNotification[];
+        totalCount: number;
+        pageCount: number;
+    };
+}

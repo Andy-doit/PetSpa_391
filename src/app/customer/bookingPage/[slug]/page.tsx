@@ -480,25 +480,25 @@ export default function BookingPage(
                         </div>
                     </div>
                     <div className='mb-2'>
-                        <div className=" flex justify-center  ">
+                        <div className="flex justify-center">
                             <div className='w-1/2'>
                                 <p className="text-1xl font-medium mb-2">Khung giờ</p>
-                                <div className="w-full flex justify-around" >
+                                <div className="w-full flex flex-wrap justify-around">
                                     {timeSlot.map((slot: getTimeSlot, index: number) => (
-
                                         <Button
                                             key={index}
                                             onClick={() => handleSlotClick(index)}
                                             color={slot.availableSlots === 0 ? 'warning' : (selectedSlotIndex === index ? 'success' : 'default')}
                                             disabled={slot.availableSlots === 0}
+                                            className="m-2"
                                         >
                                             {`${slot.timeSlotDto.startLocalDateTime} - ${slot.timeSlotDto.endLocalDateTime}`}
                                         </Button>
                                     ))}
                                 </div>
                             </div>
-
                         </div>
+
                         {showNote && (
                             <div className="flex justify-center mt-5">
                                 <Card className="w-[350px] px-5 py-2">

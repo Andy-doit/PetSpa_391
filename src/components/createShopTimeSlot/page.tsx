@@ -108,10 +108,7 @@ export default function CreateShopTimeSlot({ refetchTimes }: { refetchTimes: () 
             resetForm();
         }
     };
-    const handleClose = () => {
-        resetForm();
-        onClose();
-    };
+
 
     return (
         <>
