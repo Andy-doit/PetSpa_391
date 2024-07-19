@@ -87,15 +87,15 @@ export default function ModalViewServiceProps({ params }: { params: string }) {
                             <div className="text-xl font-medium">{shop?.maxWeight || "Không có"}</div>
                             <div className="text-xl font-light">Mô tả dịch vụ:</div>
                             <div className="text-xl font-medium">{shop?.serviceDescription || "Không có"}</div>
+                        </div>
+                        <div>
                             <div className="text-xl font-light">Hình ảnh dịch vụ:</div>
                             <div className="text-xl font-medium">
 
                                 <Image
                                     width={300}
-                                    height={200}
                                     src={shop?.servicePhoto}
-                                    fallbackSrc="https://via.placeholder.com/300x200"
-                                    alt="NextUI Image with fallback"
+                                    alt="Ảnh dịch vụ"
                                 />
 
 

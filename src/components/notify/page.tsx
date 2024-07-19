@@ -88,7 +88,7 @@ export const NotificationsDropdown = () => {
                                     description={notification.content}
                                     onClick={() => handleNotificationClick(notification.id.toString())}
                                 >
-                                    {notification.content}
+                                    {notification.localDateTimeString}
                                 </DropdownItem>
                             ))
                         ) : (
