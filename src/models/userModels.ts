@@ -267,6 +267,7 @@ export interface AllNotification {
     id: number,
     content: string,
     bookingId: number,
+    localDateTimeString: string,
 
 }
 export interface TotalUnread {

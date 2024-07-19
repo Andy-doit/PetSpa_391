@@ -1,5 +1,5 @@
 import { useEffect, useState, useCallback } from "react";
-import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure, Select, SelectItem, Input, Textarea, Tooltip } from "@nextui-org/react";
+import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure, Select, SelectItem, Input, Textarea, Tooltip, Image } from "@nextui-org/react";
 import { allServicePaginationData, createServiceInput } from "@/models/shopModel";
 import getAccessAndRefreshCookie from "@/utilities/authUtils/getCookieForValidation";
 import { MdChangeCircle } from "react-icons/md";
@@ -44,7 +44,7 @@ export default function ModalUpdateServiceProps({ params, refetchPets }: { param
         maxWeight: params.maxWeight,
         serviceDescription: params.serviceDescription,
         tags: params.tags,
-        servicePhoto: params.tags
+        servicePhoto: params.servicePhoto,
     });
     const resetForm = () => {
         setServiceData({
@@ -271,9 +271,9 @@ export default function ModalUpdateServiceProps({ params, refetchPets }: { param
                                         </div>
                                         <div className="flex justify-center items-center">
                                             {previewImage ? (
-                                                <img src={previewImage} alt="Preview" className="max-w-full h-auto" />
+                                                <Image src={previewImage} alt="Preview" width={200} />
                                             ) : (
-                                                <span>Ảnh của dịch vụ </span>
+                                                <Image src={serviceData.servicePhoto} alt="Preview" width={200} />
                                             )}
                                         </div>
                                     </div>
