@@ -85,10 +85,11 @@ export const NotificationsDropdown = () => {
                                 <DropdownItem
                                     key={notification.id}
                                     classNames={{ base: "py-2", title: "text-base font-semibold" }}
-                                    description={notification.content}
+                                    description={notification.localDateTimeString}
                                     onClick={() => handleNotificationClick(notification.id.toString())}
                                 >
-                                    {notification.localDateTimeString}
+                                   
+                                    {notification.content}
                                 </DropdownItem>
                             ))
                         ) : (
