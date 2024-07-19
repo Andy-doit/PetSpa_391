@@ -33,11 +33,23 @@ export default function MenuGuest() {
                 </div>
                 <div className="flex-1 flex justify-end items-center ">
                     <ul>
-                        <li><Link href="#" className="font-medium py-5 text-xl hover:text-orange-600" color="foreground">Dịch vụ tắm rửa</Link></li>
-                        <li><Link href="#" className=" font-medium py-5 text-xl hover:text-orange-600" color="foreground">Dịch vụ làm đẹp</Link></li>
-                        <li><Link href="#" className="font-medium py-5 text-xl hover:text-orange-600" color="foreground">Dịch vụ mát xa </Link></li>
-                        <li><Link href="#" className="font-medium py-5 text-xl hover:text-orange-600" color="foreground">Dịch vụ mát xa đặc biệt</Link></li>
-                        <li><Link href="#" className=" font-medium py-5 text-xl hover:text-orange-600" color="foreground">Khách sạn thú cưng</Link></li>
+                        <li><Link href="#" hidden className="font-medium py-5 text-xl "
+                            style={{
+                                color: "#fbfafa",
+                            }}
+                        >Dịch vụ tắm rửa</Link></li>
+                        <li><Link href="#" hidden className=" font-medium py-5 text-xl " style={{
+                            color: "#fbfafa",
+                        }}>Dịch vụ làm đẹp</Link></li>
+                        <li><Link href="#" hidden className="font-medium py-5 text-xl " style={{
+                            color: "#fbfafa",
+                        }}>Dịch vụ mát xa </Link></li>
+                        <li><Link href="#" hidden className="font-medium py-5 text-xl " style={{
+                            color: "#fbfafa",
+                        }}>Dịch vụ mát xa đặc biệt</Link></li>
+                        <li><Link href="#" hidden className=" font-medium py-5 text-xl " style={{
+                            color: "#fbfafa",
+                        }}>Khách sạn thú cưng</Link></li>
                     </ul>
                 </div>
             </div>
