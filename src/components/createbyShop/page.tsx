@@ -273,7 +273,7 @@ export default function CreateShop({ userId, onCreate }: { userId: string, onCre
                                         <TimeInput
                                             label="Giờ mở cửa"
                                             onChange={handleOpenTimeChange}
-                                            hourCycle={12}
+                                            hourCycle={24}
                                             className="w-[250px]"
                                             isInvalid={!!validationErrors.find(err => err.includes('Giờ mở cửa'))}
                                             color={validationErrors.find(err => err.includes('Giờ mở cửa')) ? "danger" : "default"}
@@ -284,7 +284,7 @@ export default function CreateShop({ userId, onCreate }: { userId: string, onCre
                                         <TimeInput
                                             label="Giờ đóng cửa"
                                             onChange={handleCloseTimeChange}
-                                            hourCycle={12}
+                                            hourCycle={24}
                                             className="w-[250px]"
                                             isInvalid={!!validationErrors.find(err => err.includes('Giờ đóng cửa'))}
                                             color={validationErrors.find(err => err.includes('Giờ đóng cửa')) ? "danger" : "default"}
