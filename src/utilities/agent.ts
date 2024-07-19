@@ -89,6 +89,8 @@ const ShopOnwer = {
     requests.baseApiPatch("api/v1/user", input),
   getProfileShopInfor: () =>
     requests.get("api/v1/user"),
+  getAllTimSlotInfoPerDate: (date: string) =>
+    requests.get(`/api/v1/shop/${date}`),
 }
 
 

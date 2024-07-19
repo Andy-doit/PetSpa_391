@@ -55,9 +55,7 @@ export default function TimeSlot() {
                         <TableHeader>
                             <TableColumn>Khung giờ</TableColumn>
                             <TableColumn>Thời gian</TableColumn>
-                            <TableColumn>Tổng số Slot</TableColumn>
-                            <TableColumn>Số slot khả dụng</TableColumn>
-                            <TableColumn>Số slot đã sử dụng</TableColumn>
+
                             <TableColumn>Hành động</TableColumn>
                         </TableHeader>
                         <TableBody>
@@ -65,9 +63,6 @@ export default function TimeSlot() {
                                 <TableRow key={slot.id}>
                                     <TableCell>{slot.description}</TableCell>
                                     <TableCell>{slot.startLocalTime} - {slot.endLocalTime}</TableCell>
-                                    <TableCell>{slot.totalSlot}</TableCell>
-                                    <TableCell>{slot.availableSlot}</TableCell>
-                                    <TableCell>{slot.usedSlot}</TableCell>
                                     <TableCell>
                                         <DeleteTimeSlot params={slot.id.toString()} refetchPets={fetchTimeSlots} />
                                     </TableCell>

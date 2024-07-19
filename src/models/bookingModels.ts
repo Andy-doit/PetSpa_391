@@ -24,6 +24,15 @@ export interface getTimeSlot {
         endLocalDateTime: string
     }
 }
+export interface detailTimeSlot {
+    id: number
+    totalSlots: number,
+    usedSlots: number,
+    availableSlots: number,
+    startTime: string;
+    endTime: string;
+
+}
 
 
 export interface allServicesPaginationData {
