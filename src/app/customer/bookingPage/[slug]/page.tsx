@@ -88,7 +88,6 @@ export default function BookingPage(
         router.replace('/customer/confirmInfor')
 
     };
-    console.log(bookingData);
     const handleInputChange = (fieldName: string, newValue: string | number) => {
         setBookingData(prevData => ({
             ...prevData,
