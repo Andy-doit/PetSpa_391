@@ -185,18 +185,7 @@ export default function ProfileShopOwner({ params }: { params: { slug: string } 
                                                     </CardHeader>
                                                     <Divider />
                                                     <CardBody>
-                                                        <div className="flex">
-                                                            {[...Array(5)].map((_, index) => {
-                                                                const ratingValue = index + 1;
-                                                                return (
-                                                                    <FaStar
-                                                                        key={index}
-                                                                        className="star"
-                                                                        color={ratingValue <= item.nomination ? 'gold' : 'gray'}
-                                                                    />
-                                                                );
-                                                            })}
-                                                        </div>
+
                                                         <p className="text-xl font-medium">Giá: {item.price}</p>
                                                     </CardBody>
                                                     <Divider />

@@ -20,15 +20,7 @@ export default function CardService({ service }: { service: allServicesPaginatio
                 <Divider />
 
                 <CardBody>
-                    <div className="flex">
-                        {[...Array(5)].map((_, index) => (
-                            <FaStar
-                                key={index}
-                                className="star"
-                                color={index + 1 <= service.nomination ? 'gold' : 'gray'}
-                            />
-                        ))}
-                    </div>
+
                     <p className="text-xl font-medium">Giá: {service.price}</p>
                 </CardBody>
                 <Divider />

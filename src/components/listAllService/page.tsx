@@ -142,15 +142,7 @@ const ListAllService: React.FC<Props> = () => {
                                 </CardHeader>
                                 <Divider />
                                 <CardBody>
-                                    <div className="flex">
-                                        {[...Array(5)].map((_, idx) => (
-                                            <FaStar
-                                                key={idx}
-                                                className="star"
-                                                color={idx < item.nomination ? 'gold' : 'gray'}
-                                            />
-                                        ))}
-                                    </div>
+                            
                                     <p className="text-xl font-medium">Giá: {item.price}</p>
                                 </CardBody>
                                 <Divider />
