@@ -6,7 +6,7 @@ import { allServicesPaginationData } from "@/models/bookingModels";
 
 
 export default function CardService({ service }: { service: allServicesPaginationData }) {
-
+    console.log(service)
     return (
         <div className="mb-5">
             <Card className="max-w-[400px]">
