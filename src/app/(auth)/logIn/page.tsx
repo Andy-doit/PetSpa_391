@@ -50,10 +50,7 @@ export default function Login() {
 
     const dispatch = useAppDispatch();
     const router = useRouter();
-
     const handleLogin = async (value: LoginInput) => {
-
-
         setIsLoading(true);
         dispatch(loginStart());
         try {
